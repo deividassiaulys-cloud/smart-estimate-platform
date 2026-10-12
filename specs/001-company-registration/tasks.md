@@ -1,6 +1,6 @@
 # Tasks: Company Registration
 
-- [ ] T001 Add Company and User entities in server/Models/Entities
+- [x] T001 Add Company and User entities in server/Models/Entities
 - [ ] T002 Add RegisterRequest/RegisterResponse DTOs in server/Models/DTOs
 - [ ] T003 Add EF Core migration for Company/User in server/Migrations
 - [ ] T004 Implement registration logic (create Company + Manager, hash password) in server/Services/AuthService
