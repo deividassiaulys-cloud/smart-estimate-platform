@@ -1,10 +1,10 @@
 # Smart Estimate Platform — Project Constitution
 
-## 0. Purpose
+## Preamble — Purpose
 
 This Constitution establishes the engineering principles, constraints, and expected practices for building the Smart Estimate Platform. It ensures consistency, quality, and architectural integrity across all features, whether implemented by a human or an AI coding assistant.
 
-## 1. Core Values
+## Article I — Core Values
 
 - **Correctness:** Business calculations (prices, quantities, totals) MUST be accurate and verifiable.
 - **Clarity:** Code and documentation MUST be understandable without requiring the author's explanation.
@@ -13,7 +13,7 @@ This Constitution establishes the engineering principles, constraints, and expec
 - **Traceability:** Every implemented behavior MUST trace back to a documented requirement.
 - **Accountability:** All code, human- or AI-written, is reviewed and owned by the student before being committed.
 
-## 2. Behavioral Directives (Engineering Practices)
+## Article II — Behavioral Directives (Engineering Practices)
 
 1. Business rules MUST be implemented only in the Application layer, never in controllers, UI components, or data-access code.
 2. Public classes and methods in Application and Domain MUST have doc comments explaining purpose, not implementation detail.
@@ -22,7 +22,7 @@ This Constitution establishes the engineering principles, constraints, and expec
 5. Every functional requirement (FR-xxx) involving a business rule MUST have at least one automated test before it is considered done.
 6. A simpler solution that meets the specification is preferred over a more complex one, even if the complex one seems more "robust."
 
-## 3. Red Lines / Prohibitions
+## Article III — Red Lines / Prohibitions
 
 - Business logic MUST NOT be implemented in API controllers or React components.
 - Passwords MUST NOT be stored or logged in plain text.
@@ -32,21 +32,21 @@ This Constitution establishes the engineering principles, constraints, and expec
 - New dependencies MUST NOT be added without a documented reason; "the AI assistant suggested it" is not a valid reason.
 - Features MUST NOT be implemented beyond what the current specification requires.
 
-## 4. Security & Risk Policies
+## Article IV — Security & Risk Policies
 
 - All API endpoints MUST verify both authentication (valid JWT) and authorization (correct role and company) before returning data.
 - Passwords MUST be hashed.
 - Role-based and company-isolation rules MUST be covered by integration tests, not unit tests alone.
 - When a proposed design risks violating a security principle, the risk MUST be documented in the feature's plan before implementation proceeds.
 
-## 5. AI-Assisted Development Rules
+## Article V — AI-Assisted Development Rules
 
 - AI agents operating in this repository MUST follow AGENTS.md and MUST NOT bypass the Spec Kit workflow (spec → clarify → plan → tasks → analyze → implement).
 - AI-generated code MUST be reviewed and understood by the student before being committed; it MUST NOT be committed unreviewed.
 - AI-generated architectural suggestions (e.g. in data-model.md, plan.md) are proposals only and MUST be explicitly accepted or rejected by the student.
 - An AI agent MAY adopt a feature-specific working context (e.g. "focus only on the Estimates feature"), but remains bound to this Constitution regardless of that context.
 
-## 6. Documentation & Version Control
+## Article VI — Documentation & Version Control
 
 - Every feature MUST have a corresponding specification in specs/ before implementation begins.
 - Each feature MUST be developed on its own branch, created from an up-to-date main.
@@ -54,24 +54,24 @@ This Constitution establishes the engineering principles, constraints, and expec
 - Spec Kit workflow changes (constitution, specs, plans, tasks) MUST be committed separately from implementation code changes.
 - README.md MUST be updated whenever setup or run instructions change.
 
-## 7. Error Handling (Specification Ambiguity)
+## Article VII — Error Handling (Specification Ambiguity)
 
 When a specification is ambiguous or incomplete:
 1. Use the Spec Kit clarification stage (/speckit.clarify) before technical planning.
 2. Do not proceed to implementation while unresolved clarification markers remain, unless the instructor explicitly approves the uncertainty.
 3. When a requested design is impossible or conflicts with this Constitution, the conflict MUST be documented and resolved before coding — not silently worked around.
 
-## 8. Autonomy Constraints (for AI Agents)
+## Article VIII — Autonomy Constraints (for AI Agents)
 
 - An AI agent may generate code and modify files only within the scope of the currently active feature task.
 - An AI agent MUST NOT create, modify, or delete files outside server/, client/, tests/, docs/, specs/, or this Constitution's own governance process.
 - An AI agent MUST NOT edit .env files, generated build output, or database migration files unless the active task explicitly requires a new migration.
 - Every AI-driven change MUST be reviewable as a diff before commit (no silent/automatic commits).
 
-## 9. Governance & Versioning
+## Article IX — Governance & Versioning
 
 - **Version:** 1.0.0
-- **Owner:** [Student name]
+- **Owner:** Deividas Šiaulys
 - **Revision Method:** Amendments require explicit student (and, where applicable, instructor) approval; AI agents MUST NOT self-amend this Constitution.
 - **Versioning scheme:** Semantic versioning — MAJOR for principle removal/redefinition, MINOR for new principles, PATCH for wording clarifications.
 - **Compliance:** Every feature's technical plan MUST include a Constitution Check confirming the design does not violate any section above.
