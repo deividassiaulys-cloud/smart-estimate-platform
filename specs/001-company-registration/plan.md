@@ -1,12 +1,11 @@
 # Plan: Company Registration
 
 ## Constitution Check
-No business logic in controllers or React components. No authentication/authorization skipped. No hardcoded secrets. No conflicts with the Constitution.
+No business logic in controllers or React components, no authentication/authorization skipped, no hardcoded secrets. No conflicts with the Constitution — no exceptions needed.
 
 ## Approach
-Create a User and Company together, in one transaction, and issue a JWT on success.
+Create the Company and its Manager User together in one transaction. Hash the password with ASP.NET Core Identity’s PasswordHasher (Identity’s own user model is not used, so User stays a plain entity with a PasswordHash) and issue a JWT on success.
 
-## Decisions
-- ASP.NET Core Identity is used only for its password hasher (`PasswordHasher<User>`), not for its entity model. `User` is a plain entity class, not an `IdentityUser`, and stores the hash in `PasswordHash`.
-- The user's role (Manager / Viewer) is stored as a `Role` field on `User`, not in Identity role tables.
-- `Company` and `User` use integer IDs.
+## Dependencies
+- xunit, xunit.runner.visualstudio, Microsoft.NET.Test.Sdk (tests/server only): test framework and runner so `dotnet test` can run the required automated tests.
+- Microsoft.EntityFrameworkCore.Sqlite (tests/server only): a real relational database in memory, so the integration tests exercise the unique email index and case-insensitive collation without needing a MySQL server.
