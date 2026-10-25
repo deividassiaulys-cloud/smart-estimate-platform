@@ -1,0 +1,58 @@
+.register {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 32px 16px;
+  text-align: left;
+}
+
+.register form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.register-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.register-field label {
+  color: var(--text-h);
+  font-weight: 500;
+}
+
+.register-field input {
+  font: inherit;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text-h);
+}
+
+.register-field input[aria-invalid='true'] {
+  border-color: #d93025;
+}
+
+.register-error {
+  color: #d93025;
+  font-size: 0.875em;
+  margin: 0;
+}
+
+.register button {
+  font: inherit;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+
+.register button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
