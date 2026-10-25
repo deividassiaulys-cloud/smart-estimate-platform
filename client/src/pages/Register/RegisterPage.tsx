@@ -1,14 +1,11 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react'
-import { ApiError, register } from '../../api/auth'
+import { Link, useNavigate } from 'react-router-dom'
+import { register } from '../../api/auth'
+import { ApiError } from '../../api/http'
 import type { RegisterRequest } from '../../interfaces/auth'
 import { saveToken } from '../../utils/auth'
 import { validateRegisterForm, type RegisterErrors } from './validation'
-import './Register.css'
-
-interface RegisterPageProps {
-  /** Called after the visitor is registered and logged in. */
-  onRegistered: () => void
-}
+import '../../styles/auth.css'
 
 const emptyForm: RegisterRequest = {
   companyName: '',
@@ -34,7 +31,8 @@ function submitErrorMessage(error: unknown): string {
   return 'Registracija nepavyko. Bandykite dar kartą.'
 }
 
-export default function RegisterPage({ onRegistered }: RegisterPageProps) {
+export default function RegisterPage() {
+  const navigate = useNavigate()
   const [form, setForm] = useState<RegisterRequest>(emptyForm)
   const [errors, setErrors] = useState<RegisterErrors>({})
   const [submitError, setSubmitError] = useState<string | null>(null)
@@ -57,7 +55,7 @@ export default function RegisterPage({ onRegistered }: RegisterPageProps) {
     try {
       const response = await register({ ...form, email: form.email.trim() })
       saveToken(response.token)
-      onRegistered()
+      navigate('/dashboard', { replace: true })
     } catch (error) {
       setSubmitError(submitErrorMessage(error))
     } finally {
@@ -66,13 +64,13 @@ export default function RegisterPage({ onRegistered }: RegisterPageProps) {
   }
 
   return (
-    <main className="register">
+    <main className="auth">
       <h1>Registracija</h1>
       <p>Užregistruokite įmonę ir tapkite jos vadovu.</p>
 
       <form onSubmit={handleSubmit} noValidate>
         {fields.map((field) => (
-          <div className="register-field" key={field.name}>
+          <div className="auth-field" key={field.name}>
             <label htmlFor={field.name}>{field.label}</label>
             <input
               id={field.name}
@@ -85,7 +83,7 @@ export default function RegisterPage({ onRegistered }: RegisterPageProps) {
               aria-describedby={errors[field.name] ? `${field.name}-error` : undefined}
             />
             {errors[field.name] && (
-              <span className="register-error" id={`${field.name}-error`}>
+              <span className="auth-error" id={`${field.name}-error`}>
                 {errors[field.name]}
               </span>
             )}
@@ -93,7 +91,7 @@ export default function RegisterPage({ onRegistered }: RegisterPageProps) {
         ))}
 
         {submitError && (
-          <p className="register-error" role="alert">
+          <p className="auth-error" role="alert">
             {submitError}
           </p>
         )}
@@ -102,6 +100,10 @@ export default function RegisterPage({ onRegistered }: RegisterPageProps) {
           {submitting ? 'Registruojama…' : 'Registruotis'}
         </button>
       </form>
+
+      <p className="auth-switch">
+        Jau turite paskyrą? <Link to="/login">Prisijunkite</Link>
+      </p>
     </main>
   )
 }

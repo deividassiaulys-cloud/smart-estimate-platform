@@ -1,0 +1,27 @@
+.landing {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 64px 16px;
+}
+
+.landing-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.landing-actions a {
+  padding: 10px 16px;
+  border: 1px solid var(--accent-border);
+  border-radius: 6px;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.landing-actions a.landing-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
