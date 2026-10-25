@@ -1,21 +1,31 @@
-import { useState } from 'react'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import ProtectedRoute from './components/ProtectedRoute'
+import SessionExpiryListener from './components/SessionExpiryListener'
+import DashboardPage from './pages/Dashboard/DashboardPage'
+import LandingPage from './pages/Landing/LandingPage'
+import LoginPage from './pages/Login/LoginPage'
 import RegisterPage from './pages/Register/RegisterPage'
 
-// Routing and the Dashboard arrive with feature 002 (T016); until then a successful
-// registration shows a placeholder.
 function App() {
-  const [registered, setRegistered] = useState(false)
-
-  if (registered) {
-    return (
-      <main>
-        <h1>Sveiki!</h1>
-        <p>Jūsų įmonė užregistruota, esate prisijungę kaip vadovas.</p>
-      </main>
-    )
-  }
-
-  return <RegisterPage onRegistered={() => setRegistered(true)} />
+  return (
+    <>
+      <SessionExpiryListener />
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </>
+  )
 }
 
 export default App
