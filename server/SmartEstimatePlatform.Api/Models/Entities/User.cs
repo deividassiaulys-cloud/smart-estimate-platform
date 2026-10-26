@@ -3,7 +3,7 @@ namespace SmartEstimatePlatform.Api.Models.Entities;
 /// <summary>
 /// An account that belongs to exactly one company and acts in that company with a single role.
 /// </summary>
-public class User
+public class User : ICompanyScoped
 {
     public int Id { get; set; }
 

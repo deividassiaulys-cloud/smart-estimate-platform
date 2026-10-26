@@ -100,8 +100,10 @@ public class AuthService(
     /// </exception>
     public async Task<LoginResponse> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default)
     {
+        // Nobody is logged in yet, so the company scoping is bypassed to find the account (see plan 011).
         // The Email column's case-insensitive collation makes this comparison case-insensitive.
-        var user = await db.Users.SingleOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
+        var user = await db.Users.IgnoreQueryFilters()
+            .SingleOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
         if (user is null)
         {
             throw new InvalidCredentialsException();
@@ -143,16 +145,19 @@ public class AuthService(
     }
 
     /// <summary>
-    /// Returns the user with their company, or null if the account no longer exists.
+    /// Returns the user with their company, or null if the account does not exist in the current company.
     /// </summary>
     public Task<User?> GetUserAsync(int userId, CancellationToken cancellationToken = default) =>
         db.Users.Include(u => u.Company).SingleOrDefaultAsync(u => u.Id == userId, cancellationToken);
 
     /// <summary>
-    /// Whether the account still exists; tokens of removed users are rejected.
+    /// Whether a token's user still exists and still belongs to the token's company.
+    /// Tokens of removed users, or with a company that does not match the user, are rejected.
     /// </summary>
-    public Task<bool> UserExistsAsync(int userId, CancellationToken cancellationToken = default) =>
-        db.Users.AnyAsync(u => u.Id == userId, cancellationToken);
+    public Task<bool> IsTokenUserValidAsync(int userId, int companyId, CancellationToken cancellationToken = default) =>
+        // Runs while the token is being validated, before the current company is known (see plan 011).
+        db.Users.IgnoreQueryFilters()
+            .AnyAsync(u => u.Id == userId && u.CompanyId == companyId, cancellationToken);
 
     // A streak runs from its first failure; once the window has passed without a lock, the count starts over.
     private static void RecordFailedLogin(User user, DateTime now)
@@ -195,7 +200,8 @@ public class AuthService(
         }
     }
 
+    // Emails are unique across all companies, so this check bypasses the company scoping (see plan 011).
     // The Email column's case-insensitive collation makes this comparison case-insensitive.
     private Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken) =>
-        db.Users.AnyAsync(u => u.Email == email, cancellationToken);
+        db.Users.IgnoreQueryFilters().AnyAsync(u => u.Email == email, cancellationToken);
 }

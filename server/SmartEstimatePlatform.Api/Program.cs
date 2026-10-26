@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using SmartEstimatePlatform.Api.Controllers;
 using SmartEstimatePlatform.Api.Data;
 using SmartEstimatePlatform.Api.Models.Entities;
 using SmartEstimatePlatform.Api.Services;
@@ -25,6 +26,8 @@ builder.Services.AddOptions<JwtOptions>()
     .Validate(o => o.Key.Length >= 32, "Jwt:Key must be configured and at least 32 characters long.")
     .ValidateOnStart();
 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentCompany, HttpCurrentCompany>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<TokenService>();
@@ -46,20 +49,26 @@ builder.Services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationSc
         };
         options.Events = new JwtBearerEvents
         {
-            // The user is checked on every request, so a removed user's token stops working immediately.
+            // The user is checked on every request, so a removed user's token stops working immediately,
+            // and the token's company must be the user's real company (it is the only source of the current company).
             OnTokenValidated = async context =>
             {
                 var authService = context.HttpContext.RequestServices.GetRequiredService<AuthService>();
                 var sub = context.Principal?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-                if (!int.TryParse(sub, out var userId) || !await authService.UserExistsAsync(userId))
+                var company = context.Principal?.FindFirst(TokenService.CompanyIdClaim)?.Value;
+                if (!int.TryParse(sub, out var userId)
+                    || !int.TryParse(company, out var companyId)
+                    || !await authService.IsTokenUserValidAsync(userId, companyId))
                 {
-                    context.Fail("The user no longer exists.");
+                    context.Fail("The user no longer exists or does not belong to the token's company.");
                 }
             }
         };
     });
 
 builder.Services.AddControllers();
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<NotFoundExceptionHandler>();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -71,6 +80,8 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+app.UseExceptionHandler();
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
@@ -79,3 +90,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+// Lets the integration tests start the API in-process (WebApplicationFactory<Program>).
+public partial class Program;

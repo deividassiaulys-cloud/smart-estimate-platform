@@ -17,7 +17,7 @@ public sealed class RegisterAsyncTests : AuthServiceTestBase
         var manager = await RegisterAsync(ValidRequest());
 
         await using var db = new AppDbContext(Options);
-        var saved = await db.Users.Include(u => u.Company).SingleAsync();
+        var saved = await db.Users.IgnoreQueryFilters().Include(u => u.Company).SingleAsync();
         Assert.Equal(manager.Id, saved.Id);
         Assert.Equal(UserRole.Manager, saved.Role);
         Assert.Equal("Statyba UAB", saved.Company.Name);
@@ -90,7 +90,7 @@ public sealed class RegisterAsyncTests : AuthServiceTestBase
     {
         await using var db = new AppDbContext(Options);
         Assert.Equal(companies, await db.Companies.CountAsync());
-        Assert.Equal(users, await db.Users.CountAsync());
+        Assert.Equal(users, await db.Users.IgnoreQueryFilters().CountAsync());
     }
 
     private static RegisterRequest ValidRequest() => new()
