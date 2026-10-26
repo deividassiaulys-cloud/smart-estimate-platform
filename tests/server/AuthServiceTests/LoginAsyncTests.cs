@@ -15,6 +15,7 @@ public sealed class LoginAsyncTests : AuthServiceTestBase
     private const string Password = "Secret123";
 
     private int _userId;
+    private int _companyId;
 
     public LoginAsyncTests()
     {
@@ -27,6 +28,7 @@ public sealed class LoginAsyncTests : AuthServiceTestBase
             Password = Password
         })).GetAwaiter().GetResult();
         _userId = manager.Id;
+        _companyId = manager.CompanyId;
     }
 
     [Fact]
@@ -118,7 +120,7 @@ public sealed class LoginAsyncTests : AuthServiceTestBase
     [Fact]
     public async Task GetUserAsync_ReturnsNameCompanyAndRole()
     {
-        var user = await WithServiceAsync(service => service.GetUserAsync(_userId));
+        var user = await WithServiceAsync(service => service.GetUserAsync(_userId), _companyId);
 
         Assert.NotNull(user);
         Assert.Equal("Jonas", user.FirstName);
@@ -128,16 +130,22 @@ public sealed class LoginAsyncTests : AuthServiceTestBase
     }
 
     [Fact]
-    public async Task UserExistsAsync_RemovedUser_IsRejected()
+    public async Task IsTokenUserValidAsync_RemovedUser_IsRejected()
     {
-        Assert.True(await WithServiceAsync(service => service.UserExistsAsync(_userId)));
+        Assert.True(await WithServiceAsync(service => service.IsTokenUserValidAsync(_userId, _companyId)));
 
         await using (var db = new AppDbContext(Options))
         {
-            await db.Users.Where(u => u.Id == _userId).ExecuteDeleteAsync();
+            await db.Users.IgnoreQueryFilters().Where(u => u.Id == _userId).ExecuteDeleteAsync();
         }
 
-        Assert.False(await WithServiceAsync(service => service.UserExistsAsync(_userId)));
+        Assert.False(await WithServiceAsync(service => service.IsTokenUserValidAsync(_userId, _companyId)));
+    }
+
+    [Fact]
+    public async Task IsTokenUserValidAsync_CompanyDoesNotMatchUser_IsRejected()
+    {
+        Assert.False(await WithServiceAsync(service => service.IsTokenUserValidAsync(_userId, _companyId + 1)));
     }
 
     private Task<LoginResponse> LoginAsync(string email, string password) =>
@@ -164,7 +172,7 @@ public sealed class LoginAsyncTests : AuthServiceTestBase
     private async Task<bool> IsLockedAsync()
     {
         await using var db = new AppDbContext(Options);
-        var user = await db.Users.SingleAsync(u => u.Id == _userId);
+        var user = await db.Users.IgnoreQueryFilters().SingleAsync(u => u.Id == _userId);
         return user.LockoutEnd > Clock.GetUtcNow().UtcDateTime;
     }
 }

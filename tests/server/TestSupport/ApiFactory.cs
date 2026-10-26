@@ -1,0 +1,94 @@
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using SmartEstimatePlatform.Api.Data;
+using SmartEstimatePlatform.Api.Models.DTOs;
+
+namespace SmartEstimatePlatform.Api.Tests.TestSupport;
+
+/// <summary>
+/// Runs the real API in-process against an in-memory SQLite database, so tests go through the real
+/// token validation, routing and company scoping. Reuse it for every feature's cross-company tests.
+/// </summary>
+public sealed class ApiFactory : WebApplicationFactory<Program>
+{
+    public const string JwtKey = "integration-test-signing-key-0123456789";
+
+    private readonly SqliteConnection _connection = SqliteTestDatabase.OpenConnection();
+
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+        builder.UseEnvironment("Testing");
+        builder.UseSetting("ConnectionStrings:DefaultConnection", "Server=unused-in-tests");
+        builder.UseSetting("Jwt:Key", JwtKey);
+
+        builder.ConfigureServices(services =>
+        {
+            // Replace the MySQL configuration with the shared in-memory SQLite connection.
+            services.RemoveAll<DbContextOptions<AppDbContext>>();
+            services.RemoveAll<IDbContextOptionsConfiguration<AppDbContext>>();
+            services.AddDbContext<AppDbContext>(options => options.UseSqlite(_connection));
+        });
+    }
+
+    protected override void ConfigureClient(HttpClient client)
+    {
+        base.ConfigureClient(client);
+        EnsureDatabaseCreated();
+    }
+
+    /// <summary>
+    /// Registers a new company through the API and returns a client logged in as its Manager.
+    /// </summary>
+    public async Task<LoggedInCompany> RegisterCompanyAsync(string companyName, string email)
+    {
+        var client = CreateClient();
+        var response = await client.PostAsJsonAsync("/api/auth/register", new RegisterRequest
+        {
+            CompanyName = companyName,
+            FirstName = "Test",
+            LastName = "Manager",
+            Email = email,
+            Password = "Secret123"
+        });
+        response.EnsureSuccessStatusCode();
+
+        var registered = (await response.Content.ReadFromJsonAsync<RegisterResponse>())!;
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", registered.Token);
+        return new LoggedInCompany(client, registered.UserId, registered.CompanyId, registered.Token);
+    }
+
+    private bool _databaseCreated;
+
+    private void EnsureDatabaseCreated()
+    {
+        if (_databaseCreated)
+        {
+            return;
+        }
+
+        using var scope = Services.CreateScope();
+        scope.ServiceProvider.GetRequiredService<AppDbContext>().Database.EnsureCreated();
+        _databaseCreated = true;
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        base.Dispose(disposing);
+        if (disposing)
+        {
+            _connection.Dispose();
+        }
+    }
+}
+
+/// <summary>
+/// A registered company with an HTTP client logged in as its Manager.
+/// </summary>
+public sealed record LoggedInCompany(HttpClient Client, int ManagerId, int CompanyId, string Token);

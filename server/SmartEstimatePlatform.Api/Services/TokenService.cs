@@ -13,6 +13,11 @@ namespace SmartEstimatePlatform.Api.Services;
 public class TokenService(IOptions<JwtOptions> options)
 {
     /// <summary>
+    /// Claim holding the user's company ID.
+    /// </summary>
+    public const string CompanyIdClaim = "company_id";
+
+    /// <summary>
     /// Creates a signed token for the given user.
     /// </summary>
     public string CreateToken(User user)
@@ -30,7 +35,7 @@ public class TokenService(IOptions<JwtOptions> options)
             [
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim("company_id", user.CompanyId.ToString()),
+                new Claim(CompanyIdClaim, user.CompanyId.ToString()),
                 new Claim(ClaimTypes.Role, user.Role.ToString())
             ])
         };

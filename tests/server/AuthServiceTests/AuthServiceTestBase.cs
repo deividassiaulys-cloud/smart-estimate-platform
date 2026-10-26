@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using SmartEstimatePlatform.Api.Data;
 using SmartEstimatePlatform.Api.Models.Entities;
 using SmartEstimatePlatform.Api.Services;
+using SmartEstimatePlatform.Api.Tests.TestSupport;
 
 namespace SmartEstimatePlatform.Api.Tests.AuthServiceTests;
 
@@ -14,9 +15,6 @@ namespace SmartEstimatePlatform.Api.Tests.AuthServiceTests;
 /// </summary>
 public abstract class AuthServiceTestBase : IDisposable
 {
-    // Same name as the MySQL collation in AppDbContext; registered on SQLite with case-insensitive semantics.
-    private const string EmailCollation = "utf8mb4_0900_as_ci";
-
     private readonly SqliteConnection _connection;
 
     protected readonly DbContextOptions<AppDbContext> Options;
@@ -32,10 +30,7 @@ public abstract class AuthServiceTestBase : IDisposable
 
     protected AuthServiceTestBase()
     {
-        _connection = new SqliteConnection("DataSource=:memory:");
-        _connection.Open();
-        _connection.CreateCollation(EmailCollation,
-            (x, y) => string.Compare(x, y, StringComparison.OrdinalIgnoreCase));
+        _connection = SqliteTestDatabase.OpenConnection();
 
         Options = new DbContextOptionsBuilder<AppDbContext>().UseSqlite(_connection).Options;
         using var db = new AppDbContext(Options);
@@ -46,10 +41,11 @@ public abstract class AuthServiceTestBase : IDisposable
 
     /// <summary>
     /// Runs an action against a fresh AuthService and DbContext, as one request would.
+    /// <paramref name="companyId"/> is the logged-in user's company; null means nobody is logged in.
     /// </summary>
-    protected async Task<T> WithServiceAsync<T>(Func<AuthService, Task<T>> action)
+    protected async Task<T> WithServiceAsync<T>(Func<AuthService, Task<T>> action, int? companyId = null)
     {
-        await using var db = new AppDbContext(Options);
+        await using var db = new AppDbContext(Options, new FixedCurrentCompany(companyId));
         var service = new AuthService(
             db,
             new PasswordHasher<User>(),
