@@ -1,15 +1,15 @@
 # AGENTS.md
 
 ## Project map
-- server/Controllers        — controllers, DTOs, auth wiring
-- server/Services           — business logic, estimate calculations
-- server/Models/Entities    — entities
-- server/Models/DTOs        — DTOs
-- server/Data               — EF Core DbContext
-- server/Migrations         — EF Core migrations
-- client/src                — React + TypeScript SPA
-- specs/                    — Spec Kit feature specifications
-- tests/                    — backend and frontend automated tests
+- server/SmartEstimatePlatform.Api/Controllers — HTTP endpoints only, no business logic
+- server/SmartEstimatePlatform.Api/Services — business logic and calculations (the Application layer)
+- server/SmartEstimatePlatform.Api/Models/Entities — entities and fixed lists (measurement units)
+- server/SmartEstimatePlatform.Api/Models/DTOs — request/response DTOs
+- server/SmartEstimatePlatform.Api/Data — EF Core DbContext
+- server/SmartEstimatePlatform.Api/Migrations — EF Core migrations
+- client/src — React + TypeScript SPA (components/ holds shared UI such as ConfirmDialog)
+- specs/ — Spec Kit feature specifications
+- tests/ — backend and frontend automated tests
 
 ## Required references
 Follow the project constitution in `.specify/memory/constitution.md` for all
@@ -40,5 +40,7 @@ rules here — this file only explains day-to-day working conventions.
 - bin/, obj/, node_modules/, migration-generated files unless the task explicitly requires a new migration
 
 ## Repository-specific conventions
-- Business logic always goes in server/Services, never in controllers or React components (Constitution Article II).
+- Business logic always goes in server/SmartEstimatePlatform.Api/Services, never in controllers or React components (Constitution Article II).
 - New dependencies require a one-line justification in the relevant plan.md.
+- Every delete/remove action uses the shared ConfirmDialog component (NFR-011).
+- Money is always decimal and is rounded only through the MoneyRounding helper; never use double or float for money.

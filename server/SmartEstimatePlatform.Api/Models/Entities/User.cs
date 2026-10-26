@@ -26,4 +26,19 @@ public class User
     public int CompanyId { get; set; }
 
     public Company Company { get; set; } = null!;
+
+    /// <summary>
+    /// Failed login attempts in the current streak, counted from <see cref="FirstFailedLoginAt"/>.
+    /// </summary>
+    public int FailedLoginCount { get; set; }
+
+    /// <summary>
+    /// When the current streak of failed logins started (UTC); null when there is no streak.
+    /// </summary>
+    public DateTime? FirstFailedLoginAt { get; set; }
+
+    /// <summary>
+    /// Until when the account is locked (UTC); null or in the past when it is not locked.
+    /// </summary>
+    public DateTime? LockoutEnd { get; set; }
 }

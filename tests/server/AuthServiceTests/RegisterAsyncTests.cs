@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using SmartEstimatePlatform.Api.Data;
 using SmartEstimatePlatform.Api.Models.DTOs;
@@ -9,37 +7,16 @@ using SmartEstimatePlatform.Api.Services;
 namespace SmartEstimatePlatform.Api.Tests.AuthServiceTests;
 
 /// <summary>
-/// Integration tests for registration against a real relational database (in-memory SQLite),
-/// so the unique email index and the case-insensitive email collation are exercised.
+/// Integration tests for registration.
 /// </summary>
-public sealed class RegisterAsyncTests : IDisposable
+public sealed class RegisterAsyncTests : AuthServiceTestBase
 {
-    // Same name as the MySQL collation in AppDbContext; registered on SQLite with case-insensitive semantics.
-    private const string EmailCollation = "utf8mb4_0900_as_ci";
-
-    private readonly SqliteConnection _connection;
-    private readonly DbContextOptions<AppDbContext> _options;
-
-    public RegisterAsyncTests()
-    {
-        _connection = new SqliteConnection("DataSource=:memory:");
-        _connection.Open();
-        _connection.CreateCollation(EmailCollation,
-            (x, y) => string.Compare(x, y, StringComparison.OrdinalIgnoreCase));
-
-        _options = new DbContextOptionsBuilder<AppDbContext>().UseSqlite(_connection).Options;
-        using var db = new AppDbContext(_options);
-        db.Database.EnsureCreated();
-    }
-
-    public void Dispose() => _connection.Dispose();
-
     [Fact]
     public async Task RegisterAsync_ValidData_CreatesCompanyAndManager()
     {
         var manager = await RegisterAsync(ValidRequest());
 
-        await using var db = new AppDbContext(_options);
+        await using var db = new AppDbContext(Options);
         var saved = await db.Users.Include(u => u.Company).SingleAsync();
         Assert.Equal(manager.Id, saved.Id);
         Assert.Equal(UserRole.Manager, saved.Role);
@@ -106,16 +83,12 @@ public sealed class RegisterAsyncTests : IDisposable
         await AssertCountsAsync(companies: 0, users: 0);
     }
 
-    private async Task<User> RegisterAsync(RegisterRequest request)
-    {
-        await using var db = new AppDbContext(_options);
-        var service = new AuthService(db, new PasswordHasher<User>());
-        return await service.RegisterAsync(request);
-    }
+    private Task<User> RegisterAsync(RegisterRequest request) =>
+        WithServiceAsync(service => service.RegisterAsync(request));
 
     private async Task AssertCountsAsync(int companies, int users)
     {
-        await using var db = new AppDbContext(_options);
+        await using var db = new AppDbContext(Options);
         Assert.Equal(companies, await db.Companies.CountAsync());
         Assert.Equal(users, await db.Users.CountAsync());
     }

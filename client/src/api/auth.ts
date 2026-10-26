@@ -1,25 +1,23 @@
-import type { RegisterRequest, RegisterResponse } from '../interfaces/auth'
-
-/** Error returned by the API, carrying the HTTP status so the UI can pick a message. */
-export class ApiError extends Error {
-  readonly status: number
-
-  constructor(status: number, message: string) {
-    super(message)
-    this.status = status
-  }
-}
+import type {
+  CurrentUser,
+  LoginRequest,
+  LoginResponse,
+  RegisterRequest,
+  RegisterResponse,
+} from '../interfaces/auth'
+import { apiFetch } from './http'
 
 /** Registers a visitor: creates their company and Manager account and returns a JWT. */
-export async function register(request: RegisterRequest): Promise<RegisterResponse> {
-  const response = await fetch('/api/auth/register', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(request),
-  })
+export function register(request: RegisterRequest): Promise<RegisterResponse> {
+  return apiFetch('/api/auth/register', { method: 'POST', body: JSON.stringify(request) })
+}
 
-  if (!response.ok) {
-    throw new ApiError(response.status, response.statusText)
-  }
-  return response.json()
+/** Logs a user in and returns a JWT. */
+export function login(request: LoginRequest): Promise<LoginResponse> {
+  return apiFetch('/api/auth/login', { method: 'POST', body: JSON.stringify(request) })
+}
+
+/** Returns the logged-in user's name, company and role. */
+export function getCurrentUser(): Promise<CurrentUser> {
+  return apiFetch('/api/auth/me')
 }
