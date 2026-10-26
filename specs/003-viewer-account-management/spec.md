@@ -16,6 +16,7 @@ Given a Manager on the Team page, when they submit valid details for a new Viewe
 ## Edge Cases
 - Viewer accounts are scoped to the creating Manager’s company only.
 - A Manager cannot create a Viewer with their own email.
+- The Manager is listed on the Team page but cannot be removed, demoted, or have their password reset there.
 - The Manager types the Viewer’s password both when creating the account and when resetting it; the same password rules as registration apply (at least 8 characters, not equal to the email). The Manager passes it on to the Viewer in person.
 - Resetting a Viewer’s password immediately invalidates every token issued to that Viewer before the reset; their open sessions must log in again with the new password.
 - Removing a Viewer deletes the account; its email becomes free to use again, and restoring access means creating the Viewer again.
