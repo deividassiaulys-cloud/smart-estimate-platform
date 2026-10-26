@@ -41,4 +41,9 @@ public class User : ICompanyScoped
     /// Until when the account is locked (UTC); null or in the past when it is not locked.
     /// </summary>
     public DateTime? LockoutEnd { get; set; }
+
+    /// <summary>
+    /// Increases when the password is reset; tokens carrying an older version are rejected.
+    /// </summary>
+    public int TokenVersion { get; set; }
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { getCurrentUser } from '../../api/auth'
 import { UserRole, type CurrentUser } from '../../interfaces/auth'
 import { logout } from '../../utils/auth'
@@ -8,14 +8,15 @@ import './Dashboard.css'
 interface QuickAction {
   label: string
   roles: UserRole[]
+  /** Page the action opens; actions without one are shown disabled until their feature is built. */
+  to?: string
 }
 
-// Each action becomes a link once the feature that owns its page is built.
 const quickActions: QuickAction[] = [
   { label: 'Projektai', roles: [UserRole.Manager, UserRole.Viewer] },
   { label: 'Medžiagų katalogas', roles: [UserRole.Manager] },
   { label: 'Darbų katalogas', roles: [UserRole.Manager] },
-  { label: 'Komanda', roles: [UserRole.Manager] },
+  { label: 'Komanda', roles: [UserRole.Manager], to: '/team' },
 ]
 
 const roleNames: Record<UserRole, string> = {
@@ -64,9 +65,13 @@ export default function DashboardPage() {
                 .filter((action) => action.roles.includes(user.role))
                 .map((action) => (
                   <li key={action.label}>
-                    <button type="button" disabled title="Netrukus">
-                      {action.label}
-                    </button>
+                    {action.to ? (
+                      <Link to={action.to}>{action.label}</Link>
+                    ) : (
+                      <button type="button" disabled title="Netrukus">
+                        {action.label}
+                      </button>
+                    )}
                   </li>
                 ))}
             </ul>

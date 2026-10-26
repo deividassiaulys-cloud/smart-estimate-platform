@@ -18,6 +18,11 @@ public class TokenService(IOptions<JwtOptions> options)
     public const string CompanyIdClaim = "company_id";
 
     /// <summary>
+    /// Claim holding the user's <see cref="User.TokenVersion"/> when the token was issued.
+    /// </summary>
+    public const string TokenVersionClaim = "token_version";
+
+    /// <summary>
     /// Creates a signed token for the given user.
     /// </summary>
     public string CreateToken(User user)
@@ -36,6 +41,7 @@ public class TokenService(IOptions<JwtOptions> options)
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(CompanyIdClaim, user.CompanyId.ToString()),
+                new Claim(TokenVersionClaim, user.TokenVersion.ToString()),
                 new Claim(ClaimTypes.Role, user.Role.ToString())
             ])
         };

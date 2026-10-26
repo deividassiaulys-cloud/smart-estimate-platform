@@ -16,11 +16,6 @@ public class AuthService(
     TimeProvider timeProvider)
 {
     /// <summary>
-    /// Shortest password accepted at registration.
-    /// </summary>
-    public const int MinPasswordLength = 8;
-
-    /// <summary>
     /// Failed attempts within <see cref="FailedLoginWindow"/> that lock the account.
     /// </summary>
     public const int MaxFailedLogins = 5;
@@ -41,33 +36,43 @@ public class AuthService(
     /// </summary>
     /// <returns>The created Manager account, with its company.</returns>
     /// <exception cref="WeakPasswordException">
-    /// The password is shorter than <see cref="MinPasswordLength"/> characters or equals the email. Nothing is created.
+    /// The password breaks the <see cref="PasswordRules"/>. Nothing is created.
     /// </exception>
     /// <exception cref="DuplicateEmailException">
     /// The email is already in use, compared case-insensitively. Nothing is created.
     /// </exception>
     public async Task<User> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default)
     {
-        EnsurePasswordIsStrong(request.Password, request.Email);
-
-        if (await EmailExistsAsync(request.Email, cancellationToken))
-        {
-            throw new DuplicateEmailException(request.Email);
-        }
-
-        var company = new Company { Name = request.CompanyName };
-
         var manager = new User
         {
             FirstName = request.FirstName,
             LastName = request.LastName,
             Email = request.Email,
             Role = UserRole.Manager,
-            Company = company
+            Company = new Company { Name = request.CompanyName }
         };
-        manager.PasswordHash = passwordHasher.HashPassword(manager, request.Password);
 
-        db.Users.Add(manager);
+        await CreateAccountAsync(manager, request.Password, cancellationToken);
+        return manager;
+    }
+
+    /// <summary>
+    /// Saves a new account with a hashed password, after checking the <see cref="PasswordRules"/> and that
+    /// the email is not used by any account in any company. Used for registration and for new Viewers.
+    /// </summary>
+    /// <exception cref="WeakPasswordException">The password breaks a rule. Nothing is saved.</exception>
+    /// <exception cref="DuplicateEmailException">The email is already in use, compared case-insensitively. Nothing is saved.</exception>
+    public async Task CreateAccountAsync(User account, string password, CancellationToken cancellationToken = default)
+    {
+        PasswordRules.EnsureStrong(password, account.Email);
+
+        if (await EmailExistsAsync(account.Email, cancellationToken))
+        {
+            throw new DuplicateEmailException(account.Email);
+        }
+
+        account.PasswordHash = passwordHasher.HashPassword(account, password);
+        db.Users.Add(account);
         try
         {
             await db.SaveChangesAsync(cancellationToken);
@@ -76,16 +81,14 @@ public class AuthService(
         {
             db.ChangeTracker.Clear();
 
-            // A concurrent registration with the same email won the race; the unique index rejected this one.
-            if (await EmailExistsAsync(request.Email, cancellationToken))
+            // A concurrent request with the same email won the race; the unique index rejected this one.
+            if (await EmailExistsAsync(account.Email, cancellationToken))
             {
-                throw new DuplicateEmailException(request.Email);
+                throw new DuplicateEmailException(account.Email);
             }
 
             throw;
         }
-
-        return manager;
     }
 
     /// <summary>
@@ -151,13 +154,15 @@ public class AuthService(
         db.Users.Include(u => u.Company).SingleOrDefaultAsync(u => u.Id == userId, cancellationToken);
 
     /// <summary>
-    /// Whether a token's user still exists and still belongs to the token's company.
-    /// Tokens of removed users, or with a company that does not match the user, are rejected.
+    /// Whether a token is still valid for its user: the user still exists, still belongs to the token's
+    /// company, and their password has not been reset since the token was issued.
     /// </summary>
-    public Task<bool> IsTokenUserValidAsync(int userId, int companyId, CancellationToken cancellationToken = default) =>
+    public Task<bool> IsTokenUserValidAsync(
+        int userId, int companyId, int tokenVersion, CancellationToken cancellationToken = default) =>
         // Runs while the token is being validated, before the current company is known (see plan 011).
-        db.Users.IgnoreQueryFilters()
-            .AnyAsync(u => u.Id == userId && u.CompanyId == companyId, cancellationToken);
+        db.Users.IgnoreQueryFilters().AnyAsync(
+            u => u.Id == userId && u.CompanyId == companyId && u.TokenVersion == tokenVersion,
+            cancellationToken);
 
     // A streak runs from its first failure; once the window has passed without a lock, the count starts over.
     private static void RecordFailedLogin(User user, DateTime now)
@@ -185,20 +190,6 @@ public class AuthService(
     }
 
     private static int MinutesUntil(DateTime end, DateTime now) => (int)Math.Ceiling((end - now).TotalMinutes);
-
-    private static void EnsurePasswordIsStrong(string password, string email)
-    {
-        if (password.Length < MinPasswordLength)
-        {
-            throw new WeakPasswordException($"Password must be at least {MinPasswordLength} characters long.");
-        }
-
-        // Emails are case-insensitive, so a password differing from the email only by case is still the email.
-        if (string.Equals(password, email, StringComparison.OrdinalIgnoreCase))
-        {
-            throw new WeakPasswordException("Password must not be the same as the email.");
-        }
-    }
 
     // Emails are unique across all companies, so this check bypasses the company scoping (see plan 011).
     // The Email column's case-insensitive collation makes this comparison case-insensitive.
