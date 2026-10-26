@@ -31,6 +31,7 @@ builder.Services.AddScoped<ICurrentCompany, HttpCurrentCompany>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<TeamService>();
 builder.Services.AddSingleton(TimeProvider.System);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
@@ -50,17 +51,20 @@ builder.Services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationSc
         options.Events = new JwtBearerEvents
         {
             // The user is checked on every request, so a removed user's token stops working immediately,
-            // and the token's company must be the user's real company (it is the only source of the current company).
+            // the token's company must be the user's real company (it is the only source of the current company),
+            // and a password reset invalidates every token issued before it.
             OnTokenValidated = async context =>
             {
                 var authService = context.HttpContext.RequestServices.GetRequiredService<AuthService>();
                 var sub = context.Principal?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
                 var company = context.Principal?.FindFirst(TokenService.CompanyIdClaim)?.Value;
+                var version = context.Principal?.FindFirst(TokenService.TokenVersionClaim)?.Value;
                 if (!int.TryParse(sub, out var userId)
                     || !int.TryParse(company, out var companyId)
-                    || !await authService.IsTokenUserValidAsync(userId, companyId))
+                    || !int.TryParse(version, out var tokenVersion)
+                    || !await authService.IsTokenUserValidAsync(userId, companyId, tokenVersion))
                 {
-                    context.Fail("The user no longer exists or does not belong to the token's company.");
+                    context.Fail("The token's user no longer exists, has another company, or has reset their password.");
                 }
             }
         };

@@ -64,6 +64,22 @@ public sealed class ApiFactory : WebApplicationFactory<Program>
         return new LoggedInCompany(client, registered.UserId, registered.CompanyId, registered.Token);
     }
 
+    /// <summary>
+    /// Posts a login and returns the raw response, so tests can check rejected logins too.
+    /// </summary>
+    public Task<HttpResponseMessage> LoginAsync(string email, string password) =>
+        CreateClient().PostAsJsonAsync("/api/auth/login", new LoginRequest { Email = email, Password = password });
+
+    /// <summary>
+    /// Returns a client that sends the given token.
+    /// </summary>
+    public HttpClient CreateClient(string token)
+    {
+        var client = CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        return client;
+    }
+
     private bool _databaseCreated;
 
     private void EnsureDatabaseCreated()

@@ -132,20 +132,20 @@ public sealed class LoginAsyncTests : AuthServiceTestBase
     [Fact]
     public async Task IsTokenUserValidAsync_RemovedUser_IsRejected()
     {
-        Assert.True(await WithServiceAsync(service => service.IsTokenUserValidAsync(_userId, _companyId)));
+        Assert.True(await WithServiceAsync(service => service.IsTokenUserValidAsync(_userId, _companyId, tokenVersion: 0)));
 
         await using (var db = new AppDbContext(Options))
         {
             await db.Users.IgnoreQueryFilters().Where(u => u.Id == _userId).ExecuteDeleteAsync();
         }
 
-        Assert.False(await WithServiceAsync(service => service.IsTokenUserValidAsync(_userId, _companyId)));
+        Assert.False(await WithServiceAsync(service => service.IsTokenUserValidAsync(_userId, _companyId, tokenVersion: 0)));
     }
 
     [Fact]
     public async Task IsTokenUserValidAsync_CompanyDoesNotMatchUser_IsRejected()
     {
-        Assert.False(await WithServiceAsync(service => service.IsTokenUserValidAsync(_userId, _companyId + 1)));
+        Assert.False(await WithServiceAsync(service => service.IsTokenUserValidAsync(_userId, _companyId + 1, tokenVersion: 0)));
     }
 
     private Task<LoginResponse> LoginAsync(string email, string password) =>

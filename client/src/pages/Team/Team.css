@@ -1,0 +1,66 @@
+.team {
+  width: 100%;
+  padding: 16px 16px 32px;
+  text-align: left;
+}
+
+.team-heading {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.team-add {
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  text-decoration: none;
+}
+
+.team-notice {
+  padding: 8px 12px;
+  border: 1px solid var(--accent-border);
+  border-radius: 6px;
+  background: var(--accent-bg);
+  color: var(--text-h);
+}
+
+.team-error {
+  color: #d93025;
+}
+
+.team-table-wrapper {
+  overflow-x: auto;
+}
+
+.team-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.team-table th,
+.team-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.team-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.team-actions button {
+  font: inherit;
+  padding: 4px 10px;
+  border: 1px solid #d93025;
+  border-radius: 6px;
+  background: transparent;
+  color: #d93025;
+  cursor: pointer;
+}
