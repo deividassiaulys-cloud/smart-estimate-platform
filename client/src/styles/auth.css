@@ -23,7 +23,8 @@
   font-weight: 500;
 }
 
-.auth-field input {
+.auth-field input,
+.auth-field select {
   font: inherit;
   padding: 8px 12px;
   border: 1px solid var(--border);
@@ -32,7 +33,8 @@
   color: var(--text-h);
 }
 
-.auth-field input[aria-invalid='true'] {
+.auth-field input[aria-invalid='true'],
+.auth-field select[aria-invalid='true'] {
   border-color: #d93025;
 }
 

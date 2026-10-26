@@ -32,6 +32,7 @@ builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<TeamService>();
+builder.Services.AddScoped<MaterialService>();
 builder.Services.AddSingleton(TimeProvider.System);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
