@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
+using Microsoft.AspNetCore.Mvc;
 using SmartEstimatePlatform.Api.Models.DTOs.Works;
 using SmartEstimatePlatform.Api.Tests.TestSupport;
 using static SmartEstimatePlatform.Api.Tests.TestSupport.CatalogRequests;
@@ -131,6 +132,44 @@ public sealed class WorkEndpointsTests : IDisposable
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         Assert.Empty(await alpha.ListWorksAsync());
+    }
+
+    [Fact]
+    public async Task Update_WithAnotherCompanysMaterial_IsRejectedAndKeepsTheComposition()
+    {
+        var alpha = await _factory.RegisterCompanyAsync("Alpha UAB", "alpha@example.com");
+        var beta = await _factory.RegisterCompanyAsync("Beta UAB", "beta@example.com");
+        var alphaPaint = await alpha.CreateMaterialAsync("Dažai", "l");
+        var betaPaint = await beta.CreateMaterialAsync("Dažai", "l");
+        var work = await alpha.CreateWorkAsync(WorkRequest("Sienų dažymas", "m²", (alphaPaint.Id, 0.150m, 5)));
+
+        var response = await alpha.Client.PutAsJsonAsync($"/api/works/{work.Id}",
+            WorkRequest("Sienų dažymas", "m²", (betaPaint.Id, 0.150m, 5)));
+
+        // Another company's material is reported exactly like one that does not exist in the catalog.
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        var problem = (await response.Content.ReadFromJsonAsync<ProblemDetails>())!;
+        Assert.Equal("Each line must use a material from your catalog.", problem.Detail);
+        var line = Assert.Single(Assert.Single(await alpha.ListWorksAsync()).Lines);
+        Assert.Equal(alphaPaint.Id, line.MaterialId);
+    }
+
+    [Fact]
+    public async Task List_ReturnsEveryLineOfEachWork()
+    {
+        var company = await _factory.RegisterCompanyAsync("Alpha UAB", "alpha@example.com");
+        var paint = await company.CreateMaterialAsync("Dažai", "l");
+        var primer = await company.CreateMaterialAsync("Gruntas", "l");
+        await company.CreateWorkAsync(WorkRequest("Sienų dažymas", "m²", (paint.Id, 0.150m, 5), (primer.Id, 0.100m, 0), (paint.Id, 0.050m, 2.5m)));
+        await company.CreateWorkAsync(WorkRequest("Lubų dažymas", "m²", (paint.Id, 0.200m, 5)));
+
+        var works = await company.ListWorksAsync();
+
+        var walls = Assert.Single(works, w => w.Name == "Sienų dažymas");
+        Assert.Equal(
+            [("Dažai", 0.150m, 5m), ("Gruntas", 0.100m, 0m), ("Dažai", 0.050m, 2.5m)],
+            walls.Lines.OrderBy(l => l.Id).Select(l => (l.MaterialName, l.ConsumptionNorm, l.WastePercent)));
+        Assert.Single(Assert.Single(works, w => w.Name == "Lubų dažymas").Lines);
     }
 
     [Fact]

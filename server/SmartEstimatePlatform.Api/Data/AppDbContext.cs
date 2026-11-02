@@ -78,7 +78,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
                 .HasForeignKey(w => w.CompanyId);
 
             work.HasMany(w => w.Lines)
-                .WithOne()
+                .WithOne(l => l.Work)
                 .HasForeignKey(l => l.WorkId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
@@ -87,6 +87,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
         {
             line.Property(l => l.ConsumptionNorm).HasPrecision(18, 3);
             line.Property(l => l.WastePercent).HasPrecision(5, 2);
+
+            // A line has no CompanyId of its own; it belongs to its work's company, so it is filtered like
+            // its work and its material (both filtered by company) and is never seen without them.
+            line.HasQueryFilter(l => l.Work.CompanyId == CurrentCompanyId);
 
             // A material used in a work cannot be deleted (MaterialService reports it first).
             // No unique index on (WorkId, MaterialId): the same material may repeat in one work (BR-009).
