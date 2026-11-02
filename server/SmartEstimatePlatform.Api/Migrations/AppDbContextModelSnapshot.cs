@@ -39,6 +39,40 @@ namespace SmartEstimatePlatform.Api.Migrations
                     b.ToTable("Companies");
                 });
 
+            modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.Material", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)")
+                        .UseCollation("utf8mb4_0900_as_ci");
+
+                    b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId", "Name", "Unit")
+                        .IsUnique();
+
+                    b.ToTable("Materials");
+                });
+
             modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -91,6 +125,17 @@ namespace SmartEstimatePlatform.Api.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.Material", b =>
+                {
+                    b.HasOne("SmartEstimatePlatform.Api.Models.Entities.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.User", b =>

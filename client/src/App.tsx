@@ -5,6 +5,8 @@ import SessionExpiryListener from './components/SessionExpiryListener'
 import DashboardPage from './pages/Dashboard/DashboardPage'
 import LandingPage from './pages/Landing/LandingPage'
 import LoginPage from './pages/Login/LoginPage'
+import MaterialFormPage from './pages/Materials/MaterialFormPage'
+import MaterialsPage from './pages/Materials/MaterialsPage'
 import RegisterPage from './pages/Register/RegisterPage'
 import ResetPasswordPage from './pages/Team/ResetPasswordPage'
 import TeamPage from './pages/Team/TeamPage'
@@ -47,6 +49,30 @@ function App() {
           element={
             <ManagerRoute>
               <ResetPasswordPage />
+            </ManagerRoute>
+          }
+        />
+        <Route
+          path="/materials"
+          element={
+            <ManagerRoute>
+              <MaterialsPage />
+            </ManagerRoute>
+          }
+        />
+        <Route
+          path="/materials/new"
+          element={
+            <ManagerRoute>
+              <MaterialFormPage />
+            </ManagerRoute>
+          }
+        />
+        <Route
+          path="/materials/:id/edit"
+          element={
+            <ManagerRoute>
+              <MaterialFormPage />
             </ManagerRoute>
           }
         />

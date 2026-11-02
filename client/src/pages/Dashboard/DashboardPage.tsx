@@ -14,7 +14,7 @@ interface QuickAction {
 
 const quickActions: QuickAction[] = [
   { label: 'Projektai', roles: [UserRole.Manager, UserRole.Viewer] },
-  { label: 'Medžiagų katalogas', roles: [UserRole.Manager] },
+  { label: 'Medžiagų katalogas', roles: [UserRole.Manager], to: '/materials' },
   { label: 'Darbų katalogas', roles: [UserRole.Manager] },
   { label: 'Komanda', roles: [UserRole.Manager], to: '/team' },
 ]

@@ -4,6 +4,8 @@
 
 - [ ] T045 [US1] Add Work and WorkMaterialLine entities (own ID, repeated materials allowed) in server/SmartEstimatePlatform.Api/Models/Entities
 - [ ] T046 [US1] Add EF Core migration for Work/WorkMaterialLine (foreign key to Material with restrict behaviour) in server/SmartEstimatePlatform.Api/Migrations
+- [ ] T038 [US1] Reject deleting a material that is used in a work composition (409 Conflict listing the works) in server/SmartEstimatePlatform.Api/Services/MaterialService.cs
+- [ ] T043 [US1] Add integration test: deleting a material used in a work is rejected and lists the works, deleting an unused one succeeds, in tests/server/MaterialServiceTests
 - [ ] T047 [US1] Implement work CRUD with composition lines and range validation (rate and norm ≥ 0, waste % 0–100 inclusive, unit in the fixed list) in server/SmartEstimatePlatform.Api/Services/WorkService.cs
 - [ ] T048 [US1] Reject a duplicate Work name+unit (case-insensitive, per company) in server/SmartEstimatePlatform.Api/Services/WorkService.cs
 - [ ] T049 [US2] Implement case-insensitive partial-name search for Works in server/SmartEstimatePlatform.Api/Services/WorkService.cs
