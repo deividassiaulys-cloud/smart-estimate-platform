@@ -20,6 +20,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ITeamService, TeamService>();
         services.AddScoped<IMaterialService, MaterialService>();
         services.AddScoped<IWorkService, WorkService>();
+        services.AddScoped<IProjectService, ProjectService>();
         services.AddSingleton(TimeProvider.System);
         return services;
     }

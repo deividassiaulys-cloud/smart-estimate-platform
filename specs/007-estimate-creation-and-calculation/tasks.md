@@ -26,3 +26,9 @@
 - [ ] T086 [US2] Add tests rejecting overhead < 0 or > 100, profit < 0 or > 100, and VAT < 0 or > 100 (one case per percentage) in tests/server/EstimateServiceTests
 - [ ] T087 [US3] Add integration test: removing a work line removes its material lines and updates the totals in tests/server/EstimateServiceTests
 - [ ] T088 Add integration test confirming cross-company Estimate access is blocked in tests/server/CompanyIsolationTests
+
+### Moved from 006 (Project Management, spec Clarifications Q4)
+
+- [ ] T185 Give Estimate a required ProjectId with a cascade foreign key to Project (deleting a project deletes its estimates, BR-011) in server/SmartEstimatePlatform.Api/Data/AppDbContext.cs and the estimate migration
+- [ ] T186 List the project's estimates on Project Detail in place of "Sąmatų dar nėra." (the empty state stays when there are none) in client/src/pages/Projects/ProjectDetailPage.tsx, with the matching data from the project endpoint or an estimates endpoint
+- [ ] T187 Add integration test (formerly 006 T063): deleting a project with estimates and confirming deletes all its estimates; another project's estimates are untouched, in tests/server/ProjectServiceTests

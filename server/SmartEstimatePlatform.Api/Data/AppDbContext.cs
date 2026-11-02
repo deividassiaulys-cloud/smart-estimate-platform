@@ -6,7 +6,7 @@ using SmartEstimatePlatform.Api.Services;
 namespace SmartEstimatePlatform.Api.Data;
 
 /// <summary>
-/// EF Core database context for the platform's companies, their users and their material and work catalogs.
+/// EF Core database context for the platform's companies, their users, their material and work catalogs and their projects.
 /// Every <see cref="ICompanyScoped"/> entity is filtered to the current company, so another company's
 /// records are never visible. Only AuthService may bypass this, with IgnoreQueryFilters.
 /// </summary>
@@ -22,6 +22,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
     public DbSet<Work> Works => Set<Work>();
 
     public DbSet<WorkMaterialLine> WorkMaterialLines => Set<WorkMaterialLine>();
+
+    public DbSet<Project> Projects => Set<Project>();
 
     // Read by the query filters each time a query runs, so each request sees only its own company.
     private int? CurrentCompanyId => currentUser?.CompanyId;
@@ -98,6 +100,17 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
                 .WithMany()
                 .HasForeignKey(l => l.MaterialId)
                 .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<Project>(project =>
+        {
+            // No unique index: two projects of a company may share a name.
+            project.Property(p => p.Name).HasMaxLength(ProjectRules.NameMaxLength);
+            project.Property(p => p.Description).HasMaxLength(ProjectRules.DescriptionMaxLength);
+
+            project.HasOne(p => p.Company)
+                .WithMany()
+                .HasForeignKey(p => p.CompanyId);
         });
 
         var applyFilter = GetType().GetMethod(nameof(ApplyCompanyFilter), BindingFlags.NonPublic | BindingFlags.Instance)!;

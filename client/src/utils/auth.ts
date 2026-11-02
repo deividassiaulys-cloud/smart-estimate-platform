@@ -33,3 +33,8 @@ export function getRoleName(): string | null {
     return null
   }
 }
+
+/** Whether the stored JWT belongs to a Manager. Only for showing actions; the server enforces the rules. */
+export function isManager(): boolean {
+  return getRoleName() === 'Manager'
+}
