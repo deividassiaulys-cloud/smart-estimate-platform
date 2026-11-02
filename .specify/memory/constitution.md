@@ -70,7 +70,7 @@ When a specification is ambiguous or incomplete:
 
 ## Article IX — Governance & Versioning
 
-- **Version:** 1.1.0
+- **Version:** 1.2.0
 - **Owner:** Deividas Šiaulys
 - **Revision Method:** Amendments require explicit student (and, where applicable, instructor) approval; AI agents MUST NOT self-amend this Constitution.
 - **Versioning scheme:** Semantic versioning — MAJOR for principle removal/redefinition, MINOR for new principles, PATCH for wording clarifications.
@@ -78,6 +78,7 @@ When a specification is ambiguous or incomplete:
 - **Exceptions:** Allowed only when strictly necessary; MUST name the violated section, state the reason, and be recorded in the feature's plan.md. Undocumented violations are not permitted.
 - **Change Log:**
   - 1.1.0 (2026-11-02) — Added Article X (Code Structure and Design Principles) based on instructor feedback (docs/review/instructor-feedback.md).
+  - 1.2.0 (2026-11-02) — Added Article X.9 (CancellationToken only when a specification requires cancellation) and X.10 (declarative request validation, one shared definition per rule).
 
 ## Article X — Code Structure and Design Principles
 
@@ -89,3 +90,5 @@ When a specification is ambiguous or incomplete:
 6. Entity properties MUST have private setters. State is set through constructors and small mutator methods that contain no business rules (rules stay in services, Article II).
 7. Frontend styling MUST use Tailwind utility classes; new CSS files MUST NOT be added. A component file MUST contain one component, and distinct page sections MUST be extracted into their own components.
 8. Repeated boilerplate (response-type attributes, error handling, mapping) MUST be defined once and reused.
+9. CancellationToken MUST NOT be added unless a specification requires cancellation for a specific long-running operation.
+10. Request validation MUST be declarative on the request records (data annotations, IValidatableObject) with one shared definition per rule (e.g. password rules); services MUST NOT repeat it.
