@@ -4,12 +4,12 @@ import { ApiError } from '../../api/http'
 import { deleteMaterial, getMaterials } from '../../api/materials'
 import ConfirmDialog from '../../components/ConfirmDialog'
 import type { Material } from '../../interfaces/material'
-import './Materials.css'
+import MaterialSearch from './MaterialSearch'
+import { ui } from '../../utils/ui'
+import MaterialsTable from './MaterialsTable'
 
 /** How long to wait after the last keystroke before searching. */
 const searchDelayMs = 300
-
-const priceFormat = new Intl.NumberFormat('lt-LT', { style: 'currency', currency: 'EUR' })
 
 export default function MaterialsPage() {
   const location = useLocation()
@@ -60,34 +60,28 @@ export default function MaterialsPage() {
   }
 
   return (
-    <main className="materials">
+    <main className={ui.listPage}>
       <p>
-        <Link to="/dashboard">← Pagrindinis</Link>
+        <Link className={ui.link} to="/dashboard">
+          ← Pagrindinis
+        </Link>
       </p>
-      <div className="materials-heading">
-        <h1>Medžiagų katalogas</h1>
-        <Link className="materials-add" to="/materials/new">
+      <div className={ui.listHeading}>
+        <h1 className={ui.h1}>Medžiagų katalogas</h1>
+        <Link className={ui.addLink} to="/materials/new">
           + Nauja medžiaga
         </Link>
       </div>
 
-      <div className="materials-search">
-        <label htmlFor="material-search">Paieška pagal pavadinimą</label>
-        <input
-          id="material-search"
-          type="search"
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-        />
-      </div>
+      <MaterialSearch value={search} onChange={setSearch} />
 
       {notice && (
-        <p className="materials-notice" role="status">
+        <p className={ui.notice} role="status">
           {notice}
         </p>
       )}
       {error && (
-        <p className="materials-error" role="alert">
+        <p className={ui.error} role="alert">
           {error}
         </p>
       )}
@@ -97,35 +91,7 @@ export default function MaterialsPage() {
         <p>{search.trim() ? 'Pagal paiešką medžiagų nerasta.' : 'Katalogas tuščias. Pridėkite pirmą medžiagą.'}</p>
       )}
 
-      {materials && materials.length > 0 && (
-        <div className="materials-table-wrapper">
-          <table className="materials-table">
-            <thead>
-              <tr>
-                <th>Pavadinimas</th>
-                <th>Mato vnt.</th>
-                <th className="materials-price">Kaina</th>
-                <th>Veiksmai</th>
-              </tr>
-            </thead>
-            <tbody>
-              {materials.map((material) => (
-                <tr key={material.id}>
-                  <td>{material.name}</td>
-                  <td>{material.unit}</td>
-                  <td className="materials-price">{priceFormat.format(material.price)}</td>
-                  <td className="materials-actions">
-                    <Link to={`/materials/${material.id}/edit`}>Redaguoti</Link>
-                    <button type="button" onClick={() => setToDelete(material)}>
-                      Ištrinti
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+      {materials && materials.length > 0 && <MaterialsTable materials={materials} onDelete={setToDelete} />}
 
       <ConfirmDialog
         open={toDelete !== null}

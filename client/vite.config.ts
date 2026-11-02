@@ -1,10 +1,11 @@
 /// <reference types="vitest/config" />
+import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
   resolve: {
     // Resolve these from client/node_modules even when imported by the tests in ../tests/client.
     dedupe: ['react', 'react-dom', 'react-router-dom', '@testing-library/react', '@testing-library/user-event'],

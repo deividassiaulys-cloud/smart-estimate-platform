@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { login } from '../../api/auth'
 import { ApiError } from '../../api/http'
 import { saveToken } from '../../utils/auth'
-import '../../styles/auth.css'
+import { ui } from '../../utils/ui'
 
 function loginErrorMessage(error: unknown): string {
   if (error instanceof ApiError) {
@@ -47,19 +47,20 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="auth">
-      <h1>Prisijungimas</h1>
+    <main className={ui.formPage}>
+      <h1 className={ui.h1}>Prisijungimas</h1>
 
-      <form onSubmit={handleSubmit} noValidate>
+      <form className={ui.form} onSubmit={handleSubmit} noValidate>
         {sessionExpired && !error && (
-          <p className="auth-notice" role="status">
+          <p className={ui.notice} role="status">
             Jūsų sesija baigėsi, prisijunkite iš naujo.
           </p>
         )}
 
-        <div className="auth-field">
-          <label htmlFor="email">El. paštas</label>
+        <div className={ui.field}>
+          <label className={ui.label} htmlFor="email">El. paštas</label>
           <input
+            className={ui.input}
             id="email"
             type="email"
             autoComplete="email"
@@ -68,9 +69,10 @@ export default function LoginPage() {
           />
         </div>
 
-        <div className="auth-field">
-          <label htmlFor="password">Slaptažodis</label>
+        <div className={ui.field}>
+          <label className={ui.label} htmlFor="password">Slaptažodis</label>
           <input
+            className={ui.input}
             id="password"
             type="password"
             autoComplete="current-password"
@@ -80,18 +82,18 @@ export default function LoginPage() {
         </div>
 
         {error && (
-          <p className="auth-error" role="alert">
+          <p className={ui.fieldError} role="alert">
             {error}
           </p>
         )}
 
-        <button type="submit" disabled={submitting}>
+        <button type="submit" className={ui.primaryButton} disabled={submitting}>
           {submitting ? 'Jungiamasi…' : 'Prisijungti'}
         </button>
       </form>
 
-      <p className="auth-switch">
-        Neturite paskyros? <Link to="/register">Užregistruokite įmonę</Link>
+      <p className={ui.formFooter}>
+        Neturite paskyros? <Link className={ui.link} to="/register">Užregistruokite įmonę</Link>
       </p>
     </main>
   )

@@ -5,7 +5,7 @@ import { getTeam, resetViewerPassword } from '../../api/team'
 import { UserRole } from '../../interfaces/auth'
 import type { TeamMember } from '../../interfaces/team'
 import { passwordError } from '../../utils/validation'
-import '../../styles/auth.css'
+import { ui } from '../../utils/ui'
 
 export default function ResetPasswordPage() {
   const navigate = useNavigate()
@@ -51,19 +51,20 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <main className="auth">
-      <h1>Keisti slaptažodį</h1>
-      {loadError && <p className="auth-error" role="alert">{loadError}</p>}
+    <main className={ui.formPage}>
+      <h1 className={ui.h1}>Keisti slaptažodį</h1>
+      {loadError && <p className={ui.fieldError} role="alert">{loadError}</p>}
       {!viewer && !loadError && <p>Įkeliama…</p>}
 
       {viewer && (
-        <form onSubmit={handleSubmit} noValidate>
+        <form className={ui.form} onSubmit={handleSubmit} noValidate>
           <p>
             {viewer.firstName} {viewer.lastName} ({viewer.email})
           </p>
-          <div className="auth-field">
-            <label htmlFor="newPassword">Naujas slaptažodis</label>
+          <div className={ui.field}>
+            <label className={ui.label} htmlFor="newPassword">Naujas slaptažodis</label>
             <input
+              className={ui.input}
               id="newPassword"
               type="password"
               autoComplete="new-password"
@@ -75,19 +76,19 @@ export default function ResetPasswordPage() {
           <p>Visos šio peržiūrėtojo atidarytos sesijos bus uždarytos.</p>
 
           {error && (
-            <p className="auth-error" role="alert">
+            <p className={ui.fieldError} role="alert">
               {error}
             </p>
           )}
 
-          <button type="submit" disabled={submitting}>
+          <button type="submit" className={ui.primaryButton} disabled={submitting}>
             {submitting ? 'Saugoma…' : 'Išsaugoti'}
           </button>
         </form>
       )}
 
-      <p className="auth-switch">
-        <Link to="/team">Atšaukti</Link>
+      <p className={ui.formFooter}>
+        <Link className={ui.link} to="/team">Atšaukti</Link>
       </p>
     </main>
   )

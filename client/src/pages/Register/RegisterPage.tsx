@@ -5,7 +5,7 @@ import { ApiError } from '../../api/http'
 import type { RegisterRequest } from '../../interfaces/auth'
 import { saveToken } from '../../utils/auth'
 import { validateRegisterForm, type RegisterErrors } from './validation'
-import '../../styles/auth.css'
+import { ui } from '../../utils/ui'
 
 const emptyForm: RegisterRequest = {
   companyName: '',
@@ -64,15 +64,16 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="auth">
-      <h1>Registracija</h1>
+    <main className={ui.formPage}>
+      <h1 className={ui.h1}>Registracija</h1>
       <p>Užregistruokite įmonę ir tapkite jos vadovu.</p>
 
-      <form onSubmit={handleSubmit} noValidate>
+      <form className={ui.form} onSubmit={handleSubmit} noValidate>
         {fields.map((field) => (
-          <div className="auth-field" key={field.name}>
-            <label htmlFor={field.name}>{field.label}</label>
+          <div className={ui.field} key={field.name}>
+            <label className={ui.label} htmlFor={field.name}>{field.label}</label>
             <input
+              className={ui.input}
               id={field.name}
               name={field.name}
               type={field.type}
@@ -83,7 +84,7 @@ export default function RegisterPage() {
               aria-describedby={errors[field.name] ? `${field.name}-error` : undefined}
             />
             {errors[field.name] && (
-              <span className="auth-error" id={`${field.name}-error`}>
+              <span className={ui.fieldError} id={`${field.name}-error`}>
                 {errors[field.name]}
               </span>
             )}
@@ -91,18 +92,18 @@ export default function RegisterPage() {
         ))}
 
         {submitError && (
-          <p className="auth-error" role="alert">
+          <p className={ui.fieldError} role="alert">
             {submitError}
           </p>
         )}
 
-        <button type="submit" disabled={submitting}>
+        <button type="submit" className={ui.primaryButton} disabled={submitting}>
           {submitting ? 'Registruojama…' : 'Registruotis'}
         </button>
       </form>
 
-      <p className="auth-switch">
-        Jau turite paskyrą? <Link to="/login">Prisijunkite</Link>
+      <p className={ui.formFooter}>
+        Jau turite paskyrą? <Link className={ui.link} to="/login">Prisijunkite</Link>
       </p>
     </main>
   )

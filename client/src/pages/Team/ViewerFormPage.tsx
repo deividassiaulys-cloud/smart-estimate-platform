@@ -4,7 +4,7 @@ import { ApiError } from '../../api/http'
 import { createViewer } from '../../api/team'
 import type { CreateViewerRequest } from '../../interfaces/team'
 import { emailError, passwordError } from '../../utils/validation'
-import '../../styles/auth.css'
+import { ui } from '../../utils/ui'
 
 type ViewerErrors = Partial<Record<keyof CreateViewerRequest, string>>
 
@@ -65,14 +65,15 @@ export default function ViewerFormPage() {
   }
 
   return (
-    <main className="auth">
-      <h1>Naujas peržiūrėtojas</h1>
+    <main className={ui.formPage}>
+      <h1 className={ui.h1}>Naujas peržiūrėtojas</h1>
 
-      <form onSubmit={handleSubmit} noValidate>
+      <form className={ui.form} onSubmit={handleSubmit} noValidate>
         {fields.map((field) => (
-          <div className="auth-field" key={field.name}>
-            <label htmlFor={field.name}>{field.label}</label>
+          <div className={ui.field} key={field.name}>
+            <label className={ui.label} htmlFor={field.name}>{field.label}</label>
             <input
+              className={ui.input}
               id={field.name}
               name={field.name}
               type={field.type}
@@ -83,7 +84,7 @@ export default function ViewerFormPage() {
               aria-describedby={errors[field.name] ? `${field.name}-error` : undefined}
             />
             {errors[field.name] && (
-              <span className="auth-error" id={`${field.name}-error`}>
+              <span className={ui.fieldError} id={`${field.name}-error`}>
                 {errors[field.name]}
               </span>
             )}
@@ -92,18 +93,18 @@ export default function ViewerFormPage() {
         <p>Prisijungimo duomenis perduokite darbuotojui patys.</p>
 
         {submitError && (
-          <p className="auth-error" role="alert">
+          <p className={ui.fieldError} role="alert">
             {submitError}
           </p>
         )}
 
-        <button type="submit" disabled={submitting}>
+        <button type="submit" className={ui.primaryButton} disabled={submitting}>
           {submitting ? 'Saugoma…' : 'Išsaugoti'}
         </button>
       </form>
 
-      <p className="auth-switch">
-        <Link to="/team">Atšaukti</Link>
+      <p className={ui.formFooter}>
+        <Link className={ui.link} to="/team">Atšaukti</Link>
       </p>
     </main>
   )

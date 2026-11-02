@@ -2,14 +2,9 @@ import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { getTeam, removeViewer } from '../../api/team'
 import ConfirmDialog from '../../components/ConfirmDialog'
-import { UserRole } from '../../interfaces/auth'
 import type { TeamMember } from '../../interfaces/team'
-import './Team.css'
-
-const roleNames: Record<UserRole, string> = {
-  [UserRole.Manager]: 'Vadovas',
-  [UserRole.Viewer]: 'Peržiūrėtojas',
-}
+import { ui } from '../../utils/ui'
+import TeamTable from './TeamTable'
 
 export default function TeamPage() {
   const location = useLocation()
@@ -42,64 +37,32 @@ export default function TeamPage() {
   }
 
   return (
-    <main className="team">
+    <main className={ui.listPage}>
       <p>
-        <Link to="/dashboard">← Pagrindinis</Link>
+        <Link className={ui.link} to="/dashboard">
+          ← Pagrindinis
+        </Link>
       </p>
-      <div className="team-heading">
-        <h1>Komanda</h1>
-        <Link className="team-add" to="/team/new">
+      <div className={ui.listHeading}>
+        <h1 className={ui.h1}>Komanda</h1>
+        <Link className={ui.addLink} to="/team/new">
           + Pridėti peržiūrėtoją
         </Link>
       </div>
 
       {notice && (
-        <p className="team-notice" role="status">
+        <p className={ui.notice} role="status">
           {notice}
         </p>
       )}
       {error && (
-        <p className="team-error" role="alert">
+        <p className={ui.error} role="alert">
           {error}
         </p>
       )}
       {!members && !error && <p>Įkeliama…</p>}
 
-      {members && (
-        <div className="team-table-wrapper">
-          <table className="team-table">
-            <thead>
-              <tr>
-                <th>Vardas</th>
-                <th>El. paštas</th>
-                <th>Rolė</th>
-                <th>Veiksmai</th>
-              </tr>
-            </thead>
-            <tbody>
-              {members.map((member) => (
-                <tr key={member.id}>
-                  <td>
-                    {member.firstName} {member.lastName}
-                  </td>
-                  <td>{member.email}</td>
-                  <td>{roleNames[member.role]}</td>
-                  <td className="team-actions">
-                    {member.role === UserRole.Viewer && (
-                      <>
-                        <Link to={`/team/${member.id}/password`}>Keisti slaptažodį</Link>
-                        <button type="button" onClick={() => setToRemove(member)}>
-                          Pašalinti
-                        </button>
-                      </>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+      {members && <TeamTable members={members} onRemove={setToRemove} />}
 
       <ConfirmDialog
         open={toRemove !== null}
