@@ -33,3 +33,6 @@ All routes, methods, authorization rules, success status codes and JSON field na
    Before, the body was a single `detail` message. The status and the set of rejected inputs are unchanged.
 
    **Exception**: a password reset that equals the Viewer's stored email is still rejected by the service with the old single-`detail` 400.
+
+   **Order**: an invalid body is now rejected before the service runs. So a request that has both an invalid body and an unknown ID (e.g. PUT /api/materials/999 with price −1, or a too-short reset password for an unknown Viewer) gets 400 where it used to get 404. Each request is still rejected, and nothing is saved.
+3. **API description only**: the success types are declared explicitly, and 400 (all endpoints) and 401/403 (Manager-only endpoints) are now documented. Previously some of these responses were real but not listed.

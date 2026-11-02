@@ -4,6 +4,13 @@
 
 .NET 10 SDK with `dotnet-ef` 10.x, Node 20+, the repository on branch `013-code-structure-refactor`.
 
+## Baseline (T121, 2026-11-02, before any code change)
+
+- Backend: 73 tests passed (`dotnet test`, theory cases counted separately)
+- Frontend: 2 test files, 6 tests passed; lint and build clean
+- `has-pending-model-changes`: no changes (run with a dummy `ConnectionStrings__DefaultConnection`; it does not connect)
+- OpenAPI: saved to `baseline-openapi.json`
+
 ## After every step
 
 ```bash
