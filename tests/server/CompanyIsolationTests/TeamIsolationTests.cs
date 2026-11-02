@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Mvc;
-using SmartEstimatePlatform.Api.Models.DTOs;
+using SmartEstimatePlatform.Api.Models.DTOs.Team;
 using SmartEstimatePlatform.Api.Tests.TestSupport;
 
 namespace SmartEstimatePlatform.Api.Tests.CompanyIsolationTests;

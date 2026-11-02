@@ -1,6 +1,8 @@
 using System.Net;
 using System.Net.Http.Json;
-using SmartEstimatePlatform.Api.Models.DTOs;
+using SmartEstimatePlatform.Api.Models.DTOs.Auth;
+using SmartEstimatePlatform.Api.Models.DTOs.Materials;
+using SmartEstimatePlatform.Api.Models.DTOs.Team;
 using SmartEstimatePlatform.Api.Tests.TestSupport;
 
 namespace SmartEstimatePlatform.Api.Tests.MaterialServiceTests;
@@ -70,7 +72,7 @@ public sealed class MaterialAuthorizationTests : IDisposable
         created.EnsureSuccessStatusCode();
 
         var login = await _factory.LoginAsync("ona@example.com", "Viewer123");
-        var token = (await login.Content.ReadFromJsonAsync<LoginResponse>())!.Token;
+        var token = (await login.Content.ReadFromJsonAsync<AuthResponse>())!.Token;
         return _factory.CreateClient(token);
     }
 }

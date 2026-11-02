@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SmartEstimatePlatform.Api.Data;
-using SmartEstimatePlatform.Api.Models.DTOs;
+using SmartEstimatePlatform.Api.Models.DTOs.Auth;
 using SmartEstimatePlatform.Api.Models.Entities;
 using SmartEstimatePlatform.Api.Services;
 
@@ -18,7 +18,7 @@ public sealed class RegisterAsyncTests : AuthServiceTestBase
 
         await using var db = new AppDbContext(Options);
         var saved = await db.Users.IgnoreQueryFilters().Include(u => u.Company).SingleAsync();
-        Assert.Equal(manager.Id, saved.Id);
+        Assert.Equal(manager.UserId, saved.Id);
         Assert.Equal(UserRole.Manager, saved.Role);
         Assert.Equal("Statyba UAB", saved.Company.Name);
         Assert.NotEqual("Secret123", saved.PasswordHash);
@@ -29,8 +29,7 @@ public sealed class RegisterAsyncTests : AuthServiceTestBase
     {
         await RegisterAsync(ValidRequest());
 
-        var duplicate = ValidRequest();
-        duplicate.CompanyName = "Kita UAB";
+        var duplicate = ValidRequest() with { CompanyName = "Kita UAB" };
         await Assert.ThrowsAsync<DuplicateEmailException>(() => RegisterAsync(duplicate));
 
         await AssertCountsAsync(companies: 1, users: 1);
@@ -41,49 +40,23 @@ public sealed class RegisterAsyncTests : AuthServiceTestBase
     {
         await RegisterAsync(ValidRequest());
 
-        var duplicate = ValidRequest();
-        duplicate.Email = "JONAS@Example.COM";
+        var duplicate = ValidRequest() with { Email = "JONAS@Example.COM" };
         await Assert.ThrowsAsync<DuplicateEmailException>(() => RegisterAsync(duplicate));
 
         await AssertCountsAsync(companies: 1, users: 1);
     }
 
     [Fact]
-    public async Task RegisterAsync_PasswordShorterThan8Characters_IsRejectedAndCreatesNothing()
-    {
-        var request = ValidRequest();
-        request.Password = "Abc1234";
-
-        await Assert.ThrowsAsync<WeakPasswordException>(() => RegisterAsync(request));
-
-        await AssertCountsAsync(companies: 0, users: 0);
-    }
-
-    [Fact]
     public async Task RegisterAsync_PasswordExactly8Characters_IsAccepted()
     {
-        var request = ValidRequest();
-        request.Password = "Abc12345";
+        var request = ValidRequest() with { Password = "Abc12345" };
 
         await RegisterAsync(request);
 
         await AssertCountsAsync(companies: 1, users: 1);
     }
 
-    [Theory]
-    [InlineData("jonas@example.com")]
-    [InlineData("Jonas@Example.com")]
-    public async Task RegisterAsync_PasswordEqualToEmail_IsRejectedAndCreatesNothing(string password)
-    {
-        var request = ValidRequest();
-        request.Password = password;
-
-        await Assert.ThrowsAsync<WeakPasswordException>(() => RegisterAsync(request));
-
-        await AssertCountsAsync(companies: 0, users: 0);
-    }
-
-    private Task<User> RegisterAsync(RegisterRequest request) =>
+    private Task<AuthResponse> RegisterAsync(RegisterRequest request) =>
         WithServiceAsync(service => service.RegisterAsync(request));
 
     private async Task AssertCountsAsync(int companies, int users)

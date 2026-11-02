@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SmartEstimatePlatform.Api.Data;
-using SmartEstimatePlatform.Api.Models.DTOs;
+using SmartEstimatePlatform.Api.Models.DTOs.Team;
 using SmartEstimatePlatform.Api.Models.Entities;
+using SmartEstimatePlatform.Api.Services.Mapping;
 
 namespace SmartEstimatePlatform.Api.Services;
 
@@ -12,75 +13,53 @@ namespace SmartEstimatePlatform.Api.Services;
 /// </summary>
 public class TeamService(
     AppDbContext db,
-    AuthService authService,
+    IAuthService authService,
     IPasswordHasher<User> passwordHasher,
-    ICurrentCompany currentCompany)
+    ICurrentUser currentUser) : ITeamService
 {
-    /// <summary>
-    /// Returns everyone in the current company, the Manager first, then Viewers by name.
-    /// </summary>
-    public Task<List<User>> ListMembersAsync(CancellationToken cancellationToken = default) =>
-        db.Users
+    /// <inheritdoc />
+    public async Task<List<TeamMemberResponse>> ListMembersAsync()
+    {
+        var members = await db.Users
             .OrderBy(u => u.Role)
             .ThenBy(u => u.LastName)
             .ThenBy(u => u.FirstName)
-            .ToListAsync(cancellationToken);
-
-    /// <summary>
-    /// Creates a Viewer account in the current company.
-    /// </summary>
-    /// <exception cref="WeakPasswordException">The password breaks the <see cref="PasswordRules"/>.</exception>
-    /// <exception cref="DuplicateEmailException">The email is used by any account in any company.</exception>
-    public async Task<User> CreateViewerAsync(CreateViewerRequest request, CancellationToken cancellationToken = default)
-    {
-        var viewer = new User
-        {
-            FirstName = request.FirstName,
-            LastName = request.LastName,
-            Email = request.Email.Trim(),
-            Role = UserRole.Viewer,
-            CompanyId = currentCompany.CompanyId
-                ?? throw new InvalidOperationException("A Viewer can only be created by a logged-in Manager.")
-        };
-
-        await authService.CreateAccountAsync(viewer, request.Password, cancellationToken);
-        return viewer;
+            .ToListAsync();
+        return members.Select(u => u.ToResponse()).ToList();
     }
 
-    /// <summary>
-    /// Deletes a Viewer account. Its open sessions stop working at once, because every request checks
-    /// that the user still exists. The email becomes free to use again.
-    /// </summary>
-    /// <exception cref="NotFoundException">
-    /// No Viewer with this ID in the current company. The Manager is not a Viewer, so cannot be removed.
-    /// </exception>
-    public async Task RemoveViewerAsync(int viewerId, CancellationToken cancellationToken = default)
+    /// <inheritdoc />
+    public async Task<TeamMemberResponse> CreateViewerAsync(CreateViewerRequest request)
     {
-        var viewer = await FindViewerAsync(viewerId, cancellationToken);
+        var companyId = currentUser.CompanyId
+            ?? throw new InvalidOperationException("A Viewer can only be created by a logged-in Manager.");
+        var viewer = new User(request.FirstName, request.LastName, request.Email.Trim(), UserRole.Viewer, companyId);
+
+        await authService.CreateAccountAsync(viewer, request.Password);
+        return viewer.ToResponse();
+    }
+
+    /// <inheritdoc />
+    public async Task RemoveViewerAsync(int viewerId)
+    {
+        var viewer = await FindViewerAsync(viewerId);
         db.Users.Remove(viewer);
-        await db.SaveChangesAsync(cancellationToken);
+        await db.SaveChangesAsync();
     }
 
-    /// <summary>
-    /// Sets a new password for a Viewer and logs out all their open sessions. Any login lockout is lifted,
-    /// so the Viewer can log in with the new password straight away.
-    /// </summary>
-    /// <exception cref="NotFoundException">No Viewer with this ID in the current company.</exception>
-    /// <exception cref="WeakPasswordException">The password breaks the <see cref="PasswordRules"/>.</exception>
-    public async Task ResetPasswordAsync(int viewerId, string newPassword, CancellationToken cancellationToken = default)
+    /// <inheritdoc />
+    public async Task ResetPasswordAsync(int viewerId, string newPassword)
     {
-        var viewer = await FindViewerAsync(viewerId, cancellationToken);
-        PasswordRules.EnsureStrong(newPassword, viewer.Email);
+        var viewer = await FindViewerAsync(viewerId);
+        PasswordRules.EnsureNotEmail(newPassword, viewer.Email);
 
-        viewer.PasswordHash = passwordHasher.HashPassword(viewer, newPassword);
-        viewer.TokenVersion++;
-        viewer.FailedLoginCount = 0;
-        viewer.FirstFailedLoginAt = null;
-        viewer.LockoutEnd = null;
-        await db.SaveChangesAsync(cancellationToken);
+        viewer.SetPasswordHash(passwordHasher.HashPassword(viewer, newPassword));
+        viewer.InvalidateTokens();
+        viewer.ResetLoginFailures();
+        await db.SaveChangesAsync();
     }
 
-    private async Task<User> FindViewerAsync(int viewerId, CancellationToken cancellationToken) =>
-        await db.Users.SingleOrDefaultAsync(u => u.Id == viewerId && u.Role == UserRole.Viewer, cancellationToken)
+    private async Task<User> FindViewerAsync(int viewerId) =>
+        await db.Users.SingleOrDefaultAsync(u => u.Id == viewerId && u.Role == UserRole.Viewer)
         ?? throw new NotFoundException("Viewer not found.");
 }

@@ -2,13 +2,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SmartEstimatePlatform.Api.Controllers;
 using SmartEstimatePlatform.Api.Data;
-using SmartEstimatePlatform.Api.Models.Entities;
 using SmartEstimatePlatform.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,13 +25,7 @@ builder.Services.AddOptions<JwtOptions>()
     .ValidateOnStart();
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<ICurrentCompany, HttpCurrentCompany>();
-builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-builder.Services.AddScoped<AuthService>();
-builder.Services.AddScoped<TokenService>();
-builder.Services.AddScoped<TeamService>();
-builder.Services.AddScoped<MaterialService>();
-builder.Services.AddSingleton(TimeProvider.System);
+builder.Services.AddApplicationServices();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 builder.Services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme)
@@ -56,7 +48,7 @@ builder.Services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationSc
             // and a password reset invalidates every token issued before it.
             OnTokenValidated = async context =>
             {
-                var authService = context.HttpContext.RequestServices.GetRequiredService<AuthService>();
+                var authService = context.HttpContext.RequestServices.GetRequiredService<IAuthService>();
                 var sub = context.Principal?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
                 var company = context.Principal?.FindFirst(TokenService.CompanyIdClaim)?.Value;
                 var version = context.Principal?.FindFirst(TokenService.TokenVersionClaim)?.Value;
@@ -73,7 +65,7 @@ builder.Services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationSc
 
 builder.Services.AddControllers();
 builder.Services.AddProblemDetails();
-builder.Services.AddExceptionHandler<NotFoundExceptionHandler>();
+builder.Services.AddExceptionHandler<DomainExceptionHandler>();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 

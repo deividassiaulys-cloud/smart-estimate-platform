@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SmartEstimatePlatform.Api.Data;
-using SmartEstimatePlatform.Api.Models.DTOs;
+using SmartEstimatePlatform.Api.Models.DTOs.Auth;
 using SmartEstimatePlatform.Api.Models.Entities;
+using SmartEstimatePlatform.Api.Services.Mapping;
 
 namespace SmartEstimatePlatform.Api.Services;
 
@@ -12,8 +13,9 @@ namespace SmartEstimatePlatform.Api.Services;
 public class AuthService(
     AppDbContext db,
     IPasswordHasher<User> passwordHasher,
-    TokenService tokenService,
-    TimeProvider timeProvider)
+    ITokenService tokenService,
+    ICurrentUser currentUser,
+    TimeProvider timeProvider) : IAuthService
 {
     /// <summary>
     /// Failed attempts within <see cref="FailedLoginWindow"/> that lock the account.
@@ -30,59 +32,36 @@ public class AuthService(
     /// </summary>
     public static readonly TimeSpan LockoutDuration = TimeSpan.FromMinutes(15);
 
-    /// <summary>
-    /// Registers a visitor: creates their company and makes them its Manager.
-    /// The company and the account are saved together, so either both exist or neither does.
-    /// </summary>
-    /// <returns>The created Manager account, with its company.</returns>
-    /// <exception cref="WeakPasswordException">
-    /// The password breaks the <see cref="PasswordRules"/>. Nothing is created.
-    /// </exception>
-    /// <exception cref="DuplicateEmailException">
-    /// The email is already in use, compared case-insensitively. Nothing is created.
-    /// </exception>
-    public async Task<User> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default)
+    /// <inheritdoc />
+    public async Task<AuthResponse> RegisterAsync(RegisterRequest request)
     {
-        var manager = new User
-        {
-            FirstName = request.FirstName,
-            LastName = request.LastName,
-            Email = request.Email,
-            Role = UserRole.Manager,
-            Company = new Company { Name = request.CompanyName }
-        };
+        var manager = new User(
+            request.FirstName, request.LastName, request.Email, UserRole.Manager, new Company(request.CompanyName));
 
-        await CreateAccountAsync(manager, request.Password, cancellationToken);
-        return manager;
+        await CreateAccountAsync(manager, request.Password);
+        return manager.ToAuthResponse(tokenService.CreateToken(manager));
     }
 
-    /// <summary>
-    /// Saves a new account with a hashed password, after checking the <see cref="PasswordRules"/> and that
-    /// the email is not used by any account in any company. Used for registration and for new Viewers.
-    /// </summary>
-    /// <exception cref="WeakPasswordException">The password breaks a rule. Nothing is saved.</exception>
-    /// <exception cref="DuplicateEmailException">The email is already in use, compared case-insensitively. Nothing is saved.</exception>
-    public async Task CreateAccountAsync(User account, string password, CancellationToken cancellationToken = default)
+    /// <inheritdoc />
+    public async Task CreateAccountAsync(User account, string password)
     {
-        PasswordRules.EnsureStrong(password, account.Email);
-
-        if (await EmailExistsAsync(account.Email, cancellationToken))
+        if (await EmailExistsAsync(account.Email))
         {
             throw new DuplicateEmailException(account.Email);
         }
 
-        account.PasswordHash = passwordHasher.HashPassword(account, password);
+        account.SetPasswordHash(passwordHasher.HashPassword(account, password));
         db.Users.Add(account);
         try
         {
-            await db.SaveChangesAsync(cancellationToken);
+            await db.SaveChangesAsync();
         }
         catch (DbUpdateException)
         {
             db.ChangeTracker.Clear();
 
             // A concurrent request with the same email won the race; the unique index rejected this one.
-            if (await EmailExistsAsync(account.Email, cancellationToken))
+            if (await EmailExistsAsync(account.Email))
             {
                 throw new DuplicateEmailException(account.Email);
             }
@@ -91,22 +70,13 @@ public class AuthService(
         }
     }
 
-    /// <summary>
-    /// Logs a user in and issues their JWT. A successful login clears any failed-attempt streak.
-    /// </summary>
-    /// <exception cref="InvalidCredentialsException">
-    /// The email is unknown or the password is wrong; the same error is used for both.
-    /// A wrong password counts towards the lockout.
-    /// </exception>
-    /// <exception cref="AccountLockedException">
-    /// The account is locked, or this failure was the one that locked it. Raised even when the password is correct.
-    /// </exception>
-    public async Task<LoginResponse> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default)
+    /// <inheritdoc />
+    public async Task<AuthResponse> LoginAsync(LoginRequest request)
     {
         // Nobody is logged in yet, so the company scoping is bypassed to find the account (see plan 011).
         // The Email column's case-insensitive collation makes this comparison case-insensitive.
         var user = await db.Users.IgnoreQueryFilters()
-            .SingleOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
+            .SingleOrDefaultAsync(u => u.Email == request.Email);
         if (user is null)
         {
             throw new InvalidCredentialsException();
@@ -122,7 +92,7 @@ public class AuthService(
         if (result == PasswordVerificationResult.Failed)
         {
             RecordFailedLogin(user, now);
-            await db.SaveChangesAsync(cancellationToken);
+            await db.SaveChangesAsync();
 
             if (user.LockoutEnd > now)
             {
@@ -133,66 +103,55 @@ public class AuthService(
 
         if (result == PasswordVerificationResult.SuccessRehashNeeded)
         {
-            user.PasswordHash = passwordHasher.HashPassword(user, request.Password);
+            user.SetPasswordHash(passwordHasher.HashPassword(user, request.Password));
         }
-        ClearFailedLogins(user);
-        await db.SaveChangesAsync(cancellationToken);
+        user.ResetLoginFailures();
+        await db.SaveChangesAsync();
 
-        return new LoginResponse
-        {
-            Token = tokenService.CreateToken(user),
-            UserId = user.Id,
-            CompanyId = user.CompanyId,
-            Role = user.Role
-        };
+        return user.ToAuthResponse(tokenService.CreateToken(user));
     }
 
-    /// <summary>
-    /// Returns the user with their company, or null if the account does not exist in the current company.
-    /// </summary>
-    public Task<User?> GetUserAsync(int userId, CancellationToken cancellationToken = default) =>
-        db.Users.Include(u => u.Company).SingleOrDefaultAsync(u => u.Id == userId, cancellationToken);
+    /// <inheritdoc />
+    public async Task<CurrentUserResponse> GetCurrentUserAsync()
+    {
+        var user = await db.Users.Include(u => u.Company)
+                       .SingleOrDefaultAsync(u => u.Id == currentUser.UserId)
+                   ?? throw new UnauthorizedAccessException("The logged-in user no longer exists.");
+        return user.ToCurrentUserResponse();
+    }
 
-    /// <summary>
-    /// Whether a token is still valid for its user: the user still exists, still belongs to the token's
-    /// company, and their password has not been reset since the token was issued.
-    /// </summary>
-    public Task<bool> IsTokenUserValidAsync(
-        int userId, int companyId, int tokenVersion, CancellationToken cancellationToken = default) =>
+    /// <inheritdoc />
+    public Task<bool> IsTokenUserValidAsync(int userId, int companyId, int tokenVersion) =>
         // Runs while the token is being validated, before the current company is known (see plan 011).
         db.Users.IgnoreQueryFilters().AnyAsync(
-            u => u.Id == userId && u.CompanyId == companyId && u.TokenVersion == tokenVersion,
-            cancellationToken);
+            u => u.Id == userId && u.CompanyId == companyId && u.TokenVersion == tokenVersion);
 
     // A streak runs from its first failure; once the window has passed without a lock, the count starts over.
     private static void RecordFailedLogin(User user, DateTime now)
     {
-        if (user.FirstFailedLoginAt is null || now - user.FirstFailedLoginAt >= FailedLoginWindow)
+        var failedCount = user.FailedLoginCount;
+        var firstFailedAt = user.FirstFailedLoginAt;
+        if (firstFailedAt is null || now - firstFailedAt >= FailedLoginWindow)
         {
-            user.FailedLoginCount = 0;
-            user.FirstFailedLoginAt = now;
+            failedCount = 0;
+            firstFailedAt = now;
         }
 
-        user.FailedLoginCount++;
-        if (user.FailedLoginCount >= MaxFailedLogins)
+        failedCount++;
+        if (failedCount >= MaxFailedLogins)
         {
-            user.LockoutEnd = now + LockoutDuration;
-            user.FailedLoginCount = 0;
-            user.FirstFailedLoginAt = null;
+            user.SetLoginState(failedLoginCount: 0, firstFailedLoginAt: null, lockoutEnd: now + LockoutDuration);
         }
-    }
-
-    private static void ClearFailedLogins(User user)
-    {
-        user.FailedLoginCount = 0;
-        user.FirstFailedLoginAt = null;
-        user.LockoutEnd = null;
+        else
+        {
+            user.SetLoginState(failedCount, firstFailedAt, user.LockoutEnd);
+        }
     }
 
     private static int MinutesUntil(DateTime end, DateTime now) => (int)Math.Ceiling((end - now).TotalMinutes);
 
     // Emails are unique across all companies, so this check bypasses the company scoping (see plan 011).
     // The Email column's case-insensitive collation makes this comparison case-insensitive.
-    private Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken) =>
-        db.Users.IgnoreQueryFilters().AnyAsync(u => u.Email == email, cancellationToken);
+    private Task<bool> EmailExistsAsync(string email) =>
+        db.Users.IgnoreQueryFilters().AnyAsync(u => u.Email == email);
 }

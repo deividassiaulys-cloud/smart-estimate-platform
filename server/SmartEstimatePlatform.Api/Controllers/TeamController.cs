@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SmartEstimatePlatform.Api.Models.DTOs;
+using SmartEstimatePlatform.Api.Models.DTOs.Team;
 using SmartEstimatePlatform.Api.Models.Entities;
 using SmartEstimatePlatform.Api.Services;
 
@@ -10,42 +10,28 @@ namespace SmartEstimatePlatform.Api.Controllers;
 /// The Manager's Team page: their company's members and the Viewer accounts they manage.
 /// A Viewer of another company is reported as not found (404) by TeamService.
 /// </summary>
-[ApiController]
 [Route("api/team")]
 [Authorize(Roles = nameof(UserRole.Manager))]
-public class TeamController(TeamService teamService) : ControllerBase
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+[ProducesResponseType(StatusCodes.Status403Forbidden)]
+public class TeamController(ITeamService teamService) : ApiControllerBase
 {
     /// <summary>
     /// Lists everyone in the Manager's company.
     /// </summary>
     [HttpGet]
-    public async Task<IEnumerable<TeamMemberResponse>> List(CancellationToken cancellationToken) =>
-        (await teamService.ListMembersAsync(cancellationToken)).Select(TeamMemberResponse.From);
+    [ProducesResponseType<List<TeamMemberResponse>>(StatusCodes.Status200OK)]
+    public Task<List<TeamMemberResponse>> List() =>
+        teamService.ListMembersAsync();
 
     /// <summary>
     /// Creates a Viewer account in the Manager's company.
     /// </summary>
     [HttpPost("viewers")]
     [ProducesResponseType<TeamMemberResponse>(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<ActionResult<TeamMemberResponse>> CreateViewer(
-        CreateViewerRequest request, CancellationToken cancellationToken)
-    {
-        try
-        {
-            var viewer = await teamService.CreateViewerAsync(request, cancellationToken);
-            return StatusCode(StatusCodes.Status201Created, TeamMemberResponse.From(viewer));
-        }
-        catch (WeakPasswordException ex)
-        {
-            return Problem(ex.Message, statusCode: StatusCodes.Status400BadRequest);
-        }
-        catch (DuplicateEmailException)
-        {
-            return Problem("An account with this email already exists.", statusCode: StatusCodes.Status409Conflict);
-        }
-    }
+    public async Task<ActionResult<TeamMemberResponse>> CreateViewer(CreateViewerRequest request) =>
+        StatusCode(StatusCodes.Status201Created, await teamService.CreateViewerAsync(request));
 
     /// <summary>
     /// Removes a Viewer; their access ends immediately.
@@ -53,9 +39,9 @@ public class TeamController(TeamService teamService) : ControllerBase
     [HttpDelete("viewers/{id:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> RemoveViewer(int id, CancellationToken cancellationToken)
+    public async Task<IActionResult> RemoveViewer(int id)
     {
-        await teamService.RemoveViewerAsync(id, cancellationToken);
+        await teamService.RemoveViewerAsync(id);
         return NoContent();
     }
 
@@ -64,18 +50,10 @@ public class TeamController(TeamService teamService) : ControllerBase
     /// </summary>
     [HttpPatch("viewers/{id:int}/password")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> ResetPassword(int id, ResetPasswordRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> ResetPassword(int id, ResetPasswordRequest request)
     {
-        try
-        {
-            await teamService.ResetPasswordAsync(id, request.NewPassword, cancellationToken);
-            return NoContent();
-        }
-        catch (WeakPasswordException ex)
-        {
-            return Problem(ex.Message, statusCode: StatusCodes.Status400BadRequest);
-        }
+        await teamService.ResetPasswordAsync(id, request.NewPassword);
+        return NoContent();
     }
 }

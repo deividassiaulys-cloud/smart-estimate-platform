@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SmartEstimatePlatform.Api.Controllers;
 using SmartEstimatePlatform.Api.Data;
-using SmartEstimatePlatform.Api.Models.DTOs;
+using SmartEstimatePlatform.Api.Models.DTOs.Auth;
 using SmartEstimatePlatform.Api.Models.Entities;
 using SmartEstimatePlatform.Api.Services;
 using SmartEstimatePlatform.Api.Tests.TestSupport;
@@ -66,15 +66,9 @@ public sealed class CompanyScopingTests : IDisposable
 
         await using (var db = CreateDbContext(alpha.CompanyId))
         {
-            db.Users.Add(new User
-            {
-                FirstName = "Ona",
-                LastName = "Onaitė",
-                Email = "ona@example.com",
-                PasswordHash = "not-used",
-                Role = UserRole.Viewer,
-                CompanyId = beta.CompanyId
-            });
+            var viewer = new User("Ona", "Onaitė", "ona@example.com", UserRole.Viewer, beta.CompanyId);
+            viewer.SetPasswordHash("not-used");
+            db.Users.Add(viewer);
             await db.SaveChangesAsync();
         }
 
@@ -93,13 +87,11 @@ public sealed class CompanyScopingTests : IDisposable
         string forgedToken;
         using (var scope = _factory.Services.CreateScope())
         {
-            forgedToken = scope.ServiceProvider.GetRequiredService<TokenService>().CreateToken(new User
-            {
-                Id = alpha.ManagerId,
-                CompanyId = beta.CompanyId,
-                Email = "alpha@example.com",
-                Role = UserRole.Manager
-            });
+            // The real user, with only its company changed in memory (never saved).
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            var manager = await db.Users.IgnoreQueryFilters().SingleAsync(u => u.Id == alpha.ManagerId);
+            db.Entry(manager).Property(u => u.CompanyId).CurrentValue = beta.CompanyId;
+            forgedToken = scope.ServiceProvider.GetRequiredService<ITokenService>().CreateToken(manager);
         }
 
         var client = _factory.CreateClient();
@@ -113,7 +105,7 @@ public sealed class CompanyScopingTests : IDisposable
     public async Task NotFoundException_IsReturnedAs404()
     {
         using var scope = _factory.Services.CreateScope();
-        var handler = ActivatorUtilities.CreateInstance<NotFoundExceptionHandler>(scope.ServiceProvider);
+        var handler = ActivatorUtilities.CreateInstance<DomainExceptionHandler>(scope.ServiceProvider);
         var context = new DefaultHttpContext { RequestServices = scope.ServiceProvider };
         context.Response.Body = new MemoryStream();
 
@@ -145,7 +137,7 @@ public sealed class CompanyScopingTests : IDisposable
     {
         _factory.CreateClient(); // Makes sure the database exists.
         var options = _factory.Services.GetRequiredService<Microsoft.EntityFrameworkCore.DbContextOptions<AppDbContext>>();
-        return new AppDbContext(options, new FixedCurrentCompany(companyId));
+        return new AppDbContext(options, new FixedCurrentUser(companyId));
     }
 
     private static string FindRepositoryRoot()

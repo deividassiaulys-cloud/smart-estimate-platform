@@ -10,7 +10,7 @@ namespace SmartEstimatePlatform.Api.Services;
 /// <summary>
 /// Issues JWTs that identify a user, their company, and their role.
 /// </summary>
-public class TokenService(IOptions<JwtOptions> options)
+public class TokenService(IOptions<JwtOptions> options) : ITokenService
 {
     /// <summary>
     /// Claim holding the user's company ID.
@@ -22,9 +22,7 @@ public class TokenService(IOptions<JwtOptions> options)
     /// </summary>
     public const string TokenVersionClaim = "token_version";
 
-    /// <summary>
-    /// Creates a signed token for the given user.
-    /// </summary>
+    /// <inheritdoc />
     public string CreateToken(User user)
     {
         var jwt = options.Value;

@@ -8,14 +8,14 @@ namespace SmartEstimatePlatform.Api.Controllers;
 /// The fixed measurement units, so the frontend never keeps its own copy of the list.
 /// Units contain no prices, so any logged-in user may read them.
 /// </summary>
-[ApiController]
 [Route("api/units")]
 [Authorize]
-public class UnitsController : ControllerBase
+public class UnitsController : ApiControllerBase
 {
     /// <summary>
     /// Lists the allowed measurement units.
     /// </summary>
     [HttpGet]
+    [ProducesResponseType<IReadOnlyList<string>>(StatusCodes.Status200OK)]
     public IReadOnlyList<string> List() => MeasurementUnit.All;
 }

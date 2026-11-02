@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SmartEstimatePlatform.Api.Data;
-using SmartEstimatePlatform.Api.Models.DTOs;
+using SmartEstimatePlatform.Api.Models.DTOs.Auth;
 using SmartEstimatePlatform.Api.Models.Entities;
 using SmartEstimatePlatform.Api.Services;
 
@@ -27,7 +27,7 @@ public sealed class LoginAsyncTests : AuthServiceTestBase
             Email = Email,
             Password = Password
         })).GetAwaiter().GetResult();
-        _userId = manager.Id;
+        _userId = manager.UserId;
         _companyId = manager.CompanyId;
     }
 
@@ -118,14 +118,14 @@ public sealed class LoginAsyncTests : AuthServiceTestBase
     }
 
     [Fact]
-    public async Task GetUserAsync_ReturnsNameCompanyAndRole()
+    public async Task GetCurrentUserAsync_ReturnsNameCompanyAndRole()
     {
-        var user = await WithServiceAsync(service => service.GetUserAsync(_userId), _companyId);
+        var user = await WithServiceAsync(service => service.GetCurrentUserAsync(), _companyId, _userId);
 
         Assert.NotNull(user);
         Assert.Equal("Jonas", user.FirstName);
         Assert.Equal("Jonaitis", user.LastName);
-        Assert.Equal("Statyba UAB", user.Company.Name);
+        Assert.Equal("Statyba UAB", user.CompanyName);
         Assert.Equal(UserRole.Manager, user.Role);
     }
 
@@ -148,7 +148,7 @@ public sealed class LoginAsyncTests : AuthServiceTestBase
         Assert.False(await WithServiceAsync(service => service.IsTokenUserValidAsync(_userId, _companyId + 1, tokenVersion: 0)));
     }
 
-    private Task<LoginResponse> LoginAsync(string email, string password) =>
+    private Task<AuthResponse> LoginAsync(string email, string password) =>
         WithServiceAsync(service => service.LoginAsync(new LoginRequest { Email = email, Password = password }));
 
     private async Task FailAsync(int times, TimeSpan gap)

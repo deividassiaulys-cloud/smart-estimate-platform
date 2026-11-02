@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using SmartEstimatePlatform.Api.Data;
-using SmartEstimatePlatform.Api.Models.DTOs;
+using SmartEstimatePlatform.Api.Models.DTOs.Auth;
 
 namespace SmartEstimatePlatform.Api.Tests.TestSupport;
 
@@ -59,7 +59,7 @@ public sealed class ApiFactory : WebApplicationFactory<Program>
         });
         response.EnsureSuccessStatusCode();
 
-        var registered = (await response.Content.ReadFromJsonAsync<RegisterResponse>())!;
+        var registered = (await response.Content.ReadFromJsonAsync<AuthResponse>())!;
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", registered.Token);
         return new LoggedInCompany(client, registered.UserId, registered.CompanyId, registered.Token);
     }
