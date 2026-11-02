@@ -49,6 +49,23 @@ public sealed class CompanyScopingTests : IDisposable
     }
 
     [Fact]
+    public async Task WorkMaterialLines_AreScopedThroughTheirWork()
+    {
+        var alpha = await _factory.RegisterCompanyAsync("Alpha UAB", "alpha@example.com");
+        var beta = await _factory.RegisterCompanyAsync("Beta UAB", "beta@example.com");
+        var alphaPaint = await alpha.CreateMaterialAsync("Dažai", "l");
+        await alpha.CreateWorkAsync(CatalogRequests.WorkRequest("Sienų dažymas", "m²", (alphaPaint.Id, 0.150m, 5), (alphaPaint.Id, 0.050m, 0)));
+
+        await using (var alphaDb = CreateDbContext(alpha.CompanyId))
+        {
+            Assert.Equal(2, await alphaDb.WorkMaterialLines.CountAsync());
+        }
+
+        await using var betaDb = CreateDbContext(beta.CompanyId);
+        Assert.Empty(await betaDb.WorkMaterialLines.ToListAsync());
+    }
+
+    [Fact]
     public async Task Queries_WithoutALoggedInUser_SeeNothing()
     {
         await _factory.RegisterCompanyAsync("Alpha UAB", "alpha@example.com");

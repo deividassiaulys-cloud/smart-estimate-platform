@@ -25,6 +25,11 @@ public class WorkMaterialLine
 
     public int WorkId { get; private set; }
 
+    /// <summary>
+    /// The work this line belongs to; its company is the line's company.
+    /// </summary>
+    public Work Work { get; private set; } = null!;
+
     public int MaterialId { get; private set; }
 
     public Material Material { get; private set; } = null!;
