@@ -1,5 +1,5 @@
 using System.Net.Http.Json;
-using SmartEstimatePlatform.Api.Models.DTOs;
+using SmartEstimatePlatform.Api.Models.DTOs.Materials;
 using SmartEstimatePlatform.Api.Tests.TestSupport;
 
 namespace SmartEstimatePlatform.Api.Tests.MaterialServiceTests;

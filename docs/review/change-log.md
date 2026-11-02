@@ -8,3 +8,5 @@
 6. Entity properties MUST have private setters. State is set through constructors and small mutator methods that contain no business rules (rules stay in services, Article II).
 7. Frontend styling MUST use Tailwind utility classes; new CSS files MUST NOT be added. A component file MUST contain one component, and distinct page sections MUST be extracted into their own components.
 8. Repeated boilerplate (response-type attributes, error handling, mapping) MUST be defined once and reused.
+9. CancellationToken MUST NOT be added unless a specification requires cancellation for a specific long-running operation.
+10. Request validation MUST be declarative on the request records (data annotations, IValidatableObject) with one shared definition per rule (e.g. password rules); services MUST NOT repeat it.

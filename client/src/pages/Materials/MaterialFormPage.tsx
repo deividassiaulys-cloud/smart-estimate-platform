@@ -2,7 +2,7 @@ import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ApiError } from '../../api/http'
 import { createMaterial, getMaterial, getUnits, updateMaterial } from '../../api/materials'
-import '../../styles/auth.css'
+import { ui } from '../../utils/ui'
 
 interface MaterialForm {
   name: string
@@ -119,7 +119,7 @@ export default function MaterialFormPage() {
   function fieldError(name: keyof MaterialForm) {
     return (
       errors[name] && (
-        <span className="auth-error" id={`${name}-error`}>
+        <span className={ui.fieldError} id={`${name}-error`}>
           {errors[name]}
         </span>
       )
@@ -127,20 +127,20 @@ export default function MaterialFormPage() {
   }
 
   return (
-    <main className="auth">
-      <h1>{materialId === null ? 'Nauja medžiaga' : 'Redaguoti medžiagą'}</h1>
+    <main className={ui.formPage}>
+      <h1 className={ui.h1}>{materialId === null ? 'Nauja medžiaga' : 'Redaguoti medžiagą'}</h1>
 
       {loaded && (
-        <form onSubmit={handleSubmit} noValidate>
-          <div className="auth-field">
-            <label htmlFor="name">Pavadinimas</label>
-            <input type="text" autoComplete="off" maxLength={200} {...fieldProps('name')} />
+        <form className={ui.form} onSubmit={handleSubmit} noValidate>
+          <div className={ui.field}>
+            <label className={ui.label} htmlFor="name">Pavadinimas</label>
+            <input className={ui.input} type="text" autoComplete="off" maxLength={200} {...fieldProps('name')} />
             {fieldError('name')}
           </div>
 
-          <div className="auth-field">
-            <label htmlFor="unit">Mato vienetas</label>
-            <select {...fieldProps('unit')}>
+          <div className={ui.field}>
+            <label className={ui.label} htmlFor="unit">Mato vienetas</label>
+            <select className={ui.input} {...fieldProps('unit')}>
               <option value="">Pasirinkite…</option>
               {units.map((unit) => (
                 <option key={unit} value={unit}>
@@ -151,32 +151,32 @@ export default function MaterialFormPage() {
             {fieldError('unit')}
           </div>
 
-          <div className="auth-field">
-            <label htmlFor="price">Kaina, €</label>
-            <input type="text" inputMode="decimal" autoComplete="off" {...fieldProps('price')} />
+          <div className={ui.field}>
+            <label className={ui.label} htmlFor="price">Kaina, €</label>
+            <input className={ui.input} type="text" inputMode="decimal" autoComplete="off" {...fieldProps('price')} />
             {fieldError('price')}
           </div>
 
           {submitError && (
-            <p className="auth-error" role="alert">
+            <p className={ui.fieldError} role="alert">
               {submitError}
             </p>
           )}
 
-          <button type="submit" disabled={submitting}>
+          <button type="submit" className={ui.primaryButton} disabled={submitting}>
             {submitting ? 'Saugoma…' : 'Išsaugoti'}
           </button>
         </form>
       )}
       {!loaded && submitError && (
-        <p className="auth-error" role="alert">
+        <p className={ui.fieldError} role="alert">
           {submitError}
         </p>
       )}
       {!loaded && !submitError && <p>Įkeliama…</p>}
 
-      <p className="auth-switch">
-        <Link to="/materials">Atšaukti</Link>
+      <p className={ui.formFooter}>
+        <Link className={ui.link} to="/materials">Atšaukti</Link>
       </p>
     </main>
   )

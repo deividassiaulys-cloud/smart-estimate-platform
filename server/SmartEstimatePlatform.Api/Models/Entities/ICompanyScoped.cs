@@ -6,5 +6,5 @@ namespace SmartEstimatePlatform.Api.Models.Entities;
 /// </summary>
 public interface ICompanyScoped
 {
-    int CompanyId { get; set; }
+    int CompanyId { get; }
 }

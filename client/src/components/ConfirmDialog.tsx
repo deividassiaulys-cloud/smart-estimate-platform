@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef } from 'react'
-import './ConfirmDialog.css'
+import { ui } from '../utils/ui'
 
 interface ConfirmDialogProps {
   open: boolean
@@ -51,22 +51,24 @@ export default function ConfirmDialog({
   }
 
   return (
-    <div className="confirm-backdrop">
+    <div className="fixed inset-0 z-10 flex items-center justify-center bg-black/45 p-4">
       <div
-        className="confirm-dialog"
+        className="w-full max-w-[468px] rounded-lg bg-page p-6 text-left text-body shadow-dialog"
         role="alertdialog"
         aria-modal="true"
         aria-labelledby={titleId}
         aria-describedby={messageId}
         onKeyDown={handleKeyDown}
       >
-        <h2 id={titleId}>{title}</h2>
+        <h2 id={titleId} className={ui.h2}>
+          {title}
+        </h2>
         <p id={messageId}>{message}</p>
-        <div className="confirm-actions">
-          <button type="button" ref={cancelRef} onClick={onCancel} disabled={busy}>
+        <div className="flex justify-end gap-3">
+          <button type="button" ref={cancelRef} className={ui.secondaryButton} onClick={onCancel} disabled={busy}>
             {cancelLabel}
           </button>
-          <button type="button" ref={confirmRef} className="confirm-danger" onClick={onConfirm} disabled={busy}>
+          <button type="button" ref={confirmRef} className={ui.dangerButton} onClick={onConfirm} disabled={busy}>
             {confirmLabel}
           </button>
         </div>

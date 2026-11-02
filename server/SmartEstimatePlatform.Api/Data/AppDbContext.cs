@@ -10,7 +10,7 @@ namespace SmartEstimatePlatform.Api.Data;
 /// Every <see cref="ICompanyScoped"/> entity is filtered to the current company, so another company's
 /// records are never visible. Only AuthService may bypass this, with IgnoreQueryFilters.
 /// </summary>
-public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentCompany? currentCompany = null)
+public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? currentUser = null)
     : DbContext(options)
 {
     public DbSet<Company> Companies => Set<Company>();
@@ -20,7 +20,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentCompan
     public DbSet<Material> Materials => Set<Material>();
 
     // Read by the query filters each time a query runs, so each request sees only its own company.
-    private int? CurrentCompanyId => currentCompany?.CompanyId;
+    private int? CurrentCompanyId => currentUser?.CompanyId;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -43,7 +43,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentCompan
         {
             // Same case-insensitive collation as emails, so the unique index and search ignore letter case.
             material.Property(m => m.Name)
-                .HasMaxLength(Material.NameMaxLength)
+                .HasMaxLength(MaterialRules.NameMaxLength)
                 .UseCollation("utf8mb4_0900_as_ci");
 
             material.Property(m => m.Unit).HasMaxLength(16);
@@ -90,7 +90,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentCompan
 
         foreach (var entry in ChangeTracker.Entries<ICompanyScoped>().Where(e => e.State == EntityState.Added))
         {
-            entry.Entity.CompanyId = companyId;
+            entry.Property(e => e.CompanyId).CurrentValue = companyId;
         }
     }
 }

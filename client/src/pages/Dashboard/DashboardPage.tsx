@@ -1,28 +1,11 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { getCurrentUser } from '../../api/auth'
-import { UserRole, type CurrentUser } from '../../interfaces/auth'
+import type { CurrentUser } from '../../interfaces/auth'
 import { logout } from '../../utils/auth'
-import './Dashboard.css'
-
-interface QuickAction {
-  label: string
-  roles: UserRole[]
-  /** Page the action opens; actions without one are shown disabled until their feature is built. */
-  to?: string
-}
-
-const quickActions: QuickAction[] = [
-  { label: 'Projektai', roles: [UserRole.Manager, UserRole.Viewer] },
-  { label: 'Medžiagų katalogas', roles: [UserRole.Manager], to: '/materials' },
-  { label: 'Darbų katalogas', roles: [UserRole.Manager] },
-  { label: 'Komanda', roles: [UserRole.Manager], to: '/team' },
-]
-
-const roleNames: Record<UserRole, string> = {
-  [UserRole.Manager]: 'Vadovas',
-  [UserRole.Viewer]: 'Peržiūrėtojas',
-}
+import DashboardHeader from './DashboardHeader'
+import QuickActions from './QuickActions'
+import UserSummary from './UserSummary'
 
 export default function DashboardPage() {
   const navigate = useNavigate()
@@ -41,40 +24,16 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="dashboard">
-      <header className="dashboard-header">
-        <span className="dashboard-company">{user?.companyName}</span>
-        <button type="button" onClick={handleLogout}>
-          Atsijungti
-        </button>
-      </header>
+    <div className="w-full px-4 pb-8">
+      <DashboardHeader companyName={user?.companyName} onLogout={handleLogout} />
 
       <main>
         {loadFailed && <p role="alert">Nepavyko įkelti duomenų. Bandykite dar kartą.</p>}
         {!user && !loadFailed && <p>Įkeliama…</p>}
         {user && (
           <>
-            <h1>Sveiki, {user.firstName}!</h1>
-            <p>
-              {user.firstName} {user.lastName} · {user.companyName} · {roleNames[user.role]}
-            </p>
-
-            <h2>Greiti veiksmai</h2>
-            <ul className="dashboard-actions">
-              {quickActions
-                .filter((action) => action.roles.includes(user.role))
-                .map((action) => (
-                  <li key={action.label}>
-                    {action.to ? (
-                      <Link to={action.to}>{action.label}</Link>
-                    ) : (
-                      <button type="button" disabled title="Netrukus">
-                        {action.label}
-                      </button>
-                    )}
-                  </li>
-                ))}
-            </ul>
+            <UserSummary user={user} />
+            <QuickActions role={user.role} />
           </>
         )}
       </main>

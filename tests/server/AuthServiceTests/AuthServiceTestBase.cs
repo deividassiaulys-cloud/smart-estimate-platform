@@ -43,13 +43,15 @@ public abstract class AuthServiceTestBase : IDisposable
     /// Runs an action against a fresh AuthService and DbContext, as one request would.
     /// <paramref name="companyId"/> is the logged-in user's company; null means nobody is logged in.
     /// </summary>
-    protected async Task<T> WithServiceAsync<T>(Func<AuthService, Task<T>> action, int? companyId = null)
+    protected async Task<T> WithServiceAsync<T>(Func<AuthService, Task<T>> action, int? companyId = null, int? userId = null)
     {
-        await using var db = new AppDbContext(Options, new FixedCurrentCompany(companyId));
+        var currentUser = new FixedCurrentUser(companyId, userId);
+        await using var db = new AppDbContext(Options, currentUser);
         var service = new AuthService(
             db,
             new PasswordHasher<User>(),
             new TokenService(Microsoft.Extensions.Options.Options.Create(Jwt)),
+            currentUser,
             Clock);
         return await action(service);
     }

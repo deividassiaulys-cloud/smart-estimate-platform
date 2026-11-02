@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
-using SmartEstimatePlatform.Api.Models.DTOs;
+using SmartEstimatePlatform.Api.Models.DTOs.Auth;
+using SmartEstimatePlatform.Api.Models.DTOs.Team;
 using SmartEstimatePlatform.Api.Models.Entities;
 using SmartEstimatePlatform.Api.Tests.TestSupport;
 
@@ -36,7 +37,7 @@ public sealed class TeamEndpointsTests : IDisposable
             });
 
         var login = await _factory.LoginAsync(ViewerEmail, ViewerPassword);
-        var loggedIn = await login.Content.ReadFromJsonAsync<LoginResponse>();
+        var loggedIn = await login.Content.ReadFromJsonAsync<AuthResponse>();
         Assert.Equal(company.CompanyId, loggedIn!.CompanyId);
         Assert.Equal(UserRole.Viewer, loggedIn.Role);
     }
@@ -212,6 +213,6 @@ public sealed class TeamEndpointsTests : IDisposable
     {
         var response = await _factory.LoginAsync(ViewerEmail, password);
         response.EnsureSuccessStatusCode();
-        return (await response.Content.ReadFromJsonAsync<LoginResponse>())!.Token;
+        return (await response.Content.ReadFromJsonAsync<AuthResponse>())!.Token;
     }
 }
