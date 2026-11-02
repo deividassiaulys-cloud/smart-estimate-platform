@@ -44,3 +44,10 @@ rules here — this file only explains day-to-day working conventions.
 - New dependencies require a one-line justification in the relevant plan.md.
 - Every delete/remove action uses the shared ConfirmDialog component (NFR-011).
 - Money is always decimal and is rounded only through the MoneyRounding helper; never use double or float for money.
+
+## Code structure conventions (details: Constitution Article X)
+- Controller actions make one service call and return the result; no logic.
+- A new service comes with IXxxService in the same folder and is registered in AddApplicationServices().
+- A new DTO is one record per file in Models/DTOs/<Feature>/; entity → DTO mapping only in the mapper.
+- Frontend: Tailwind utility classes only, no new .css files, one component per file.
+- Before adding a helper, parameter or option, check that the current spec needs it (YAGNI).
