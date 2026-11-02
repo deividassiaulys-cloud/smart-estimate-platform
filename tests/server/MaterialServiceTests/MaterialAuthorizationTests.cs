@@ -1,8 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
-using SmartEstimatePlatform.Api.Models.DTOs.Auth;
 using SmartEstimatePlatform.Api.Models.DTOs.Materials;
-using SmartEstimatePlatform.Api.Models.DTOs.Team;
 using SmartEstimatePlatform.Api.Tests.TestSupport;
 
 namespace SmartEstimatePlatform.Api.Tests.MaterialServiceTests;
@@ -23,7 +21,7 @@ public sealed class MaterialAuthorizationTests : IDisposable
         var created = await company.Client.PostAsJsonAsync("/api/materials",
             new MaterialRequest { Name = "Cementas", Unit = "kg", Price = 1 });
         var material = (await created.Content.ReadFromJsonAsync<MaterialResponse>())!;
-        var viewer = await CreateViewerClientAsync(company);
+        var viewer = await _factory.CreateViewerClientAsync(company);
         var request = new MaterialRequest { Name = "Smėlis", Unit = "kg", Price = 2 };
 
         var responses = new[]
@@ -44,7 +42,7 @@ public sealed class MaterialAuthorizationTests : IDisposable
     public async Task Viewer_CanReadTheUnits()
     {
         var company = await _factory.RegisterCompanyAsync("Alpha UAB", "alpha@example.com");
-        var viewer = await CreateViewerClientAsync(company);
+        var viewer = await _factory.CreateViewerClientAsync(company);
 
         var response = await viewer.GetAsync("/api/units");
 
@@ -58,21 +56,5 @@ public sealed class MaterialAuthorizationTests : IDisposable
 
         Assert.Equal(HttpStatusCode.Unauthorized, (await client.GetAsync("/api/materials")).StatusCode);
         Assert.Equal(HttpStatusCode.Unauthorized, (await client.GetAsync("/api/units")).StatusCode);
-    }
-
-    private async Task<HttpClient> CreateViewerClientAsync(LoggedInCompany company)
-    {
-        var created = await company.Client.PostAsJsonAsync("/api/team/viewers", new CreateViewerRequest
-        {
-            FirstName = "Ona",
-            LastName = "Onaitė",
-            Email = "ona@example.com",
-            Password = "Viewer123"
-        });
-        created.EnsureSuccessStatusCode();
-
-        var login = await _factory.LoginAsync("ona@example.com", "Viewer123");
-        var token = (await login.Content.ReadFromJsonAsync<AuthResponse>())!.Token;
-        return _factory.CreateClient(token);
     }
 }

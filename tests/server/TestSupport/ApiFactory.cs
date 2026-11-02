@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using SmartEstimatePlatform.Api.Data;
 using SmartEstimatePlatform.Api.Models.DTOs.Auth;
+using SmartEstimatePlatform.Api.Models.DTOs.Team;
 
 namespace SmartEstimatePlatform.Api.Tests.TestSupport;
 
@@ -69,6 +70,25 @@ public sealed class ApiFactory : WebApplicationFactory<Program>
     /// </summary>
     public Task<HttpResponseMessage> LoginAsync(string email, string password) =>
         CreateClient().PostAsJsonAsync("/api/auth/login", new LoginRequest { Email = email, Password = password });
+
+    /// <summary>
+    /// Creates a Viewer in the given company and returns a client logged in as that Viewer.
+    /// </summary>
+    public async Task<HttpClient> CreateViewerClientAsync(LoggedInCompany company)
+    {
+        var created = await company.Client.PostAsJsonAsync("/api/team/viewers", new CreateViewerRequest
+        {
+            FirstName = "Ona",
+            LastName = "Onaitė",
+            Email = "ona@example.com",
+            Password = "Viewer123"
+        });
+        created.EnsureSuccessStatusCode();
+
+        var login = await LoginAsync("ona@example.com", "Viewer123");
+        var token = (await login.Content.ReadFromJsonAsync<AuthResponse>())!.Token;
+        return CreateClient(token);
+    }
 
     /// <summary>
     /// Returns a client that sends the given token.

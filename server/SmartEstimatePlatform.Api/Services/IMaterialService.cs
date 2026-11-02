@@ -36,6 +36,7 @@ public interface IMaterialService
     /// <summary>
     /// Deletes a material. Estimates keep their own copies of material data, so they are not affected.
     /// </summary>
+    /// <exception cref="MaterialInUseException">A work's composition uses the material; it is not deleted.</exception>
     /// <exception cref="NotFoundException">No material with this ID in the current company.</exception>
     Task DeleteAsync(int id);
 }

@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom'
 import type { Material } from '../../interfaces/material'
+import { formatMoney } from '../../utils/format'
 import { ui } from '../../utils/ui'
-
-const priceFormat = new Intl.NumberFormat('lt-LT', { style: 'currency', currency: 'EUR' })
 
 interface MaterialsTableProps {
   materials: Material[]
@@ -27,7 +26,7 @@ export default function MaterialsTable({ materials, onDelete }: MaterialsTablePr
             <tr key={material.id}>
               <td className={ui.cell}>{material.name}</td>
               <td className={ui.cell}>{material.unit}</td>
-              <td className={`${ui.cell} text-right`}>{priceFormat.format(material.price)}</td>
+              <td className={`${ui.cell} text-right`}>{formatMoney(material.price)}</td>
               <td className={ui.actionsCell}>
                 <Link className={ui.link} to={`/materials/${material.id}/edit`}>
                   Redaguoti
