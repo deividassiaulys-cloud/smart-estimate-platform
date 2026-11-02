@@ -51,3 +51,5 @@ rules here — this file only explains day-to-day working conventions.
 - A new DTO is one record per file in Models/DTOs/<Feature>/; entity → DTO mapping only in the mapper.
 - Frontend: Tailwind utility classes only, no new .css files, one component per file.
 - Before adding a helper, parameter or option, check that the current spec needs it (YAGNI).
+- No CancellationToken in controllers or services unless a spec requires cancelling a long-running operation (X.9).
+- Request validation is declared on the request records (data annotations, IValidatableObject) using one shared rule definition (PasswordRules, MaterialRules); services do not repeat it (X.10).

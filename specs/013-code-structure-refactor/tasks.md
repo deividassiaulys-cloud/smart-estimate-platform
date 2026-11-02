@@ -75,29 +75,29 @@
 
 ### Component extraction (X.7) — before Tailwind (research R10)
 
-- [ ] T146 [P] [US2] Extract DashboardHeader (company name + logout button), UserSummary (greeting and name · company · role line) and QuickActions (the `quickActions` list, role filter, links and disabled "Netrukus" buttons) from client/src/pages/Dashboard/DashboardPage.tsx into DashboardHeader.tsx, UserSummary.tsx and QuickActions.tsx in client/src/pages/Dashboard/
-- [ ] T147 [P] [US2] Extract MaterialSearch (search input with its delay) and MaterialsTable (table rows with edit and delete actions) from client/src/pages/Materials/MaterialsPage.tsx into MaterialSearch.tsx and MaterialsTable.tsx in client/src/pages/Materials/; ConfirmDialog stays in the page
-- [ ] T148 [P] [US2] Extract TeamTable from client/src/pages/Team/TeamPage.tsx into client/src/pages/Team/TeamTable.tsx; ConfirmDialog stays in the page; tests/client/ConfirmDialogTests/RemoveViewer.test.tsx must pass unchanged
+- [X] T146 [P] [US2] Extract DashboardHeader (company name + logout button), UserSummary (greeting and name · company · role line) and QuickActions (the `quickActions` list, role filter, links and disabled "Netrukus" buttons) from client/src/pages/Dashboard/DashboardPage.tsx into DashboardHeader.tsx, UserSummary.tsx and QuickActions.tsx in client/src/pages/Dashboard/
+- [X] T147 [P] [US2] Extract MaterialSearch (search input with its delay) and MaterialsTable (table rows with edit and delete actions) from client/src/pages/Materials/MaterialsPage.tsx into MaterialSearch.tsx and MaterialsTable.tsx in client/src/pages/Materials/; ConfirmDialog stays in the page
+- [X] T148 [P] [US2] Extract TeamTable from client/src/pages/Team/TeamPage.tsx into client/src/pages/Team/TeamTable.tsx; ConfirmDialog stays in the page; tests/client/ConfirmDialogTests/RemoveViewer.test.tsx must pass unchanged
 
 ### Tailwind (X.7)
 
-- [ ] T149 [US2] Delete the unused client/src/App.css (imported nowhere)
-- [ ] T150 [US2] Install `tailwindcss@4.3.3` and `@tailwindcss/vite@4.3.3` as dev dependencies in client/package.json; add the `tailwindcss()` plugin in client/vite.config.ts; replace client/src/index.css with `@import "tailwindcss";` plus a `@theme` block holding the existing colour and font tokens; move its base styles (body, #root, headings, dark mode) to utilities in the components
-- [ ] T151 [P] [US2] Convert client/src/components/ConfirmDialog.tsx to Tailwind utilities and delete client/src/components/ConfirmDialog.css
-- [ ] T152 [P] [US2] Convert client/src/pages/Landing/LandingPage.tsx to Tailwind utilities and delete client/src/pages/Landing/Landing.css
-- [ ] T153 [P] [US2] Convert DashboardPage, DashboardHeader, UserSummary and QuickActions to Tailwind utilities and delete client/src/pages/Dashboard/Dashboard.css
-- [ ] T154 [P] [US2] Convert TeamPage and TeamTable to Tailwind utilities and delete client/src/pages/Team/Team.css
-- [ ] T155 [P] [US2] Convert MaterialsPage, MaterialSearch and MaterialsTable to Tailwind utilities and delete client/src/pages/Materials/Materials.css
-- [ ] T156 [US2] Convert LoginPage, RegisterPage, ViewerFormPage, ResetPasswordPage and MaterialFormPage to Tailwind utilities and delete client/src/styles/auth.css (and the empty styles/ folder)
-- [ ] T157 [US2] Walk through every page in client/src/pages and client/src/components as in quickstart.md (light and dark mode, phone width) and fix any visual regression with utilities only
+- [X] T149 [US2] Delete the unused client/src/App.css (imported nowhere)
+- [X] T150 [US2] Install `tailwindcss@4.3.3` and `@tailwindcss/vite@4.3.3` as dev dependencies in client/package.json; add the `tailwindcss()` plugin in client/vite.config.ts; replace client/src/index.css with `@import "tailwindcss";` plus a `@theme` block holding the existing colour and font tokens; move its base styles (body, #root, headings, dark mode) to utilities in the components
+- [X] T151 [P] [US2] Convert client/src/components/ConfirmDialog.tsx to Tailwind utilities and delete client/src/components/ConfirmDialog.css
+- [X] T152 [P] [US2] Convert client/src/pages/Landing/LandingPage.tsx to Tailwind utilities and delete client/src/pages/Landing/Landing.css
+- [X] T153 [P] [US2] Convert DashboardPage, DashboardHeader, UserSummary and QuickActions to Tailwind utilities and delete client/src/pages/Dashboard/Dashboard.css
+- [X] T154 [P] [US2] Convert TeamPage and TeamTable to Tailwind utilities and delete client/src/pages/Team/Team.css
+- [X] T155 [P] [US2] Convert MaterialsPage, MaterialSearch and MaterialsTable to Tailwind utilities and delete client/src/pages/Materials/Materials.css
+- [X] T156 [US2] Convert LoginPage, RegisterPage, ViewerFormPage, ResetPasswordPage and MaterialFormPage to Tailwind utilities and delete client/src/styles/auth.css (and the empty styles/ folder)
+- [X] T157 [US2] Walk through every page in client/src/pages and client/src/components as in quickstart.md (light and dark mode, phone width) and fix any visual regression with utilities only
 
 **Checkpoint**: US2 is complete when only client/src/index.css remains and all frontend checks pass.
 
 ## Phase 5: Polish & Cross-Cutting
 
-- [ ] T158 Compare the current `/openapi/v1.json` with specs/013-code-structure-refactor/baseline-openapi.json; the only differences allowed are those in contracts/api-changes.md (AuthResponse schema, 400 ValidationProblemDetails, response metadata); then delete the baseline file
-- [ ] T159 Sync the "Code structure conventions" in AGENTS.md with Constitution X.9 (no CancellationToken unless a spec requires it) and X.10 (declarative request validation, one definition per rule)
-- [ ] T160 Mark remarks 1–12 as done in docs/review/instructor-feedback.md, and run the full check set plus the quickstart.md structure greps one last time
+- [X] T158 Compare the current `/openapi/v1.json` with specs/013-code-structure-refactor/baseline-openapi.json; the only differences allowed are those in contracts/api-changes.md (AuthResponse schema, 400 ValidationProblemDetails, response metadata); then delete the baseline file
+- [X] T159 Sync the "Code structure conventions" in AGENTS.md with Constitution X.9 (no CancellationToken unless a spec requires it) and X.10 (declarative request validation, one definition per rule)
+- [X] T160 Mark remarks 1–12 as done in docs/review/instructor-feedback.md, and run the full check set plus the quickstart.md structure greps one last time
 
 ## Dependencies
 
