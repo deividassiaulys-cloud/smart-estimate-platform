@@ -73,6 +73,33 @@ namespace SmartEstimatePlatform.Api.Migrations
                     b.ToTable("Materials");
                 });
 
+            modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.Project", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(2000)
+                        .HasColumnType("varchar(2000)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("Projects");
+                });
+
             modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -207,6 +234,17 @@ namespace SmartEstimatePlatform.Api.Migrations
                     b.Navigation("Company");
                 });
 
+            modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.Project", b =>
+                {
+                    b.HasOne("SmartEstimatePlatform.Api.Models.Entities.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+                });
+
             modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.User", b =>
                 {
                     b.HasOne("SmartEstimatePlatform.Api.Models.Entities.Company", "Company")
@@ -237,13 +275,15 @@ namespace SmartEstimatePlatform.Api.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SmartEstimatePlatform.Api.Models.Entities.Work", null)
+                    b.HasOne("SmartEstimatePlatform.Api.Models.Entities.Work", "Work")
                         .WithMany("Lines")
                         .HasForeignKey("WorkId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Material");
+
+                    b.Navigation("Work");
                 });
 
             modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.Company", b =>

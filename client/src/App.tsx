@@ -7,6 +7,9 @@ import LandingPage from './pages/Landing/LandingPage'
 import LoginPage from './pages/Login/LoginPage'
 import MaterialFormPage from './pages/Materials/MaterialFormPage'
 import MaterialsPage from './pages/Materials/MaterialsPage'
+import ProjectDetailPage from './pages/Projects/ProjectDetailPage'
+import ProjectFormPage from './pages/Projects/ProjectFormPage'
+import ProjectsPage from './pages/Projects/ProjectsPage'
 import RegisterPage from './pages/Register/RegisterPage'
 import ResetPasswordPage from './pages/Team/ResetPasswordPage'
 import TeamPage from './pages/Team/TeamPage'
@@ -99,6 +102,38 @@ function App() {
           element={
             <ManagerRoute>
               <WorkFormPage />
+            </ManagerRoute>
+          }
+        />
+        <Route
+          path="/projects"
+          element={
+            <ProtectedRoute>
+              <ProjectsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/projects/new"
+          element={
+            <ManagerRoute>
+              <ProjectFormPage />
+            </ManagerRoute>
+          }
+        />
+        <Route
+          path="/projects/:id"
+          element={
+            <ProtectedRoute>
+              <ProjectDetailPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/projects/:id/edit"
+          element={
+            <ManagerRoute>
+              <ProjectFormPage />
             </ManagerRoute>
           }
         />

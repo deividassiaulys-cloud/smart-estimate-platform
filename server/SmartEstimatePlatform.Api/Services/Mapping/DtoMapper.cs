@@ -1,5 +1,6 @@
 using SmartEstimatePlatform.Api.Models.DTOs.Auth;
 using SmartEstimatePlatform.Api.Models.DTOs.Materials;
+using SmartEstimatePlatform.Api.Models.DTOs.Projects;
 using SmartEstimatePlatform.Api.Models.DTOs.Team;
 using SmartEstimatePlatform.Api.Models.DTOs.Works;
 using SmartEstimatePlatform.Api.Models.Entities;
@@ -75,5 +76,15 @@ public static class DtoMapper
             ConsumptionNorm = line.ConsumptionNorm,
             WastePercent = line.WastePercent
         }).ToList()
+    };
+
+    /// <summary>
+    /// A project as shown to every user of its company.
+    /// </summary>
+    public static ProjectResponse ToResponse(this Project project) => new()
+    {
+        Id = project.Id,
+        Name = project.Name,
+        Description = project.Description
     };
 }
