@@ -1,6 +1,7 @@
 using SmartEstimatePlatform.Api.Models.DTOs.Auth;
 using SmartEstimatePlatform.Api.Models.DTOs.Materials;
 using SmartEstimatePlatform.Api.Models.DTOs.Team;
+using SmartEstimatePlatform.Api.Models.DTOs.Works;
 using SmartEstimatePlatform.Api.Models.Entities;
 
 namespace SmartEstimatePlatform.Api.Services.Mapping;
@@ -53,5 +54,26 @@ public static class DtoMapper
         UserId = user.Id,
         CompanyId = user.CompanyId,
         Role = user.Role
+    };
+
+    /// <summary>
+    /// A work with its composition. Each line's material must be loaded.
+    /// </summary>
+    public static WorkResponse ToResponse(this Work work) => new()
+    {
+        Id = work.Id,
+        Name = work.Name,
+        Unit = work.Unit,
+        LabourRate = work.LabourRate,
+        LabourNorm = work.LabourNorm,
+        Lines = work.Lines.Select(line => new WorkMaterialLineResponse
+        {
+            Id = line.Id,
+            MaterialId = line.MaterialId,
+            MaterialName = line.Material.Name,
+            MaterialUnit = line.Material.Unit,
+            ConsumptionNorm = line.ConsumptionNorm,
+            WastePercent = line.WastePercent
+        }).ToList()
     };
 }

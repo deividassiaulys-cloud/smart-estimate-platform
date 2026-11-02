@@ -43,31 +43,14 @@ public class AuthService(
     }
 
     /// <inheritdoc />
-    public async Task CreateAccountAsync(User account, string password)
+    public Task CreateAccountAsync(User account, string password)
     {
-        if (await EmailExistsAsync(account.Email))
-        {
-            throw new DuplicateEmailException(account.Email);
-        }
-
         account.SetPasswordHash(passwordHasher.HashPassword(account, password));
         db.Users.Add(account);
-        try
-        {
-            await db.SaveChangesAsync();
-        }
-        catch (DbUpdateException)
-        {
-            db.ChangeTracker.Clear();
-
-            // A concurrent request with the same email won the race; the unique index rejected this one.
-            if (await EmailExistsAsync(account.Email))
-            {
-                throw new DuplicateEmailException(account.Email);
-            }
-
-            throw;
-        }
+        return UniqueSave.SaveAsync(
+            db,
+            () => EmailExistsAsync(account.Email),
+            () => new DuplicateEmailException(account.Email));
     }
 
     /// <inheritdoc />

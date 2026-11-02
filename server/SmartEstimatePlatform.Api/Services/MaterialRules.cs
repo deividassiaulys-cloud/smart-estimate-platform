@@ -14,11 +14,6 @@ public static class MaterialRules
     public const int NameMaxLength = 200;
 
     /// <summary>
-    /// The largest price that fits DECIMAL(18,2).
-    /// </summary>
-    public const decimal MaxPrice = 9_999_999_999_999_999.99m;
-
-    /// <summary>
     /// Returns the unit and price errors: the unit must be in the fixed list, and the price must be zero or more,
     /// with at most 2 decimal places, and fit DECIMAL(18,2).
     /// </summary>
@@ -33,12 +28,11 @@ public static class MaterialRules
         {
             yield return new ValidationResult("Price cannot be negative.", ["Price"]);
         }
-        // Checked, not rounded: what the Manager typed is exactly what gets stored.
-        else if (decimal.Round(price, 2) != price)
+        else if (!NumberRules.HasAtMostDecimals(price, 2))
         {
             yield return new ValidationResult("Price can have at most 2 decimal places.", ["Price"]);
         }
-        else if (price > MaxPrice)
+        else if (price > NumberRules.MaxMoney)
         {
             yield return new ValidationResult("Price is too large.", ["Price"]);
         }

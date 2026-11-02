@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ApiError } from '../../api/http'
 import { createMaterial, getMaterial, getUnits, updateMaterial } from '../../api/materials'
 import { ui } from '../../utils/ui'
+import { decimalPattern, parseDecimal } from '../../utils/validation'
 
 interface MaterialForm {
   name: string
@@ -14,8 +15,7 @@ type MaterialErrors = Partial<Record<keyof MaterialForm, string>>
 
 const emptyForm: MaterialForm = { name: '', unit: '', price: '' }
 
-/** Zero or more with at most 2 decimal places; a comma is accepted as the decimal separator. */
-const pricePattern = /^\d+([.,]\d{1,2})?$/
+const pricePattern = decimalPattern(2)
 
 function validate(form: MaterialForm, units: string[]): MaterialErrors {
   const errors: MaterialErrors = {}
@@ -78,7 +78,7 @@ export default function MaterialFormPage() {
     const request = {
       name: form.name.trim(),
       unit: form.unit,
-      price: Number(form.price.trim().replace(',', '.')),
+      price: parseDecimal(form.price),
     }
 
     setSubmitting(true)

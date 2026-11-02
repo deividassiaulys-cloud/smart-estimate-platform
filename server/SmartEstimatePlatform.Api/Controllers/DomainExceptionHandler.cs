@@ -24,7 +24,7 @@ public class DomainExceptionHandler(ProblemDetailsFactory problemDetailsFactory)
         return true;
     }
 
-    // Duplicate errors use fixed texts, because their exception messages name the email or material.
+    // Duplicate errors use fixed texts, because their exception messages name the email, material or work.
     private ProblemDetails? ToProblem(HttpContext httpContext, Exception exception)
     {
         ProblemDetails Problem(int status, string? detail, string? title = null) =>
@@ -40,6 +40,14 @@ public class DomainExceptionHandler(ProblemDetailsFactory problemDetailsFactory)
                 return Problem(StatusCodes.Status409Conflict, "An account with this email already exists.");
             case DuplicateMaterialException:
                 return Problem(StatusCodes.Status409Conflict, "A material with this name and unit already exists.");
+            case DuplicateWorkException:
+                return Problem(StatusCodes.Status409Conflict, "A work with this name and unit already exists.");
+            case UnknownMaterialException:
+                return Problem(StatusCodes.Status400BadRequest, "Each line must use a material from your catalog.");
+            case MaterialInUseException inUse:
+                var inUseProblem = Problem(StatusCodes.Status409Conflict, inUse.Message);
+                inUseProblem.Extensions["works"] = inUse.WorkNames;
+                return inUseProblem;
             case InvalidCredentialsException:
                 return Problem(StatusCodes.Status401Unauthorized, exception.Message);
             case AccountLockedException locked:

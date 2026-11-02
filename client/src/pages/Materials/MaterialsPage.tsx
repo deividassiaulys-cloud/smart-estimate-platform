@@ -1,44 +1,24 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { ApiError } from '../../api/http'
 import { deleteMaterial, getMaterials } from '../../api/materials'
 import ConfirmDialog from '../../components/ConfirmDialog'
+import SearchField from '../../components/SearchField'
+import { useDelayedSearch } from '../../hooks/useDelayedSearch'
 import type { Material } from '../../interfaces/material'
-import MaterialSearch from './MaterialSearch'
 import { ui } from '../../utils/ui'
 import MaterialsTable from './MaterialsTable'
-
-/** How long to wait after the last keystroke before searching. */
-const searchDelayMs = 300
 
 export default function MaterialsPage() {
   const location = useLocation()
   const notice = (location.state as { notice?: string } | null)?.notice
 
-  const [search, setSearch] = useState('')
-  const [materials, setMaterials] = useState<Material[] | null>(null)
-  const [error, setError] = useState<string | null>(null)
+  const { search, setSearch, items: materials, setItems: setMaterials, error, setError } = useDelayedSearch(
+    getMaterials,
+    'Nepavyko įkelti medžiagų. Bandykite dar kartą.',
+  )
   const [toDelete, setToDelete] = useState<Material | null>(null)
   const [deleting, setDeleting] = useState(false)
-
-  useEffect(() => {
-    let cancelled = false
-    const timer = setTimeout(() => {
-      getMaterials(search)
-        .then((found) => {
-          if (cancelled) return
-          setMaterials(found)
-          setError(null)
-        })
-        .catch(() => {
-          if (!cancelled) setError('Nepavyko įkelti medžiagų. Bandykite dar kartą.')
-        })
-    }, search ? searchDelayMs : 0)
-    return () => {
-      cancelled = true
-      clearTimeout(timer)
-    }
-  }, [search])
 
   async function handleConfirmDelete() {
     if (!toDelete) return
@@ -49,7 +29,8 @@ export default function MaterialsPage() {
       setError(null)
     } catch (deleteError) {
       if (deleteError instanceof ApiError && deleteError.status === 409) {
-        setError('Medžiagos negalima ištrinti, nes ji naudojama darbuose.')
+        const works = Array.isArray(deleteError.body.works) ? deleteError.body.works.join(', ') : ''
+        setError(`Medžiagos negalima ištrinti, nes ji naudojama darbuose${works ? `: ${works}` : ''}.`)
       } else {
         setError('Nepavyko ištrinti medžiagos. Bandykite dar kartą.')
       }
@@ -73,7 +54,7 @@ export default function MaterialsPage() {
         </Link>
       </div>
 
-      <MaterialSearch value={search} onChange={setSearch} />
+      <SearchField id="material-search" label="Paieška pagal pavadinimą" value={search} onChange={setSearch} />
 
       {notice && (
         <p className={ui.notice} role="status">

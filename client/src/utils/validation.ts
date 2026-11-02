@@ -16,3 +16,16 @@ export function passwordError(password: string, email: string): string | undefin
   if (password.toLowerCase() === email.trim().toLowerCase()) return 'Slaptažodis negali sutapti su el. paštu.'
   return undefined
 }
+
+/**
+ * Matches a number that is zero or more with at most `places` decimal places; a comma is accepted as the
+ * decimal separator. Mirrors the server's checks for immediate feedback.
+ */
+export function decimalPattern(places: number): RegExp {
+  return new RegExp(`^\\d+([.,]\\d{1,${places}})?$`)
+}
+
+/** Converts a number typed with a comma or a dot as the decimal separator. */
+export function parseDecimal(text: string): number {
+  return Number(text.trim().replace(',', '.'))
+}

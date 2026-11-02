@@ -18,9 +18,9 @@ public class MaterialService(AppDbContext db) : IMaterialService
         var query = db.Materials.AsQueryable();
         if (!string.IsNullOrWhiteSpace(search))
         {
-            // LIKE follows the Name column's case-insensitive collation; % and _ typed by the user match literally.
-            var pattern = "%" + search.Trim().Replace(@"\", @"\\").Replace("%", @"\%").Replace("_", @"\_") + "%";
-            query = query.Where(m => EF.Functions.Like(m.Name, pattern, @"\"));
+            // LIKE follows the Name column's case-insensitive collation.
+            var pattern = SearchPattern.Contains(search);
+            query = query.Where(m => EF.Functions.Like(m.Name, pattern, SearchPattern.Escape));
         }
 
         var materials = await query.OrderBy(m => m.Name).ThenBy(m => m.Unit).ToListAsync();
@@ -53,6 +53,19 @@ public class MaterialService(AppDbContext db) : IMaterialService
     public async Task DeleteAsync(int id)
     {
         var material = await FindAsync(id);
+
+        // A work's composition must never refer to a missing material, so a material in use stays.
+        var workNames = await db.Works
+            .Where(w => w.Lines.Any(l => l.MaterialId == id))
+            .Select(w => w.Name)
+            .Distinct()
+            .OrderBy(name => name)
+            .ToListAsync();
+        if (workNames.Count > 0)
+        {
+            throw new MaterialInUseException(workNames);
+        }
+
         db.Materials.Remove(material);
         await db.SaveChangesAsync();
     }
@@ -61,30 +74,11 @@ public class MaterialService(AppDbContext db) : IMaterialService
         await db.Materials.SingleOrDefaultAsync(m => m.Id == id)
         ?? throw new NotFoundException("Material not found.");
 
-    private async Task SaveAsync(Material material)
-    {
-        if (await DuplicateExistsAsync(material))
-        {
-            throw new DuplicateMaterialException(material.Name, material.Unit);
-        }
-
-        try
-        {
-            await db.SaveChangesAsync();
-        }
-        catch (DbUpdateException)
-        {
-            db.ChangeTracker.Clear();
-
-            // A concurrent request saved the same name and unit first; the unique index rejected this one.
-            if (await DuplicateExistsAsync(material))
-            {
-                throw new DuplicateMaterialException(material.Name, material.Unit);
-            }
-
-            throw;
-        }
-    }
+    private Task SaveAsync(Material material) =>
+        UniqueSave.SaveAsync(
+            db,
+            () => DuplicateExistsAsync(material),
+            () => new DuplicateMaterialException(material.Name, material.Unit));
 
     // The Name column's collation makes this comparison case-insensitive.
     private Task<bool> DuplicateExistsAsync(Material material) =>

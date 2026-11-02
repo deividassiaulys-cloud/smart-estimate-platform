@@ -11,6 +11,8 @@ import RegisterPage from './pages/Register/RegisterPage'
 import ResetPasswordPage from './pages/Team/ResetPasswordPage'
 import TeamPage from './pages/Team/TeamPage'
 import ViewerFormPage from './pages/Team/ViewerFormPage'
+import WorkFormPage from './pages/Works/WorkFormPage'
+import WorksPage from './pages/Works/WorksPage'
 
 function App() {
   return (
@@ -73,6 +75,30 @@ function App() {
           element={
             <ManagerRoute>
               <MaterialFormPage />
+            </ManagerRoute>
+          }
+        />
+        <Route
+          path="/works"
+          element={
+            <ManagerRoute>
+              <WorksPage />
+            </ManagerRoute>
+          }
+        />
+        <Route
+          path="/works/new"
+          element={
+            <ManagerRoute>
+              <WorkFormPage />
+            </ManagerRoute>
+          }
+        />
+        <Route
+          path="/works/:id/edit"
+          element={
+            <ManagerRoute>
+              <WorkFormPage />
             </ManagerRoute>
           }
         />

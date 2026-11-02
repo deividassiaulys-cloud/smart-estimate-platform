@@ -127,6 +127,75 @@ namespace SmartEstimatePlatform.Api.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.Work", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("LabourNorm")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<decimal>("LabourRate")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)")
+                        .UseCollation("utf8mb4_0900_as_ci");
+
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId", "Name", "Unit")
+                        .IsUnique();
+
+                    b.ToTable("Works");
+                });
+
+            modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.WorkMaterialLine", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("ConsumptionNorm")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<int>("MaterialId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("WastePercent")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<int>("WorkId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MaterialId");
+
+                    b.HasIndex("WorkId");
+
+                    b.ToTable("WorkMaterialLines");
+                });
+
             modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.Material", b =>
                 {
                     b.HasOne("SmartEstimatePlatform.Api.Models.Entities.Company", "Company")
@@ -149,9 +218,42 @@ namespace SmartEstimatePlatform.Api.Migrations
                     b.Navigation("Company");
                 });
 
+            modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.Work", b =>
+                {
+                    b.HasOne("SmartEstimatePlatform.Api.Models.Entities.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.WorkMaterialLine", b =>
+                {
+                    b.HasOne("SmartEstimatePlatform.Api.Models.Entities.Material", "Material")
+                        .WithMany()
+                        .HasForeignKey("MaterialId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SmartEstimatePlatform.Api.Models.Entities.Work", null)
+                        .WithMany("Lines")
+                        .HasForeignKey("WorkId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Material");
+                });
+
             modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.Company", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.Work", b =>
+                {
+                    b.Navigation("Lines");
                 });
 #pragma warning restore 612, 618
         }
