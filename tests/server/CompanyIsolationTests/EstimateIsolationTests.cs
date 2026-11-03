@@ -37,7 +37,8 @@ public sealed class EstimateIsolationTests : IDisposable
             await beta.Client.ConfirmEstimateAsync(estimate.Id),
             await beta.Client.ReturnEstimateToDraftAsync(estimate.Id),
             await beta.Client.GetAsync($"/api/estimates/{estimate.Id}/names"),
-            await beta.Client.GetAsync($"/api/projects/{estimate.ProjectId}/estimate-names")
+            await beta.Client.GetAsync($"/api/projects/{estimate.ProjectId}/estimate-names"),
+            await beta.Client.GetAsync($"/api/estimates/{estimate.Id}/export")
         };
 
         Assert.All(responses, response => Assert.Equal(HttpStatusCode.NotFound, response.StatusCode));

@@ -16,6 +16,7 @@ import { EstimateStatus, type Estimate, type EstimateWorkLine } from '../../inte
 import type { Work } from '../../interfaces/work'
 import { ui } from '../../utils/ui'
 import AddWorkForm from './AddWorkForm'
+import EstimateExportButton from './EstimateExportButton'
 import EstimatePercentagesForm from './EstimatePercentagesForm'
 import EstimateStatusActions from './EstimateStatusActions'
 import EstimateTotals from './EstimateTotals'
@@ -100,11 +101,14 @@ export default function EstimateEditorPage() {
         <>
           <div className={ui.listHeading}>
             <h1 className={ui.h1}>{estimate.name}</h1>
-            <EstimateStatusActions
-              status={estimate.status}
-              onConfirm={() => apply(() => confirmEstimate(estimateId))}
-              onReturnToDraft={() => apply(() => returnEstimateToDraft(estimateId))}
-            />
+            <div className="flex flex-wrap items-start gap-3">
+              <EstimateStatusActions
+                status={estimate.status}
+                onConfirm={() => apply(() => confirmEstimate(estimateId))}
+                onReturnToDraft={() => apply(() => returnEstimateToDraft(estimateId))}
+              />
+              <EstimateExportButton estimateId={estimateId} estimateName={estimate.name} />
+            </div>
           </div>
 
           {!readOnly && (

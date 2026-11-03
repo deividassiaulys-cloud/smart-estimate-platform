@@ -9,12 +9,15 @@ interface ConfirmDialogProps {
   cancelLabel?: string
   /** Disables the buttons while the confirmed action runs. */
   busy?: boolean
+  /** "danger" (red) for deletions; "primary" for confirmations that destroy nothing, such as export. */
+  confirmTone?: 'danger' | 'primary'
   onConfirm: () => void
   onCancel: () => void
 }
 
 /**
- * Asks the user to confirm a destructive action. Every delete/remove action uses it (NFR-011).
+ * Asks the user to confirm an action. Every delete/remove action uses it (NFR-011), and so do the status
+ * changes and the export.
  * Focus starts on Cancel, Escape cancels, and Tab stays inside the dialog.
  */
 export default function ConfirmDialog({
@@ -24,6 +27,7 @@ export default function ConfirmDialog({
   confirmLabel = 'Patvirtinti',
   cancelLabel = 'Atšaukti',
   busy = false,
+  confirmTone = 'danger',
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) {
@@ -68,7 +72,7 @@ export default function ConfirmDialog({
           <button type="button" ref={cancelRef} className={ui.secondaryButton} onClick={onCancel} disabled={busy}>
             {cancelLabel}
           </button>
-          <button type="button" ref={confirmRef} className={ui.dangerButton} onClick={onConfirm} disabled={busy}>
+          <button type="button" ref={confirmRef} className={confirmTone === 'danger' ? ui.dangerButton : ui.primaryButton} onClick={onConfirm} disabled={busy}>
             {confirmLabel}
           </button>
         </div>
