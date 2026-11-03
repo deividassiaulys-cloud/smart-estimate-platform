@@ -57,26 +57,14 @@ public static class WorkRules
     /// </summary>
     public static IEnumerable<ValidationResult> ValidateLine(decimal consumptionNorm, decimal wastePercent)
     {
-        if (consumptionNorm <= 0)
+        if (NumberRules.PositiveQuantityError(consumptionNorm, "Consumption norm") is { } normError)
         {
-            yield return new ValidationResult("Consumption norm must be greater than 0.", ["ConsumptionNorm"]);
-        }
-        else if (!NumberRules.HasAtMostDecimals(consumptionNorm, 3))
-        {
-            yield return new ValidationResult("Consumption norm can have at most 3 decimal places.", ["ConsumptionNorm"]);
-        }
-        else if (consumptionNorm > NumberRules.MaxQuantity)
-        {
-            yield return new ValidationResult("Consumption norm is too large.", ["ConsumptionNorm"]);
+            yield return new ValidationResult(normError, ["ConsumptionNorm"]);
         }
 
-        if (wastePercent is < 0 or > 100)
+        if (NumberRules.PercentageError(wastePercent, "Waste percentage") is { } wasteError)
         {
-            yield return new ValidationResult("Waste percentage must be between 0 and 100.", ["WastePercent"]);
-        }
-        else if (!NumberRules.HasAtMostDecimals(wastePercent, 2))
-        {
-            yield return new ValidationResult("Waste percentage can have at most 2 decimal places.", ["WastePercent"]);
+            yield return new ValidationResult(wasteError, ["WastePercent"]);
         }
     }
 }

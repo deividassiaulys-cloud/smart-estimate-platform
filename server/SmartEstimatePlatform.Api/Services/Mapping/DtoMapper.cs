@@ -1,4 +1,5 @@
 using SmartEstimatePlatform.Api.Models.DTOs.Auth;
+using SmartEstimatePlatform.Api.Models.DTOs.Estimates;
 using SmartEstimatePlatform.Api.Models.DTOs.Materials;
 using SmartEstimatePlatform.Api.Models.DTOs.Projects;
 using SmartEstimatePlatform.Api.Models.DTOs.Team;
@@ -86,5 +87,56 @@ public static class DtoMapper
         Id = project.Id,
         Name = project.Name,
         Description = project.Description
+    };
+
+    /// <summary>
+    /// A whole estimate with the amounts from its <see cref="EstimateCalculation"/>.
+    /// </summary>
+    public static EstimateResponse ToResponse(this Estimate estimate, EstimateCalculation calculation) => new()
+    {
+        Id = estimate.Id,
+        ProjectId = estimate.ProjectId,
+        Name = estimate.Name,
+        Status = estimate.Status,
+        OverheadPercent = estimate.OverheadPercent,
+        ProfitPercent = estimate.ProfitPercent,
+        VatPercent = estimate.VatPercent,
+        WorkLines = calculation.WorkLines.Select(work => new EstimateWorkLineResponse
+        {
+            Id = work.Line.Id,
+            WorkName = work.Line.WorkName,
+            WorkUnit = work.Line.WorkUnit,
+            Quantity = work.Line.Quantity,
+            LabourNorm = work.Line.LabourNorm,
+            LabourRate = work.Line.LabourRate,
+            LabourCost = work.LabourCost,
+            MaterialLines = work.MaterialLines.Select(material => new EstimateMaterialLineResponse
+            {
+                Id = material.Line.Id,
+                MaterialName = material.Line.MaterialName,
+                MaterialUnit = material.Line.MaterialUnit,
+                ConsumptionNorm = material.Line.ConsumptionNorm,
+                WastePercent = material.Line.WastePercent,
+                Quantity = material.Quantity,
+                Price = material.Line.Price,
+                Cost = material.Cost
+            }).ToList()
+        }).ToList(),
+        DirectCosts = calculation.DirectCosts,
+        Overhead = calculation.Overhead,
+        Profit = calculation.Profit,
+        Vat = calculation.Vat,
+        Total = calculation.Total
+    };
+
+    /// <summary>
+    /// An estimate as listed on Project Detail, with the total from its <see cref="EstimateCalculation"/>.
+    /// </summary>
+    public static EstimateSummaryResponse ToSummary(this Estimate estimate, EstimateCalculation calculation) => new()
+    {
+        Id = estimate.Id,
+        Name = estimate.Name,
+        Status = estimate.Status,
+        Total = calculation.Total
     };
 }

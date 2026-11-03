@@ -41,7 +41,7 @@ public sealed class CompanyScopingTests : IDisposable
         var alpha = await _factory.RegisterCompanyAsync("Alpha UAB", "alpha@example.com");
         var beta = await _factory.RegisterCompanyAsync("Beta UAB", "beta@example.com");
 
-        await using var db = CreateDbContext(alpha.CompanyId);
+        await using var db = _factory.CreateDbContext(alpha.CompanyId);
 
         var visible = await db.Users.Select(u => u.Id).ToListAsync();
         Assert.Equal([alpha.ManagerId], visible);
@@ -56,12 +56,12 @@ public sealed class CompanyScopingTests : IDisposable
         var alphaPaint = await alpha.CreateMaterialAsync("Dažai", "l");
         await alpha.CreateWorkAsync(CatalogRequests.WorkRequest("Sienų dažymas", "m²", (alphaPaint.Id, 0.150m, 5), (alphaPaint.Id, 0.050m, 0)));
 
-        await using (var alphaDb = CreateDbContext(alpha.CompanyId))
+        await using (var alphaDb = _factory.CreateDbContext(alpha.CompanyId))
         {
             Assert.Equal(2, await alphaDb.WorkMaterialLines.CountAsync());
         }
 
-        await using var betaDb = CreateDbContext(beta.CompanyId);
+        await using var betaDb = _factory.CreateDbContext(beta.CompanyId);
         Assert.Empty(await betaDb.WorkMaterialLines.ToListAsync());
     }
 
@@ -70,7 +70,7 @@ public sealed class CompanyScopingTests : IDisposable
     {
         await _factory.RegisterCompanyAsync("Alpha UAB", "alpha@example.com");
 
-        await using var db = CreateDbContext(companyId: null);
+        await using var db = _factory.CreateDbContext(companyId: null);
 
         Assert.Empty(await db.Users.ToListAsync());
     }
@@ -81,7 +81,7 @@ public sealed class CompanyScopingTests : IDisposable
         var alpha = await _factory.RegisterCompanyAsync("Alpha UAB", "alpha@example.com");
         var beta = await _factory.RegisterCompanyAsync("Beta UAB", "beta@example.com");
 
-        await using (var db = CreateDbContext(alpha.CompanyId))
+        await using (var db = _factory.CreateDbContext(alpha.CompanyId))
         {
             var viewer = new User("Ona", "Onaitė", "ona@example.com", UserRole.Viewer, beta.CompanyId);
             viewer.SetPasswordHash("not-used");
@@ -89,7 +89,7 @@ public sealed class CompanyScopingTests : IDisposable
             await db.SaveChangesAsync();
         }
 
-        await using var check = CreateDbContext(companyId: null);
+        await using var check = _factory.CreateDbContext(companyId: null);
         var saved = await check.Users.IgnoreQueryFilters().SingleAsync(u => u.Email == "ona@example.com");
         Assert.Equal(alpha.CompanyId, saved.CompanyId);
     }
@@ -148,13 +148,6 @@ public sealed class CompanyScopingTests : IDisposable
             .ToList();
 
         Assert.Equal(["AuthService.cs"], bypassingFiles);
-    }
-
-    private AppDbContext CreateDbContext(int? companyId)
-    {
-        _factory.CreateClient(); // Makes sure the database exists.
-        var options = _factory.Services.GetRequiredService<Microsoft.EntityFrameworkCore.DbContextOptions<AppDbContext>>();
-        return new AppDbContext(options, new FixedCurrentUser(companyId));
     }
 
     private static string FindRepositoryRoot()

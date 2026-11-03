@@ -3,6 +3,8 @@ import ManagerRoute from './components/ManagerRoute'
 import ProtectedRoute from './components/ProtectedRoute'
 import SessionExpiryListener from './components/SessionExpiryListener'
 import DashboardPage from './pages/Dashboard/DashboardPage'
+import EstimateCreatePage from './pages/Estimates/EstimateCreatePage'
+import EstimateEditorPage from './pages/Estimates/EstimateEditorPage'
 import LandingPage from './pages/Landing/LandingPage'
 import LoginPage from './pages/Login/LoginPage'
 import MaterialFormPage from './pages/Materials/MaterialFormPage'
@@ -134,6 +136,22 @@ function App() {
           element={
             <ManagerRoute>
               <ProjectFormPage />
+            </ManagerRoute>
+          }
+        />
+        <Route
+          path="/projects/:projectId/estimates/new"
+          element={
+            <ManagerRoute>
+              <EstimateCreatePage />
+            </ManagerRoute>
+          }
+        />
+        <Route
+          path="/estimates/:id"
+          element={
+            <ManagerRoute>
+              <EstimateEditorPage />
             </ManagerRoute>
           }
         />
