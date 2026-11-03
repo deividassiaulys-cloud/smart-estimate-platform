@@ -1,21 +1,25 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
+import { getProjectEstimates } from '../../api/estimates'
 import { ApiError } from '../../api/http'
 import { deleteProject, getProject } from '../../api/projects'
 import ConfirmDialog from '../../components/ConfirmDialog'
+import type { EstimateSummary } from '../../interfaces/estimate'
 import type { Project } from '../../interfaces/project'
 import { isManager } from '../../utils/auth'
 import { ui } from '../../utils/ui'
+import ProjectEstimatesTable from './ProjectEstimatesTable'
 
 /**
- * One project: its name and description for every user, edit and delete for a Manager.
- * The project's estimates are listed here once feature 007 adds them.
+ * One project: its name and description for every user; edit, delete and its estimates for a Manager.
+ * Viewers see no estimates until their names-only view (feature 009).
  */
 export default function ProjectDetailPage() {
   const navigate = useNavigate()
   const projectId = Number(useParams().id)
 
   const [project, setProject] = useState<Project | null>(null)
+  const [estimates, setEstimates] = useState<EstimateSummary[] | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [confirming, setConfirming] = useState(false)
   const [deleting, setDeleting] = useState(false)
@@ -30,6 +34,11 @@ export default function ProjectDetailPage() {
             : 'Nepavyko įkelti projekto. Bandykite dar kartą.',
         ),
       )
+    if (isManager()) {
+      getProjectEstimates(projectId)
+        .then(setEstimates)
+        .catch(() => setError('Nepavyko įkelti sąmatų. Bandykite dar kartą.'))
+    }
   }, [projectId])
 
   async function handleConfirmDelete() {
@@ -76,8 +85,18 @@ export default function ProjectDetailPage() {
           </div>
           {project.description && <p className="whitespace-pre-line">{project.description}</p>}
 
-          <h2 className={`${ui.h2} mt-8`}>Sąmatos</h2>
-          <p>Sąmatų dar nėra.</p>
+          {isManager() && (
+            <>
+              <div className={`${ui.listHeading} mt-8`}>
+                <h2 className={ui.h2}>Sąmatos</h2>
+                <Link className={ui.addLink} to={`/projects/${project.id}/estimates/new`}>
+                  + Nauja sąmata
+                </Link>
+              </div>
+              {estimates && estimates.length === 0 && <p>Sąmatų dar nėra.</p>}
+              {estimates && estimates.length > 0 && <ProjectEstimatesTable estimates={estimates} />}
+            </>
+          )}
         </>
       )}
 

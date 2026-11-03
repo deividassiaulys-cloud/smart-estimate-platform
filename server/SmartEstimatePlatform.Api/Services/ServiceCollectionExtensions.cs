@@ -21,6 +21,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IMaterialService, MaterialService>();
         services.AddScoped<IWorkService, WorkService>();
         services.AddScoped<IProjectService, ProjectService>();
+        services.AddScoped<IEstimateService, EstimateService>();
         services.AddSingleton(TimeProvider.System);
         return services;
     }

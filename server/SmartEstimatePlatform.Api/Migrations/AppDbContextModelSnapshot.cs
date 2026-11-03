@@ -39,6 +39,129 @@ namespace SmartEstimatePlatform.Api.Migrations
                     b.ToTable("Companies");
                 });
 
+            modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.Estimate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<decimal>("OverheadPercent")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<decimal>("ProfitPercent")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("VatPercent")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Estimates");
+                });
+
+            modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.EstimateMaterialLine", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("ConsumptionNorm")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<string>("MaterialName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("MaterialUnit")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
+
+                    b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("WastePercent")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<int>("WorkLineId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WorkLineId");
+
+                    b.ToTable("EstimateMaterialLines");
+                });
+
+            modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.EstimateWorkLine", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EstimateId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("LabourNorm")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<decimal>("LabourRate")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Quantity")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<string>("WorkName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("WorkUnit")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EstimateId");
+
+                    b.ToTable("EstimateWorkLines");
+                });
+
             modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.Material", b =>
                 {
                     b.Property<int>("Id")
@@ -223,6 +346,47 @@ namespace SmartEstimatePlatform.Api.Migrations
                     b.ToTable("WorkMaterialLines");
                 });
 
+            modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.Estimate", b =>
+                {
+                    b.HasOne("SmartEstimatePlatform.Api.Models.Entities.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SmartEstimatePlatform.Api.Models.Entities.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.EstimateMaterialLine", b =>
+                {
+                    b.HasOne("SmartEstimatePlatform.Api.Models.Entities.EstimateWorkLine", "WorkLine")
+                        .WithMany("MaterialLines")
+                        .HasForeignKey("WorkLineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("WorkLine");
+                });
+
+            modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.EstimateWorkLine", b =>
+                {
+                    b.HasOne("SmartEstimatePlatform.Api.Models.Entities.Estimate", "Estimate")
+                        .WithMany("WorkLines")
+                        .HasForeignKey("EstimateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Estimate");
+                });
+
             modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.Material", b =>
                 {
                     b.HasOne("SmartEstimatePlatform.Api.Models.Entities.Company", "Company")
@@ -289,6 +453,16 @@ namespace SmartEstimatePlatform.Api.Migrations
             modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.Company", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.Estimate", b =>
+                {
+                    b.Navigation("WorkLines");
+                });
+
+            modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.EstimateWorkLine", b =>
+                {
+                    b.Navigation("MaterialLines");
                 });
 
             modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.Work", b =>

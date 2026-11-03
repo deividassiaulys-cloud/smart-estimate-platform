@@ -91,6 +91,17 @@ public sealed class ApiFactory : WebApplicationFactory<Program>
     }
 
     /// <summary>
+    /// Opens a database context that sees only the given company's records, as a request of that company would;
+    /// null means nobody is logged in.
+    /// </summary>
+    public AppDbContext CreateDbContext(int? companyId)
+    {
+        CreateClient(); // Makes sure the database exists.
+        var options = Services.GetRequiredService<DbContextOptions<AppDbContext>>();
+        return new AppDbContext(options, new FixedCurrentUser(companyId));
+    }
+
+    /// <summary>
     /// Returns a client that sends the given token.
     /// </summary>
     public HttpClient CreateClient(string token)

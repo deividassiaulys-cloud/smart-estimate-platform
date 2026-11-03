@@ -6,7 +6,7 @@ using SmartEstimatePlatform.Api.Services;
 namespace SmartEstimatePlatform.Api.Data;
 
 /// <summary>
-/// EF Core database context for the platform's companies, their users, their material and work catalogs and their projects.
+/// EF Core database context for the platform's companies, their users, their material and work catalogs, their projects and their estimates.
 /// Every <see cref="ICompanyScoped"/> entity is filtered to the current company, so another company's
 /// records are never visible. Only AuthService may bypass this, with IgnoreQueryFilters.
 /// </summary>
@@ -24,6 +24,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
     public DbSet<WorkMaterialLine> WorkMaterialLines => Set<WorkMaterialLine>();
 
     public DbSet<Project> Projects => Set<Project>();
+
+    public DbSet<Estimate> Estimates => Set<Estimate>();
+
+    public DbSet<EstimateWorkLine> EstimateWorkLines => Set<EstimateWorkLine>();
+
+    public DbSet<EstimateMaterialLine> EstimateMaterialLines => Set<EstimateMaterialLine>();
 
     // Read by the query filters each time a query runs, so each request sees only its own company.
     private int? CurrentCompanyId => currentUser?.CompanyId;
@@ -111,6 +117,60 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
             project.HasOne(p => p.Company)
                 .WithMany()
                 .HasForeignKey(p => p.CompanyId);
+        });
+
+        modelBuilder.Entity<Estimate>(estimate =>
+        {
+            estimate.Property(e => e.Name).HasMaxLength(EstimateRules.NameMaxLength);
+            estimate.Property(e => e.OverheadPercent).HasPrecision(5, 2);
+            estimate.Property(e => e.ProfitPercent).HasPrecision(5, 2);
+            estimate.Property(e => e.VatPercent).HasPrecision(5, 2);
+
+            // Deleting a project deletes its estimates (BR-011).
+            estimate.HasOne(e => e.Project)
+                .WithMany()
+                .HasForeignKey(e => e.ProjectId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            estimate.HasOne(e => e.Company)
+                .WithMany()
+                .HasForeignKey(e => e.CompanyId);
+
+            estimate.HasMany(e => e.WorkLines)
+                .WithOne(l => l.Estimate)
+                .HasForeignKey(l => l.EstimateId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // Estimate lines hold copies of the catalog data and have no foreign keys to it (BR-010).
+        modelBuilder.Entity<EstimateWorkLine>(line =>
+        {
+            line.Property(l => l.WorkName).HasMaxLength(WorkRules.NameMaxLength);
+            line.Property(l => l.WorkUnit).HasMaxLength(16);
+            line.Property(l => l.LabourRate).HasPrecision(18, 2);
+            line.Property(l => l.LabourNorm).HasPrecision(18, 3);
+            line.Property(l => l.Quantity).HasPrecision(18, 3);
+
+            // Removing a work line removes its material lines.
+            line.HasMany(l => l.MaterialLines)
+                .WithOne(m => m.WorkLine)
+                .HasForeignKey(m => m.WorkLineId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Filtered like its estimate, which is filtered by company.
+            line.HasQueryFilter(l => l.Estimate.CompanyId == CurrentCompanyId);
+        });
+
+        modelBuilder.Entity<EstimateMaterialLine>(line =>
+        {
+            line.Property(m => m.MaterialName).HasMaxLength(MaterialRules.NameMaxLength);
+            line.Property(m => m.MaterialUnit).HasMaxLength(16);
+            line.Property(m => m.Price).HasPrecision(18, 2);
+            line.Property(m => m.ConsumptionNorm).HasPrecision(18, 3);
+            line.Property(m => m.WastePercent).HasPrecision(5, 2);
+
+            // Filtered like its work line's estimate.
+            line.HasQueryFilter(m => m.WorkLine.Estimate.CompanyId == CurrentCompanyId);
         });
 
         var applyFilter = GetType().GetMethod(nameof(ApplyCompanyFilter), BindingFlags.NonPublic | BindingFlags.Instance)!;
