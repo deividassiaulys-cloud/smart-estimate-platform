@@ -16,6 +16,19 @@ public interface IEstimateService
     Task<List<EstimateSummaryResponse>> ListForProjectAsync(int projectId);
 
     /// <summary>
+    /// Lists every estimate of a project (Draft and Confirmed alike) by name, with nothing but ID and name,
+    /// for any user of the company.
+    /// </summary>
+    /// <exception cref="NotFoundException">No project with this ID in the current company.</exception>
+    Task<List<EstimateNameResponse>> ListNamesForProjectAsync(int projectId);
+
+    /// <summary>
+    /// Returns an estimate's name and its works' and materials' names, for any user of the company.
+    /// </summary>
+    /// <exception cref="NotFoundException">No estimate with this ID in the current company.</exception>
+    Task<EstimateNamesResponse> GetNamesAsync(int id);
+
+    /// <summary>
     /// Creates a Draft estimate in a project with no lines, overhead and profit at 0 % and VAT at 21 %.
     /// </summary>
     /// <exception cref="NotFoundException">No project with this ID in the current company.</exception>

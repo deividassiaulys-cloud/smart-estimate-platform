@@ -139,4 +139,26 @@ public static class DtoMapper
         Status = estimate.Status,
         Total = calculation.Total
     };
+
+    /// <summary>
+    /// An estimate as listed for any user: ID and name only.
+    /// </summary>
+    public static EstimateNameResponse ToNameResponse(this Estimate estimate) => new()
+    {
+        Id = estimate.Id,
+        Name = estimate.Name
+    };
+
+    /// <summary>
+    /// An estimate's work and material names, in the order they were added; nothing commercial.
+    /// </summary>
+    public static EstimateNamesResponse ToNamesResponse(this Estimate estimate) => new()
+    {
+        Name = estimate.Name,
+        Works = estimate.WorkLines.OrderBy(w => w.Id).Select(work => new WorkNamesResponse
+        {
+            WorkName = work.WorkName,
+            MaterialNames = work.MaterialLines.OrderBy(m => m.Id).Select(m => m.MaterialName).ToList()
+        }).ToList()
+    };
 }

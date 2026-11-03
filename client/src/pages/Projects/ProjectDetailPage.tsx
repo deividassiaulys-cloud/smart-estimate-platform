@@ -1,25 +1,28 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { getProjectEstimates } from '../../api/estimates'
+import { getProjectEstimateNames, getProjectEstimates } from '../../api/estimates'
 import { ApiError } from '../../api/http'
 import { deleteProject, getProject } from '../../api/projects'
 import ConfirmDialog from '../../components/ConfirmDialog'
-import type { EstimateSummary } from '../../interfaces/estimate'
+import type { EstimateName, EstimateSummary } from '../../interfaces/estimate'
 import type { Project } from '../../interfaces/project'
 import { isManager } from '../../utils/auth'
 import { ui } from '../../utils/ui'
+import ProjectEstimateNamesTable from './ProjectEstimateNamesTable'
 import ProjectEstimatesTable from './ProjectEstimatesTable'
 
 /**
- * One project: its name and description for every user; edit, delete and its estimates for a Manager.
- * Viewers see no estimates until their names-only view (feature 009).
+ * One project: its name, description and estimates for every user. A Manager also sees each estimate's status
+ * and total and can edit or delete the project; a Viewer gets the estimates' names only (BR-005).
  */
 export default function ProjectDetailPage() {
   const navigate = useNavigate()
   const projectId = Number(useParams().id)
 
   const [project, setProject] = useState<Project | null>(null)
+  const manager = isManager()
   const [estimates, setEstimates] = useState<EstimateSummary[] | null>(null)
+  const [estimateNames, setEstimateNames] = useState<EstimateName[] | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [confirming, setConfirming] = useState(false)
   const [deleting, setDeleting] = useState(false)
@@ -34,12 +37,15 @@ export default function ProjectDetailPage() {
             : 'Nepavyko įkelti projekto. Bandykite dar kartą.',
         ),
       )
-    if (isManager()) {
-      getProjectEstimates(projectId)
-        .then(setEstimates)
-        .catch(() => setError('Nepavyko įkelti sąmatų. Bandykite dar kartą.'))
+    const estimatesLoadError = () => setError('Nepavyko įkelti sąmatų. Bandykite dar kartą.')
+    if (manager) {
+      getProjectEstimates(projectId).then(setEstimates).catch(estimatesLoadError)
+    } else {
+      getProjectEstimateNames(projectId).then(setEstimateNames).catch(estimatesLoadError)
     }
-  }, [projectId])
+  }, [projectId, manager])
+
+  const listed = manager ? estimates : estimateNames
 
   async function handleConfirmDelete() {
     setDeleting(true)
@@ -72,7 +78,7 @@ export default function ProjectDetailPage() {
         <>
           <div className={ui.listHeading}>
             <h1 className={ui.h1}>{project.name}</h1>
-            {isManager() && (
+            {manager && (
               <div className="flex items-center gap-3">
                 <Link className={ui.link} to={`/projects/${project.id}/edit`}>
                   Redaguoti
@@ -85,18 +91,17 @@ export default function ProjectDetailPage() {
           </div>
           {project.description && <p className="whitespace-pre-line">{project.description}</p>}
 
-          {isManager() && (
-            <>
-              <div className={`${ui.listHeading} mt-8`}>
-                <h2 className={ui.h2}>Sąmatos</h2>
-                <Link className={ui.addLink} to={`/projects/${project.id}/estimates/new`}>
-                  + Nauja sąmata
-                </Link>
-              </div>
-              {estimates && estimates.length === 0 && <p>Sąmatų dar nėra.</p>}
-              {estimates && estimates.length > 0 && <ProjectEstimatesTable estimates={estimates} />}
-            </>
-          )}
+          <div className={`${ui.listHeading} mt-8`}>
+            <h2 className={ui.h2}>Sąmatos</h2>
+            {manager && (
+              <Link className={ui.addLink} to={`/projects/${project.id}/estimates/new`}>
+                + Nauja sąmata
+              </Link>
+            )}
+          </div>
+          {listed && listed.length === 0 && <p>Sąmatų dar nėra.</p>}
+          {estimates && estimates.length > 0 && <ProjectEstimatesTable estimates={estimates} />}
+          {estimateNames && estimateNames.length > 0 && <ProjectEstimateNamesTable estimates={estimateNames} />}
         </>
       )}
 

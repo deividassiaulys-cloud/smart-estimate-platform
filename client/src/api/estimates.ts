@@ -1,4 +1,4 @@
-import type { Estimate, EstimateSummary, Percentages } from '../interfaces/estimate'
+import type { Estimate, EstimateName, EstimateNames, EstimateSummary, Percentages } from '../interfaces/estimate'
 import { apiFetch } from './http'
 
 /** Lists a project's estimates by name, with status and total. */
@@ -44,4 +44,14 @@ export function confirmEstimate(id: number): Promise<Estimate> {
 /** Returns a Confirmed estimate to Draft; returns it, editable again. */
 export function returnEstimateToDraft(id: number): Promise<Estimate> {
   return apiFetch(`/api/estimates/${id}/draft`, { method: 'PATCH' })
+}
+
+/** Lists every estimate of a project by name, for any user of the company. */
+export function getProjectEstimateNames(projectId: number): Promise<EstimateName[]> {
+  return apiFetch(`/api/projects/${projectId}/estimate-names`)
+}
+
+/** Returns an estimate's work and material names, for any user of the company. */
+export function getEstimateNames(id: number): Promise<EstimateNames> {
+  return apiFetch(`/api/estimates/${id}/names`)
 }
