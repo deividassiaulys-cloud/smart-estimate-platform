@@ -13,11 +13,13 @@ const fields: { name: keyof Percentages; label: string }[] = [
 
 interface EstimatePercentagesFormProps {
   estimate: Estimate
+  /** A Confirmed estimate: the percentages cannot be changed. */
+  readOnly: boolean
   onSave: (percentages: Percentages) => Promise<void>
 }
 
 /** Overhead, profit and VAT percentages, saved when a field loses focus or on Enter. */
-export default function EstimatePercentagesForm({ estimate, onSave }: EstimatePercentagesFormProps) {
+export default function EstimatePercentagesForm({ estimate, readOnly, onSave }: EstimatePercentagesFormProps) {
   const [values, setValues] = useState<Record<keyof Percentages, string>>({
     overheadPercent: String(estimate.overheadPercent),
     profitPercent: String(estimate.profitPercent),
@@ -58,6 +60,7 @@ export default function EstimatePercentagesForm({ estimate, onSave }: EstimatePe
               type="text"
               inputMode="decimal"
               autoComplete="off"
+              disabled={readOnly}
               value={values[field.name]}
               onChange={(event) => setValues((current) => ({ ...current, [field.name]: event.target.value }))}
               onBlur={() => void save()}

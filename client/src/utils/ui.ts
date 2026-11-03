@@ -10,7 +10,8 @@ export const ui = {
   form: 'flex flex-col gap-4',
   field: 'flex flex-col gap-1',
   label: 'font-medium text-heading',
-  input: 'rounded-md border border-line bg-page px-3 py-2 text-heading aria-invalid:border-danger',
+  input:
+    'rounded-md border border-line bg-page px-3 py-2 text-heading aria-invalid:border-danger disabled:cursor-not-allowed disabled:opacity-60',
   fieldError: 'text-[0.875em] text-danger',
   error: 'text-danger',
   notice: 'rounded-md border border-accent-line bg-accent-soft px-3 py-2 text-heading',

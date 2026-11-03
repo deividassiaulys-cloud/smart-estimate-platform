@@ -80,6 +80,28 @@ public class EstimateService(AppDbContext db) : IEstimateService
         return Respond(estimate);
     }
 
+    /// <inheritdoc />
+    public Task<EstimateResponse> ConfirmAsync(int id) =>
+        ChangeStatusAsync(id, EstimateStatus.Draft, e => e.Confirm(), "The estimate is already confirmed.");
+
+    /// <inheritdoc />
+    public Task<EstimateResponse> ReturnToDraftAsync(int id) =>
+        ChangeStatusAsync(id, EstimateStatus.Confirmed, e => e.ReturnToDraft(), "The estimate is already a draft.");
+
+    // The one place where the status changes: only from the expected status, otherwise nothing changes.
+    private async Task<EstimateResponse> ChangeStatusAsync(int id, EstimateStatus from, Action<Estimate> change, string rejection)
+    {
+        var estimate = await FindAsync(id);
+        if (estimate.Status != from)
+        {
+            throw new EstimateStatusException(rejection);
+        }
+
+        change(estimate);
+        await db.SaveChangesAsync();
+        return Respond(estimate);
+    }
+
     private static EstimateResponse Respond(Estimate estimate) =>
         estimate.ToResponse(EstimateCalculator.Calculate(estimate));
 

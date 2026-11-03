@@ -51,6 +51,20 @@ public interface IEstimateService
     Task<EstimateResponse> ChangePercentagesAsync(int id, ChangePercentagesRequest request);
 
     /// <summary>
+    /// Confirms a Draft estimate, whatever its number of lines; it can no longer be changed (BR-013).
+    /// </summary>
+    /// <exception cref="NotFoundException">No estimate with this ID in the current company.</exception>
+    /// <exception cref="EstimateStatusException">The estimate is already Confirmed.</exception>
+    Task<EstimateResponse> ConfirmAsync(int id);
+
+    /// <summary>
+    /// Returns a Confirmed estimate to Draft, so it can be changed again.
+    /// </summary>
+    /// <exception cref="NotFoundException">No estimate with this ID in the current company.</exception>
+    /// <exception cref="EstimateStatusException">The estimate is already a Draft.</exception>
+    Task<EstimateResponse> ReturnToDraftAsync(int id);
+
+    /// <summary>
     /// Removes a work line together with its material lines.
     /// </summary>
     /// <exception cref="NotFoundException">No such estimate, or no such line in it.</exception>

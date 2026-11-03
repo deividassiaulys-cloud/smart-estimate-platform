@@ -8,6 +8,8 @@ const quantityPattern = decimalPattern(3)
 
 interface EstimateWorkLineRowProps {
   line: EstimateWorkLine
+  /** A Confirmed estimate: the quantity cannot be changed and the line cannot be removed. */
+  readOnly: boolean
   onQuantityChange: (lineId: number, quantity: number) => Promise<void>
   onRemove: (line: EstimateWorkLine) => void
 }
@@ -16,7 +18,7 @@ interface EstimateWorkLineRowProps {
  * One work line and its generated material lines. The quantity is saved when the field loses focus or on
  * Enter; every amount shown comes from the server.
  */
-export default function EstimateWorkLineRow({ line, onQuantityChange, onRemove }: EstimateWorkLineRowProps) {
+export default function EstimateWorkLineRow({ line, readOnly, onQuantityChange, onRemove }: EstimateWorkLineRowProps) {
   const [quantity, setQuantity] = useState(String(line.quantity))
   const [error, setError] = useState<string | null>(null)
 
@@ -51,6 +53,7 @@ export default function EstimateWorkLineRow({ line, onQuantityChange, onRemove }
               autoComplete="off"
               aria-label={`Kiekis: ${line.workName}`}
               aria-invalid={error ? true : undefined}
+              disabled={readOnly}
               value={quantity}
               onChange={(event) => setQuantity(event.target.value)}
               onBlur={() => void save()}
@@ -64,14 +67,16 @@ export default function EstimateWorkLineRow({ line, onQuantityChange, onRemove }
         </td>
         <td className={`${ui.cell} text-right`}>{formatMoney(line.labourCost)}</td>
         <td className={ui.cell}>
-          <button
-            type="button"
-            className={ui.dangerOutlineButton}
-            aria-label={`Pašalinti ${line.workName}`}
-            onClick={() => onRemove(line)}
-          >
-            Pašalinti
-          </button>
+          {!readOnly && (
+            <button
+              type="button"
+              className={ui.dangerOutlineButton}
+              aria-label={`Pašalinti ${line.workName}`}
+              onClick={() => onRemove(line)}
+            >
+              Pašalinti
+            </button>
+          )}
         </td>
       </tr>
       {line.materialLines.map((material) => (

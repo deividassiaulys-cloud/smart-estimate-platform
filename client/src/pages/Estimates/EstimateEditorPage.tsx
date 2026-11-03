@@ -4,30 +4,32 @@ import {
   addWorkLine,
   changePercentages,
   changeQuantity,
+  confirmEstimate,
   getEstimate,
   removeWorkLine,
+  returnEstimateToDraft,
 } from '../../api/estimates'
 import { ApiError } from '../../api/http'
 import { getWorks } from '../../api/works'
 import ConfirmDialog from '../../components/ConfirmDialog'
-import type { Estimate, EstimateWorkLine } from '../../interfaces/estimate'
+import { EstimateStatus, type Estimate, type EstimateWorkLine } from '../../interfaces/estimate'
 import type { Work } from '../../interfaces/work'
-import { estimateStatusNames } from '../../utils/estimateStatus'
 import { ui } from '../../utils/ui'
 import AddWorkForm from './AddWorkForm'
 import EstimatePercentagesForm from './EstimatePercentagesForm'
+import EstimateStatusActions from './EstimateStatusActions'
 import EstimateTotals from './EstimateTotals'
 import EstimateWorkLineRow from './EstimateWorkLineRow'
 
 function saveErrorMessage(error: unknown): string {
   if (error instanceof ApiError && error.status === 400) return 'Patikrinkite įvestus duomenis.'
-  if (error instanceof ApiError && error.status === 409) return 'Sąmata patvirtinta, jos keisti negalima.'
+  if (error instanceof ApiError && error.status === 409) return 'Sąmatos būsena jau pasikeitė, todėl pakeitimas neišsaugotas.'
   return 'Nepavyko išsaugoti pakeitimo. Bandykite dar kartą.'
 }
 
 /**
  * The Estimate Editor. Each change is saved at once and the page shows the estimate the server sends back,
- * so every amount on screen is the server's calculation.
+ * so every amount on screen is the server's calculation. A Confirmed estimate is shown read-only.
  */
 export default function EstimateEditorPage() {
   const estimateId = Number(useParams().id)
@@ -53,15 +55,21 @@ export default function EstimateEditorPage() {
       )
   }, [estimateId])
 
-  // Runs a change and shows the recalculated estimate, or a message when the server rejects it.
+  // Runs a change and shows the recalculated estimate, or a message when the server rejects it. A 409 means
+  // the status changed elsewhere (e.g. another tab), so the estimate is reloaded and shown as it now is.
   async function apply(change: () => Promise<Estimate>) {
     try {
       setEstimate(await change())
       setError(null)
     } catch (err) {
       setError(saveErrorMessage(err))
+      if (err instanceof ApiError && err.status === 409) {
+        setEstimate(await getEstimate(estimateId))
+      }
     }
   }
+
+  const readOnly = estimate?.status === EstimateStatus.Confirmed
 
   async function handleConfirmRemove() {
     if (!toRemove) return
@@ -92,12 +100,16 @@ export default function EstimateEditorPage() {
         <>
           <div className={ui.listHeading}>
             <h1 className={ui.h1}>{estimate.name}</h1>
-            <span className="rounded-full border border-line px-3 py-1 text-heading">
-              {estimateStatusNames[estimate.status]}
-            </span>
+            <EstimateStatusActions
+              status={estimate.status}
+              onConfirm={() => apply(() => confirmEstimate(estimateId))}
+              onReturnToDraft={() => apply(() => returnEstimateToDraft(estimateId))}
+            />
           </div>
 
-          <AddWorkForm works={works} onAdd={(workId, quantity) => apply(() => addWorkLine(estimateId, workId, quantity))} />
+          {!readOnly && (
+            <AddWorkForm works={works} onAdd={(workId, quantity) => apply(() => addWorkLine(estimateId, workId, quantity))} />
+          )}
 
           {estimate.workLines.length === 0 && <p>Sąmatoje dar nėra darbų.</p>}
           {estimate.workLines.length > 0 && (
@@ -115,8 +127,9 @@ export default function EstimateEditorPage() {
                 </thead>
                 {estimate.workLines.map((line) => (
                   <EstimateWorkLineRow
-                    key={line.id}
+                    key={`${line.id}-${estimate.status}`}
                     line={line}
+                    readOnly={readOnly}
                     onQuantityChange={(lineId, quantity) => apply(() => changeQuantity(estimateId, lineId, quantity))}
                     onRemove={setToRemove}
                   />
@@ -126,7 +139,9 @@ export default function EstimateEditorPage() {
           )}
 
           <EstimatePercentagesForm
+            key={`${estimate.status}-${estimate.overheadPercent}-${estimate.profitPercent}-${estimate.vatPercent}`}
             estimate={estimate}
+            readOnly={readOnly}
             onSave={(percentages) => apply(() => changePercentages(estimateId, percentages))}
           />
           <EstimateTotals estimate={estimate} />

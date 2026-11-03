@@ -69,6 +69,24 @@ public class EstimatesController(IEstimateService estimateService) : ApiControll
         estimateService.RemoveWorkLineAsync(id, lineId);
 
     /// <summary>
+    /// Confirms a Draft estimate; it can then no longer be changed.
+    /// </summary>
+    [HttpPatch("estimates/{id:int}/confirm")]
+    [ProducesResponseType<EstimateResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public Task<EstimateResponse> Confirm(int id) =>
+        estimateService.ConfirmAsync(id);
+
+    /// <summary>
+    /// Returns a Confirmed estimate to Draft.
+    /// </summary>
+    [HttpPatch("estimates/{id:int}/draft")]
+    [ProducesResponseType<EstimateResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public Task<EstimateResponse> ReturnToDraft(int id) =>
+        estimateService.ReturnToDraftAsync(id);
+
+    /// <summary>
     /// Changes the overhead, profit and VAT percentages.
     /// </summary>
     [HttpPatch("estimates/{id:int}/percentages")]
