@@ -5,6 +5,7 @@ import SessionExpiryListener from './components/SessionExpiryListener'
 import DashboardPage from './pages/Dashboard/DashboardPage'
 import EstimateCreatePage from './pages/Estimates/EstimateCreatePage'
 import EstimateEditorPage from './pages/Estimates/EstimateEditorPage'
+import EstimateViewPage from './pages/Estimates/EstimateViewPage'
 import LandingPage from './pages/Landing/LandingPage'
 import LoginPage from './pages/Login/LoginPage'
 import MaterialFormPage from './pages/Materials/MaterialFormPage'
@@ -153,6 +154,14 @@ function App() {
             <ManagerRoute>
               <EstimateEditorPage />
             </ManagerRoute>
+          }
+        />
+        <Route
+          path="/estimates/:id/view"
+          element={
+            <ProtectedRoute>
+              <EstimateViewPage />
+            </ProtectedRoute>
           }
         />
         <Route path="*" element={<Navigate to="/" replace />} />

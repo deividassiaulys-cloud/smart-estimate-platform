@@ -21,6 +21,21 @@ public class EstimateService(AppDbContext db) : IEstimateService
     }
 
     /// <inheritdoc />
+    public async Task<List<EstimateNameResponse>> ListNamesForProjectAsync(int projectId)
+    {
+        await EnsureProjectExistsAsync(projectId);
+        var estimates = await db.Estimates
+            .Where(e => e.ProjectId == projectId)
+            .OrderBy(e => e.Name).ThenBy(e => e.Id)
+            .ToListAsync();
+        return estimates.Select(e => e.ToNameResponse()).ToList();
+    }
+
+    /// <inheritdoc />
+    public async Task<EstimateNamesResponse> GetNamesAsync(int id) =>
+        (await FindAsync(id)).ToNamesResponse();
+
+    /// <inheritdoc />
     public async Task<EstimateResponse> CreateAsync(int projectId, CreateEstimateRequest request)
     {
         await EnsureProjectExistsAsync(projectId);

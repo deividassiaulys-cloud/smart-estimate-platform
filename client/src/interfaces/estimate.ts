@@ -59,3 +59,21 @@ export interface Percentages {
   profitPercent: number
   vatPercent: number
 }
+
+/** An estimate as listed for any user, Viewers included: ID (to open it) and name only. */
+export interface EstimateName {
+  id: number
+  name: string
+}
+
+/** One work of an estimate with its material names; no numbers. */
+export interface WorkNames {
+  workName: string
+  materialNames: string[]
+}
+
+/** An estimate as a Viewer sees it: names only, nothing commercial (BR-005). */
+export interface EstimateNames {
+  name: string
+  works: WorkNames[]
+}
