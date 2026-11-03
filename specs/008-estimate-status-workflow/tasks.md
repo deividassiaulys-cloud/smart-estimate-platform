@@ -20,21 +20,21 @@ Feature 007 already delivered the Status field, its column, the edit lock and th
 **Goal**: A Manager confirms a Draft estimate after a confirmation; it becomes read-only.
 **Independent Test**: T098 and T201 pass; quickstart steps 1–2 work.
 
-- [ ] T200 [US1] Add `Confirm()` and `ReturnToDraft()` (doc comments; they only set the status, X.6) to server/SmartEstimatePlatform.Api/Models/Entities/Estimate.cs. Add `EstimateStatusException(string message)` (doc comments) in server/SmartEstimatePlatform.Api/Services/EstimateStatusException.cs, mapped to 409 with detail = message in Controllers/DomainExceptionHandler.cs
-- [ ] T091 [US1] Add `ConfirmAsync(id)` to IEstimateService/EstimateService in server/SmartEstimatePlatform.Api/Services/EstimateService.cs, through a private `ChangeStatusAsync(id, from, to, message)`: 404 if missing; `EstimateStatusException("The estimate is already confirmed.")` unless Draft; works with any number of lines (spec Q2); returns the recalculated estimate
-- [ ] T094 [US1] Add `PATCH /api/estimates/{id}/confirm` (no body, 200 `EstimateResponse`, 409 declared) in server/SmartEstimatePlatform.Api/Controllers/EstimatesController.cs
-- [ ] T098 [US1] Rewrite tests/server/EstimateServiceTests/EstimateDraftGuardTests.cs to confirm through `PATCH …/confirm` instead of setting the status in the database. Then adding a work, changing a quantity or the percentages, and removing a line each give 409, and nothing changes
-- [ ] T201 [US1] Add integration tests in tests/server/EstimateServiceTests/EstimateStatusTests.cs:
+- [X] T200 [US1] Add `Confirm()` and `ReturnToDraft()` (doc comments; they only set the status, X.6) to server/SmartEstimatePlatform.Api/Models/Entities/Estimate.cs. Add `EstimateStatusException(string message)` (doc comments) in server/SmartEstimatePlatform.Api/Services/EstimateStatusException.cs, mapped to 409 with detail = message in Controllers/DomainExceptionHandler.cs
+- [X] T091 [US1] Add `ConfirmAsync(id)` to IEstimateService/EstimateService in server/SmartEstimatePlatform.Api/Services/EstimateService.cs, through a private `ChangeStatusAsync(id, from, to, message)`: 404 if missing; `EstimateStatusException("The estimate is already confirmed.")` unless Draft; works with any number of lines (spec Q2); returns the recalculated estimate
+- [X] T094 [US1] Add `PATCH /api/estimates/{id}/confirm` (no body, 200 `EstimateResponse`, 409 declared) in server/SmartEstimatePlatform.Api/Controllers/EstimatesController.cs
+- [X] T098 [US1] Rewrite tests/server/EstimateServiceTests/EstimateDraftGuardTests.cs to confirm through `PATCH …/confirm` instead of setting the status in the database. Then adding a work, changing a quantity or the percentages, and removing a line each give 409, and nothing changes
+- [X] T201 [US1] Add integration tests in tests/server/EstimateServiceTests/EstimateStatusTests.cs:
   - confirming a Draft estimate returns `status` Confirmed with unchanged amounts
   - confirming an estimate without works succeeds
   - confirming twice gives 409 "The estimate is already confirmed."
-- [ ] T202 [P] [US1] Add `confirmEstimate(id)` and `returnEstimateToDraft(id)` in client/src/api/estimates.ts
-- [ ] T096 [US1] Add client/src/pages/Estimates/EstimateStatusActions.tsx:
+- [X] T202 [P] [US1] Add `confirmEstimate(id)` and `returnEstimateToDraft(id)` in client/src/api/estimates.ts
+- [X] T096 [US1] Add client/src/pages/Estimates/EstimateStatusActions.tsx:
   - a badge with the status name as text
   - "Patvirtinti" (Draft) or "Grąžinti į juodraštį" (Confirmed), each through `ConfirmDialog` (NFR-011)
 
   Use it in EstimateEditorPage. On 409, show "Sąmatos būsena jau pasikeitė." and reload the estimate (spec Q1)
-- [ ] T203 [US1] Add a read-only mode to the editor, `readOnly` when Confirmed (spec Q3):
+- [X] T203 [US1] Add a read-only mode to the editor, `readOnly` when Confirmed (spec Q3):
   - `AddWorkForm` isn't rendered
   - `EstimateWorkLineRow` disables its quantity input and hides "Pašalinti"
   - `EstimatePercentagesForm` disables its inputs
@@ -50,9 +50,9 @@ Feature 007 already delivered the Status field, its column, the edit lock and th
 **Goal**: A Manager returns a Confirmed estimate to Draft after a confirmation; it becomes editable again.
 **Independent Test**: T204 passes; quickstart step 5 works.
 
-- [ ] T092 [US2] Add `ReturnToDraftAsync(id)` to IEstimateService/EstimateService through the same `ChangeStatusAsync`: `EstimateStatusException("The estimate is already a draft.")` unless Confirmed, in server/SmartEstimatePlatform.Api/Services/EstimateService.cs
-- [ ] T095 [US2] Add `PATCH /api/estimates/{id}/draft` (no body, 200 `EstimateResponse`, 409 declared) in server/SmartEstimatePlatform.Api/Controllers/EstimatesController.cs
-- [ ] T204 [US2] Add integration tests in tests/server/EstimateServiceTests/EstimateStatusTests.cs:
+- [X] T092 [US2] Add `ReturnToDraftAsync(id)` to IEstimateService/EstimateService through the same `ChangeStatusAsync`: `EstimateStatusException("The estimate is already a draft.")` unless Confirmed, in server/SmartEstimatePlatform.Api/Services/EstimateService.cs
+- [X] T095 [US2] Add `PATCH /api/estimates/{id}/draft` (no body, 200 `EstimateResponse`, 409 declared) in server/SmartEstimatePlatform.Api/Controllers/EstimatesController.cs
+- [X] T204 [US2] Add integration tests in tests/server/EstimateServiceTests/EstimateStatusTests.cs:
   - returning a Confirmed estimate to Draft makes it editable again: a quantity change then succeeds
   - returning a Draft estimate gives 409 "The estimate is already a draft."
 
@@ -61,16 +61,16 @@ Feature 007 already delivered the Status field, its column, the edit lock and th
 **Goal**: The project's estimate list shows Draft or Confirmed for every estimate.
 **Independent Test**: T099 passes; quickstart step 3 works.
 
-- [ ] T099 [US3] Add an integration test in tests/server/EstimateServiceTests/EstimateStatusTests.cs: with one Draft and one Confirmed estimate in a project, `GET /api/projects/{id}/estimates` returns each one's status for a Manager
+- [X] T099 [US3] Add an integration test in tests/server/EstimateServiceTests/EstimateStatusTests.cs: with one Draft and one Confirmed estimate in a project, `GET /api/projects/{id}/estimates` returns each one's status for a Manager
 
 ## Phase 4: Cross-cutting
 
-- [ ] T205 Extend tests/server/EstimateServiceTests/EstimateAuthorizationTests.cs (a Viewer gets 403 on `…/confirm` and `…/draft`) and tests/server/CompanyIsolationTests/EstimateIsolationTests.cs (another company's estimate gives 404 on both, and its status doesn't change)
-- [ ] T206 Add a frontend test in tests/client/EstimateEditorTests/EstimateStatus.test.tsx:
+- [X] T205 Extend tests/server/EstimateServiceTests/EstimateAuthorizationTests.cs (a Viewer gets 403 on `…/confirm` and `…/draft`) and tests/server/CompanyIsolationTests/EstimateIsolationTests.cs (another company's estimate gives 404 on both, and its status doesn't change)
+- [X] T206 Add a frontend test in tests/client/EstimateEditorTests/EstimateStatus.test.tsx:
   - "Patvirtinti" asks for confirmation; cancelling sends nothing; confirming sends one `PATCH …/confirm`
   - after confirming, the editor is read-only: no "Pridėti darbą", no "Pašalinti", disabled inputs, badge "Patvirtinta"
   - "Grąžinti į juodraštį" makes it editable again
-- [ ] T207 Run the full check set, plus quickstart.md (against the real app if the local database is configured, otherwise a mock-API visual check of both editor modes); fix any regression
+- [X] T207 Run the full check set, plus quickstart.md (against the real app if the local database is configured, otherwise a mock-API visual check of both editor modes); fix any regression
 
 ## Dependencies
 
