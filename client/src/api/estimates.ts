@@ -35,3 +35,13 @@ export function removeWorkLine(id: number, lineId: number): Promise<Estimate> {
 export function changePercentages(id: number, percentages: Percentages): Promise<Estimate> {
   return apiFetch(`/api/estimates/${id}/percentages`, { method: 'PATCH', body: JSON.stringify(percentages) })
 }
+
+/** Confirms a Draft estimate; returns it, now read-only. */
+export function confirmEstimate(id: number): Promise<Estimate> {
+  return apiFetch(`/api/estimates/${id}/confirm`, { method: 'PATCH' })
+}
+
+/** Returns a Confirmed estimate to Draft; returns it, editable again. */
+export function returnEstimateToDraft(id: number): Promise<Estimate> {
+  return apiFetch(`/api/estimates/${id}/draft`, { method: 'PATCH' })
+}

@@ -33,12 +33,15 @@ public sealed class EstimateIsolationTests : IDisposable
             await beta.Client.PostWorkLineAsync(estimate.Id, betaWork, 1m),
             await beta.Client.PatchAsJsonAsync($"/api/estimates/{estimate.Id}/lines/{lineId}", new ChangeQuantityRequest { Quantity = 1m }),
             await beta.Client.PatchPercentagesAsync(estimate.Id, 1m, 1m, 1m),
-            await beta.Client.DeleteAsync($"/api/estimates/{estimate.Id}/lines/{lineId}")
+            await beta.Client.DeleteAsync($"/api/estimates/{estimate.Id}/lines/{lineId}"),
+            await beta.Client.ConfirmEstimateAsync(estimate.Id),
+            await beta.Client.ReturnEstimateToDraftAsync(estimate.Id)
         };
 
         Assert.All(responses, response => Assert.Equal(HttpStatusCode.NotFound, response.StatusCode));
         var unchanged = await alpha.Client.GetEstimateAsync(estimate.Id);
         Assert.Equal((35m, 0m), (Assert.Single(unchanged.WorkLines).Quantity, unchanged.OverheadPercent));
+        Assert.Equal(SmartEstimatePlatform.Api.Models.Entities.EstimateStatus.Draft, unchanged.Status);
     }
 
     [Fact]

@@ -31,7 +31,9 @@ public sealed class EstimateAuthorizationTests : IDisposable
             await viewer.PostWorkLineAsync(estimate.Id, workId, 1m),
             await viewer.PatchAsJsonAsync($"/api/estimates/{estimate.Id}/lines/{lineId}", new ChangeQuantityRequest { Quantity = 1m }),
             await viewer.PatchPercentagesAsync(estimate.Id, 1m, 1m, 1m),
-            await viewer.DeleteAsync($"/api/estimates/{estimate.Id}/lines/{lineId}")
+            await viewer.DeleteAsync($"/api/estimates/{estimate.Id}/lines/{lineId}"),
+            await viewer.ConfirmEstimateAsync(estimate.Id),
+            await viewer.ReturnEstimateToDraftAsync(estimate.Id)
         };
 
         Assert.All(responses, response => Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode));

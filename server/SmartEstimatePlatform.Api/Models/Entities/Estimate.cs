@@ -70,6 +70,16 @@ public class Estimate : ICompanyScoped
     }
 
     /// <summary>
+    /// Marks the estimate Confirmed; the transition rule is checked by the service.
+    /// </summary>
+    public void Confirm() => Status = EstimateStatus.Confirmed;
+
+    /// <summary>
+    /// Marks the estimate Draft again; the transition rule is checked by the service.
+    /// </summary>
+    public void ReturnToDraft() => Status = EstimateStatus.Draft;
+
+    /// <summary>
     /// Adds a work line with its material lines.
     /// </summary>
     public void AddWorkLine(EstimateWorkLine workLine) => WorkLines.Add(workLine);

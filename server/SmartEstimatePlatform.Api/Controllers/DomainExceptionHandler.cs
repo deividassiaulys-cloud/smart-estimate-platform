@@ -46,7 +46,7 @@ public class DomainExceptionHandler(ProblemDetailsFactory problemDetailsFactory)
                 return Problem(StatusCodes.Status400BadRequest, "Each line must use a material from your catalog.");
             case UnknownWorkException:
                 return Problem(StatusCodes.Status400BadRequest, "The work is not in your catalog.");
-            case EstimateNotDraftException:
+            case EstimateNotDraftException or EstimateStatusException:
                 return Problem(StatusCodes.Status409Conflict, exception.Message);
             case MaterialInUseException inUse:
                 var inUseProblem = Problem(StatusCodes.Status409Conflict, inUse.Message);

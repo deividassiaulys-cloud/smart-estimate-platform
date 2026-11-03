@@ -57,6 +57,18 @@ public static class EstimateRequests
             new ChangePercentagesRequest { OverheadPercent = overhead, ProfitPercent = profit, VatPercent = vat });
 
     /// <summary>
+    /// Confirms an estimate and returns the raw response.
+    /// </summary>
+    public static Task<HttpResponseMessage> ConfirmEstimateAsync(this HttpClient client, int estimateId) =>
+        client.PatchAsync($"/api/estimates/{estimateId}/confirm", null);
+
+    /// <summary>
+    /// Returns an estimate to Draft and returns the raw response.
+    /// </summary>
+    public static Task<HttpResponseMessage> ReturnEstimateToDraftAsync(this HttpClient client, int estimateId) =>
+        client.PatchAsync($"/api/estimates/{estimateId}/draft", null);
+
+    /// <summary>
     /// Reads an estimate.
     /// </summary>
     public static async Task<EstimateResponse> GetEstimateAsync(this HttpClient client, int estimateId) =>
