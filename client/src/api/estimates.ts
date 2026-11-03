@@ -1,5 +1,5 @@
 import type { Estimate, EstimateName, EstimateNames, EstimateSummary, Percentages } from '../interfaces/estimate'
-import { apiFetch } from './http'
+import { apiDownload, apiFetch, type DownloadedFile } from './http'
 
 /** Lists a project's estimates by name, with status and total. */
 export function getProjectEstimates(projectId: number): Promise<EstimateSummary[]> {
@@ -54,4 +54,9 @@ export function getProjectEstimateNames(projectId: number): Promise<EstimateName
 /** Returns an estimate's work and material names, for any user of the company. */
 export function getEstimateNames(id: number): Promise<EstimateNames> {
   return apiFetch(`/api/estimates/${id}/names`)
+}
+
+/** Downloads the estimate as an Excel file with the same data the editor shows. */
+export function exportEstimate(id: number): Promise<DownloadedFile> {
+  return apiDownload(`/api/estimates/${id}/export`, 'samata.xlsx')
 }

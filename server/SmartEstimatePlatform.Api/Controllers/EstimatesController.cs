@@ -15,7 +15,7 @@ namespace SmartEstimatePlatform.Api.Controllers;
 [ProducesResponseType(StatusCodes.Status401Unauthorized)]
 [ProducesResponseType(StatusCodes.Status403Forbidden)]
 [ProducesResponseType(StatusCodes.Status404NotFound)]
-public class EstimatesController(IEstimateService estimateService) : ApiControllerBase
+public class EstimatesController(IEstimateService estimateService, IEstimateExportService exportService) : ApiControllerBase
 {
     /// <summary>
     /// Lists a project's estimates by name, with status and total.
@@ -85,6 +85,17 @@ public class EstimatesController(IEstimateService estimateService) : ApiControll
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public Task<EstimateResponse> ReturnToDraft(int id) =>
         estimateService.ReturnToDraftAsync(id);
+
+    /// <summary>
+    /// Downloads the estimate as an Excel file with the same data the editor shows, Draft or Confirmed.
+    /// </summary>
+    [HttpGet("estimates/{id:int}/export")]
+    [ProducesResponseType<FileContentResult>(StatusCodes.Status200OK, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
+    public async Task<FileContentResult> Export(int id)
+    {
+        var file = await exportService.ExportAsync(id);
+        return File(file.Content, file.ContentType, file.FileName);
+    }
 
     /// <summary>
     /// Changes the overhead, profit and VAT percentages.

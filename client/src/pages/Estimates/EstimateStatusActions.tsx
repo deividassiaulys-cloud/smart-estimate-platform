@@ -42,6 +42,7 @@ export default function EstimateStatusActions({ status, onConfirm, onReturnToDra
         }
         confirmLabel={isDraft ? 'Patvirtinti' : 'Grąžinti'}
         busy={busy}
+        confirmTone="primary"
         onConfirm={handleConfirm}
         onCancel={() => setAsking(false)}
       />
