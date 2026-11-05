@@ -24,17 +24,9 @@ public static class MaterialRules
             yield return new ValidationResult("Unit must be one of the fixed measurement units.", ["Unit"]);
         }
 
-        if (price < 0)
+        if (NumberRules.MoneyError(price, "Price") is { } priceError)
         {
-            yield return new ValidationResult("Price cannot be negative.", ["Price"]);
-        }
-        else if (!NumberRules.HasAtMostDecimals(price, 2))
-        {
-            yield return new ValidationResult("Price can have at most 2 decimal places.", ["Price"]);
-        }
-        else if (price > NumberRules.MaxMoney)
-        {
-            yield return new ValidationResult("Price is too large.", ["Price"]);
+            yield return new ValidationResult(priceError, ["Price"]);
         }
     }
 }

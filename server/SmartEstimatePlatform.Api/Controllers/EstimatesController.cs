@@ -69,6 +69,42 @@ public class EstimatesController(IEstimateService estimateService, IEstimateExpo
         estimateService.RemoveWorkLineAsync(id, lineId);
 
     /// <summary>
+    /// Changes a work line's labour rate in this estimate only.
+    /// </summary>
+    [HttpPatch("estimates/{id:int}/lines/{lineId:int}/labour-rate")]
+    [ProducesResponseType<EstimateResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public Task<EstimateResponse> ChangeLabourRate(int id, int lineId, ChangeLabourRateRequest request) =>
+        estimateService.ChangeLabourRateAsync(id, lineId, request);
+
+    /// <summary>
+    /// Changes a material line's price in this estimate only.
+    /// </summary>
+    [HttpPatch("estimates/{id:int}/lines/{lineId:int}/materials/{materialLineId:int}/price")]
+    [ProducesResponseType<EstimateResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public Task<EstimateResponse> ChangeMaterialPrice(int id, int lineId, int materialLineId, ChangePriceRequest request) =>
+        estimateService.ChangeMaterialPriceAsync(id, lineId, materialLineId, request);
+
+    /// <summary>
+    /// Replaces a material line's material with a same-unit catalog material.
+    /// </summary>
+    [HttpPatch("estimates/{id:int}/lines/{lineId:int}/materials/{materialLineId:int}/material")]
+    [ProducesResponseType<EstimateResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public Task<EstimateResponse> ReplaceMaterial(int id, int lineId, int materialLineId, ReplaceMaterialRequest request) =>
+        estimateService.ReplaceMaterialAsync(id, lineId, materialLineId, request);
+
+    /// <summary>
+    /// Removes one material line from a work line.
+    /// </summary>
+    [HttpDelete("estimates/{id:int}/lines/{lineId:int}/materials/{materialLineId:int}")]
+    [ProducesResponseType<EstimateResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public Task<EstimateResponse> RemoveMaterialLine(int id, int lineId, int materialLineId) =>
+        estimateService.RemoveMaterialLineAsync(id, lineId, materialLineId);
+
+    /// <summary>
     /// Confirms a Draft estimate; it can then no longer be changed.
     /// </summary>
     [HttpPatch("estimates/{id:int}/confirm")]

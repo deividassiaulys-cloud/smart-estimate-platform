@@ -2,17 +2,23 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import {
   addWorkLine,
+  changeLabourRate,
+  changeMaterialPrice,
   changePercentages,
   changeQuantity,
   confirmEstimate,
   getEstimate,
+  removeMaterialLine,
   removeWorkLine,
+  replaceMaterial,
   returnEstimateToDraft,
 } from '../../api/estimates'
 import { ApiError } from '../../api/http'
+import { getMaterials } from '../../api/materials'
 import { getWorks } from '../../api/works'
 import ConfirmDialog from '../../components/ConfirmDialog'
-import { EstimateStatus, type Estimate, type EstimateWorkLine } from '../../interfaces/estimate'
+import { EstimateStatus, type Estimate, type EstimateMaterialLine, type EstimateWorkLine } from '../../interfaces/estimate'
+import type { Material } from '../../interfaces/material'
 import type { Work } from '../../interfaces/work'
 import { ui } from '../../utils/ui'
 import AddWorkForm from './AddWorkForm'
@@ -41,6 +47,8 @@ export default function EstimateEditorPage() {
   const [error, setError] = useState<string | null>(null)
   const [toRemove, setToRemove] = useState<EstimateWorkLine | null>(null)
   const [removing, setRemoving] = useState(false)
+  const [materials, setMaterials] = useState<Material[]>([])
+  const [materialToRemove, setMaterialToRemove] = useState<{ line: EstimateWorkLine; material: EstimateMaterialLine } | null>(null)
 
   useEffect(() => {
     Promise.all([getEstimate(estimateId), getWorks()])
@@ -57,21 +65,47 @@ export default function EstimateEditorPage() {
       )
   }, [estimateId])
 
-  // Runs a change and shows the recalculated estimate, or a message when the server rejects it. A 409 means
-  // the status changed elsewhere (e.g. another tab), so the estimate is reloaded and shown as it now is.
+  const loaded = estimate !== null
+  const readOnly = estimate?.status === EstimateStatus.Confirmed
+
+  // The catalog is only needed to offer replacement materials, so a Confirmed estimate does not load it.
+  useEffect(() => {
+    if (!loaded || readOnly) return
+    getMaterials()
+      .then(setMaterials)
+      .catch(() => setMaterials([]))
+  }, [loaded, readOnly])
+
+  // Runs a change and shows the recalculated estimate, or a message when the server rejects it.
   async function apply(change: () => Promise<Estimate>) {
     try {
       setEstimate(await change())
       setError(null)
     } catch (err) {
-      setError(saveErrorMessage(err))
-      if (err instanceof ApiError && err.status === 409) {
-        setEstimate(await getEstimate(estimateId))
-      }
+      await showFailure(err)
     }
   }
 
-  const readOnly = estimate?.status === EstimateStatus.Confirmed
+  // Like apply, but a 400 is left to the field that sent the value: it resolves to false so the field shows
+  // its own message.
+  async function applyField(change: () => Promise<Estimate>): Promise<boolean> {
+    try {
+      setEstimate(await change())
+      setError(null)
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 400) return false
+      await showFailure(err)
+    }
+    return true
+  }
+
+  // A 409 means the status changed elsewhere (e.g. another tab), so the estimate is reloaded and shown as it now is.
+  async function showFailure(err: unknown) {
+    setError(saveErrorMessage(err))
+    if (err instanceof ApiError && err.status === 409) {
+      setEstimate(await getEstimate(estimateId))
+    }
+  }
 
   async function handleConfirmRemove() {
     if (!toRemove) return
@@ -79,6 +113,14 @@ export default function EstimateEditorPage() {
     await apply(() => removeWorkLine(estimateId, toRemove.id))
     setRemoving(false)
     setToRemove(null)
+  }
+
+  async function handleConfirmMaterialRemove() {
+    if (!materialToRemove) return
+    setRemoving(true)
+    await apply(() => removeMaterialLine(estimateId, materialToRemove.line.id, materialToRemove.material.id))
+    setRemoving(false)
+    setMaterialToRemove(null)
   }
 
   return (
@@ -134,9 +176,20 @@ export default function EstimateEditorPage() {
                   <EstimateWorkLineRow
                     key={`${line.id}-${estimate.status}`}
                     line={line}
+                    catalog={materials}
                     readOnly={readOnly}
-                    onQuantityChange={(lineId, quantity) => apply(() => changeQuantity(estimateId, lineId, quantity))}
+                    onQuantityChange={(lineId, quantity) => applyField(() => changeQuantity(estimateId, lineId, quantity))}
+                    onLabourRateChange={(lineId, labourRate) =>
+                      applyField(() => changeLabourRate(estimateId, lineId, labourRate))
+                    }
+                    onMaterialPriceChange={(lineId, materialLineId, price) =>
+                      applyField(() => changeMaterialPrice(estimateId, lineId, materialLineId, price))
+                    }
+                    onMaterialReplace={(lineId, materialLineId, materialId) =>
+                      applyField(() => replaceMaterial(estimateId, lineId, materialLineId, materialId))
+                    }
                     onRemove={setToRemove}
+                    onMaterialRemove={(removedLine, material) => setMaterialToRemove({ line: removedLine, material })}
                   />
                 ))}
               </table>
@@ -161,6 +214,15 @@ export default function EstimateEditorPage() {
         busy={removing}
         onConfirm={handleConfirmRemove}
         onCancel={() => setToRemove(null)}
+      />
+      <ConfirmDialog
+        open={materialToRemove !== null}
+        title="Pašalinti medžiagą?"
+        message={materialToRemove ? `Pašalinti medžiagą „${materialToRemove.material.materialName}“ iš šios sąmatos?` : ''}
+        confirmLabel="Pašalinti"
+        busy={removing}
+        onConfirm={handleConfirmMaterialRemove}
+        onCancel={() => setMaterialToRemove(null)}
       />
     </main>
   )

@@ -44,6 +44,8 @@ public class DomainExceptionHandler(ProblemDetailsFactory problemDetailsFactory)
                 return Problem(StatusCodes.Status409Conflict, "A work with this name and unit already exists.");
             case UnknownMaterialException:
                 return Problem(StatusCodes.Status400BadRequest, "Each line must use a material from your catalog.");
+            case MaterialUnitMismatchException:
+                return Problem(StatusCodes.Status400BadRequest, exception.Message);
             case UnknownWorkException:
                 return Problem(StatusCodes.Status400BadRequest, "The work is not in your catalog.");
             case EstimateNotDraftException or EstimateStatusException:

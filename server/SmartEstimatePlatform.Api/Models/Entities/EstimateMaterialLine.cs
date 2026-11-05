@@ -51,4 +51,19 @@ public class EstimateMaterialLine
     /// Waste percentage from 0 to 100, as copied from the work's composition.
     /// </summary>
     public decimal WastePercent { get; private set; }
+
+    /// <summary>
+    /// Replaces the price with an already validated value; the catalog material is not changed.
+    /// </summary>
+    public void ChangePrice(decimal price) => Price = price;
+
+    /// <summary>
+    /// Takes another material's name, unit and price, keeping this line's norm and waste.
+    /// </summary>
+    public void ReplaceMaterial(string materialName, string materialUnit, decimal price)
+    {
+        MaterialName = materialName;
+        MaterialUnit = materialUnit;
+        Price = price;
+    }
 }
