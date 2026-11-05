@@ -5,6 +5,7 @@ import type { Project } from '../../interfaces/project'
 import { isManager } from '../../utils/auth'
 import { ui } from '../../utils/ui'
 import ProjectsTable from './ProjectsTable'
+import { unexpectedError } from '../../utils/errors'
 
 /** The company's projects, for Managers and Viewers; only a Manager can add one. */
 export default function ProjectsPage() {
@@ -17,7 +18,7 @@ export default function ProjectsPage() {
   useEffect(() => {
     getProjects()
       .then(setProjects)
-      .catch(() => setError('Nepavyko įkelti projektų. Bandykite dar kartą.'))
+      .catch(() => setError(unexpectedError('įkelti projektų')))
   }, [])
 
   return (

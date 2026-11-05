@@ -4,6 +4,7 @@ import { login } from '../../api/auth'
 import { ApiError } from '../../api/http'
 import { saveToken } from '../../utils/auth'
 import { ui } from '../../utils/ui'
+import { unexpectedError } from '../../utils/errors'
 
 function loginErrorMessage(error: unknown): string {
   if (error instanceof ApiError) {
@@ -13,7 +14,7 @@ function loginErrorMessage(error: unknown): string {
       return `Paskyra laikinai užrakinta dėl per daug nesėkmingų bandymų. Bandykite dar kartą po ${minutes} min.`
     }
   }
-  return 'Prisijungti nepavyko. Bandykite dar kartą.'
+  return unexpectedError('prisijungti')
 }
 
 export default function LoginPage() {

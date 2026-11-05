@@ -1,6 +1,6 @@
 import { useState, type KeyboardEvent } from 'react'
 import type { EstimateWorkLine } from '../../interfaces/estimate'
-import { formatMoney, formatQuantity } from '../../utils/format'
+import { formatMoney, formatQuantity, toInputNumber } from '../../utils/format'
 import { ui } from '../../utils/ui'
 import { decimalPattern, parseDecimal } from '../../utils/validation'
 
@@ -19,7 +19,7 @@ interface EstimateWorkLineRowProps {
  * Enter; every amount shown comes from the server.
  */
 export default function EstimateWorkLineRow({ line, readOnly, onQuantityChange, onRemove }: EstimateWorkLineRowProps) {
-  const [quantity, setQuantity] = useState(String(line.quantity))
+  const [quantity, setQuantity] = useState(toInputNumber(line.quantity))
   const [error, setError] = useState<string | null>(null)
 
   async function save() {

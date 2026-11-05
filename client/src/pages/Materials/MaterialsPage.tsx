@@ -8,6 +8,7 @@ import { useDelayedSearch } from '../../hooks/useDelayedSearch'
 import type { Material } from '../../interfaces/material'
 import { ui } from '../../utils/ui'
 import MaterialsTable from './MaterialsTable'
+import { unexpectedError } from '../../utils/errors'
 
 export default function MaterialsPage() {
   const location = useLocation()
@@ -15,7 +16,7 @@ export default function MaterialsPage() {
 
   const { search, setSearch, items: materials, setItems: setMaterials, error, setError } = useDelayedSearch(
     getMaterials,
-    'Nepavyko įkelti medžiagų. Bandykite dar kartą.',
+    unexpectedError('įkelti medžiagų'),
   )
   const [toDelete, setToDelete] = useState<Material | null>(null)
   const [deleting, setDeleting] = useState(false)
@@ -32,7 +33,7 @@ export default function MaterialsPage() {
         const works = Array.isArray(deleteError.body.works) ? deleteError.body.works.join(', ') : ''
         setError(`Medžiagos negalima ištrinti, nes ji naudojama darbuose${works ? `: ${works}` : ''}.`)
       } else {
-        setError('Nepavyko ištrinti medžiagos. Bandykite dar kartą.')
+        setError(unexpectedError('ištrinti medžiagos'))
       }
     } finally {
       setDeleting(false)

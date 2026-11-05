@@ -92,6 +92,20 @@ public sealed class EstimateExportTests : IDisposable
     }
 
     [Fact]
+    public async Task PercentageLabels_AreWrittenTheLithuanianWay()
+    {
+        var company = await _factory.RegisterCompanyAsync("Alpha UAB", "alpha@example.com");
+        var estimate = await company.CreateEstimateAsync();
+        await company.Client.PatchPercentagesAsync(estimate.Id, 12.5m, 15m, 21m);
+
+        using var file = await ExportAsync(company.Client, estimate.Id);
+        var labels = file.Worksheet("Sąmata").CellsUsed(c => c.Address.ColumnNumber == 1).Select(c => c.GetString()).ToList();
+
+        Assert.Contains("Pridėtinės išlaidos (12,5 %)", labels);
+        Assert.Contains("Pelnas (15 %)", labels);
+    }
+
+    [Fact]
     public async Task FormulaLikeNames_AreExportedAsTextNotFormulas()
     {
         const string materialName = "=HYPERLINK(\"http://x\",\"y\")";

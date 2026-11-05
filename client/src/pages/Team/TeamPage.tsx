@@ -5,6 +5,7 @@ import ConfirmDialog from '../../components/ConfirmDialog'
 import type { TeamMember } from '../../interfaces/team'
 import { ui } from '../../utils/ui'
 import TeamTable from './TeamTable'
+import { unexpectedError } from '../../utils/errors'
 
 export default function TeamPage() {
   const location = useLocation()
@@ -18,7 +19,7 @@ export default function TeamPage() {
   useEffect(() => {
     getTeam()
       .then(setMembers)
-      .catch(() => setError('Nepavyko įkelti komandos. Bandykite dar kartą.'))
+      .catch(() => setError(unexpectedError('įkelti komandos')))
   }, [])
 
   async function handleConfirmRemove() {
@@ -29,7 +30,7 @@ export default function TeamPage() {
       setMembers((current) => current?.filter((member) => member.id !== toRemove.id) ?? null)
       setError(null)
     } catch {
-      setError('Nepavyko pašalinti peržiūrėtojo. Bandykite dar kartą.')
+      setError(unexpectedError('pašalinti peržiūrėtojo'))
     } finally {
       setRemoving(false)
       setToRemove(null)

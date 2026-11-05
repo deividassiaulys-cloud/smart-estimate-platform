@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { exportEstimate } from '../../api/estimates'
 import ConfirmDialog from '../../components/ConfirmDialog'
+import { unexpectedError } from '../../utils/errors'
 import { ui } from '../../utils/ui'
 
 interface EstimateExportButtonProps {
@@ -29,7 +30,7 @@ export default function EstimateExportButton({ estimateId, estimateName }: Estim
       link.click()
       URL.revokeObjectURL(url)
     } catch {
-      setError('Eksportuoti nepavyko. Bandykite dar kartą.')
+      setError(unexpectedError('eksportuoti sąmatos'))
     } finally {
       setExporting(false)
       setAsking(false)

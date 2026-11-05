@@ -21,11 +21,12 @@ import EstimatePercentagesForm from './EstimatePercentagesForm'
 import EstimateStatusActions from './EstimateStatusActions'
 import EstimateTotals from './EstimateTotals'
 import EstimateWorkLineRow from './EstimateWorkLineRow'
+import { unexpectedError } from '../../utils/errors'
 
 function saveErrorMessage(error: unknown): string {
   if (error instanceof ApiError && error.status === 400) return 'Patikrinkite įvestus duomenis.'
   if (error instanceof ApiError && error.status === 409) return 'Sąmatos būsena jau pasikeitė, todėl pakeitimas neišsaugotas.'
-  return 'Nepavyko išsaugoti pakeitimo. Bandykite dar kartą.'
+  return unexpectedError('išsaugoti pakeitimo')
 }
 
 /**
@@ -51,7 +52,7 @@ export default function EstimateEditorPage() {
         setError(
           err instanceof ApiError && err.status === 404
             ? 'Sąmata nerasta.'
-            : 'Nepavyko įkelti sąmatos. Bandykite dar kartą.',
+            : unexpectedError('įkelti sąmatos'),
         ),
       )
   }, [estimateId])

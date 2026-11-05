@@ -8,8 +8,8 @@ import { ui } from '../../utils/ui'
 export default function ProjectEstimatesTable({ estimates }: { estimates: EstimateSummary[] }) {
   return (
     <div className={ui.tableWrapper}>
-      <table className={ui.table}>
-        <thead>
+      <table className={ui.listTable}>
+        <thead className={ui.listHead}>
           <tr>
             <th className={ui.cell}>Pavadinimas</th>
             <th className={ui.cell}>Būsena</th>
@@ -17,13 +17,13 @@ export default function ProjectEstimatesTable({ estimates }: { estimates: Estima
             <th className={ui.cell}>Veiksmai</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className={ui.listBody}>
           {estimates.map((estimate) => (
-            <tr key={estimate.id}>
-              <td className={ui.cell}>{estimate.name}</td>
-              <td className={ui.cell}>{estimateStatusNames[estimate.status]}</td>
-              <td className={`${ui.cell} text-right`}>{formatMoney(estimate.total)}</td>
-              <td className={ui.cell}>
+            <tr className={ui.listRow} key={estimate.id}>
+              <td className={ui.listTitleCell}>{estimate.name}</td>
+              <td className={ui.listCell} data-label="Būsena">{estimateStatusNames[estimate.status]}</td>
+              <td className={`${ui.listCell} text-right`} data-label="Suma su PVM">{formatMoney(estimate.total)}</td>
+              <td className={ui.listActionsCell}>
                 <Link className={ui.link} to={`/estimates/${estimate.id}`}>
                   Atidaryti
                 </Link>

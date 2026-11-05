@@ -51,7 +51,7 @@ export default function WorkLinesEditor({ lines, materials, errors, onChange }: 
   }
 
   return (
-    <fieldset className="flex flex-col gap-2">
+    <fieldset className="flex min-w-0 flex-col gap-2">
       <legend className={ui.label}>Medžiagos</legend>
       {lines.length === 0 && <p>Darbas be medžiagų.</p>}
       {lines.length > 0 && (

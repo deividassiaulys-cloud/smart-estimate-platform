@@ -5,6 +5,7 @@ import { createViewer } from '../../api/team'
 import type { CreateViewerRequest } from '../../interfaces/team'
 import { emailError, passwordError } from '../../utils/validation'
 import { ui } from '../../utils/ui'
+import { unexpectedError } from '../../utils/errors'
 
 type ViewerErrors = Partial<Record<keyof CreateViewerRequest, string>>
 
@@ -57,7 +58,7 @@ export default function ViewerFormPage() {
       } else if (error instanceof ApiError && error.status === 400) {
         setSubmitError('Patikrinkite įvestus duomenis.')
       } else {
-        setSubmitError('Nepavyko sukurti peržiūrėtojo. Bandykite dar kartą.')
+        setSubmitError(unexpectedError('sukurti peržiūrėtojo'))
       }
     } finally {
       setSubmitting(false)

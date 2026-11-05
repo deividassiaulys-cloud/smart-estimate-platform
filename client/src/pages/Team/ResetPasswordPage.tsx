@@ -6,6 +6,7 @@ import { UserRole } from '../../interfaces/auth'
 import type { TeamMember } from '../../interfaces/team'
 import { passwordError } from '../../utils/validation'
 import { ui } from '../../utils/ui'
+import { unexpectedError } from '../../utils/errors'
 
 export default function ResetPasswordPage() {
   const navigate = useNavigate()
@@ -24,7 +25,7 @@ export default function ResetPasswordPage() {
         if (found) setViewer(found)
         else setLoadError('Peržiūrėtojas nerastas.')
       })
-      .catch(() => setLoadError('Nepavyko įkelti duomenų. Bandykite dar kartą.'))
+      .catch(() => setLoadError(unexpectedError('įkelti duomenų')))
   }, [viewerId])
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -43,7 +44,7 @@ export default function ResetPasswordPage() {
       setError(
         err instanceof ApiError && err.status === 404
           ? 'Peržiūrėtojas nerastas.'
-          : 'Nepavyko pakeisti slaptažodžio. Bandykite dar kartą.',
+          : unexpectedError('pakeisti slaptažodžio'),
       )
     } finally {
       setSubmitting(false)

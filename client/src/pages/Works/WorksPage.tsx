@@ -7,6 +7,7 @@ import { useDelayedSearch } from '../../hooks/useDelayedSearch'
 import type { Work } from '../../interfaces/work'
 import { ui } from '../../utils/ui'
 import WorksTable from './WorksTable'
+import { unexpectedError } from '../../utils/errors'
 
 export default function WorksPage() {
   const location = useLocation()
@@ -14,7 +15,7 @@ export default function WorksPage() {
 
   const { search, setSearch, items: works, setItems: setWorks, error, setError } = useDelayedSearch(
     getWorks,
-    'Nepavyko įkelti darbų. Bandykite dar kartą.',
+    unexpectedError('įkelti darbų'),
   )
   const [toDelete, setToDelete] = useState<Work | null>(null)
   const [deleting, setDeleting] = useState(false)
@@ -27,7 +28,7 @@ export default function WorksPage() {
       setWorks((current) => current?.filter((work) => work.id !== toDelete.id) ?? null)
       setError(null)
     } catch {
-      setError('Nepavyko ištrinti darbo. Bandykite dar kartą.')
+      setError(unexpectedError('ištrinti darbo'))
     } finally {
       setDeleting(false)
       setToDelete(null)

@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { afterEach, beforeEach, expect, test, vi } from 'vitest'
@@ -68,13 +68,15 @@ test('the Estimate View shows the work and material names and nothing commercial
 
   expect(await screen.findByRole('heading', { name: 'Pradinė sąmata' })).toBeTruthy()
   expect(screen.getByRole('heading', { name: 'Siena A++' })).toBeTruthy()
-  expect(screen.getAllByRole('listitem').map((item) => item.textContent)).toEqual(['Gipso plokštė', 'Varžtai', 'Plėvelė'])
+  const page = within(screen.getByRole('main'))
+  expect(page.getAllByRole('listitem').map((item) => item.textContent)).toEqual(['Gipso plokštė', 'Varžtai', 'Plėvelė'])
 
-  const page = document.body.textContent ?? ''
+  const text = document.body.textContent ?? ''
   for (const forbidden of ['€', '35', '77', '918,75', '420,00', 'Juodraštis', 'Patvirtinta']) {
-    expect(page).not.toContain(forbidden)
+    expect(text).not.toContain(forbidden)
   }
-  expect(requestedPaths()).toEqual(['/api/estimates/9/names'])
+  // The only estimate data requested is the names; the shared menu (012) also asks for the company name.
+  expect(requestedPaths().filter((path) => path.startsWith('/api/estimates'))).toEqual(['/api/estimates/9/names'])
 })
 
 test('a Viewer can go from Project Detail to the Estimate View', async () => {

@@ -6,6 +6,7 @@ import type { RegisterRequest } from '../../interfaces/auth'
 import { saveToken } from '../../utils/auth'
 import { validateRegisterForm, type RegisterErrors } from './validation'
 import { ui } from '../../utils/ui'
+import { unexpectedError } from '../../utils/errors'
 
 const emptyForm: RegisterRequest = {
   companyName: '',
@@ -28,7 +29,7 @@ function submitErrorMessage(error: unknown): string {
     if (error.status === 409) return 'Paskyra su šiuo el. paštu jau egzistuoja.'
     if (error.status === 400) return 'Patikrinkite įvestus duomenis. Slaptažodis turi būti bent 8 simbolių ir nesutapti su el. paštu.'
   }
-  return 'Registracija nepavyko. Bandykite dar kartą.'
+  return unexpectedError('užregistruoti įmonės')
 }
 
 export default function RegisterPage() {

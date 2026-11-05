@@ -79,6 +79,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseExceptionHandler();
 
+// Outside development, browsers are told to keep using HTTPS for this host (NFR-001).
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHsts();
+}
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

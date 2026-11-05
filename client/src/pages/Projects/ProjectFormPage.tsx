@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ApiError } from '../../api/http'
 import { createProject, getProject, updateProject } from '../../api/projects'
 import { ui } from '../../utils/ui'
+import { unexpectedError } from '../../utils/errors'
 
 interface ProjectForm {
   name: string
@@ -48,7 +49,7 @@ export default function ProjectFormPage() {
         setSubmitError(
           error instanceof ApiError && error.status === 404
             ? 'Projektas nerastas.'
-            : 'Nepavyko įkelti projekto. Bandykite dar kartą.',
+            : unexpectedError('įkelti projekto'),
         ),
       )
   }, [projectId])
@@ -74,7 +75,7 @@ export default function ProjectFormPage() {
     } catch (error) {
       if (error instanceof ApiError && error.status === 400) setSubmitError('Patikrinkite įvestus duomenis.')
       else if (error instanceof ApiError && error.status === 404) setSubmitError('Projektas nerastas.')
-      else setSubmitError('Nepavyko išsaugoti projekto. Bandykite dar kartą.')
+      else setSubmitError(unexpectedError('išsaugoti projekto'))
     } finally {
       setSubmitting(false)
     }

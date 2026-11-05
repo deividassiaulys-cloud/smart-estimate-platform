@@ -5,9 +5,11 @@ import { getMaterials, getUnits } from '../../api/materials'
 import { createWork, getWork, updateWork } from '../../api/works'
 import type { Material } from '../../interfaces/material'
 import type { WorkRequest } from '../../interfaces/work'
+import { toInputNumber } from '../../utils/format'
 import { ui } from '../../utils/ui'
 import { decimalPattern, parseDecimal } from '../../utils/validation'
 import WorkLinesEditor, { type LineErrors, type LineForm } from './WorkLinesEditor'
+import { unexpectedError } from '../../utils/errors'
 
 interface WorkForm {
   name: string
@@ -71,7 +73,7 @@ export default function WorkFormPage() {
         setUnits(foundUnits)
         setMaterials(foundMaterials)
       })
-      .catch(() => setSubmitError('Nepavyko įkelti mato vienetų ir medžiagų. Bandykite dar kartą.'))
+      .catch(() => setSubmitError(unexpectedError('įkelti mato vienetų ir medžiagų')))
   }, [])
 
   useEffect(() => {
@@ -81,14 +83,14 @@ export default function WorkFormPage() {
         setForm({
           name: work.name,
           unit: work.unit,
-          labourRate: work.labourRate.toFixed(2),
-          labourNorm: String(work.labourNorm),
+          labourRate: toInputNumber(work.labourRate, 2),
+          labourNorm: toInputNumber(work.labourNorm),
         })
         setLines(
           work.lines.map((line) => ({
             materialId: String(line.materialId),
-            consumptionNorm: String(line.consumptionNorm),
-            wastePercent: String(line.wastePercent),
+            consumptionNorm: toInputNumber(line.consumptionNorm),
+            wastePercent: toInputNumber(line.wastePercent),
           })),
         )
         setLoaded(true)
@@ -97,7 +99,7 @@ export default function WorkFormPage() {
         setSubmitError(
           error instanceof ApiError && error.status === 404
             ? 'Darbas nerastas.'
-            : 'Nepavyko įkelti darbo. Bandykite dar kartą.',
+            : unexpectedError('įkelti darbo'),
         ),
       )
   }, [workId])
@@ -148,7 +150,7 @@ export default function WorkFormPage() {
       } else if (error instanceof ApiError && error.status === 404) {
         setSubmitError('Darbas nerastas.')
       } else {
-        setSubmitError('Nepavyko išsaugoti darbo. Bandykite dar kartą.')
+        setSubmitError(unexpectedError('išsaugoti darbo'))
       }
     } finally {
       setSubmitting(false)

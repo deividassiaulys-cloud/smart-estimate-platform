@@ -1,3 +1,4 @@
+using System.Globalization;
 using ClosedXML.Excel;
 using SmartEstimatePlatform.Api.Models.DTOs.Estimates;
 
@@ -21,6 +22,9 @@ public class EstimateExportService(
     private const int LastColumn = 7;
 
     private static readonly TimeZoneInfo Lithuania = TimeZoneInfo.FindSystemTimeZoneById("Europe/Vilnius");
+
+    // Labels are text, so their numbers are written the Lithuanian way ("12,5 %", NFR-012) whatever the server's culture.
+    private static readonly CultureInfo Lithuanian = CultureInfo.GetCultureInfo("lt-LT");
 
     // Characters that are not allowed in file names on common systems.
     private static readonly char[] InvalidFileNameChars = ['\\', '/', ':', '*', '?', '"', '<', '>', '|'];
@@ -103,9 +107,9 @@ public class EstimateExportService(
         (string Label, decimal Amount)[] totals =
         [
             ("Tiesioginės išlaidos", estimate.DirectCosts),
-            ($"Pridėtinės išlaidos ({estimate.OverheadPercent:0.##} %)", estimate.Overhead),
-            ($"Pelnas ({estimate.ProfitPercent:0.##} %)", estimate.Profit),
-            ($"PVM ({estimate.VatPercent:0.##} %)", estimate.Vat),
+            ($"Pridėtinės išlaidos ({Percent(estimate.OverheadPercent)})", estimate.Overhead),
+            ($"Pelnas ({Percent(estimate.ProfitPercent)})", estimate.Profit),
+            ($"PVM ({Percent(estimate.VatPercent)})", estimate.Vat),
             ("Iš viso su PVM", estimate.Total)
         ];
 
@@ -118,6 +122,8 @@ public class EstimateExportService(
 
         sheet.Row(row).Style.Font.Bold = true;
     }
+
+    private static string Percent(decimal value) => value.ToString("0.##", Lithuanian) + " %";
 
     // Every text cell goes through here: stored as text with a quote prefix, never as a formula (NFR-007).
     private static IXLCell Text(IXLCell cell, string value)

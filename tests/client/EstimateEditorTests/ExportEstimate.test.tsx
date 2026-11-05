@@ -105,7 +105,7 @@ test('a failed export shows a message', async () => {
 
   await userEvent.click(within(dialog).getByRole('button', { name: 'Eksportuoti' }))
 
-  expect(await screen.findByText('Eksportuoti nepavyko. Bandykite dar kartą.')).toBeTruthy()
+  expect(await screen.findByText('Nepavyko eksportuoti sąmatos. Bandykite dar kartą.')).toBeTruthy()
   expect(downloadedAs).toEqual([])
 })
 

@@ -12,8 +12,8 @@ interface WorksTableProps {
 export default function WorksTable({ works, onDelete }: WorksTableProps) {
   return (
     <div className={ui.tableWrapper}>
-      <table className={ui.table}>
-        <thead>
+      <table className={ui.listTable}>
+        <thead className={ui.listHead}>
           <tr>
             <th className={ui.cell}>Pavadinimas</th>
             <th className={ui.cell}>Mato vnt.</th>
@@ -23,15 +23,15 @@ export default function WorksTable({ works, onDelete }: WorksTableProps) {
             <th className={ui.cell}>Veiksmai</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className={ui.listBody}>
           {works.map((work) => (
-            <tr key={work.id}>
-              <td className={ui.cell}>{work.name}</td>
-              <td className={ui.cell}>{work.unit}</td>
-              <td className={`${ui.cell} text-right`}>{formatMoney(work.labourRate)}</td>
-              <td className={`${ui.cell} text-right`}>{formatQuantity(work.labourNorm)}</td>
-              <td className={`${ui.cell} text-right`}>{work.lines.length}</td>
-              <td className={ui.actionsCell}>
+            <tr className={ui.listRow} key={work.id}>
+              <td className={ui.listTitleCell}>{work.name}</td>
+              <td className={ui.listCell} data-label="Mato vnt.">{work.unit}</td>
+              <td className={`${ui.listCell} text-right`} data-label="Įkainis, €/val.">{formatMoney(work.labourRate)}</td>
+              <td className={`${ui.listCell} text-right`} data-label="Darbo norma, val.">{formatQuantity(work.labourNorm)}</td>
+              <td className={`${ui.listCell} text-right`} data-label="Medžiagos">{work.lines.length}</td>
+              <td className={ui.listActionsCell}>
                 <Link className={ui.link} to={`/works/${work.id}/edit`}>
                   Redaguoti
                 </Link>
