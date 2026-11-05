@@ -13,7 +13,7 @@
 11	Projects List	List of the company's projects.	Manager, Viewer
 12	Project Form (create / edit)	Create or edit a project (name, description).	Manager
 13	Project Detail	Shows one project and the list of its estimates.	Manager, Viewer
-14	Estimate Editor	Main working screen: add works, set quantities, view auto-generated material lines, set overhead/profit/VAT %, see totals, change status (Draft/Confirmed).	Manager
+14	Estimate Editor	Main working screen: add works, set quantities, view auto-generated material lines, edit a line's labour rate or material price, replace (same unit) or remove a material line (Draft only, this estimate only), set overhead/profit/VAT %, see totals, change status (Draft/Confirmed).	Manager
 15	Estimate View (read-only)	Read-only view of an estimate. Manager sees full data (quantities, prices, sums, status); Viewer sees only work and material names.	Manager, Viewer
 16	Export Confirmation	Confirms and triggers the Excel (and later PDF) export of an estimate.	Manager
 17	Not Found (404)	Shown when a route or resource does not exist or does not belong to the user's company.	All authenticated roles
@@ -129,6 +129,9 @@ Description	No	Max 2000 characters	—
 Estimate Line — Quantity Edit (inline, within Estimate Editor)
 Field	Required	Input restrictions	Validation message (on error)
 Quantity (per work line)	Yes	Number > 0, up to 3 decimals	"Quantity must be greater than 0."
+Labour rate (per work line)	Yes	Number ≥ 0, up to 2 decimals	"Price must be 0 or more, with at most 2 decimals."
+Price (per material line)	Yes	Number ≥ 0, up to 2 decimals	"Price must be 0 or more, with at most 2 decimals."
+Replace material (per material line)	No	A catalog material with the same unit	"Choose a catalog material with the same unit."
 Overhead %	Yes	Number between 0 and 100	"Overhead % must be between 0 and 100."
 Profit %	Yes	Number between 0 and 100	"Profit % must be between 0 and 100."
 VAT %	Yes	Number between 0 and 100	"VAT % must be between 0 and 100."
