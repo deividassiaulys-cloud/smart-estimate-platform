@@ -1,5 +1,6 @@
 import { useState, type KeyboardEvent } from 'react'
 import type { Estimate, Percentages } from '../../interfaces/estimate'
+import { toInputNumber } from '../../utils/format'
 import { ui } from '../../utils/ui'
 import { decimalPattern, parseDecimal } from '../../utils/validation'
 
@@ -21,9 +22,9 @@ interface EstimatePercentagesFormProps {
 /** Overhead, profit and VAT percentages, saved when a field loses focus or on Enter. */
 export default function EstimatePercentagesForm({ estimate, readOnly, onSave }: EstimatePercentagesFormProps) {
   const [values, setValues] = useState<Record<keyof Percentages, string>>({
-    overheadPercent: String(estimate.overheadPercent),
-    profitPercent: String(estimate.profitPercent),
-    vatPercent: String(estimate.vatPercent),
+    overheadPercent: toInputNumber(estimate.overheadPercent),
+    profitPercent: toInputNumber(estimate.profitPercent),
+    vatPercent: toInputNumber(estimate.vatPercent),
   })
   const [error, setError] = useState<string | null>(null)
 

@@ -13,8 +13,8 @@ interface TeamTableProps {
 export default function TeamTable({ members, onRemove }: TeamTableProps) {
   return (
     <div className={ui.tableWrapper}>
-      <table className={ui.table}>
-        <thead>
+      <table className={ui.listTable}>
+        <thead className={ui.listHead}>
           <tr>
             <th className={ui.cell}>Vardas</th>
             <th className={ui.cell}>El. paštas</th>
@@ -22,15 +22,15 @@ export default function TeamTable({ members, onRemove }: TeamTableProps) {
             <th className={ui.cell}>Veiksmai</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className={ui.listBody}>
           {members.map((member) => (
-            <tr key={member.id}>
-              <td className={ui.cell}>
+            <tr className={ui.listRow} key={member.id}>
+              <td className={ui.listTitleCell}>
                 {member.firstName} {member.lastName}
               </td>
-              <td className={ui.cell}>{member.email}</td>
-              <td className={ui.cell}>{roleNames[member.role]}</td>
-              <td className={ui.actionsCell}>
+              <td className={ui.listCell} data-label="El. paštas">{member.email}</td>
+              <td className={ui.listCell} data-label="Rolė">{roleNames[member.role]}</td>
+              <td className={ui.listActionsCell}>
                 {member.role === UserRole.Viewer && (
                   <>
                     <Link className={ui.link} to={`/team/${member.id}/password`}>

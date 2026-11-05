@@ -1,13 +1,13 @@
 import type { Estimate } from '../../interfaces/estimate'
-import { formatMoney } from '../../utils/format'
+import { formatMoney, formatPercent } from '../../utils/format'
 
 /** The estimate's totals as calculated by the server (BR-015–BR-017). */
 export default function EstimateTotals({ estimate }: { estimate: Estimate }) {
   const rows = [
     ['Tiesioginės išlaidos', estimate.directCosts],
-    [`Pridėtinės išlaidos (${estimate.overheadPercent} %)`, estimate.overhead],
-    [`Pelnas (${estimate.profitPercent} %)`, estimate.profit],
-    [`PVM (${estimate.vatPercent} %)`, estimate.vat],
+    [`Pridėtinės išlaidos (${formatPercent(estimate.overheadPercent)})`, estimate.overhead],
+    [`Pelnas (${formatPercent(estimate.profitPercent)})`, estimate.profit],
+    [`PVM (${formatPercent(estimate.vatPercent)})`, estimate.vat],
   ] as const
 
   return (

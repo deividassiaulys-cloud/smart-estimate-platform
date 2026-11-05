@@ -12,8 +12,8 @@ interface MaterialsTableProps {
 export default function MaterialsTable({ materials, onDelete }: MaterialsTableProps) {
   return (
     <div className={ui.tableWrapper}>
-      <table className={ui.table}>
-        <thead>
+      <table className={ui.listTable}>
+        <thead className={ui.listHead}>
           <tr>
             <th className={ui.cell}>Pavadinimas</th>
             <th className={ui.cell}>Mato vnt.</th>
@@ -21,13 +21,13 @@ export default function MaterialsTable({ materials, onDelete }: MaterialsTablePr
             <th className={ui.cell}>Veiksmai</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className={ui.listBody}>
           {materials.map((material) => (
-            <tr key={material.id}>
-              <td className={ui.cell}>{material.name}</td>
-              <td className={ui.cell}>{material.unit}</td>
-              <td className={`${ui.cell} text-right`}>{formatMoney(material.price)}</td>
-              <td className={ui.actionsCell}>
+            <tr className={ui.listRow} key={material.id}>
+              <td className={ui.listTitleCell}>{material.name}</td>
+              <td className={ui.listCell} data-label="Mato vnt.">{material.unit}</td>
+              <td className={`${ui.listCell} text-right`} data-label="Kaina">{formatMoney(material.price)}</td>
+              <td className={ui.listActionsCell}>
                 <Link className={ui.link} to={`/materials/${material.id}/edit`}>
                   Redaguoti
                 </Link>

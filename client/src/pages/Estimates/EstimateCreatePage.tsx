@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { createEstimate } from '../../api/estimates'
 import { ApiError } from '../../api/http'
 import { ui } from '../../utils/ui'
+import { unexpectedError } from '../../utils/errors'
 
 // The same limit as EstimateRules on the server, which stays the authoritative check.
 const nameMaxLength = 200
@@ -29,7 +30,7 @@ export default function EstimateCreatePage() {
       setError(
         err instanceof ApiError && err.status === 404
           ? 'Projektas nerastas.'
-          : 'Nepavyko sukurti sąmatos. Bandykite dar kartą.',
+          : unexpectedError('sukurti sąmatos'),
       )
       setSubmitting(false)
     }

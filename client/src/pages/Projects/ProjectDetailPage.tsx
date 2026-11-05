@@ -10,6 +10,7 @@ import { isManager } from '../../utils/auth'
 import { ui } from '../../utils/ui'
 import ProjectEstimateNamesTable from './ProjectEstimateNamesTable'
 import ProjectEstimatesTable from './ProjectEstimatesTable'
+import { unexpectedError } from '../../utils/errors'
 
 /**
  * One project: its name, description and estimates for every user. A Manager also sees each estimate's status
@@ -34,10 +35,10 @@ export default function ProjectDetailPage() {
         setError(
           err instanceof ApiError && err.status === 404
             ? 'Projektas nerastas.'
-            : 'Nepavyko įkelti projekto. Bandykite dar kartą.',
+            : unexpectedError('įkelti projekto'),
         ),
       )
-    const estimatesLoadError = () => setError('Nepavyko įkelti sąmatų. Bandykite dar kartą.')
+    const estimatesLoadError = () => setError(unexpectedError('įkelti sąmatų'))
     if (manager) {
       getProjectEstimates(projectId).then(setEstimates).catch(estimatesLoadError)
     } else {
@@ -53,7 +54,7 @@ export default function ProjectDetailPage() {
       await deleteProject(projectId)
       navigate('/projects', { state: { notice: 'Projektas ištrintas.' } })
     } catch {
-      setError('Nepavyko ištrinti projekto. Bandykite dar kartą.')
+      setError(unexpectedError('ištrinti projekto'))
       setDeleting(false)
       setConfirming(false)
     }
@@ -101,7 +102,7 @@ export default function ProjectDetailPage() {
           </div>
           {listed && listed.length === 0 && <p>Sąmatų dar nėra.</p>}
           {estimates && estimates.length > 0 && <ProjectEstimatesTable estimates={estimates} />}
-          {estimateNames && estimateNames.length > 0 && <ProjectEstimateNamesTable estimates={estimateNames} />}
+          {estimateNames && estimateNames.length > 0 && <ProjectEstimateNamesTable projectId={project.id} estimates={estimateNames} />}
         </>
       )}
 

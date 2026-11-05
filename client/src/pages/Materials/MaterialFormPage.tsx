@@ -2,8 +2,10 @@ import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ApiError } from '../../api/http'
 import { createMaterial, getMaterial, getUnits, updateMaterial } from '../../api/materials'
+import { toInputNumber } from '../../utils/format'
 import { ui } from '../../utils/ui'
 import { decimalPattern, parseDecimal } from '../../utils/validation'
+import { unexpectedError } from '../../utils/errors'
 
 interface MaterialForm {
   name: string
@@ -43,21 +45,21 @@ export default function MaterialFormPage() {
   useEffect(() => {
     getUnits()
       .then(setUnits)
-      .catch(() => setSubmitError('Nepavyko įkelti mato vienetų. Bandykite dar kartą.'))
+      .catch(() => setSubmitError(unexpectedError('įkelti mato vienetų')))
   }, [])
 
   useEffect(() => {
     if (materialId === null) return
     getMaterial(materialId)
       .then((material) => {
-        setForm({ name: material.name, unit: material.unit, price: material.price.toFixed(2) })
+        setForm({ name: material.name, unit: material.unit, price: toInputNumber(material.price, 2) })
         setLoaded(true)
       })
       .catch((error) =>
         setSubmitError(
           error instanceof ApiError && error.status === 404
             ? 'Medžiaga nerasta.'
-            : 'Nepavyko įkelti medžiagos. Bandykite dar kartą.',
+            : unexpectedError('įkelti medžiagos'),
         ),
       )
   }, [materialId])
@@ -98,7 +100,7 @@ export default function MaterialFormPage() {
       } else if (error instanceof ApiError && error.status === 404) {
         setSubmitError('Medžiaga nerasta.')
       } else {
-        setSubmitError('Nepavyko išsaugoti medžiagos. Bandykite dar kartą.')
+        setSubmitError(unexpectedError('išsaugoti medžiagos'))
       }
     } finally {
       setSubmitting(false)

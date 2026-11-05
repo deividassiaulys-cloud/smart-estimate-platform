@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
+import AppLayout from './components/AppLayout'
 import ManagerRoute from './components/ManagerRoute'
 import ProtectedRoute from './components/ProtectedRoute'
 import SessionExpiryListener from './components/SessionExpiryListener'
@@ -28,142 +29,123 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        {/* Every logged-in page shares the navigation; Manager-only pages are guarded inside. */}
         <Route
-          path="/dashboard"
           element={
             <ProtectedRoute>
-              <DashboardPage />
+              <AppLayout />
             </ProtectedRoute>
           }
-        />
-        <Route
-          path="/team"
-          element={
-            <ManagerRoute>
-              <TeamPage />
-            </ManagerRoute>
-          }
-        />
-        <Route
-          path="/team/new"
-          element={
-            <ManagerRoute>
-              <ViewerFormPage />
-            </ManagerRoute>
-          }
-        />
-        <Route
-          path="/team/:id/password"
-          element={
-            <ManagerRoute>
-              <ResetPasswordPage />
-            </ManagerRoute>
-          }
-        />
-        <Route
-          path="/materials"
-          element={
-            <ManagerRoute>
-              <MaterialsPage />
-            </ManagerRoute>
-          }
-        />
-        <Route
-          path="/materials/new"
-          element={
-            <ManagerRoute>
-              <MaterialFormPage />
-            </ManagerRoute>
-          }
-        />
-        <Route
-          path="/materials/:id/edit"
-          element={
-            <ManagerRoute>
-              <MaterialFormPage />
-            </ManagerRoute>
-          }
-        />
-        <Route
-          path="/works"
-          element={
-            <ManagerRoute>
-              <WorksPage />
-            </ManagerRoute>
-          }
-        />
-        <Route
-          path="/works/new"
-          element={
-            <ManagerRoute>
-              <WorkFormPage />
-            </ManagerRoute>
-          }
-        />
-        <Route
-          path="/works/:id/edit"
-          element={
-            <ManagerRoute>
-              <WorkFormPage />
-            </ManagerRoute>
-          }
-        />
-        <Route
-          path="/projects"
-          element={
-            <ProtectedRoute>
-              <ProjectsPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/projects/new"
-          element={
-            <ManagerRoute>
-              <ProjectFormPage />
-            </ManagerRoute>
-          }
-        />
-        <Route
-          path="/projects/:id"
-          element={
-            <ProtectedRoute>
-              <ProjectDetailPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/projects/:id/edit"
-          element={
-            <ManagerRoute>
-              <ProjectFormPage />
-            </ManagerRoute>
-          }
-        />
-        <Route
-          path="/projects/:projectId/estimates/new"
-          element={
-            <ManagerRoute>
-              <EstimateCreatePage />
-            </ManagerRoute>
-          }
-        />
-        <Route
-          path="/estimates/:id"
-          element={
-            <ManagerRoute>
-              <EstimateEditorPage />
-            </ManagerRoute>
-          }
-        />
-        <Route
-          path="/estimates/:id/view"
-          element={
-            <ProtectedRoute>
-              <EstimateViewPage />
-            </ProtectedRoute>
-          }
-        />
+        >
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/projects" element={<ProjectsPage />} />
+          <Route
+            path="/projects/new"
+            element={
+              <ManagerRoute>
+                <ProjectFormPage />
+              </ManagerRoute>
+            }
+          />
+          <Route path="/projects/:id" element={<ProjectDetailPage />} />
+          <Route
+            path="/projects/:id/edit"
+            element={
+              <ManagerRoute>
+                <ProjectFormPage />
+              </ManagerRoute>
+            }
+          />
+          <Route
+            path="/projects/:projectId/estimates/new"
+            element={
+              <ManagerRoute>
+                <EstimateCreatePage />
+              </ManagerRoute>
+            }
+          />
+          <Route
+            path="/estimates/:id"
+            element={
+              <ManagerRoute>
+                <EstimateEditorPage />
+              </ManagerRoute>
+            }
+          />
+          <Route path="/estimates/:id/view" element={<EstimateViewPage />} />
+          <Route
+            path="/materials"
+            element={
+              <ManagerRoute>
+                <MaterialsPage />
+              </ManagerRoute>
+            }
+          />
+          <Route
+            path="/materials/new"
+            element={
+              <ManagerRoute>
+                <MaterialFormPage />
+              </ManagerRoute>
+            }
+          />
+          <Route
+            path="/materials/:id/edit"
+            element={
+              <ManagerRoute>
+                <MaterialFormPage />
+              </ManagerRoute>
+            }
+          />
+          <Route
+            path="/works"
+            element={
+              <ManagerRoute>
+                <WorksPage />
+              </ManagerRoute>
+            }
+          />
+          <Route
+            path="/works/new"
+            element={
+              <ManagerRoute>
+                <WorkFormPage />
+              </ManagerRoute>
+            }
+          />
+          <Route
+            path="/works/:id/edit"
+            element={
+              <ManagerRoute>
+                <WorkFormPage />
+              </ManagerRoute>
+            }
+          />
+          <Route
+            path="/team"
+            element={
+              <ManagerRoute>
+                <TeamPage />
+              </ManagerRoute>
+            }
+          />
+          <Route
+            path="/team/new"
+            element={
+              <ManagerRoute>
+                <ViewerFormPage />
+              </ManagerRoute>
+            }
+          />
+          <Route
+            path="/team/:id/password"
+            element={
+              <ManagerRoute>
+                <ResetPasswordPage />
+              </ManagerRoute>
+            }
+          />
+        </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
