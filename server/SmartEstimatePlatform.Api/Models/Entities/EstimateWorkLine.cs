@@ -63,4 +63,14 @@ public class EstimateWorkLine
     /// Replaces the quantity with an already validated value.
     /// </summary>
     public void ChangeQuantity(decimal quantity) => Quantity = quantity;
+
+    /// <summary>
+    /// Replaces the labour rate with an already validated value; the catalog work is not changed.
+    /// </summary>
+    public void ChangeLabourRate(decimal labourRate) => LabourRate = labourRate;
+
+    /// <summary>
+    /// Removes one of this line's material lines; the work line itself stays, even with no materials left.
+    /// </summary>
+    public void RemoveMaterialLine(EstimateMaterialLine materialLine) => MaterialLines.Remove(materialLine);
 }

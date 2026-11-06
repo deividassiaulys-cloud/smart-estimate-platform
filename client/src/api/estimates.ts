@@ -60,3 +60,32 @@ export function getEstimateNames(id: number): Promise<EstimateNames> {
 export function exportEstimate(id: number): Promise<DownloadedFile> {
   return apiDownload(`/api/estimates/${id}/export`, 'samata.xlsx')
 }
+
+/** Changes a work line's labour rate in this estimate only; returns the recalculated estimate. */
+export function changeLabourRate(id: number, lineId: number, labourRate: number): Promise<Estimate> {
+  return apiFetch(`/api/estimates/${id}/lines/${lineId}/labour-rate`, {
+    method: 'PATCH',
+    body: JSON.stringify({ labourRate }),
+  })
+}
+
+/** Changes a material line's price in this estimate only; returns the recalculated estimate. */
+export function changeMaterialPrice(id: number, lineId: number, materialLineId: number, price: number): Promise<Estimate> {
+  return apiFetch(`/api/estimates/${id}/lines/${lineId}/materials/${materialLineId}/price`, {
+    method: 'PATCH',
+    body: JSON.stringify({ price }),
+  })
+}
+
+/** Replaces a material line's material with a same-unit catalog material; returns the recalculated estimate. */
+export function replaceMaterial(id: number, lineId: number, materialLineId: number, materialId: number): Promise<Estimate> {
+  return apiFetch(`/api/estimates/${id}/lines/${lineId}/materials/${materialLineId}/material`, {
+    method: 'PATCH',
+    body: JSON.stringify({ materialId }),
+  })
+}
+
+/** Removes one material line from a work line; returns the recalculated estimate. */
+export function removeMaterialLine(id: number, lineId: number, materialLineId: number): Promise<Estimate> {
+  return apiFetch(`/api/estimates/${id}/lines/${lineId}/materials/${materialLineId}`, { method: 'DELETE' })
+}

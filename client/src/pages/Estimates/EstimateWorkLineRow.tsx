@@ -1,69 +1,66 @@
-import { useState, type KeyboardEvent } from 'react'
-import type { EstimateWorkLine } from '../../interfaces/estimate'
-import { formatMoney, formatQuantity, toInputNumber } from '../../utils/format'
+import type { EstimateMaterialLine, EstimateWorkLine } from '../../interfaces/estimate'
+import type { Material } from '../../interfaces/material'
+import { formatMoney, formatQuantity } from '../../utils/format'
 import { ui } from '../../utils/ui'
-import { decimalPattern, parseDecimal } from '../../utils/validation'
-
-const quantityPattern = decimalPattern(3)
+import EstimateMaterialLineRow from './EstimateMaterialLineRow'
+import InlineNumberField from './InlineNumberField'
 
 interface EstimateWorkLineRowProps {
   line: EstimateWorkLine
-  /** A Confirmed estimate: the quantity cannot be changed and the line cannot be removed. */
+  /** The company's catalog materials, offered as replacements for the line's materials. */
+  catalog: Material[]
+  /** A Confirmed estimate: nothing in the line can be changed or removed. */
   readOnly: boolean
-  onQuantityChange: (lineId: number, quantity: number) => Promise<void>
+  onQuantityChange: (lineId: number, quantity: number) => Promise<boolean>
+  onLabourRateChange: (lineId: number, labourRate: number) => Promise<boolean>
+  onMaterialPriceChange: (lineId: number, materialLineId: number, price: number) => Promise<boolean>
+  onMaterialReplace: (lineId: number, materialLineId: number, materialId: number) => Promise<boolean>
   onRemove: (line: EstimateWorkLine) => void
+  onMaterialRemove: (line: EstimateWorkLine, material: EstimateMaterialLine) => void
 }
 
 /**
- * One work line and its generated material lines. The quantity is saved when the field loses focus or on
- * Enter; every amount shown comes from the server.
+ * One work line and its material lines. The quantity, labour rate and material prices are edited in place;
+ * every amount shown comes from the server.
  */
-export default function EstimateWorkLineRow({ line, readOnly, onQuantityChange, onRemove }: EstimateWorkLineRowProps) {
-  const [quantity, setQuantity] = useState(toInputNumber(line.quantity))
-  const [error, setError] = useState<string | null>(null)
-
-  async function save() {
-    if (parseDecimal(quantity) === line.quantity) return
-    if (!quantityPattern.test(quantity.trim()) || parseDecimal(quantity) <= 0) {
-      setError('Kiekis turi būti didesnis už 0, ne daugiau kaip 3 skaitmenys po kablelio.')
-      return
-    }
-    setError(null)
-    await onQuantityChange(line.id, parseDecimal(quantity))
-  }
-
-  function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
-    if (event.key === 'Enter') {
-      event.preventDefault()
-      void save()
-    }
-  }
-
+export default function EstimateWorkLineRow({
+  line,
+  catalog,
+  readOnly,
+  onQuantityChange,
+  onLabourRateChange,
+  onMaterialPriceChange,
+  onMaterialReplace,
+  onRemove,
+  onMaterialRemove,
+}: EstimateWorkLineRowProps) {
   return (
     <tbody className="border-b-2 border-line">
       <tr className="align-top">
         <td className={`${ui.cell} font-medium text-heading`}>{line.workName}</td>
         <td className={ui.cell}>{line.workUnit}</td>
         <td className={ui.cell}>
-          <div className={ui.field}>
-            <input
-              className={`${ui.input} w-28`}
-              type="text"
-              inputMode="decimal"
-              autoComplete="off"
-              aria-label={`Kiekis: ${line.workName}`}
-              aria-invalid={error ? true : undefined}
-              disabled={readOnly}
-              value={quantity}
-              onChange={(event) => setQuantity(event.target.value)}
-              onBlur={() => void save()}
-              onKeyDown={handleKeyDown}
-            />
-            {error && <span className={`${ui.fieldError} whitespace-normal`}>{error}</span>}
-          </div>
+          <InlineNumberField
+            kind="quantity"
+            value={line.quantity}
+            label={`Kiekis: ${line.workName}`}
+            readOnly={readOnly}
+            onSave={(quantity) => onQuantityChange(line.id, quantity)}
+          />
         </td>
         <td className={ui.cell}>
-          Darbas: {formatQuantity(line.labourNorm)} val. × {formatMoney(line.labourRate)}/val.
+          <div className="flex items-start gap-2 whitespace-nowrap">
+            <span className="py-2">Darbas: {formatQuantity(line.labourNorm)} val. ×</span>
+            <InlineNumberField
+              key={line.labourRate}
+              kind="money"
+              value={line.labourRate}
+              label={`Darbo įkainis, €/val.: ${line.workName}`}
+              readOnly={readOnly}
+              onSave={(labourRate) => onLabourRateChange(line.id, labourRate)}
+            />
+            <span className="py-2">€/val.</span>
+          </div>
         </td>
         <td className={`${ui.cell} text-right`}>{formatMoney(line.labourCost)}</td>
         <td className={ui.cell}>
@@ -80,14 +77,15 @@ export default function EstimateWorkLineRow({ line, readOnly, onQuantityChange, 
         </td>
       </tr>
       {line.materialLines.map((material) => (
-        <tr key={material.id}>
-          <td className={`${ui.cell} pl-8`}>{material.materialName}</td>
-          <td className={ui.cell}>{material.materialUnit}</td>
-          <td className={ui.cell}>{formatQuantity(material.quantity)}</td>
-          <td className={ui.cell}>× {formatMoney(material.price)}</td>
-          <td className={`${ui.cell} text-right`}>{formatMoney(material.cost)}</td>
-          <td className={ui.cell}></td>
-        </tr>
+        <EstimateMaterialLineRow
+          key={material.id}
+          material={material}
+          catalog={catalog}
+          readOnly={readOnly}
+          onPriceChange={(price) => onMaterialPriceChange(line.id, material.id, price)}
+          onReplace={(materialId) => onMaterialReplace(line.id, material.id, materialId)}
+          onRemove={(removed) => onMaterialRemove(line, removed)}
+        />
       ))}
     </tbody>
   )

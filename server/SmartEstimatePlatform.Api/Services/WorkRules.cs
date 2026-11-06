@@ -24,17 +24,9 @@ public static class WorkRules
             yield return new ValidationResult("Unit must be one of the fixed measurement units.", ["Unit"]);
         }
 
-        if (labourRate < 0)
+        if (NumberRules.MoneyError(labourRate, "Labour rate") is { } rateError)
         {
-            yield return new ValidationResult("Labour rate cannot be negative.", ["LabourRate"]);
-        }
-        else if (!NumberRules.HasAtMostDecimals(labourRate, 2))
-        {
-            yield return new ValidationResult("Labour rate can have at most 2 decimal places.", ["LabourRate"]);
-        }
-        else if (labourRate > NumberRules.MaxMoney)
-        {
-            yield return new ValidationResult("Labour rate is too large.", ["LabourRate"]);
+            yield return new ValidationResult(rateError, ["LabourRate"]);
         }
 
         if (labourNorm < 0)

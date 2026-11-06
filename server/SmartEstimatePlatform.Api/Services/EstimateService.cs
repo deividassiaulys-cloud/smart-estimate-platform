@@ -96,6 +96,52 @@ public class EstimateService(AppDbContext db) : IEstimateService
     }
 
     /// <inheritdoc />
+    public async Task<EstimateResponse> ChangeLabourRateAsync(int id, int lineId, ChangeLabourRateRequest request)
+    {
+        var estimate = await FindDraftAsync(id);
+        FindLine(estimate, lineId).ChangeLabourRate(request.LabourRate);
+        await db.SaveChangesAsync();
+        return Respond(estimate);
+    }
+
+    /// <inheritdoc />
+    public async Task<EstimateResponse> ChangeMaterialPriceAsync(int id, int lineId, int materialLineId, ChangePriceRequest request)
+    {
+        var estimate = await FindDraftAsync(id);
+        FindMaterialLine(FindLine(estimate, lineId), materialLineId).ChangePrice(request.Price);
+        await db.SaveChangesAsync();
+        return Respond(estimate);
+    }
+
+    /// <inheritdoc />
+    public async Task<EstimateResponse> ReplaceMaterialAsync(int id, int lineId, int materialLineId, ReplaceMaterialRequest request)
+    {
+        var estimate = await FindDraftAsync(id);
+        var materialLine = FindMaterialLine(FindLine(estimate, lineId), materialLineId);
+        var material = await db.Materials.SingleOrDefaultAsync(m => m.Id == request.MaterialId)
+                       ?? throw new UnknownMaterialException(request.MaterialId);
+        if (material.Unit != materialLine.MaterialUnit)
+        {
+            throw new MaterialUnitMismatchException();
+        }
+
+        // A copy, not a reference: later catalog changes never reach the estimate (BR-010).
+        materialLine.ReplaceMaterial(material.Name, material.Unit, material.Price);
+        await db.SaveChangesAsync();
+        return Respond(estimate);
+    }
+
+    /// <inheritdoc />
+    public async Task<EstimateResponse> RemoveMaterialLineAsync(int id, int lineId, int materialLineId)
+    {
+        var estimate = await FindDraftAsync(id);
+        var workLine = FindLine(estimate, lineId);
+        workLine.RemoveMaterialLine(FindMaterialLine(workLine, materialLineId));
+        await db.SaveChangesAsync();
+        return Respond(estimate);
+    }
+
+    /// <inheritdoc />
     public Task<EstimateResponse> ConfirmAsync(int id) =>
         ChangeStatusAsync(id, EstimateStatus.Draft, e => e.Confirm(), "The estimate is already confirmed.");
 
@@ -136,6 +182,10 @@ public class EstimateService(AppDbContext db) : IEstimateService
 
     private static EstimateWorkLine FindLine(Estimate estimate, int lineId) =>
         estimate.WorkLines.SingleOrDefault(l => l.Id == lineId)
+        ?? throw new NotFoundException("Line not found.");
+
+    private static EstimateMaterialLine FindMaterialLine(EstimateWorkLine workLine, int materialLineId) =>
+        workLine.MaterialLines.SingleOrDefault(l => l.Id == materialLineId)
         ?? throw new NotFoundException("Line not found.");
 
     private async Task EnsureProjectExistsAsync(int projectId)

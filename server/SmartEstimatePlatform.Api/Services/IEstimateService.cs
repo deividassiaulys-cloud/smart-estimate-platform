@@ -83,4 +83,35 @@ public interface IEstimateService
     /// <exception cref="NotFoundException">No such estimate, or no such line in it.</exception>
     /// <exception cref="EstimateNotDraftException">The estimate is not Draft.</exception>
     Task<EstimateResponse> RemoveWorkLineAsync(int id, int lineId);
+
+    /// <summary>
+    /// Changes one work line's labour rate in this estimate only; the catalog work is not changed (BR-010).
+    /// </summary>
+    /// <exception cref="NotFoundException">No such estimate, or no such line in it.</exception>
+    /// <exception cref="EstimateNotDraftException">The estimate is not Draft.</exception>
+    Task<EstimateResponse> ChangeLabourRateAsync(int id, int lineId, ChangeLabourRateRequest request);
+
+    /// <summary>
+    /// Changes one material line's price in this estimate only; the catalog material is not changed (BR-010).
+    /// </summary>
+    /// <exception cref="NotFoundException">No such estimate, work line or material line in it.</exception>
+    /// <exception cref="EstimateNotDraftException">The estimate is not Draft.</exception>
+    Task<EstimateResponse> ChangeMaterialPriceAsync(int id, int lineId, int materialLineId, ChangePriceRequest request);
+
+    /// <summary>
+    /// Replaces a material line's material with a catalog material of the same unit, copying its name, unit and
+    /// current price and keeping the line's norm and waste.
+    /// </summary>
+    /// <exception cref="NotFoundException">No such estimate, work line or material line in it.</exception>
+    /// <exception cref="EstimateNotDraftException">The estimate is not Draft.</exception>
+    /// <exception cref="UnknownMaterialException">The material is not in the current company's catalog.</exception>
+    /// <exception cref="MaterialUnitMismatchException">The material has another unit than the line.</exception>
+    Task<EstimateResponse> ReplaceMaterialAsync(int id, int lineId, int materialLineId, ReplaceMaterialRequest request);
+
+    /// <summary>
+    /// Removes one material line from a work line; the work line and its other material lines stay.
+    /// </summary>
+    /// <exception cref="NotFoundException">No such estimate, work line or material line in it.</exception>
+    /// <exception cref="EstimateNotDraftException">The estimate is not Draft.</exception>
+    Task<EstimateResponse> RemoveMaterialLineAsync(int id, int lineId, int materialLineId);
 }
