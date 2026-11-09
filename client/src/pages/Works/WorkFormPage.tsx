@@ -179,48 +179,51 @@ export default function WorkFormPage() {
   }
 
   return (
-    <main className="mx-auto w-full max-w-[760px] px-4 py-8 text-left">
+    <main className={ui.listPage}>
       <h1 className={ui.h1}>{workId === null ? 'Naujas darbas' : 'Redaguoti darbą'}</h1>
 
       {loaded && (
         <form className={ui.form} onSubmit={handleSubmit} noValidate>
-          <div className={ui.field}>
-            <label className={ui.label} htmlFor="name">
-              Pavadinimas
-            </label>
-            <input className={ui.input} type="text" autoComplete="off" maxLength={200} {...fieldProps('name')} />
-            {fieldError('name')}
-          </div>
+          {/* The single fields keep the usual form width; the material table below uses the full width. */}
+          <div className={`${ui.form} max-w-[420px]`}>
+            <div className={ui.field}>
+              <label className={ui.label} htmlFor="name">
+                Pavadinimas
+              </label>
+              <input className={ui.input} type="text" autoComplete="off" maxLength={200} {...fieldProps('name')} />
+              {fieldError('name')}
+            </div>
 
-          <div className={ui.field}>
-            <label className={ui.label} htmlFor="unit">
-              Mato vienetas
-            </label>
-            <select className={ui.input} {...fieldProps('unit')}>
-              <option value="">Pasirinkite…</option>
-              {units.map((unit) => (
-                <option key={unit} value={unit}>
-                  {unit}
-                </option>
-              ))}
-            </select>
-            {fieldError('unit')}
-          </div>
+            <div className={ui.field}>
+              <label className={ui.label} htmlFor="unit">
+                Mato vienetas
+              </label>
+              <select className={ui.input} {...fieldProps('unit')}>
+                <option value="">Pasirinkite…</option>
+                {units.map((unit) => (
+                  <option key={unit} value={unit}>
+                    {unit}
+                  </option>
+                ))}
+              </select>
+              {fieldError('unit')}
+            </div>
 
-          <div className={ui.field}>
-            <label className={ui.label} htmlFor="labourRate">
-              Darbo įkainis, €/val.
-            </label>
-            <input className={ui.input} type="text" inputMode="decimal" autoComplete="off" {...fieldProps('labourRate')} />
-            {fieldError('labourRate')}
-          </div>
+            <div className={ui.field}>
+              <label className={ui.label} htmlFor="labourRate">
+                Darbo įkainis, €/val.
+              </label>
+              <input className={ui.input} type="text" inputMode="decimal" autoComplete="off" {...fieldProps('labourRate')} />
+              {fieldError('labourRate')}
+            </div>
 
-          <div className={ui.field}>
-            <label className={ui.label} htmlFor="labourNorm">
-              Darbo norma, val. vienetui
-            </label>
-            <input className={ui.input} type="text" inputMode="decimal" autoComplete="off" {...fieldProps('labourNorm')} />
-            {fieldError('labourNorm')}
+            <div className={ui.field}>
+              <label className={ui.label} htmlFor="labourNorm">
+                Darbo norma, val. vienetui
+              </label>
+              <input className={ui.input} type="text" inputMode="decimal" autoComplete="off" {...fieldProps('labourNorm')} />
+              {fieldError('labourNorm')}
+            </div>
           </div>
 
           <WorkLinesEditor lines={lines} materials={materials} errors={lineErrors} onChange={setLines} />
@@ -231,7 +234,7 @@ export default function WorkFormPage() {
             </p>
           )}
 
-          <button type="submit" className={ui.primaryButton} disabled={submitting}>
+          <button type="submit" className={`${ui.primaryButton} max-w-[420px]`} disabled={submitting}>
             {submitting ? 'Saugoma…' : 'Išsaugoti'}
           </button>
         </form>

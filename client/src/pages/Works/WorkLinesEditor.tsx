@@ -55,77 +55,77 @@ export default function WorkLinesEditor({ lines, materials, errors, onChange }: 
       <legend className={ui.label}>Medžiagos</legend>
       {lines.length === 0 && <p>Darbas be medžiagų.</p>}
       {lines.length > 0 && (
-        <div className={ui.tableWrapper}>
-          <table className={ui.table}>
-            <thead>
-              <tr>
-                <th className={ui.cell}>Medžiaga</th>
-                <th className={ui.cell}>Sąnaudų norma vienetui</th>
-                <th className={ui.cell}>Atliekos, %</th>
-                <th className={ui.cell}></th>
-              </tr>
-            </thead>
-            <tbody>
-              {lines.map((_, index) => (
-                <tr key={index} className="align-top">
-                  <td className={ui.cell}>
-                    <div className={ui.field}>
-                      <select
-                        className={ui.input}
-                        {...fieldProps(index, 'materialId', 'Medžiaga')}
-                        onChange={(event) => update(index, 'materialId', event.target.value)}
-                      >
-                        <option value="">Pasirinkite…</option>
-                        {materials.map((material) => (
-                          <option key={material.id} value={material.id}>
-                            {material.name} ({material.unit})
-                          </option>
-                        ))}
-                      </select>
-                      {fieldError(index, 'materialId')}
-                    </div>
-                  </td>
-                  <td className={ui.cell}>
-                    <div className={ui.field}>
-                      <input
-                        className={ui.input}
-                        type="text"
-                        inputMode="decimal"
-                        autoComplete="off"
-                        {...fieldProps(index, 'consumptionNorm', 'Sąnaudų norma')}
-                        onChange={(event) => update(index, 'consumptionNorm', event.target.value)}
-                      />
-                      {fieldError(index, 'consumptionNorm')}
-                    </div>
-                  </td>
-                  <td className={ui.cell}>
-                    <div className={ui.field}>
-                      <input
-                        className={ui.input}
-                        type="text"
-                        inputMode="decimal"
-                        autoComplete="off"
-                        {...fieldProps(index, 'wastePercent', 'Atliekos')}
-                        onChange={(event) => update(index, 'wastePercent', event.target.value)}
-                      />
-                      {fieldError(index, 'wastePercent')}
-                    </div>
-                  </td>
-                  <td className={ui.cell}>
-                    <button
-                      type="button"
-                      className={ui.dangerOutlineButton}
-                      aria-label={`Pašalinti ${index + 1} eilutę`}
-                      onClick={() => onChange(lines.filter((_, i) => i !== index))}
+        // Narrow number fields and wrapping headings keep the table within the form; below 768 px each line
+        // becomes a card, like the lists, so the form never scrolls sideways.
+        <table className={ui.listTable}>
+          <thead className={ui.listHead}>
+            <tr>
+              <th className={`${ui.cell} w-full`}>Medžiaga</th>
+              <th className={`${ui.cell} whitespace-normal`}>Sąnaudų norma vienetui</th>
+              <th className={`${ui.cell} whitespace-normal`}>Atliekos, %</th>
+              <th className={ui.cell}></th>
+            </tr>
+          </thead>
+          <tbody className={ui.listBody}>
+            {lines.map((_, index) => (
+              <tr key={index} className={`${ui.listRow} align-top`}>
+                <td className={ui.listTitleCell}>
+                  <div className={ui.field}>
+                    <select
+                      className={`${ui.input} w-full min-w-0`}
+                      {...fieldProps(index, 'materialId', 'Medžiaga')}
+                      onChange={(event) => update(index, 'materialId', event.target.value)}
                     >
-                      Pašalinti
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                      <option value="">Pasirinkite…</option>
+                      {materials.map((material) => (
+                        <option key={material.id} value={material.id}>
+                          {material.name} ({material.unit})
+                        </option>
+                      ))}
+                    </select>
+                    {fieldError(index, 'materialId')}
+                  </div>
+                </td>
+                <td className={ui.listCell} data-label="Sąnaudų norma vienetui">
+                  <div className={ui.field}>
+                    <input
+                      className={`${ui.input} w-24`}
+                      type="text"
+                      inputMode="decimal"
+                      autoComplete="off"
+                      {...fieldProps(index, 'consumptionNorm', 'Sąnaudų norma')}
+                      onChange={(event) => update(index, 'consumptionNorm', event.target.value)}
+                    />
+                    {fieldError(index, 'consumptionNorm')}
+                  </div>
+                </td>
+                <td className={ui.listCell} data-label="Atliekos, %">
+                  <div className={ui.field}>
+                    <input
+                      className={`${ui.input} w-24`}
+                      type="text"
+                      inputMode="decimal"
+                      autoComplete="off"
+                      {...fieldProps(index, 'wastePercent', 'Atliekos')}
+                      onChange={(event) => update(index, 'wastePercent', event.target.value)}
+                    />
+                    {fieldError(index, 'wastePercent')}
+                  </div>
+                </td>
+                <td className={ui.listActionsCell}>
+                  <button
+                    type="button"
+                    className={ui.dangerOutlineButton}
+                    aria-label={`Pašalinti ${index + 1} eilutę`}
+                    onClick={() => onChange(lines.filter((_, i) => i !== index))}
+                  >
+                    Pašalinti
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
       <div>
         <button type="button" className={ui.secondaryButton} onClick={() => onChange([...lines, emptyLine])}>
