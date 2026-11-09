@@ -58,6 +58,15 @@ public class EstimateMaterialLine
     public void ChangePrice(decimal price) => Price = price;
 
     /// <summary>
+    /// Replaces the consumption norm and waste with the ones copied from the catalog work's composition.
+    /// </summary>
+    public void ChangeNorms(decimal consumptionNorm, decimal wastePercent)
+    {
+        ConsumptionNorm = consumptionNorm;
+        WastePercent = wastePercent;
+    }
+
+    /// <summary>
     /// Takes another material's name, unit and price, keeping this line's norm and waste.
     /// </summary>
     public void ReplaceMaterial(string materialName, string materialUnit, decimal price)

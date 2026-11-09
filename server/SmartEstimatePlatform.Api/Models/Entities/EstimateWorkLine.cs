@@ -70,6 +70,11 @@ public class EstimateWorkLine
     public void ChangeLabourRate(decimal labourRate) => LabourRate = labourRate;
 
     /// <summary>
+    /// Replaces the labour norm with one copied from the catalog work.
+    /// </summary>
+    public void ChangeLabourNorm(decimal labourNorm) => LabourNorm = labourNorm;
+
+    /// <summary>
     /// Removes one of this line's material lines; the work line itself stays, even with no materials left.
     /// </summary>
     public void RemoveMaterialLine(EstimateMaterialLine materialLine) => MaterialLines.Remove(materialLine);

@@ -77,3 +77,22 @@ export interface EstimateNames {
   name: string
   works: WorkNames[]
 }
+
+/** Matches the server's RefreshedField enum, which is sent as a number. */
+export const RefreshedField = {
+  LabourRate: 0,
+  LabourNorm: 1,
+  Price: 2,
+  ConsumptionNorm: 3,
+  WastePercent: 4,
+} as const
+
+export type RefreshedField = (typeof RefreshedField)[keyof typeof RefreshedField]
+
+/** What updating an estimate from the catalog would change (spec 015). */
+export interface EstimateRefreshPreview {
+  changes: { workName: string; materialName: string | null; field: RefreshedField; oldValue: number; newValue: number }[]
+  notFound: { workName: string; materialName: string | null }[]
+  currentTotal: number
+  newTotal: number
+}

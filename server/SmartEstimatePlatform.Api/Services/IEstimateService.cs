@@ -114,4 +114,20 @@ public interface IEstimateService
     /// <exception cref="NotFoundException">No such estimate, work line or material line in it.</exception>
     /// <exception cref="EstimateNotDraftException">The estimate is not Draft.</exception>
     Task<EstimateResponse> RemoveMaterialLineAsync(int id, int lineId, int materialLineId);
+
+    /// <summary>
+    /// Shows what updating a Draft estimate from the current catalog would change, and the total before and after;
+    /// nothing is saved.
+    /// </summary>
+    /// <exception cref="NotFoundException">No estimate with this ID in the current company.</exception>
+    /// <exception cref="EstimateNotDraftException">The estimate is not Draft.</exception>
+    Task<EstimateRefreshPreviewResponse> PreviewRefreshAsync(int id);
+
+    /// <summary>
+    /// Updates a Draft estimate's prices and norms from the current catalog (the same changes the preview shows,
+    /// with the catalog as it is now); quantities, percentages and the set of lines stay.
+    /// </summary>
+    /// <exception cref="NotFoundException">No estimate with this ID in the current company.</exception>
+    /// <exception cref="EstimateNotDraftException">The estimate is not Draft.</exception>
+    Task<EstimateResponse> RefreshAsync(int id);
 }

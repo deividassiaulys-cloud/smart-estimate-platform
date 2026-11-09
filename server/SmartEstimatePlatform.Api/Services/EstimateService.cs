@@ -142,6 +142,25 @@ public class EstimateService(AppDbContext db) : IEstimateService
     }
 
     /// <inheritdoc />
+    public async Task<EstimateRefreshPreviewResponse> PreviewRefreshAsync(int id)
+    {
+        // The changes are made only in memory and never saved: the request's context is discarded afterwards.
+        var estimate = await FindDraftAsync(id);
+        var currentTotal = EstimateCalculator.Calculate(estimate).Total;
+        var result = await RefreshFromCatalogAsync(estimate);
+        return result.ToPreviewResponse(currentTotal, EstimateCalculator.Calculate(estimate).Total);
+    }
+
+    /// <inheritdoc />
+    public async Task<EstimateResponse> RefreshAsync(int id)
+    {
+        var estimate = await FindDraftAsync(id);
+        await RefreshFromCatalogAsync(estimate);
+        await db.SaveChangesAsync();
+        return Respond(estimate);
+    }
+
+    /// <inheritdoc />
     public Task<EstimateResponse> ConfirmAsync(int id) =>
         ChangeStatusAsync(id, EstimateStatus.Draft, e => e.Confirm(), "The estimate is already confirmed.");
 
@@ -161,6 +180,19 @@ public class EstimateService(AppDbContext db) : IEstimateService
         change(estimate);
         await db.SaveChangesAsync();
         return Respond(estimate);
+    }
+
+    // The one path shared by the refresh preview and the refresh, so both always agree (spec 015).
+    private async Task<CatalogRefreshResult> RefreshFromCatalogAsync(Estimate estimate)
+    {
+        var works = await db.Works
+            .Select(w => new CatalogWork(w.Name, w.Unit, w.LabourRate, w.LabourNorm,
+                w.Lines.OrderBy(l => l.Id)
+                    .Select(l => new CatalogComponent(l.Material.Name, l.Material.Unit, l.ConsumptionNorm, l.WastePercent))
+                    .ToList()))
+            .ToListAsync();
+        var materials = await db.Materials.Select(m => new CatalogMaterial(m.Name, m.Unit, m.Price)).ToListAsync();
+        return EstimateCatalogRefresh.Apply(estimate, works, materials);
     }
 
     private static EstimateResponse Respond(Estimate estimate) =>
