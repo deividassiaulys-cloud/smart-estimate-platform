@@ -1,7 +1,7 @@
 # Research: Estimate Price Refresh
 
 ## R1. One code path for the preview and the update
-- **Decision**: `EstimateService` loads the Draft estimate and the company's catalog works (with their composition) and materials, then calls a pure static `EstimateCatalogRefresh.Apply(estimate, works, materials)`. It updates the estimate's lines in memory and returns the list of changes and of lines not found. The preview calculates the result with `EstimateCalculator` and does **not** save. The update does the same and saves.
+- **Decision**: `EstimateService` loads the Draft estimate and the company's catalog works (with their composition) and materials, then calls a pure static `EstimateCatalogRefresh.Apply(estimate, works, materials)`. The catalog is passed as small input records (`CatalogWork` with its `CatalogComponent`s, and `CatalogMaterial`) built by the service, because a catalog work's composition refers to its materials by navigation, which can't be set up without a database. It updates the estimate's lines in memory and returns the list of changes and of lines not found. The preview calculates the result with `EstimateCalculator` and does **not** save. The update does the same and saves.
 - **Rationale**: the preview's resulting total is the update's total by construction (SC-015-2), and the matching rules exist once (II.4, X.1). The DbContext is per request, so unsaved changes are discarded when the preview request ends. The function is pure and static like `EstimateCalculator`, so it can be unit-tested without a database.
 - **Alternatives**: a separate "what would change" calculation next to the apply step (two copies of the matching rules); storing a preview and confirming it by ID (a new stored entity, which the spec excludes).
 
