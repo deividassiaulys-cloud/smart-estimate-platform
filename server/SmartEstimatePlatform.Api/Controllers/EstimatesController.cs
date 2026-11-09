@@ -105,6 +105,24 @@ public class EstimatesController(IEstimateService estimateService, IEstimateExpo
         estimateService.RemoveMaterialLineAsync(id, lineId, materialLineId);
 
     /// <summary>
+    /// Shows what updating the estimate from the current catalog would change; nothing is saved.
+    /// </summary>
+    [HttpGet("estimates/{id:int}/refresh")]
+    [ProducesResponseType<EstimateRefreshPreviewResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public Task<EstimateRefreshPreviewResponse> PreviewRefresh(int id) =>
+        estimateService.PreviewRefreshAsync(id);
+
+    /// <summary>
+    /// Updates the estimate's prices and norms from the current catalog.
+    /// </summary>
+    [HttpPost("estimates/{id:int}/refresh")]
+    [ProducesResponseType<EstimateResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public Task<EstimateResponse> Refresh(int id) =>
+        estimateService.RefreshAsync(id);
+
+    /// <summary>
     /// Confirms a Draft estimate; it can then no longer be changed.
     /// </summary>
     [HttpPatch("estimates/{id:int}/confirm")]

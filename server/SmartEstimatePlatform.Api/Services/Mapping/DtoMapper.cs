@@ -161,4 +161,22 @@ public static class DtoMapper
             MaterialNames = work.MaterialLines.OrderBy(m => m.Id).Select(m => m.MaterialName).ToList()
         }).ToList()
     };
+
+    /// <summary>
+    /// A catalog refresh's changes and lines not found, with the totals before and after it.
+    /// </summary>
+    public static EstimateRefreshPreviewResponse ToPreviewResponse(this CatalogRefreshResult result, decimal currentTotal, decimal newTotal) => new()
+    {
+        Changes = result.Changes.Select(c => new RefreshChangeResponse
+        {
+            WorkName = c.WorkName,
+            MaterialName = c.MaterialName,
+            Field = c.Field,
+            OldValue = c.OldValue,
+            NewValue = c.NewValue
+        }).ToList(),
+        NotFound = result.NotFound.Select(m => new RefreshMissResponse { WorkName = m.WorkName, MaterialName = m.MaterialName }).ToList(),
+        CurrentTotal = currentTotal,
+        NewTotal = newTotal
+    };
 }

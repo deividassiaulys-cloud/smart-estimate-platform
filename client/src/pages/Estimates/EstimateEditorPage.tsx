@@ -8,6 +8,7 @@ import {
   changeQuantity,
   confirmEstimate,
   getEstimate,
+  refreshEstimate,
   removeMaterialLine,
   removeWorkLine,
   replaceMaterial,
@@ -24,6 +25,7 @@ import { ui } from '../../utils/ui'
 import AddWorkForm from './AddWorkForm'
 import EstimateExportButton from './EstimateExportButton'
 import EstimatePercentagesForm from './EstimatePercentagesForm'
+import EstimateRefreshButton from './EstimateRefreshButton'
 import EstimateStatusActions from './EstimateStatusActions'
 import EstimateTotals from './EstimateTotals'
 import EstimateWorkLineRow from './EstimateWorkLineRow'
@@ -150,6 +152,13 @@ export default function EstimateEditorPage() {
                 onConfirm={() => apply(() => confirmEstimate(estimateId))}
                 onReturnToDraft={() => apply(() => returnEstimateToDraft(estimateId))}
               />
+              {!readOnly && (
+                <EstimateRefreshButton
+                  estimateId={estimateId}
+                  onRefresh={() => apply(() => refreshEstimate(estimateId))}
+                  onConflict={showFailure}
+                />
+              )}
               <EstimateExportButton estimateId={estimateId} estimateName={estimate.name} />
             </div>
           </div>

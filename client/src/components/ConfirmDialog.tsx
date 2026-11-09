@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef } from 'react'
+import { useEffect, useId, useRef, type ReactNode } from 'react'
 import { ui } from '../utils/ui'
 
 interface ConfirmDialogProps {
@@ -11,6 +11,8 @@ interface ConfirmDialogProps {
   busy?: boolean
   /** "danger" (red) for deletions; "primary" for confirmations that destroy nothing, such as export. */
   confirmTone?: 'danger' | 'primary'
+  /** Details under the message, such as a list of changes; they scroll inside the dialog. */
+  children?: ReactNode
   onConfirm: () => void
   onCancel: () => void
 }
@@ -18,7 +20,8 @@ interface ConfirmDialogProps {
 /**
  * Asks the user to confirm an action. Every delete/remove action uses it (NFR-011), and so do the status
  * changes and the export.
- * Focus starts on Cancel, Escape cancels, and Tab stays inside the dialog.
+ * Focus starts on Cancel, Escape cancels, and Tab stays inside the dialog (on the details too, when given, so a
+ * keyboard user can scroll them).
  */
 export default function ConfirmDialog({
   open,
@@ -28,12 +31,15 @@ export default function ConfirmDialog({
   cancelLabel = 'Atšaukti',
   busy = false,
   confirmTone = 'danger',
+  children,
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) {
   const titleId = useId()
   const messageId = useId()
+  const detailsId = useId()
   const cancelRef = useRef<HTMLButtonElement>(null)
+  const detailsRef = useRef<HTMLDivElement>(null)
   const confirmRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
@@ -47,10 +53,12 @@ export default function ConfirmDialog({
       event.preventDefault()
       onCancel()
     } else if (event.key === 'Tab') {
-      // Keep focus on the two buttons.
+      // Keep focus inside: Cancel, the details (when given), then the confirm button.
       event.preventDefault()
-      const next = document.activeElement === cancelRef.current ? confirmRef.current : cancelRef.current
-      next?.focus()
+      const stops = [cancelRef.current, detailsRef.current, confirmRef.current].filter((stop) => stop !== null)
+      const current = stops.indexOf(document.activeElement as HTMLButtonElement | HTMLDivElement)
+      const step = event.shiftKey ? -1 : 1
+      stops[(current + step + stops.length) % stops.length]?.focus()
     }
   }
 
@@ -61,13 +69,18 @@ export default function ConfirmDialog({
         role="alertdialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        aria-describedby={messageId}
+        aria-describedby={children ? `${messageId} ${detailsId}` : messageId}
         onKeyDown={handleKeyDown}
       >
         <h2 id={titleId} className={ui.h2}>
           {title}
         </h2>
         <p id={messageId}>{message}</p>
+        {children && (
+          <div id={detailsId} ref={detailsRef} tabIndex={0} className="max-h-[50vh] overflow-y-auto">
+            {children}
+          </div>
+        )}
         <div className="flex justify-end gap-3">
           <button type="button" ref={cancelRef} className={ui.secondaryButton} onClick={onCancel} disabled={busy}>
             {cancelLabel}

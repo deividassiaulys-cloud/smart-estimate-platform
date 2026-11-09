@@ -13,7 +13,7 @@
 11	Projects List	List of the company's projects.	Manager, Viewer
 12	Project Form (create / edit)	Create or edit a project (name, description).	Manager
 13	Project Detail	Shows one project and the list of its estimates.	Manager, Viewer
-14	Estimate Editor	Main working screen: add works, set quantities, view auto-generated material lines, edit a line's labour rate or material price, replace (same unit) or remove a material line (Draft only, this estimate only), set overhead/profit/VAT %, see totals, change status (Draft/Confirmed).	Manager
+14	Estimate Editor	Main working screen: add works, set quantities, view auto-generated material lines, edit a line's labour rate or material price, replace (same unit) or remove a material line (Draft only, this estimate only), update prices and norms from the catalog after a preview of every change (Draft only), set overhead/profit/VAT %, see totals, change status (Draft/Confirmed).	Manager
 15	Estimate View (read-only)	Read-only view of an estimate. Manager sees full data (quantities, prices, sums, status); Viewer sees only work and material names.	Manager, Viewer
 16	Export Confirmation	Confirms and triggers the Excel (and later PDF) export of an estimate.	Manager
 17	Not Found (404)	Shown when a route or resource does not exist or does not belong to the user's company.	All authenticated roles

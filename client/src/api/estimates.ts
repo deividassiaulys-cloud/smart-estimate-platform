@@ -1,4 +1,11 @@
-import type { Estimate, EstimateName, EstimateNames, EstimateSummary, Percentages } from '../interfaces/estimate'
+import type {
+  Estimate,
+  EstimateName,
+  EstimateNames,
+  EstimateRefreshPreview,
+  EstimateSummary,
+  Percentages,
+} from '../interfaces/estimate'
 import { apiDownload, apiFetch, type DownloadedFile } from './http'
 
 /** Lists a project's estimates by name, with status and total. */
@@ -88,4 +95,14 @@ export function replaceMaterial(id: number, lineId: number, materialLineId: numb
 /** Removes one material line from a work line; returns the recalculated estimate. */
 export function removeMaterialLine(id: number, lineId: number, materialLineId: number): Promise<Estimate> {
   return apiFetch(`/api/estimates/${id}/lines/${lineId}/materials/${materialLineId}`, { method: 'DELETE' })
+}
+
+/** Shows what updating the estimate from the current catalog would change; nothing is saved. */
+export function previewRefresh(id: number): Promise<EstimateRefreshPreview> {
+  return apiFetch(`/api/estimates/${id}/refresh`)
+}
+
+/** Updates the estimate's prices and norms from the current catalog; returns the recalculated estimate. */
+export function refreshEstimate(id: number): Promise<Estimate> {
+  return apiFetch(`/api/estimates/${id}/refresh`, { method: 'POST' })
 }
