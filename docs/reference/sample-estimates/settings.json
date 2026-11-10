@@ -1,0 +1,39 @@
+{
+ "currency": "EUR",
+ "labourRates": {
+  "factory": 25.0,
+  "site": 35.0,
+  "roofWindowInstallation": 40.0,
+  "machineryPerHour": 45.0
+ },
+ "surcharges": [
+  {
+   "name": "Additional materials (Papildomų medžiagų vertė)",
+   "column": "material",
+   "percent": 1.5
+  },
+  {
+   "name": "Additional machinery (Papildomų mechanizmų vertė)",
+   "column": "machinery",
+   "percent": 1.5
+  },
+  {
+   "name": "Other labour surcharges (Kiti darbo užmokesčio priskaitymai)",
+   "column": "labour",
+   "percent": 1.5
+  },
+  {
+   "name": "Social insurance (Soc. draudimas)",
+   "column": "labour",
+   "percent": 0
+  },
+  {
+   "name": "Site costs (Statybvietės išlaidos)",
+   "column": "labour",
+   "percent": 0
+  }
+ ],
+ "profitPercent": 6,
+ "discountPercent": 0,
+ "vatPercent": 21
+}

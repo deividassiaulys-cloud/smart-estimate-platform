@@ -1,0 +1,13 @@
+Materials: 200, works: 102
+
+Sample estimate with the smart-estimate-platform calculation (overhead 1.5 %, profit 6 %, VAT 21 %):
+  Direct costs 104056.13  (PDF 104017.69)
+  Overhead 1560.84
+  Profit 6337.02
+  VAT 23510.34
+  Total 135464.33  (PDF 135414.29, difference +50.04)
+
+Notes:
+  RT-015 Karkasas 45x95 mm cc 600 mm: dropped Kalibruota mediena 20x95 mm (norm 0.000067 < 0.0005)
+  RT-019 Karkasas 45x145 mm cc 600 mm: dropped Kalibruota mediena 20x95 mm (norm 0.000069 < 0.0005)
+  RT-076 Darbo brėžinių paruošimas: several labour rates merged into 10.0 EUR/h
