@@ -8,32 +8,32 @@
 
 ## Phase 1: Foundational: shared dialog pieces (blocks every story)
 
-- [ ] T346 Add client/src/components/DialogFrame.tsx (plan R1):
+- [X] T346 Add client/src/components/DialogFrame.tsx (plan R1):
   - props: `title`, `onClose`, `wide?`, `children`;
   - rendered in a portal with role="dialog", aria-modal and aria-labelledby;
   - Escape → onClose; Tab cycles through the focusable elements inside;
   - on unmount, focus returns to the element that had it before opening.
-- [ ] T347 Add client/src/components/SearchableList.tsx (plan R2):
+- [X] T347 Add client/src/components/SearchableList.tsx (plan R2):
   - props: `items: {id, name, detail?}[]`, `noMatch`, `chosenId?`, `onPick(id)`, `onSearchChange?(text)`;
   - the search input (label "Paieška") is focused on mount;
   - case-insensitive lt-LT "contains" filter, sorted with `localeCompare('lt')`;
   - option buttons with `aria-pressed` for the chosen one; ArrowDown/ArrowUp move between the search field and the options.
-- [ ] T348 Move `ReplaceMaterialDialog` onto `DialogFrame` + `SearchableList` (picking an item chooses it at once). All 7 of its existing tests pass unchanged.
+- [X] T348 Move `ReplaceMaterialDialog` onto `DialogFrame` + `SearchableList` (picking an item chooses it at once). All 7 of its existing tests pass unchanged.
 
 ## Phase 2: User Stories 1 and 2: Add dialogs (P1) 🎯 MVP
 
 **Goal**: "+ Pridėti darbą" / "+ Pridėti skyrių" open dialogs that add exactly as before.
 **Independent Test**: spec US1, US2.
 
-- [ ] T349 [US1][US2] Add client/src/pages/Estimates/AddFromCatalogDialog.tsx (plan R3):
+- [X] T349 [US1][US2] Add client/src/pages/Estimates/AddFromCatalogDialog.tsx (plan R3):
   - layout: `SearchableList`; the chosen item's name; the quantity field labelled "Kiekis, <unit>" (`decimalPattern(quantityDecimals)`, message as today); "Skyrius" with "Be skyriaus" plus the estimate's sections, only when sections are given and not empty; "Pridėti", "Atšaukti" and "+ Kurti naują…";
   - choosing an item moves the focus to the quantity field;
   - `onAdd` resolves to an error message (shown, dialog stays open) or null (the dialog closes).
-- [ ] T350 [US1][US2] `EstimateEditorPage`:
+- [X] T350 [US1][US2] `EstimateEditorPage`:
   - replace `AddSectionForm`/`AddWorkForm` with the buttons "+ Pridėti skyrių" and "+ Pridėti darbą" (Draft only), which open `AddFromCatalogDialog` with the catalog sections (detail: unit · number of works) or the works (detail: unit);
   - adding uses the existing `addSection`/`addWorkLine`; a refusal returns `saveErrorMessage(err)` and still reloads on 409 as today;
   - delete `AddSectionForm.tsx` and `AddWorkForm.tsx`.
-- [ ] T351 [US1][US2] Update the existing tests that used the add forms (EstimateSections, EstimateStatus, FitTables, and any other found by grep) to open the dialog first, with the same expected requests and messages. Add tests/client/EstimateEditorTests/AddDialogs.test.tsx:
+- [X] T351 [US1][US2] Update the existing tests that used the add forms (EstimateSections, EstimateStatus, FitTables, and any other found by grep) to open the dialog first, with the same expected requests and messages. Add tests/client/EstimateEditorTests/AddDialogs.test.tsx:
   - both buttons only in Draft;
   - the dialog has the focus in search; filter ignoring case; no-match text;
   - choose → focus in quantity; invalid quantity refused and nothing sent;
@@ -46,15 +46,15 @@
 **Goal**: "+ Kurti naują…" opens the catalog form on top of the editor and returns with the item chosen.
 **Independent Test**: spec US3.
 
-- [ ] T352 [US3] Extract client/src/pages/Works/WorkForm.tsx and client/src/pages/CatalogSections/CatalogSectionForm.tsx from their pages (plan R4):
+- [X] T352 [US3] Extract client/src/pages/Works/WorkForm.tsx and client/src/pages/CatalogSections/CatalogSectionForm.tsx from their pages (plan R4):
   - props `id | null`, `initialName?`, `onSaved(item)`, `onCancel?`;
   - the pages keep the route, heading, navigation and notices, and render the form;
   - the catalog pages' behaviour and existing tests are unchanged.
-- [ ] T353 [US3] In `EstimateEditorPage`, "+ Kurti naują darbą/skyrių":
+- [X] T353 [US3] In `EstimateEditorPage`, "+ Kurti naują darbą/skyrių":
   - opens a wide `DialogFrame` with `WorkForm`/`CatalogSectionForm` (`initialName` = the search text);
   - on save, adds the item to the loaded list and reopens the add dialog with it chosen;
   - on cancel, returns to the add dialog.
-- [ ] T354 [US3] Tests in AddDialogs.test.tsx:
+- [X] T354 [US3] Tests in AddDialogs.test.tsx:
   - "+ Kurti naują darbą" opens the form with the search text as its name;
   - saving POSTs `/api/works` as the catalog page does and returns to "Pridėti darbą" with the new work chosen;
   - cancelling returns with nothing added;
@@ -63,7 +63,14 @@
 ## Phase 4: Polish
 
 - [ ] T355 docs/ux.md §14: the add buttons, the dialogs with search, and create-new. Manual check in the browser (dialogs at 1280 px and 360 px, keyboard).
-- [ ] T356 Run the full check set (`npm run lint`, `npm run build`, `npm run test`, `dotnet test`). Fix any regression.
+- [X] T356 Run the full check set (`npm run lint`, `npm run build`, `npm run test`, `dotnet test`). Fix any regression.
+
+**Status notes (2026-11-17)**:
+- T348: the replacement dialog now uses DialogFrame + SearchableList; all its tests pass unchanged.
+- T351: besides the request-level tests, two section tests were rewritten to check the section choice inside the dialog (the old checks would have passed trivially after the forms were removed).
+- T352: the form-state type in WorkForm was renamed `WorkFields` so it doesn't clash with the component name; the catalog pages' behaviour and tests are unchanged.
+- T355: docs/ux.md §14 updated. The manual browser check (dialogs at 1280 px and 360 px, keyboard) has **not** been done in this session, so T355 stays open.
+- T356: `npm run lint`, `npm run build`, `npm run test` (122 passed, twice) and `dotnet test` (368 passed) all pass.
 
 ## Dependencies
 
