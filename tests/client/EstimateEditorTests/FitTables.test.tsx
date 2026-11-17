@@ -115,3 +115,13 @@ test('the materials and works lists wrap long names and keep their row actions',
   expect(work.getAttribute('title')).toBe(workName)
   expect(within(work.closest('tr')!).getByRole('button', { name: 'Ištrinti' })).toBeTruthy()
 })
+
+test('a row action cell stays a table cell, so its border lines up with the row when a name wraps', async () => {
+  // Regression: "flex" on the <td> made the actions cell shorter than a row with a 2-line name, so its bottom line
+  // sat higher than the other cells'. On wide screens the cell must not be a flex box (cards below 768 px may be).
+  open('/materials', { '/api/materials': [{ id: 1, name: materialName, unit: 'm²', price: 4.5 }] })
+  const row = (await screen.findByText(materialName)).closest('tr')!
+
+  const actionsCell = within(row).getByRole('button', { name: 'Ištrinti' }).closest('td')!
+  expect(actionsCell.className.split(' ')).not.toContain('flex')
+})

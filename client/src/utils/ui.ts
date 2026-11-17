@@ -1,6 +1,8 @@
 const table = 'w-full border-collapse'
 const cell = 'border-b border-line px-3 py-2 text-left whitespace-nowrap'
-const actionsCell = 'flex items-center gap-3 border-b border-line px-3 py-2'
+// A row's actions. It must stay a real table cell (no flex on the <td>), so it is as tall as a row whose name wraps
+// onto 2 lines and its bottom line stays level with the other cells; the actions are spaced as inline items instead.
+const actionsCell = 'border-b border-line px-3 py-2 whitespace-nowrap [&>*]:align-middle [&>*+*]:ml-3'
 // Small row actions; on touch screens (coarse pointer) they still get the 44 px target from docs/ux.md.
 const small =
   'inline-flex cursor-pointer items-center justify-center rounded-md px-2 py-1 text-sm pointer-coarse:min-h-11 pointer-coarse:min-w-11'
@@ -61,5 +63,6 @@ export const ui = {
   listCell: `${cell} ${cardCell}`,
   /** The first cell, the item's name: the card's bold title, without a label. */
   listTitleCell: `${cell} max-w-[22rem] min-w-[10rem] break-words whitespace-normal max-md:block max-md:border-0 max-md:px-0 max-md:py-1 max-md:font-semibold max-md:whitespace-normal max-md:text-heading`,
-  listActionsCell: `${actionsCell} max-md:border-0 max-md:px-0 max-md:pt-2`,
+  // In the cards below 768 px the actions are a flex row, as before.
+  listActionsCell: `${actionsCell} max-md:flex max-md:items-center max-md:gap-3 max-md:border-0 max-md:px-0 max-md:pt-2 max-md:[&>*+*]:ml-0`,
 }
