@@ -1,3 +1,4 @@
+import ClampedText from '../../components/ClampedText'
 import { Link } from 'react-router-dom'
 import type { Work } from '../../interfaces/work'
 import { formatNorm, formatPrice } from '../../utils/format'
@@ -26,16 +27,18 @@ export default function WorksTable({ works, onDelete }: WorksTableProps) {
         <tbody className={ui.listBody}>
           {works.map((work) => (
             <tr className={ui.listRow} key={work.id}>
-              <td className={ui.listTitleCell}>{work.name}</td>
+              <td className={ui.listTitleCell}>
+                <ClampedText text={work.name} />
+              </td>
               <td className={ui.listCell} data-label="Mato vnt.">{work.unit}</td>
               <td className={`${ui.listCell} text-right`} data-label="Įkainis, €/val.">{formatPrice(work.labourRate)}</td>
               <td className={`${ui.listCell} text-right`} data-label="Darbo norma, val.">{formatNorm(work.labourNorm)}</td>
               <td className={`${ui.listCell} text-right`} data-label="Medžiagos">{work.lines.length}</td>
               <td className={ui.listActionsCell}>
-                <Link className={ui.link} to={`/works/${work.id}/edit`}>
+                <Link className={ui.smallLink} to={`/works/${work.id}/edit`}>
                   Redaguoti
                 </Link>
-                <button type="button" className={ui.dangerOutlineButton} onClick={() => onDelete(work)}>
+                <button type="button" className={ui.smallDangerButton} onClick={() => onDelete(work)}>
                   Ištrinti
                 </button>
               </td>

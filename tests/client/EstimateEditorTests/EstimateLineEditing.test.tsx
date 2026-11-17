@@ -107,6 +107,12 @@ function changes() {
     .map(([path, init]) => ({ path, method: (init as RequestInit).method, body: (init as RequestInit).body }))
 }
 
+// Opens the replacement dialog of a material line and chooses a material in it (spec 020 US2).
+async function chooseReplacement(material: string, replacement: string) {
+  await userEvent.click(await screen.findByRole('button', { name: `Pakeisti medžiagą: ${material}` }))
+  await userEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: new RegExp(replacement) }))
+}
+
 const problem = (status: number) => () => Response.json({ status, detail: 'Server text XYZ' }, { status })
 
 // ---- US1: prices ----
@@ -262,10 +268,10 @@ test('a removal refused because the estimate was confirmed elsewhere shows the s
 test('the replacement list offers only other materials with the same unit', async () => {
   await openEditor()
 
-  const select = await screen.findByLabelText('Pakeisti medžiagą: Gipso plokštė')
-  const options = within(select).getAllByRole('option').map((option) => option.textContent?.replace(/\s/g, ' '))
+  await userEvent.click(await screen.findByRole('button', { name: 'Pakeisti medžiagą: Gipso plokštė' }))
+  const options = within(screen.getByRole('dialog')).getAllByRole('listitem').map((option) => option.textContent?.replace(/\s/g, ' '))
 
-  expect(options).toEqual(['Pakeisti medžiagą…', 'Drėgmei atspari plokštė (6,20 €)'])
+  expect(options).toEqual(['Drėgmei atspari plokštė6,20 €'])
   // No other "vnt." material in the catalog: the screws line offers no replacement.
   expect(screen.queryByLabelText('Pakeisti medžiagą: Varžtai')).toBeNull()
 })
@@ -283,7 +289,7 @@ test('choosing a replacement sends it and shows the returned line', async () => 
   answer = () => Response.json(replaced)
   await openEditor()
 
-  await userEvent.selectOptions(await screen.findByLabelText('Pakeisti medžiagą: Gipso plokštė'), '2')
+  await chooseReplacement('Gipso plokštė', 'Drėgmei atspari plokštė')
 
   expect(changes()).toEqual([
     { path: '/api/estimates/9/lines/21/materials/51/material', method: 'PATCH', body: JSON.stringify({ materialId: 2 }) },
@@ -295,7 +301,7 @@ test('a refused replacement shows a Lithuanian message', async () => {
   answer = problem(400)
   await openEditor()
 
-  await userEvent.selectOptions(await screen.findByLabelText('Pakeisti medžiagą: Gipso plokštė'), '2')
+  await chooseReplacement('Gipso plokštė', 'Drėgmei atspari plokštė')
 
   expect(await screen.findByText('Pasirinkite to paties mato vieneto medžiagą iš katalogo.')).toBeTruthy()
   expect(document.body.textContent).not.toContain('XYZ')
@@ -305,7 +311,7 @@ test('a replacement refused because the estimate was confirmed elsewhere shows t
   answer = problem(409)
   await openEditor()
 
-  await userEvent.selectOptions(await screen.findByLabelText('Pakeisti medžiagą: Gipso plokštė'), '2')
+  await chooseReplacement('Gipso plokštė', 'Drėgmei atspari plokštė')
 
   expect(await screen.findByText('Sąmatos būsena jau pasikeitė, todėl pakeitimas neišsaugotas.')).toBeTruthy()
 })

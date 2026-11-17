@@ -1,5 +1,6 @@
 import type { EstimateMaterialLine, EstimateWorkLine } from '../../interfaces/estimate'
 import type { Material } from '../../interfaces/material'
+import ClampedText from '../../components/ClampedText'
 import { formatMoney, formatNorm } from '../../utils/format'
 import { ui } from '../../utils/ui'
 import EstimateMaterialLineRow from './EstimateMaterialLineRow'
@@ -37,7 +38,9 @@ export default function EstimateWorkLineRow({
   return (
     <tbody className="border-b-2 border-line">
       <tr className="align-top">
-        <td className={`${ui.cell} font-medium text-heading`}>{line.workName}</td>
+        <td className={`${ui.nameCell} font-medium text-heading`}>
+          <ClampedText text={line.workName} />
+        </td>
         <td className={ui.cell}>{line.workUnit}</td>
         <td className={ui.cell}>
           <InlineNumberField
@@ -52,8 +55,9 @@ export default function EstimateWorkLineRow({
           />
         </td>
         <td className={ui.cell}>
-          <div className="flex items-start gap-2 whitespace-nowrap">
-            <span className="py-2">Darbas: {formatNorm(line.labourNorm)} val. ×</span>
+          {/* Wraps onto two short lines when the table is narrow (spec 020). */}
+          <div className="flex max-w-[15rem] flex-wrap items-start gap-x-2">
+            <span className="py-2 whitespace-nowrap">Darbas: {formatNorm(line.labourNorm)} val. ×</span>
             <InlineNumberField
               key={line.labourRate}
               kind="money"
@@ -62,7 +66,7 @@ export default function EstimateWorkLineRow({
               readOnly={readOnly}
               onSave={(labourRate) => onLabourRateChange(line.id, labourRate)}
             />
-            <span className="py-2">€/val.</span>
+            <span className="py-2 whitespace-nowrap">€/val.</span>
           </div>
         </td>
         <td className={`${ui.cell} text-right`}>{formatMoney(line.labourCost)}</td>
@@ -70,11 +74,11 @@ export default function EstimateWorkLineRow({
           {!readOnly && (
             <button
               type="button"
-              className={ui.dangerOutlineButton}
+              className={ui.smallDangerButton}
               aria-label={`Pašalinti ${line.workName}`}
               onClick={() => onRemove(line)}
             >
-              Pašalinti
+              Šalinti
             </button>
           )}
         </td>

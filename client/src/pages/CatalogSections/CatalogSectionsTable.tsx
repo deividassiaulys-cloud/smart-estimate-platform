@@ -1,3 +1,4 @@
+import ClampedText from '../../components/ClampedText'
 import { Link } from 'react-router-dom'
 import type { CatalogSection } from '../../interfaces/catalogSection'
 import { ui } from '../../utils/ui'
@@ -23,14 +24,16 @@ export default function CatalogSectionsTable({ sections, onDelete }: CatalogSect
         <tbody className={ui.listBody}>
           {sections.map((section) => (
             <tr className={ui.listRow} key={section.id}>
-              <td className={ui.listTitleCell}>{section.name}</td>
+              <td className={ui.listTitleCell}>
+                <ClampedText text={section.name} />
+              </td>
               <td className={ui.listCell} data-label="Mato vnt.">{section.unit}</td>
               <td className={`${ui.listCell} text-right`} data-label="Darbai">{section.lines.length}</td>
               <td className={ui.listActionsCell}>
-                <Link className={ui.link} to={`/catalog-sections/${section.id}/edit`}>
+                <Link className={ui.smallLink} to={`/catalog-sections/${section.id}/edit`}>
                   Redaguoti
                 </Link>
-                <button type="button" className={ui.dangerOutlineButton} onClick={() => onDelete(section)}>
+                <button type="button" className={ui.smallDangerButton} onClick={() => onDelete(section)}>
                   Ištrinti
                 </button>
               </td>

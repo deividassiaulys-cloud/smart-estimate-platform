@@ -1,6 +1,9 @@
 const table = 'w-full border-collapse'
 const cell = 'border-b border-line px-3 py-2 text-left whitespace-nowrap'
 const actionsCell = 'flex items-center gap-3 border-b border-line px-3 py-2'
+// Small row actions; on touch screens (coarse pointer) they still get the 44 px target from docs/ux.md.
+const small =
+  'inline-flex cursor-pointer items-center justify-center rounded-md px-2 py-1 text-sm pointer-coarse:min-h-11 pointer-coarse:min-w-11'
 
 // Below 768 px a list becomes cards: each row a bordered card, each cell a line labelled by its data-label
 // (docs/ux.md §8). Only the lists use these; the editors' tables stay tables and scroll inside their frame.
@@ -35,12 +38,20 @@ export const ui = {
     'cursor-pointer rounded-md border border-danger bg-danger px-3.5 py-2 text-white disabled:cursor-default disabled:opacity-60',
   dangerOutlineButton: 'cursor-pointer rounded-md border border-danger px-2.5 py-1 text-danger',
   addLink: 'rounded-md bg-accent px-3.5 py-2 text-white',
+  /** A row action that looks small (about 28–32 px) but keeps a 44 px target on touch screens (docs/ux.md, spec 020 Q2). */
+  smallButton: `${small} border border-line bg-page text-heading`,
+  /** A small remove/delete row action. */
+  smallDangerButton: `${small} border border-danger text-danger`,
+  /** A small row link, e.g. "Redaguoti", with the same size and touch target as smallButton. */
+  smallLink: `${small} text-[color:LinkText] underline`,
 
   listPage: 'w-full px-4 pt-4 pb-8 text-left',
   listHeading: 'flex flex-wrap items-center justify-between gap-3',
   tableWrapper: 'overflow-x-auto',
   table,
   cell,
+  /** A name or description cell: wraps within a limited width instead of widening the table (spec 020). */
+  nameCell: `${cell} max-w-[22rem] min-w-[10rem] break-words whitespace-normal`,
   actionsCell,
 
   listTable: `${table} ${card}`,
@@ -49,6 +60,6 @@ export const ui = {
   listRow: 'max-md:mb-3 max-md:block max-md:rounded-md max-md:border max-md:border-line max-md:px-3 max-md:py-2',
   listCell: `${cell} ${cardCell}`,
   /** The first cell, the item's name: the card's bold title, without a label. */
-  listTitleCell: `${cell} max-md:block max-md:border-0 max-md:px-0 max-md:py-1 max-md:font-semibold max-md:whitespace-normal max-md:text-heading`,
+  listTitleCell: `${cell} max-w-[22rem] min-w-[10rem] break-words whitespace-normal max-md:block max-md:border-0 max-md:px-0 max-md:py-1 max-md:font-semibold max-md:whitespace-normal max-md:text-heading`,
   listActionsCell: `${actionsCell} max-md:border-0 max-md:px-0 max-md:pt-2`,
 }

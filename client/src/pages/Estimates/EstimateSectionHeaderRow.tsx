@@ -1,3 +1,4 @@
+import ClampedText from '../../components/ClampedText'
 import type { EstimateSection } from '../../interfaces/estimate'
 import { ui } from '../../utils/ui'
 import InlineNumberField from './InlineNumberField'
@@ -19,8 +20,8 @@ export default function EstimateSectionHeaderRow({ section, readOnly, onQuantity
   return (
     <tbody>
       <tr className="bg-accent-soft align-top">
-        <th scope="rowgroup" colSpan={2} className={`${ui.cell} font-semibold text-heading`}>
-          {section ? section.name : 'Be skyriaus'}
+        <th scope="rowgroup" colSpan={2} className={`${ui.nameCell} font-semibold text-heading`}>
+          <ClampedText text={section ? section.name : 'Be skyriaus'} />
         </th>
         <td className={ui.cell}>
           {section && (
@@ -41,11 +42,11 @@ export default function EstimateSectionHeaderRow({ section, readOnly, onQuantity
           {section && !readOnly && (
             <button
               type="button"
-              className={ui.dangerOutlineButton}
+              className={ui.smallDangerButton}
               aria-label={`Pašalinti skyrių ${section.name}`}
               onClick={() => onRemove(section)}
             >
-              Pašalinti skyrių
+              Šalinti
             </button>
           )}
         </td>
