@@ -41,6 +41,9 @@ export default function EstimateWorkLineRow({
         <td className={ui.cell}>{line.workUnit}</td>
         <td className={ui.cell}>
           <InlineNumberField
+            // Re-created when the server changes the quantity (e.g. a section quantity change, FR-032), so it never
+            // keeps showing the old value.
+            key={line.quantity}
             kind="quantity"
             value={line.quantity}
             label={`Kiekis: ${line.workName}`}

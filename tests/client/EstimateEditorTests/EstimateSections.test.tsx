@@ -178,3 +178,23 @@ test('a Confirmed estimate has no section controls', async () => {
   expect(screen.queryByRole('button', { name: 'Pašalinti skyrių A++ siena' })).toBeNull()
   expect((screen.getByLabelText('Skyriaus kiekis: A++ siena') as HTMLInputElement).disabled).toBe(true)
 })
+
+test('after the section quantity changes, each work line shows its recalculated quantity without a reload', async () => {
+  // Regression: the work quantity field kept its first text until the page was reloaded.
+  await openEditor()
+  shown = {
+    ...estimate,
+    workLines: [workLine(21, 5, 'Tašelis 28x45 mm', 130, 325), workLine(22, 5, 'Pelių barjeras', 52, 130), estimate.workLines[2]],
+    sections: [{ ...estimate.sections[0], quantity: 130, subtotal: 455 }],
+  }
+  const field = screen.getByLabelText('Skyriaus kiekis: A++ siena') as HTMLInputElement
+
+  await userEvent.clear(field)
+  await userEvent.type(field, '130{Enter}')
+  await userEvent.click(within(await screen.findByRole('alertdialog')).getByRole('button', { name: 'Perskaičiuoti' }))
+
+  await vi.waitFor(() =>
+    expect((screen.getByLabelText('Kiekis: Pelių barjeras') as HTMLInputElement).value).toBe('52'),
+  )
+  expect((screen.getByLabelText('Kiekis: Tašelis 28x45 mm') as HTMLInputElement).value).toBe('130')
+})
