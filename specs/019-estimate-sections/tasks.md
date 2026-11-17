@@ -8,7 +8,7 @@
 
 ## Phase 1: Setup: requirements prerequisite
 
-- [ ] T315 Write and commit the requirements change before any code (Constitution VII.3):
+- [X] T315 Write and commit the requirements change before any code (Constitution VII.3):
   - docs/requirements.md:
     - §5 Out of Scope: "Estimate version history, templates, sections, discounts" becomes "Estimate version history, discounts". Nothing else on that list changes.
     - §5 In Scope: add "Catalog sections (templates of works) and estimate sections with subtotals".

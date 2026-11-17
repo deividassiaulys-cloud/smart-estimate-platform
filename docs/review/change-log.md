@@ -1,5 +1,23 @@
 # Change log
 
+## 2026-11-17 — Sections and section templates (gap D, feature 019)
+
+Source: docs/reference/ANALYSIS.md §3, gap D; feature specs/019-estimate-sections.
+Scope change: "templates" and "sections" removed from the Out of Scope list. The student reported on 2026-11-17
+that the instructor approved this change.
+Reason: real estimates are built from building elements (e.g. "A++ siena": battens, frame, gypsum board…);
+describing an element once and adding it with one quantity replaces adding each work by hand.
+
+- Added FR-030 (catalog sections), FR-031 (add a section to an estimate), FR-032 (change a section's quantity),
+  FR-033 (remove a section; add a single work to a section) and FR-034 (grouped display and export), all Should have.
+- Changed §5 (In Scope / Out of Scope), §6 Should Have, BR-011 (sections and their deletion), BR-017 (a work
+  quantity computed from a section is rounded to 3 decimal places), §10 entities and relationships.
+- Changed specs/shared-technical-rules.md: section coefficients DECIMAL(18,6); the one quantity rounding.
+- Not changed: BR-016 calculation; estimates without sections look and export as before.
+- Note: FR-030–FR-032 were used by feature 017, which was reverted (PR #24); if 017 returns, its FRs need new numbers.
+
+---
+
 ## 2026-11-17 — Removed the OpenAPI document (feature 018)
 
 Source: specs/018-remove-openapi.
