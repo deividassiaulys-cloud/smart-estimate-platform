@@ -92,11 +92,12 @@ function changes() {
 test('adding a catalog section sends it with the section quantity', async () => {
   await openEditor()
 
-  // The catalog sections load after the estimate, so wait for the option before choosing it.
-  await screen.findByRole('option', { name: 'A++ siena (m²)' })
-  await userEvent.selectOptions(screen.getByLabelText('Skyrius iš katalogo'), '7')
-  await userEvent.type(screen.getByLabelText('Skyriaus kiekis, m²'), '121,7')
-  await userEvent.click(screen.getByRole('button', { name: 'Pridėti skyrių' }))
+  // Spec 021: the section is chosen in the "Pridėti skyrių" dialog; the catalog sections load after the estimate.
+  await userEvent.click(screen.getByRole('button', { name: '+ Pridėti skyrių' }))
+  const dialog = screen.getByRole('dialog', { name: 'Pridėti skyrių' })
+  await userEvent.click(await within(dialog).findByRole('button', { name: /A\+\+ siena/ }))
+  await userEvent.type(within(dialog).getByLabelText('Kiekis, m²'), '121,7')
+  await userEvent.click(within(dialog).getByRole('button', { name: 'Pridėti' }))
 
   expect(changes()).toEqual([
     { path: '/api/estimates/9/sections', method: 'POST', body: JSON.stringify({ catalogSectionId: 7, quantity: 121.7 }) },
@@ -150,11 +151,13 @@ test('removing a section asks for confirmation first', async () => {
 test('a single work can be added to a section', async () => {
   await openEditor()
 
-  await screen.findByRole('option', { name: 'Tašelis 28x45 mm (m²)' })
-  await userEvent.selectOptions(screen.getByLabelText('Darbas'), '1')
-  await userEvent.selectOptions(screen.getByLabelText('Skyrius'), '5')
-  await userEvent.type(screen.getByLabelText('Kiekis'), '2')
-  await userEvent.click(screen.getByRole('button', { name: 'Pridėti darbą' }))
+  // Spec 021: the work, its quantity and its section are chosen in the "Pridėti darbą" dialog.
+  await userEvent.click(screen.getByRole('button', { name: '+ Pridėti darbą' }))
+  const dialog = screen.getByRole('dialog', { name: 'Pridėti darbą' })
+  await userEvent.click(await within(dialog).findByRole('button', { name: /Tašelis 28x45 mm/ }))
+  await userEvent.selectOptions(within(dialog).getByLabelText('Skyrius'), '5')
+  await userEvent.type(within(dialog).getByLabelText('Kiekis, m²'), '2')
+  await userEvent.click(within(dialog).getByRole('button', { name: 'Pridėti' }))
 
   expect(changes()).toEqual([
     { path: '/api/estimates/9/lines', method: 'POST', body: JSON.stringify({ workId: 1, quantity: 2, sectionId: 5 }) },
@@ -167,14 +170,17 @@ test('an estimate without sections shows no section headings or section choice',
 
   expect(screen.queryAllByRole('rowheader')).toHaveLength(0)
   expect(screen.queryByText(/Skyriaus suma/)).toBeNull()
-  expect(screen.queryByLabelText('Skyrius')).toBeNull()
+  // The "Pridėti darbą" dialog offers no section choice either.
+  await userEvent.click(screen.getByRole('button', { name: '+ Pridėti darbą' }))
+  expect(within(screen.getByRole('dialog')).queryByLabelText('Skyrius')).toBeNull()
 })
 
 test('a Confirmed estimate has no section controls', async () => {
   shown = { ...estimate, status: 1 }
   await openEditor()
 
-  expect(screen.queryByLabelText('Skyrius iš katalogo')).toBeNull()
+  expect(screen.queryByRole('button', { name: '+ Pridėti skyrių' })).toBeNull()
+  expect(screen.queryByRole('button', { name: '+ Pridėti darbą' })).toBeNull()
   expect(screen.queryByRole('button', { name: 'Pašalinti skyrių A++ siena' })).toBeNull()
   expect((screen.getByLabelText('Skyriaus kiekis: A++ siena') as HTMLInputElement).disabled).toBe(true)
 })

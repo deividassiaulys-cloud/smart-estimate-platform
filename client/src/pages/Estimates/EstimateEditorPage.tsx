@@ -33,8 +33,10 @@ import {
 import type { Material } from '../../interfaces/material'
 import type { Work } from '../../interfaces/work'
 import { ui } from '../../utils/ui'
-import AddSectionForm from './AddSectionForm'
-import AddWorkForm from './AddWorkForm'
+import DialogFrame from '../../components/DialogFrame'
+import CatalogSectionForm from '../CatalogSections/CatalogSectionForm'
+import WorkForm from '../Works/WorkForm'
+import AddFromCatalogDialog from './AddFromCatalogDialog'
 import EstimateExportButton from './EstimateExportButton'
 import EstimatePercentagesForm from './EstimatePercentagesForm'
 import EstimateRefreshButton from './EstimateRefreshButton'
@@ -73,6 +75,10 @@ export default function EstimateEditorPage() {
     quantity: number
     done: (accepted: boolean) => void
   } | null>(null)
+  // The open add dialog (spec 021), with an item to show as chosen, e.g. one just created.
+  const [addDialog, setAddDialog] = useState<{ kind: 'work' | 'section'; chosenId: number | null } | null>(null)
+  // The catalog form opened from an add dialog's "create new", with the search text as the new item's name.
+  const [creating, setCreating] = useState<{ kind: 'work' | 'section'; name: string } | null>(null)
   // Bumped when a quantity change is cancelled, so the section's field shows the stored quantity again.
   const [sectionFieldsVersion, setSectionFieldsVersion] = useState(0)
 
@@ -142,6 +148,25 @@ export default function EstimateEditorPage() {
     await apply(() => removeWorkLine(estimateId, toRemove.id))
     setRemoving(false)
     setToRemove(null)
+  }
+
+  // Adds from a dialog: shows the recalculated estimate, or returns the message for the dialog to show. A 409 still
+  // reloads the estimate, as for every other change.
+  async function addFromDialog(change: () => Promise<Estimate>): Promise<string | null> {
+    try {
+      setEstimate(await change())
+      setError(null)
+      return null
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 409) setEstimate(await getEstimate(estimateId))
+      return saveErrorMessage(err)
+    }
+  }
+
+  // Back from the catalog form to the add dialog it was opened from, with the new item chosen when one was saved.
+  function returnToAddDialog(kind: 'work' | 'section', chosenId: number | null) {
+    setCreating(null)
+    setAddDialog({ kind, chosenId })
   }
 
   async function handleConfirmSectionRemove() {
@@ -271,17 +296,14 @@ export default function EstimateEditorPage() {
           </div>
 
           {!readOnly && (
-            <>
-              <AddSectionForm
-                sections={catalogSections}
-                onAdd={(catalogSectionId, quantity) => apply(() => addSection(estimateId, catalogSectionId, quantity))}
-              />
-              <AddWorkForm
-                works={works}
-                sections={estimate.sections}
-                onAdd={(workId, quantity, sectionId) => apply(() => addWorkLine(estimateId, workId, quantity, sectionId))}
-              />
-            </>
+            <div className="my-4 flex flex-wrap gap-3">
+              <button type="button" className={ui.secondaryButton} onClick={() => setAddDialog({ kind: 'section', chosenId: null })}>
+                + Pridėti skyrių
+              </button>
+              <button type="button" className={ui.secondaryButton} onClick={() => setAddDialog({ kind: 'work', chosenId: null })}>
+                + Pridėti darbą
+              </button>
+            </div>
           )}
 
           {estimate.workLines.length === 0 && <p>Sąmatoje dar nėra darbų.</p>}
@@ -322,6 +344,74 @@ export default function EstimateEditorPage() {
         onConfirm={handleConfirmRemove}
         onCancel={() => setToRemove(null)}
       />
+      {estimate && addDialog?.kind === 'work' && (
+        <AddFromCatalogDialog
+          title="Pridėti darbą"
+          items={works.map((work) => ({ id: work.id, name: work.name, unit: work.unit, detail: work.unit }))}
+          noMatch="Darbų nerasta."
+          createLabel="+ Kurti naują darbą"
+          initialChosenId={addDialog.chosenId}
+          sections={estimate.sections}
+          onAdd={(workId, quantity, sectionId) => addFromDialog(() => addWorkLine(estimateId, workId, quantity, sectionId))}
+          onCreate={(name) => {
+            setAddDialog(null)
+            setCreating({ kind: 'work', name })
+          }}
+          onClose={() => setAddDialog(null)}
+        />
+      )}
+      {addDialog?.kind === 'section' && (
+        <AddFromCatalogDialog
+          title="Pridėti skyrių"
+          items={catalogSections.map((section) => ({
+            id: section.id,
+            name: section.name,
+            unit: section.unit,
+            detail: `${section.unit} · ${section.lines.length} darb.`,
+          }))}
+          noMatch="Skyrių nerasta."
+          createLabel="+ Kurti naują skyrių"
+          initialChosenId={addDialog.chosenId}
+          onAdd={(catalogSectionId, quantity) => addFromDialog(() => addSection(estimateId, catalogSectionId, quantity))}
+          onCreate={(name) => {
+            setAddDialog(null)
+            setCreating({ kind: 'section', name })
+          }}
+          onClose={() => setAddDialog(null)}
+        />
+      )}
+      {creating && (
+        <DialogFrame
+          wide
+          title={creating.kind === 'work' ? 'Naujas darbas' : 'Naujas skyrius'}
+          onClose={() => returnToAddDialog(creating.kind, null)}
+        >
+          {creating.kind === 'work' ? (
+            <WorkForm
+              workId={null}
+              initialName={creating.name}
+              onSaved={(work) => {
+                setWorks((current) => [...current, work])
+                returnToAddDialog('work', work.id)
+              }}
+            />
+          ) : (
+            <CatalogSectionForm
+              sectionId={null}
+              initialName={creating.name}
+              onSaved={(section) => {
+                setCatalogSections((current) => [...current, section])
+                returnToAddDialog('section', section.id)
+              }}
+            />
+          )}
+          <div className="flex justify-end">
+            <button type="button" className={ui.secondaryButton} onClick={() => returnToAddDialog(creating.kind, null)}>
+              Atšaukti
+            </button>
+          </div>
+        </DialogFrame>
+      )}
       <ConfirmDialog
         open={sectionToRemove !== null}
         title="Pašalinti skyrių?"
