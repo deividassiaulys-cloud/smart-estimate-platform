@@ -162,6 +162,8 @@
 - T323: the coefficient rules are covered through the API (`InvalidCoefficient_IsRejected`, 0 / −1 / 7 decimals) rather than a separate request-record unit test.
 - T328: the old client test fixtures got `sections: []` and `unsectionedSubtotal: 0`, as the real API always sends them. The navigation tests now expect the "Skyriai" item.
 - T333: docs/ux.md updated (screens 14, 15, 19, 20). The 360 px / 1920 px browser check has **not** been done in this session, so T333 stays open.
+- Quickstart step 2 done (2026-11-17): `AddSections` applied to the student's local MySQL database; all stored prices, rates, norms, quantities and percentages in 6 tables and all 3 estimate totals are identical before and after.
+- Found in the student's manual check: after a section quantity change, the work quantity fields kept the old value until a reload. Fixed (the quantity field is keyed by its value) with a regression test in EstimateSections.test.tsx; frontend 104 passed.
 - T334: `dotnet build` (0 warnings), `dotnet test` (368 passed), `npm run lint`, `npm run build` and `npm run test` (103 passed, three runs) all pass; `has-pending-model-changes` reports none. Quickstart step 2 (real MySQL before/after) and the manual UI steps were not run; the student must run step 2 before merging.
 
 ## Dependencies
