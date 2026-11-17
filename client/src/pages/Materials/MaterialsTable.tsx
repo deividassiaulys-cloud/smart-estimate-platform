@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import type { Material } from '../../interfaces/material'
+import { materialKindLabels, type Material } from '../../interfaces/material'
 import { formatPrice } from '../../utils/format'
 import { ui } from '../../utils/ui'
 
@@ -17,6 +17,7 @@ export default function MaterialsTable({ materials, onDelete }: MaterialsTablePr
           <tr>
             <th className={ui.cell}>Pavadinimas</th>
             <th className={ui.cell}>Mato vnt.</th>
+            <th className={ui.cell}>Rūšis</th>
             <th className={`${ui.cell} text-right`}>Kaina</th>
             <th className={ui.cell}>Veiksmai</th>
           </tr>
@@ -26,6 +27,7 @@ export default function MaterialsTable({ materials, onDelete }: MaterialsTablePr
             <tr className={ui.listRow} key={material.id}>
               <td className={ui.listTitleCell}>{material.name}</td>
               <td className={ui.listCell} data-label="Mato vnt.">{material.unit}</td>
+              <td className={ui.listCell} data-label="Rūšis">{materialKindLabels[material.kind]}</td>
               <td className={`${ui.listCell} text-right`} data-label="Kaina">{formatPrice(material.price)}</td>
               <td className={ui.listActionsCell}>
                 <Link className={ui.link} to={`/materials/${material.id}/edit`}>

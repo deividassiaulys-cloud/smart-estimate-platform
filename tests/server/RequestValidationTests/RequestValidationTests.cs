@@ -3,6 +3,7 @@ using System.Globalization;
 using SmartEstimatePlatform.Api.Models.DTOs.Auth;
 using SmartEstimatePlatform.Api.Models.DTOs.Materials;
 using SmartEstimatePlatform.Api.Models.DTOs.Team;
+using SmartEstimatePlatform.Api.Models.Entities;
 
 namespace SmartEstimatePlatform.Api.Tests.RequestValidationTests;
 
@@ -82,6 +83,18 @@ public sealed class RequestValidationTests
     [InlineData("   ")]
     public void MaterialRequest_EmptyName_IsRejected(string name) =>
         Assert.False(IsValid(new MaterialRequest { Name = name, Unit = "kg", Price = 1 }));
+
+    [Theory]
+    [InlineData(0, true)]
+    [InlineData(1, true)]
+    [InlineData(2, false)]
+    [InlineData(-1, false)]
+    public void MaterialRequest_KindMustBeMaterialOrMachinery(int kind, bool valid) =>
+        Assert.Equal(valid, IsValid(new MaterialRequest { Name = "Įrankiai", Unit = "vnt.", Price = 1, Kind = (MaterialKind)kind }));
+
+    [Fact]
+    public void MaterialRequest_WithoutKind_IsMaterial() =>
+        Assert.Equal(MaterialKind.Material, new MaterialRequest { Name = "Cementas", Unit = "kg", Price = 1 }.Kind);
 
     private static bool IsValid(object request) =>
         Validator.TryValidateObject(request, new ValidationContext(request), [], validateAllProperties: true);

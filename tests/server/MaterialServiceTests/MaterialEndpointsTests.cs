@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Net;
 using System.Net.Http.Json;
 using SmartEstimatePlatform.Api.Models.DTOs.Materials;
+using SmartEstimatePlatform.Api.Models.Entities;
 using SmartEstimatePlatform.Api.Tests.TestSupport;
 
 namespace SmartEstimatePlatform.Api.Tests.MaterialServiceTests;
@@ -188,6 +189,53 @@ public sealed class MaterialEndpointsTests : IDisposable
         var units = await company.Client.GetFromJsonAsync<List<string>>("/api/units");
 
         Assert.Equal(["vnt.", "m", "m²", "m³", "kg", "t", "l", "val.", "kompl."], units);
+    }
+
+    // ---- Feature 017: material kind ----
+
+    [Fact]
+    public async Task Kind_IsStoredAndDefaultsToMaterial()
+    {
+        var company = await _factory.RegisterCompanyAsync("Alpha UAB", "alpha@example.com");
+
+        var tools = await ReadAsync(await company.Client.PostAsJsonAsync("/api/materials",
+            new { name = "Įrankiai ir įrengimai", unit = "vnt.", price = 0.20m, kind = 1 }));
+        var cement = await ReadAsync(await company.Client.PostAsJsonAsync("/api/materials",
+            new { name = "Cementas", unit = "kg", price = 0.25m }));
+
+        Assert.Equal(MaterialKind.Machinery, (await company.Client.GetFromJsonAsync<MaterialResponse>($"/api/materials/{tools.Id}"))!.Kind);
+        Assert.Equal(MaterialKind.Material, cement.Kind);
+    }
+
+    [Fact]
+    public async Task UnknownKind_IsRejected()
+    {
+        var company = await _factory.RegisterCompanyAsync("Alpha UAB", "alpha@example.com");
+
+        var response = await company.Client.PostAsJsonAsync("/api/materials", new { name = "Įrankiai", unit = "vnt.", price = 1m, kind = 2 });
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        Assert.Empty(await ListAsync(company));
+    }
+
+    [Fact]
+    public async Task ChangingTheKind_LeavesEstimatesUsingTheMaterialUnchanged()
+    {
+        // Spec 017 US1-4 (BR-010): the estimate keeps its copied kind until it is refreshed.
+        var company = await _factory.RegisterCompanyAsync("Alpha UAB", "alpha@example.com");
+        var workId = await company.CreateWallWorkAsync();
+        var estimate = await company.CreateEstimateAsync();
+        await company.Client.AddWorkLineAsync(estimate.Id, workId, 35m);
+        var film = (await ListAsync(company)).Single(m => m.Name == "Plėvelė");
+
+        var response = await company.Client.PutAsJsonAsync($"/api/materials/{film.Id}",
+            new MaterialRequest { Name = film.Name, Unit = film.Unit, Price = film.Price, Kind = MaterialKind.Machinery });
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal(MaterialKind.Machinery, (await ReadAsync(response)).Kind);
+        var line = (await company.Client.GetEstimateAsync(estimate.Id)).WorkLines[0];
+        Assert.Equal(MaterialKind.Material, line.MaterialLines.Single(m => m.MaterialName == "Plėvelė").Kind);
+        Assert.Equal(0m, line.Machinery);
     }
 
     private static Task<HttpResponseMessage> CreateAsync(LoggedInCompany company, string name, string unit, decimal price) =>

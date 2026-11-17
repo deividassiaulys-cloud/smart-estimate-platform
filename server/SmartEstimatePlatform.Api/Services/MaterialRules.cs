@@ -14,14 +14,19 @@ public static class MaterialRules
     public const int NameMaxLength = 200;
 
     /// <summary>
-    /// Returns the unit and price errors: the unit must be in the fixed list, and the price must be zero or more,
-    /// with at most 4 decimal places, and fit DECIMAL(18,4).
+    /// Returns the unit, kind and price errors: the unit must be in the fixed list, the kind one of
+    /// <see cref="MaterialKind"/>, and the price zero or more, with at most 4 decimal places, and fit DECIMAL(18,4).
     /// </summary>
-    public static IEnumerable<ValidationResult> Validate(string unit, decimal price)
+    public static IEnumerable<ValidationResult> Validate(string unit, MaterialKind kind, decimal price)
     {
         if (!MeasurementUnit.IsValid(unit))
         {
             yield return new ValidationResult("Unit must be one of the fixed measurement units.", ["Unit"]);
+        }
+
+        if (!Enum.IsDefined(kind))
+        {
+            yield return new ValidationResult("Kind must be Material or Machinery.", ["Kind"]);
         }
 
         if (NumberRules.UnitPriceError(price, "Price") is { } priceError)

@@ -134,6 +134,59 @@ public sealed class EstimateEndpointsTests : IDisposable
         Assert.Equal(480.00m + 396.00m + 21.00m + 46.20m, result.DirectCosts);
     }
 
+    // ---- Feature 017: kinds, Labour / Materials / Machinery and unit price ----
+
+    [Fact]
+    public async Task AddWork_CopiesTheKindAndSplitsTheAmounts()
+    {
+        var (company, estimate, _) = await ArrangeWallWithToolsAsync();
+
+        var result = await company.Client.GetEstimateAsync(estimate.Id);
+
+        var line = Assert.Single(result.WorkLines);
+        Assert.Equal([MaterialKind.Material, MaterialKind.Material, MaterialKind.Material, MaterialKind.Machinery],
+            line.MaterialLines.Select(m => m.Kind));
+        Assert.Equal((28m, 420.00m, 405.31m, 7.00m, 832.31m, 23.78m),
+            (line.Hours, line.LabourCost, line.Materials, line.Machinery, line.Amount, line.UnitPrice));
+        Assert.Equal((420.00m, 405.31m, 7.00m, 832.31m), (result.Labour, result.Materials, result.Machinery, result.DirectCosts));
+        Assert.Equal(1273.97m, result.Total);
+    }
+
+    [Fact]
+    public async Task ChangeQuantity_RecalculatesThePartsAndTheUnitPrice()
+    {
+        var (company, estimate, lineId) = await ArrangeWallWithToolsAsync();
+
+        var response = await company.Client.PatchAsJsonAsync($"/api/estimates/{estimate.Id}/lines/{lineId}",
+            new ChangeQuantityRequest { Quantity = 40m });
+
+        var line = Assert.Single((await response.Content.ReadFromJsonAsync<EstimateResponse>())!.WorkLines);
+        // 40 m²: labour 480,00; materials 396,00 + 21,00 + 46,20; machinery 40 × 0,20.
+        Assert.Equal((32m, 480.00m, 463.20m, 8.00m, 951.20m, 23.78m),
+            (line.Hours, line.LabourCost, line.Materials, line.Machinery, line.Amount, line.UnitPrice));
+    }
+
+    // The worked example's wall plus "Įrankiai ir įrengimai" (Machinery, norm 1, waste 0, 0,20 €), 35 m², 10 / 15 / 21 %.
+    private async Task<(LoggedInCompany Company, EstimateResponse Estimate, int LineId)> ArrangeWallWithToolsAsync()
+    {
+        var company = await RegisterAsync();
+        var board = await company.CreateMaterialAsync("Gipso plokštė", "m²", 4.50m);
+        var screws = await company.CreateMaterialAsync("Varžtai", "vnt.", 0.02m);
+        var film = await company.CreateMaterialAsync("Plėvelė", "m²", 1.10m);
+        var toolsResponse = await company.Client.PostAsJsonAsync("/api/materials", new Api.Models.DTOs.Materials.MaterialRequest
+        {
+            Name = "Įrankiai ir įrengimai", Unit = "vnt.", Price = 0.20m, Kind = MaterialKind.Machinery
+        });
+        var tools = (await toolsResponse.Content.ReadFromJsonAsync<Api.Models.DTOs.Materials.MaterialResponse>())!;
+        var work = await company.CreateWorkAsync(WorkRequest("Siena A++", "m²",
+                (board.Id, 2m, 10m), (screws.Id, 25m, 5m), (film.Id, 1m, 5m), (tools.Id, 1m, 0m))
+            with { LabourRate = 15m, LabourNorm = 0.8m });
+        var estimate = await company.CreateEstimateAsync();
+        var lineId = (await company.Client.AddWorkLineAsync(estimate.Id, work.Id, 35m)).WorkLines[0].Id;
+        (await company.Client.PatchPercentagesAsync(estimate.Id, 10m, 15m, 21m)).EnsureSuccessStatusCode();
+        return (company, estimate, lineId);
+    }
+
     [Fact]
     public async Task ChangePercentages_RecalculatesTheTotal()
     {

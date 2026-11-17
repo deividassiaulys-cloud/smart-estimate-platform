@@ -1,7 +1,7 @@
 import { useState, type ChangeEvent } from 'react'
 import type { EstimateMaterialLine } from '../../interfaces/estimate'
-import type { Material } from '../../interfaces/material'
-import { formatMoney, formatPrice, formatQuantity } from '../../utils/format'
+import { MaterialKind, type Material } from '../../interfaces/material'
+import { formatMoney, formatNorm, formatPercent, formatPrice, formatQuantity } from '../../utils/format'
 import { ui } from '../../utils/ui'
 import InlineNumberField from './InlineNumberField'
 
@@ -18,7 +18,8 @@ interface EstimateMaterialLineRowProps {
 }
 
 /**
- * One material line of an estimate work line: its price is edited in place, and in a Draft estimate the
+ * One material line of an estimate work line, its cost repeated in the Medžiagos or Mechanizmai column by its kind
+ * (FR-031): its price is edited in place, and in a Draft estimate the
  * material can be replaced by a same-unit catalog material or removed. Amounts come from the server.
  */
 export default function EstimateMaterialLineRow({
@@ -40,9 +41,11 @@ export default function EstimateMaterialLineRow({
 
   return (
     <tr>
+      <td className={ui.cell}></td>
       <td className={`${ui.cell} pl-8`}>{material.materialName}</td>
       <td className={ui.cell}>{material.materialUnit}</td>
-      <td className={ui.cell}>{formatQuantity(material.quantity)}</td>
+      <td className={`${ui.cell} text-right`}>{formatNorm(material.consumptionNorm)}</td>
+      <td className={`${ui.cell} text-right`}>{formatPercent(material.wastePercent)}</td>
       <td className={ui.cell}>
         <InlineNumberField
           key={material.price}
@@ -53,7 +56,11 @@ export default function EstimateMaterialLineRow({
           onSave={onPriceChange}
         />
       </td>
+      <td className={`${ui.cell} text-right`}>{formatQuantity(material.quantity)}</td>
       <td className={`${ui.cell} text-right`}>{formatMoney(material.cost)}</td>
+      <td className={ui.cell}></td>
+      <td className={`${ui.cell} text-right`}>{material.kind === MaterialKind.Material && formatMoney(material.cost)}</td>
+      <td className={`${ui.cell} text-right`}>{material.kind === MaterialKind.Machinery && formatMoney(material.cost)}</td>
       <td className={ui.cell}>
         {!readOnly && (
           <div className="flex flex-wrap items-start gap-2">

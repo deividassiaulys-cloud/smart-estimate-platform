@@ -14,18 +14,18 @@ public sealed class EstimateCatalogRefreshTests
         var estimate = new Estimate(projectId: 1, "Pradinė sąmata", 10m, 15m, 21m);
         estimate.AddWorkLine(new EstimateWorkLine("Siena A++", "m²", 15m, 0.8m, 35m,
         [
-            new EstimateMaterialLine("Gipso plokštė", "m²", 4.50m, 2m, 10m),
-            new EstimateMaterialLine("Varžtai", "vnt.", 0.02m, 25m, 5m),
-            new EstimateMaterialLine("Plėvelė", "m²", 1.10m, 1m, 5m)
+            new EstimateMaterialLine("Gipso plokštė", "m²", 4.50m, 2m, 10m, MaterialKind.Material),
+            new EstimateMaterialLine("Varžtai", "vnt.", 0.02m, 25m, 5m, MaterialKind.Material),
+            new EstimateMaterialLine("Plėvelė", "m²", 1.10m, 1m, 5m, MaterialKind.Material)
         ]));
         return estimate;
     }
 
     private static readonly CatalogMaterial[] SameMaterials =
     [
-        new("Gipso plokštė", "m²", 4.50m),
-        new("Varžtai", "vnt.", 0.02m),
-        new("Plėvelė", "m²", 1.10m)
+        new("Gipso plokštė", "m²", 4.50m, MaterialKind.Material),
+        new("Varžtai", "vnt.", 0.02m, MaterialKind.Material),
+        new("Plėvelė", "m²", 1.10m, MaterialKind.Material)
     ];
 
     private static CatalogWork Wall(decimal rate = 15m, decimal norm = 0.8m, params CatalogComponent[] components) =>
@@ -35,6 +35,22 @@ public sealed class EstimateCatalogRefreshTests
             new("Varžtai", "vnt.", 25m, 5m),
             new("Plėvelė", "m²", 1m, 5m)
         ]);
+
+    [Fact]
+    public void ChangedKind_IsAppliedAndReported()
+    {
+        // Feature 017 US3-2: "Plėvelė" became Machinery in the catalog; the total does not change.
+        var estimate = WorkedExample();
+        CatalogMaterial[] materials = [SameMaterials[0], SameMaterials[1], new("Plėvelė", "m²", 1.10m, MaterialKind.Machinery)];
+
+        var result = EstimateCatalogRefresh.Apply(estimate, [Wall()], materials);
+
+        var change = Assert.Single(result.Changes);
+        Assert.Equal(("Plėvelė", RefreshedField.Kind, 0m, 1m), (change.MaterialName, change.Field, change.OldValue, change.NewValue));
+        Assert.Equal(MaterialKind.Machinery, estimate.WorkLines[0].MaterialLines[2].Kind);
+        var calculation = EstimateCalculator.Calculate(estimate);
+        Assert.Equal((40.43m, 825.31m), (calculation.WorkLines[0].Machinery, calculation.DirectCosts));
+    }
 
     [Fact]
     public void EqualCatalog_ChangesNothing()
@@ -49,7 +65,7 @@ public sealed class EstimateCatalogRefreshTests
     public void ChangedValues_AreAppliedAndReported()
     {
         var estimate = WorkedExample();
-        CatalogMaterial[] materials = [new("Gipso plokštė", "m²", 5.00m), SameMaterials[1], SameMaterials[2]];
+        CatalogMaterial[] materials = [new("Gipso plokštė", "m²", 5.00m, MaterialKind.Material), SameMaterials[1], SameMaterials[2]];
         var wall = Wall(16m, 0.9m,
             new("Gipso plokštė", "m²", 2.1m, 12m), new("Varžtai", "vnt.", 25m, 5m), new("Plėvelė", "m²", 1m, 5m));
 
@@ -73,7 +89,7 @@ public sealed class EstimateCatalogRefreshTests
     {
         var estimate = WorkedExample();
 
-        EstimateCatalogRefresh.Apply(estimate, [Wall(99m)], [new("Gipso plokštė", "m²", 9m)]);
+        EstimateCatalogRefresh.Apply(estimate, [Wall(99m)], [new("Gipso plokštė", "m²", 9m, MaterialKind.Material)]);
 
         Assert.Equal((35m, 10m, 15m, 21m), (estimate.WorkLines[0].Quantity, estimate.OverheadPercent, estimate.ProfitPercent, estimate.VatPercent));
         Assert.Single(estimate.WorkLines);
@@ -85,7 +101,7 @@ public sealed class EstimateCatalogRefreshTests
     {
         var estimate = WorkedExample();
         // "Siena A++" was renamed and "Plėvelė" deleted; "Gipso plokštė" costs 5.00 now.
-        CatalogMaterial[] materials = [new("Gipso plokštė", "m²", 5.00m), SameMaterials[1]];
+        CatalogMaterial[] materials = [new("Gipso plokštė", "m²", 5.00m, MaterialKind.Material), SameMaterials[1]];
 
         var result = EstimateCatalogRefresh.Apply(estimate, [Wall() with { Name = "Siena A+++" }], materials);
 
@@ -99,7 +115,7 @@ public sealed class EstimateCatalogRefreshTests
     public void NamesDifferingOnlyInCase_StillMatch()
     {
         var result = EstimateCatalogRefresh.Apply(WorkedExample(), [Wall(16m) with { Name = "SIENA a++" }],
-            [new("gipso PLOKŠTĖ", "m²", 5.00m), SameMaterials[1], SameMaterials[2]]);
+            [new("gipso PLOKŠTĖ", "m²", 5.00m, MaterialKind.Material), SameMaterials[1], SameMaterials[2]]);
 
         Assert.Empty(result.NotFound);
         Assert.Equal([RefreshedField.LabourRate, RefreshedField.Price], result.Changes.Select(c => c.Field));
@@ -119,13 +135,13 @@ public sealed class EstimateCatalogRefreshTests
         var estimate = new Estimate(projectId: 1, "Dažymas", 0m, 0m, 21m);
         estimate.AddWorkLine(new EstimateWorkLine("Sienų dažymas", "m²", 18.5m, 0.25m, 10m,
         [
-            new EstimateMaterialLine("Dažai", "l", 8m, 0.15m, 5m),
-            new EstimateMaterialLine("Dažai", "l", 8m, 0.05m, 0m)
+            new EstimateMaterialLine("Dažai", "l", 8m, 0.15m, 5m, MaterialKind.Material),
+            new EstimateMaterialLine("Dažai", "l", 8m, 0.05m, 0m, MaterialKind.Material)
         ]));
         var painting = new CatalogWork("Sienų dažymas", "m²", 18.5m, 0.25m,
             [new("Dažai", "l", 0.2m, 5m), new("Dažai", "l", 0.1m, 0m)]);
 
-        EstimateCatalogRefresh.Apply(estimate, [painting], [new("Dažai", "l", 8m)]);
+        EstimateCatalogRefresh.Apply(estimate, [painting], [new("Dažai", "l", 8m, MaterialKind.Material)]);
 
         var lines = estimate.WorkLines[0].MaterialLines;
         Assert.Equal((0.2m, 0.1m), (lines[0].ConsumptionNorm, lines[1].ConsumptionNorm));
@@ -135,8 +151,8 @@ public sealed class EstimateCatalogRefreshTests
     public void ReplacedMaterialOutsideTheComposition_TakesItsPriceButKeepsItsNorms()
     {
         var estimate = WorkedExample();
-        estimate.WorkLines[0].MaterialLines[0].ReplaceMaterial("Drėgmei atspari plokštė", "m²", 6.20m);
-        CatalogMaterial[] materials = [new("Drėgmei atspari plokštė", "m²", 6.50m), .. SameMaterials];
+        estimate.WorkLines[0].MaterialLines[0].ReplaceMaterial("Drėgmei atspari plokštė", "m²", 6.20m, MaterialKind.Material);
+        CatalogMaterial[] materials = [new("Drėgmei atspari plokštė", "m²", 6.50m, MaterialKind.Material), .. SameMaterials];
 
         var result = EstimateCatalogRefresh.Apply(estimate, [Wall()], materials);
 

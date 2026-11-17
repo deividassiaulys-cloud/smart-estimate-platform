@@ -2,7 +2,7 @@ namespace SmartEstimatePlatform.Api.Models.Entities;
 
 /// <summary>
 /// A material generated for an estimate work line from the work's composition, with a copy of the material's
-/// name, unit and price and of the line's norm and waste (BR-010). Its quantity is calculated, not stored.
+/// name, unit, kind and price and of the line's norm and waste (BR-010). Its quantity is calculated, not stored.
 /// </summary>
 public class EstimateMaterialLine
 {
@@ -15,10 +15,12 @@ public class EstimateMaterialLine
     /// Creates a material line with copied values.
     /// </summary>
     public EstimateMaterialLine(
-        string materialName, string materialUnit, decimal price, decimal consumptionNorm, decimal wastePercent)
+        string materialName, string materialUnit, decimal price, decimal consumptionNorm, decimal wastePercent,
+        MaterialKind kind)
     {
         MaterialName = materialName;
         MaterialUnit = materialUnit;
+        Kind = kind;
         Price = price;
         ConsumptionNorm = consumptionNorm;
         WastePercent = wastePercent;
@@ -36,6 +38,12 @@ public class EstimateMaterialLine
     public string MaterialName { get; private set; } = string.Empty;
 
     public string MaterialUnit { get; private set; } = string.Empty;
+
+    /// <summary>
+    /// Material or Machinery, as copied from the catalog material; decides whether the cost is counted under
+    /// Materials or Machinery (BR-015).
+    /// </summary>
+    public MaterialKind Kind { get; private set; }
 
     /// <summary>
     /// Price per unit of the material in euros, as copied from the catalog.
@@ -67,12 +75,18 @@ public class EstimateMaterialLine
     }
 
     /// <summary>
-    /// Takes another material's name, unit and price, keeping this line's norm and waste.
+    /// Takes another material's name, unit, kind and price, keeping this line's norm and waste.
     /// </summary>
-    public void ReplaceMaterial(string materialName, string materialUnit, decimal price)
+    public void ReplaceMaterial(string materialName, string materialUnit, decimal price, MaterialKind kind)
     {
         MaterialName = materialName;
         MaterialUnit = materialUnit;
         Price = price;
+        Kind = kind;
     }
+
+    /// <summary>
+    /// Replaces the kind with the catalog material's current kind (estimate refresh).
+    /// </summary>
+    public void ChangeKind(MaterialKind kind) => Kind = kind;
 }

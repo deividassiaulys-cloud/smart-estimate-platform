@@ -12,9 +12,9 @@ public sealed class EstimateCalculatorTests
     // "Siena A++": 0.8 h/m² at 15 €/h, with three materials, as in the spec's worked example.
     private static EstimateWorkLine WallLine(decimal quantity) => new("Siena A++", "m²", 15m, 0.8m, quantity,
     [
-        new EstimateMaterialLine("Gipso plokštė", "m²", 4.50m, 2m, 10m),
-        new EstimateMaterialLine("Varžtai", "vnt.", 0.02m, 25m, 5m),
-        new EstimateMaterialLine("Plėvelė", "m²", 1.10m, 1m, 5m)
+        new EstimateMaterialLine("Gipso plokštė", "m²", 4.50m, 2m, 10m, MaterialKind.Material),
+        new EstimateMaterialLine("Varžtai", "vnt.", 0.02m, 25m, 5m, MaterialKind.Material),
+        new EstimateMaterialLine("Plėvelė", "m²", 1.10m, 1m, 5m, MaterialKind.Material)
     ]);
 
     private static Estimate EstimateWith(decimal overhead, decimal profit, decimal vat, params EstimateWorkLine[] lines)
@@ -43,15 +43,74 @@ public sealed class EstimateCalculatorTests
         Assert.Equal(1263.26m, result.Total);
     }
 
+    // ---- Feature 017: Labour / Materials / Machinery, hours and unit price ----
+
+    [Fact]
+    public void WorkedExample_IsSplitIntoLabourMaterialsAndMachinery()
+    {
+        var result = EstimateCalculator.Calculate(EstimateWith(10m, 15m, 21m, WallLine(35m)));
+
+        var line = Assert.Single(result.WorkLines);
+        Assert.Equal((28m, 420.00m, 405.31m, 0m, 825.31m, 23.58m),
+            (line.Hours, line.LabourCost, line.Materials, line.Machinery, line.Amount, line.UnitPrice));
+        Assert.Equal((420.00m, 405.31m, 0m, 825.31m), (result.Labour, result.Materials, result.Machinery, result.DirectCosts));
+        Assert.Equal(1263.26m, result.Total);
+    }
+
+    [Fact]
+    public void MachineryLine_IsCountedUnderMachinery()
+    {
+        // Spec 017 US2-2: "Įrankiai ir įrengimai" (Machinery, norm 1, waste 0, 0,20 €) added to the wall.
+        var wall = WallLine(35m);
+        wall.MaterialLines.Add(new EstimateMaterialLine("Įrankiai ir įrengimai", "vnt.", 0.20m, 1m, 0m, MaterialKind.Machinery));
+
+        var result = EstimateCalculator.Calculate(EstimateWith(10m, 15m, 21m, wall));
+
+        var line = Assert.Single(result.WorkLines);
+        Assert.Equal((420.00m, 405.31m, 7.00m, 832.31m, 23.78m),
+            (line.LabourCost, line.Materials, line.Machinery, line.Amount, line.UnitPrice));
+        Assert.Equal((832.31m, 83.23m, 137.33m, 221.10m, 1273.97m),
+            (result.DirectCosts, result.Overhead, result.Profit, result.Vat, result.Total));
+    }
+
+    [Fact]
+    public void WorkLineWithoutMaterialsOrLabour_HasZeroParts()
+    {
+        var noMaterials = new EstimateWorkLine("Montavimas", "val.", 30m, 1m, 2m, []);
+        var noLabour = new EstimateWorkLine("Pristatymas", "kompl.", 0m, 0m, 1m,
+            [new EstimateMaterialLine("Transportas", "kompl.", 50m, 1m, 0m, MaterialKind.Machinery)]);
+
+        var result = EstimateCalculator.Calculate(EstimateWith(0m, 0m, 0m, noMaterials, noLabour));
+
+        Assert.Equal((60m, 0m, 0m, 60m, 30m),
+            (result.WorkLines[0].LabourCost, result.WorkLines[0].Materials, result.WorkLines[0].Machinery,
+                result.WorkLines[0].Amount, result.WorkLines[0].UnitPrice));
+        Assert.Equal((0m, 0m, 50m, 50m),
+            (result.WorkLines[1].LabourCost, result.WorkLines[1].Materials, result.WorkLines[1].Machinery, result.WorkLines[1].Amount));
+    }
+
+    [Fact]
+    public void EstimateParts_AddUpToTheDirectCostsExactly()
+    {
+        var wall = WallLine(35m);
+        wall.MaterialLines.Add(new EstimateMaterialLine("Įrankiai ir įrengimai", "vnt.", 0.20m, 1m, 0m, MaterialKind.Machinery));
+
+        var result = EstimateCalculator.Calculate(EstimateWith(10m, 15m, 21m, wall, WallLine(12.345m)));
+
+        Assert.Equal(result.DirectCosts, result.Labour + result.Materials + result.Machinery);
+        Assert.Equal(result.DirectCosts, result.WorkLines.Sum(l => l.Amount));
+        Assert.All(result.WorkLines, l => Assert.Equal(l.Amount, l.LabourCost + l.Materials + l.Machinery));
+    }
+
     [Fact]
     public void PrecisePricesAndNorms_AreUsedUnroundedAndOnlyAmountsAreRounded()
     {
         // Feature 016 US2-1: "Tašelis 28x45 mm", 121,7 m², labour 25,00 €/h × 0,042002 h; screws 5 × 0,1000 €.
         var batten = new EstimateWorkLine("Tašelis 28x45 mm", "m²", 25.00m, 0.042002m, 121.7m,
-            [new EstimateMaterialLine("Medsraigčiai", "vnt.", 0.1000m, 5m, 0m)]);
+            [new EstimateMaterialLine("Medsraigčiai", "vnt.", 0.1000m, 5m, 0m, MaterialKind.Material)]);
         // US2-2: a calculated quantity of 1 234,5 vnt. at 0,0616 €.
         var screws = new EstimateWorkLine("Terasa", "m²", 0m, 0m, 1234.5m,
-            [new EstimateMaterialLine("Sraigtai terasoms", "vnt.", 0.0616m, 1m, 0m)]);
+            [new EstimateMaterialLine("Sraigtai terasoms", "vnt.", 0.0616m, 1m, 0m, MaterialKind.Material)]);
 
         var result = EstimateCalculator.Calculate(EstimateWith(0m, 0m, 0m, batten, screws));
 
@@ -84,7 +143,7 @@ public sealed class EstimateCalculatorTests
     {
         // 1.234 × 0.333 × 1.05 = 0.4314681: more than 3 decimals, kept as is.
         var line = new EstimateWorkLine("Darbas", "m²", 10m, 0.333m, 1.234m,
-            [new EstimateMaterialLine("Medžiaga", "kg", 2m, 0.333m, 5m)]);
+            [new EstimateMaterialLine("Medžiaga", "kg", 2m, 0.333m, 5m, MaterialKind.Material)]);
 
         var result = EstimateCalculator.Calculate(EstimateWith(0m, 0m, 0m, line));
 

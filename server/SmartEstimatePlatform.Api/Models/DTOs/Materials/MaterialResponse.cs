@@ -1,3 +1,5 @@
+using SmartEstimatePlatform.Api.Models.Entities;
+
 namespace SmartEstimatePlatform.Api.Models.DTOs.Materials;
 
 /// <summary>
@@ -12,4 +14,9 @@ public sealed record MaterialResponse
     public string Unit { get; init; } = string.Empty;
 
     public decimal Price { get; init; }
+
+    /// <summary>
+    /// Material or Machinery, sent as a number.
+    /// </summary>
+    public MaterialKind Kind { get; init; }
 }

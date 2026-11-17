@@ -94,6 +94,9 @@ namespace SmartEstimatePlatform.Api.Migrations
                         .HasPrecision(18, 6)
                         .HasColumnType("decimal(18,6)");
 
+                    b.Property<int>("Kind")
+                        .HasColumnType("int");
+
                     b.Property<string>("MaterialName")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -171,6 +174,9 @@ namespace SmartEstimatePlatform.Api.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Kind")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
