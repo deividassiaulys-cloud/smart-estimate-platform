@@ -16,6 +16,5 @@ public class UnitsController : ApiControllerBase
     /// Lists the allowed measurement units.
     /// </summary>
     [HttpGet]
-    [ProducesResponseType<IReadOnlyList<string>>(StatusCodes.Status200OK)]
     public IReadOnlyList<string> List() => MeasurementUnit.All;
 }

@@ -12,15 +12,12 @@ namespace SmartEstimatePlatform.Api.Controllers;
 /// </summary>
 [Route("api")]
 [Authorize]
-[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-[ProducesResponseType(StatusCodes.Status404NotFound)]
 public class EstimateNamesController(IEstimateService estimateService) : ApiControllerBase
 {
     /// <summary>
     /// Lists every estimate of a project by name.
     /// </summary>
     [HttpGet("projects/{projectId:int}/estimate-names")]
-    [ProducesResponseType<List<EstimateNameResponse>>(StatusCodes.Status200OK)]
     public Task<List<EstimateNameResponse>> List(int projectId) =>
         estimateService.ListNamesForProjectAsync(projectId);
 
@@ -28,7 +25,6 @@ public class EstimateNamesController(IEstimateService estimateService) : ApiCont
     /// Returns an estimate's work and material names.
     /// </summary>
     [HttpGet("estimates/{id:int}/names")]
-    [ProducesResponseType<EstimateNamesResponse>(StatusCodes.Status200OK)]
     public Task<EstimateNamesResponse> Get(int id) =>
         estimateService.GetNamesAsync(id);
 }

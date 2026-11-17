@@ -7,5 +7,4 @@ namespace SmartEstimatePlatform.Api.Controllers;
 /// which rejects an invalid request with 400 before any service runs (Constitution X.8, X.10).
 /// </summary>
 [ApiController]
-[ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
 public abstract class ApiControllerBase : ControllerBase;
