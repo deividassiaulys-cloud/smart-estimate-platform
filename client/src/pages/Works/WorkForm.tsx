@@ -54,7 +54,7 @@ function validateLine(line: LineForm): LineErrors {
 interface WorkFormProps {
   /** The item to edit, or null to create a new one. */
   workId: number | null
-  /** The name a new item starts with, e.g. what was typed in an add dialog's search (spec 021). */
+  /** The name a new item starts with, e.g. what was typed in an add dialog's search (spec 020). */
   initialName?: string
   /** Called with the saved item; the page navigates, the add dialog chooses it. */
   onSaved: (saved: Work) => void
@@ -62,7 +62,7 @@ interface WorkFormProps {
 
 /**
  * The catalog form for one work, used by its catalog page and by the Estimate Editor's "create new"
- * (spec 021): same fields, rules and messages in both places.
+ * (spec 020): same fields, rules and messages in both places.
  */
 export default function WorkForm({ workId, initialName = '', onSaved }: WorkFormProps) {
 

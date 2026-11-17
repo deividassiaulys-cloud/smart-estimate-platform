@@ -1,6 +1,6 @@
 # Tasks: Tables That Fit Without Sideways Scrolling
 
-**Input**: spec.md, plan.md, research.md, quickstart.md in `specs/020-fit-tables/`
+**Input**: spec.md, plan.md, research.md, quickstart.md in `specs/020-fit-tables/` (User Stories 4–6 added during review: T346–T356)
 
 `[US#]` refers to the user stories of this feature in `spec.md`. Task IDs continue the project-wide numbering from T335 (feature 019 ended at T334).
 
@@ -82,7 +82,75 @@
 - Found in the student's review: row action cells had `flex` on the `<td>`, so with a 2-line name their bottom line sat higher than the row's. Fixed in `ui.ts` (the cell stays a table cell; cards below 768 px keep the flex row), with a regression test in FitTables.test.tsx.
 - T345: `npm run lint`, `npm run build`, `npm run test` (114 passed, twice) and `dotnet test` (368 passed) all pass.
 
+## Phase 6: Shared dialog pieces (User Stories 4–6)
+
+- [X] T346 Add client/src/components/DialogFrame.tsx (plan R1):
+  - props: `title`, `onClose`, `wide?`, `children`;
+  - rendered in a portal with role="dialog", aria-modal and aria-labelledby;
+  - Escape → onClose; Tab cycles through the focusable elements inside;
+  - on unmount, focus returns to the element that had it before opening.
+- [X] T347 Add client/src/components/SearchableList.tsx (plan R2):
+  - props: `items: {id, name, detail?}[]`, `noMatch`, `chosenId?`, `onPick(id)`, `onSearchChange?(text)`;
+  - the search input (label "Paieška") is focused on mount;
+  - case-insensitive lt-LT "contains" filter, sorted with `localeCompare('lt')`;
+  - option buttons with `aria-pressed` for the chosen one; ArrowDown/ArrowUp move between the search field and the options.
+- [X] T348 Move `ReplaceMaterialDialog` onto `DialogFrame` + `SearchableList` (picking an item chooses it at once). All 7 of its existing tests pass unchanged.
+
+## Phase 7: User Stories 4 and 5: Add dialogs (P1)
+
+**Goal**: "+ Pridėti darbą" / "+ Pridėti skyrių" open dialogs that add exactly as before.
+**Independent Test**: spec US4, US5.
+
+- [X] T349 [US4][US5] Add client/src/pages/Estimates/AddFromCatalogDialog.tsx (plan R3):
+  - layout: `SearchableList`; the chosen item's name; the quantity field labelled "Kiekis, <unit>" (`decimalPattern(quantityDecimals)`, message as today); "Skyrius" with "Be skyriaus" plus the estimate's sections, only when sections are given and not empty; "Pridėti", "Atšaukti" and "+ Kurti naują…";
+  - choosing an item moves the focus to the quantity field;
+  - `onAdd` resolves to an error message (shown, dialog stays open) or null (the dialog closes).
+- [X] T350 [US4][US5] `EstimateEditorPage`:
+  - replace `AddSectionForm`/`AddWorkForm` with the buttons "+ Pridėti skyrių" and "+ Pridėti darbą" (Draft only), which open `AddFromCatalogDialog` with the catalog sections (detail: unit · number of works) or the works (detail: unit);
+  - adding uses the existing `addSection`/`addWorkLine`; a refusal returns `saveErrorMessage(err)` and still reloads on 409 as today;
+  - delete `AddSectionForm.tsx` and `AddWorkForm.tsx`.
+- [X] T351 [US4][US5] Update the existing tests that used the add forms (EstimateSections, EstimateStatus, FitTables, and any other found by grep) to open the dialog first, with the same expected requests and messages. Add tests/client/EstimateEditorTests/AddDialogs.test.tsx:
+  - both buttons only in Draft;
+  - the dialog has the focus in search; filter ignoring case; no-match text;
+  - choose → focus in quantity; invalid quantity refused and nothing sent;
+  - work with section → body includes sectionId; section → body `{catalogSectionId, quantity}`;
+  - a server 400 shows the message and keeps the dialog open;
+  - Escape and "Atšaukti" send nothing.
+
+## Phase 8: User Story 6: Create new without leaving (P2)
+
+**Goal**: "+ Kurti naują…" opens the catalog form on top of the editor and returns with the item chosen.
+**Independent Test**: spec US6.
+
+- [X] T352 [US6] Extract client/src/pages/Works/WorkForm.tsx and client/src/pages/CatalogSections/CatalogSectionForm.tsx from their pages (plan R4):
+  - props `id | null`, `initialName?`, `onSaved(item)`, `onCancel?`;
+  - the pages keep the route, heading, navigation and notices, and render the form;
+  - the catalog pages' behaviour and existing tests are unchanged.
+- [X] T353 [US6] In `EstimateEditorPage`, "+ Kurti naują darbą/skyrių":
+  - opens a wide `DialogFrame` with `WorkForm`/`CatalogSectionForm` (`initialName` = the search text);
+  - on save, adds the item to the loaded list and reopens the add dialog with it chosen;
+  - on cancel, returns to the add dialog.
+- [X] T354 [US6] Tests in AddDialogs.test.tsx:
+  - "+ Kurti naują darbą" opens the form with the search text as its name;
+  - saving POSTs `/api/works` as the catalog page does and returns to "Pridėti darbą" with the new work chosen;
+  - cancelling returns with nothing added;
+  - the same for "+ Kurti naują skyrių".
+
+## Phase 9: Polish (User Stories 4–6)
+
+- [ ] T355 docs/ux.md §14: the add buttons, the dialogs with search, and create-new. Manual check in the browser (dialogs at 1280 px and 360 px, keyboard).
+- [X] T356 Run the full check set (`npm run lint`, `npm run build`, `npm run test`, `dotnet test`). Fix any regression.
+
+**Status notes for User Stories 4–6 (2026-11-17)**:
+- T348: the replacement dialog now uses DialogFrame + SearchableList; all its tests pass unchanged.
+- T351: besides the request-level tests, two section tests were rewritten to check the section choice inside the dialog (the old checks would have passed trivially after the forms were removed).
+- T352: the form-state type in WorkForm was renamed `WorkFields` so it doesn't clash with the component name; the catalog pages' behaviour and tests are unchanged.
+- T355: docs/ux.md §14 updated. The manual browser check (dialogs at 1280 px and 360 px, keyboard) has **not** been done in this session, so T355 stays open.
+- T356: `npm run lint`, `npm run build`, `npm run test` (122 passed, twice) and `dotnet test` (368 passed) all pass.
+
 ## Dependencies
+
+- User Stories 4–6: T346 → T347 → T348 → T349 → T350 → T351 → T352 → T353 → T354 → T355 → T356 (one editor page and shared components, so sequential).
 
 - T335 → T336 → all other tasks.
 - US2: T337 → T338 → T339. US1: T340 (after T338, same file) → T341. US3: T342 → T343.

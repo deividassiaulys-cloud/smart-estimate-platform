@@ -26,13 +26,13 @@ interface AddFromCatalogDialogProps {
   sections?: EstimateSection[]
   /** Adds the chosen item; resolves to an error message to show, or null when it was added. */
   onAdd: (id: number, quantity: number, sectionId: number | null) => Promise<string | null>
-  /** Opens the catalog form for a new item, with what was typed in the search as its name (spec 021 Q1). */
+  /** Opens the catalog form for a new item, with what was typed in the search as its name (spec 020 Q3). */
   onCreate: (name: string) => void
   onClose: () => void
 }
 
 /**
- * Adds a catalog work or section to the estimate (spec 021): search and choose, enter the quantity (and, for a work,
+ * Adds a catalog work or section to the estimate (spec 020): search and choose, enter the quantity (and, for a work,
  * its section), then "Pridėti". The add itself is the existing one (FR-012, FR-031, FR-033); a refusal is shown here
  * and the dialog stays open. "Create new" opens the catalog form for a missing item.
  */

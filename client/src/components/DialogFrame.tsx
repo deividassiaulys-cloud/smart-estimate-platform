@@ -5,13 +5,13 @@ import { ui } from '../utils/ui'
 interface DialogFrameProps {
   title: string
   onClose: () => void
-  /** A wide dialog for a whole form (spec 021 "create new"); the default suits a list. */
+  /** A wide dialog for a whole form (spec 020 "create new"); the default suits a list. */
   wide?: boolean
   children: ReactNode
 }
 
 /**
- * The frame of every pick-and-act dialog (specs 020, 021): rendered at the end of the page, so it inherits nothing
+ * The frame of every pick-and-act dialog (spec 020): rendered at the end of the page, so it inherits nothing
  * from the table or form that opens it; Escape closes it, Tab stays inside, and on closing the focus goes back to
  * where it was before. The content scrolls inside the frame; the page behind does not.
  */

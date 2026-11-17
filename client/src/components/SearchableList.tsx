@@ -21,7 +21,7 @@ interface SearchableListProps {
 
 /**
  * A search field (focused when shown) above a list of choices filtered by part of the name, ignoring letter case,
- * and sorted by name (specs 020, 021). The arrow keys move between the field and the choices; Enter or a click picks.
+ * and sorted by name (spec 020). The arrow keys move between the field and the choices; Enter or a click picks.
  */
 export default function SearchableList({ items, noMatch, chosenId = null, onPick, onSearchChange }: SearchableListProps) {
   const [search, setSearch] = useState('')

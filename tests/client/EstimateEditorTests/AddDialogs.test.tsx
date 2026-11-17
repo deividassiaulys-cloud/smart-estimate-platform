@@ -5,7 +5,7 @@ import { afterEach, beforeEach, expect, test, vi } from 'vitest'
 import App from '../../../client/src/App'
 import { saveToken } from '../../../client/src/utils/auth'
 
-// Feature 021: "+ Pridėti darbą" / "+ Pridėti skyrių" open dialogs with search, quantity and "create new".
+// Feature 020: "+ Pridėti darbą" / "+ Pridėti skyrių" open dialogs with search, quantity and "create new".
 
 const roleClaim = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
 

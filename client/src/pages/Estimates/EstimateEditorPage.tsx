@@ -75,7 +75,7 @@ export default function EstimateEditorPage() {
     quantity: number
     done: (accepted: boolean) => void
   } | null>(null)
-  // The open add dialog (spec 021), with an item to show as chosen, e.g. one just created.
+  // The open add dialog (spec 020), with an item to show as chosen, e.g. one just created.
   const [addDialog, setAddDialog] = useState<{ kind: 'work' | 'section'; chosenId: number | null } | null>(null)
   // The catalog form opened from an add dialog's "create new", with the search text as the new item's name.
   const [creating, setCreating] = useState<{ kind: 'work' | 'section'; name: string } | null>(null)

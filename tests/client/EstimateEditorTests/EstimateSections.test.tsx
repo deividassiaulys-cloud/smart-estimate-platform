@@ -92,7 +92,7 @@ function changes() {
 test('adding a catalog section sends it with the section quantity', async () => {
   await openEditor()
 
-  // Spec 021: the section is chosen in the "Pridėti skyrių" dialog; the catalog sections load after the estimate.
+  // Spec 020: the section is chosen in the "Pridėti skyrių" dialog; the catalog sections load after the estimate.
   await userEvent.click(screen.getByRole('button', { name: '+ Pridėti skyrių' }))
   const dialog = screen.getByRole('dialog', { name: 'Pridėti skyrių' })
   await userEvent.click(await within(dialog).findByRole('button', { name: /A\+\+ siena/ }))
@@ -151,7 +151,7 @@ test('removing a section asks for confirmation first', async () => {
 test('a single work can be added to a section', async () => {
   await openEditor()
 
-  // Spec 021: the work, its quantity and its section are chosen in the "Pridėti darbą" dialog.
+  // Spec 020: the work, its quantity and its section are chosen in the "Pridėti darbą" dialog.
   await userEvent.click(screen.getByRole('button', { name: '+ Pridėti darbą' }))
   const dialog = screen.getByRole('dialog', { name: 'Pridėti darbą' })
   await userEvent.click(await within(dialog).findByRole('button', { name: /Tašelis 28x45 mm/ }))
