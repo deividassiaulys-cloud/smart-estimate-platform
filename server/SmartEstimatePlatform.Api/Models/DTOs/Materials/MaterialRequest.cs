@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using SmartEstimatePlatform.Api.Models.Entities;
 using SmartEstimatePlatform.Api.Services;
 
 namespace SmartEstimatePlatform.Api.Models.DTOs.Materials;
@@ -25,13 +24,8 @@ public sealed record MaterialRequest : IValidatableObject
     public decimal Price { get; init; }
 
     /// <summary>
-    /// Material or Machinery (FR-030); Material when omitted.
-    /// </summary>
-    public MaterialKind Kind { get; init; } = MaterialKind.Material;
-
-    /// <summary>
-    /// Applies the <see cref="MaterialRules"/> for the unit, the kind and the price; the name is checked by the attributes above.
+    /// Applies the <see cref="MaterialRules"/> for the unit and the price; the name is checked by the attributes above.
     /// </summary>
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext) =>
-        MaterialRules.Validate(Unit, Kind, Price);
+        MaterialRules.Validate(Unit, Price);
 }

@@ -34,7 +34,7 @@ public class MaterialService(AppDbContext db) : IMaterialService
     /// <inheritdoc />
     public async Task<MaterialResponse> CreateAsync(MaterialRequest request)
     {
-        var material = new Material(request.Name.Trim(), request.Unit, request.Kind, request.Price);
+        var material = new Material(request.Name.Trim(), request.Unit, request.Price);
         db.Materials.Add(material);
         await SaveAsync(material);
         return material.ToResponse();
@@ -44,7 +44,7 @@ public class MaterialService(AppDbContext db) : IMaterialService
     public async Task<MaterialResponse> UpdateAsync(int id, MaterialRequest request)
     {
         var material = await FindAsync(id);
-        material.Update(request.Name.Trim(), request.Unit, request.Kind, request.Price);
+        material.Update(request.Name.Trim(), request.Unit, request.Price);
         await SaveAsync(material);
         return material.ToResponse();
     }

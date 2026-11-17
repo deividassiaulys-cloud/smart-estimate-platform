@@ -13,9 +13,9 @@ public class Material : ICompanyScoped
     /// <summary>
     /// Creates a material with already validated values (see MaterialRules).
     /// </summary>
-    public Material(string name, string unit, MaterialKind kind, decimal price)
+    public Material(string name, string unit, decimal price)
     {
-        Update(name, unit, kind, price);
+        Update(name, unit, price);
     }
 
     public int Id { get; private set; }
@@ -35,23 +35,17 @@ public class Material : ICompanyScoped
     /// </summary>
     public decimal Price { get; private set; }
 
-    /// <summary>
-    /// Material or Machinery (FR-030); Material unless the Manager chose otherwise.
-    /// </summary>
-    public MaterialKind Kind { get; private set; }
-
     public int CompanyId { get; private set; }
 
     public Company Company { get; private set; } = null!;
 
     /// <summary>
-    /// Replaces the name, unit, kind and price with already validated values.
+    /// Replaces the name, unit and price with already validated values.
     /// </summary>
-    public void Update(string name, string unit, MaterialKind kind, decimal price)
+    public void Update(string name, string unit, decimal price)
     {
         Name = name;
         Unit = unit;
-        Kind = kind;
         Price = price;
     }
 }

@@ -1,5 +1,3 @@
-using SmartEstimatePlatform.Api.Models.Entities;
-
 namespace SmartEstimatePlatform.Api.Models.DTOs.Estimates;
 
 /// <summary>
@@ -12,11 +10,6 @@ public sealed record EstimateMaterialLineResponse
     public string MaterialName { get; init; } = string.Empty;
 
     public string MaterialUnit { get; init; } = string.Empty;
-
-    /// <summary>
-    /// Material or Machinery, as copied from the catalog; sent as a number.
-    /// </summary>
-    public MaterialKind Kind { get; init; }
 
     public decimal ConsumptionNorm { get; init; }
 

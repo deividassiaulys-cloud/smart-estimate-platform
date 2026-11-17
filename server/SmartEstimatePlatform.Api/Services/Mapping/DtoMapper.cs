@@ -21,8 +21,7 @@ public static class DtoMapper
         Id = material.Id,
         Name = material.Name,
         Unit = material.Unit,
-        Price = material.Price,
-        Kind = material.Kind
+        Price = material.Price
     };
 
     /// <summary>
@@ -111,17 +110,11 @@ public static class DtoMapper
             LabourNorm = work.Line.LabourNorm,
             LabourRate = work.Line.LabourRate,
             LabourCost = work.LabourCost,
-            Hours = work.Hours,
-            Materials = work.Materials,
-            Machinery = work.Machinery,
-            Amount = work.Amount,
-            UnitPrice = work.UnitPrice,
             MaterialLines = work.MaterialLines.Select(material => new EstimateMaterialLineResponse
             {
                 Id = material.Line.Id,
                 MaterialName = material.Line.MaterialName,
                 MaterialUnit = material.Line.MaterialUnit,
-                Kind = material.Line.Kind,
                 ConsumptionNorm = material.Line.ConsumptionNorm,
                 WastePercent = material.Line.WastePercent,
                 Quantity = material.Quantity,
@@ -129,9 +122,6 @@ public static class DtoMapper
                 Cost = material.Cost
             }).ToList()
         }).ToList(),
-        Labour = calculation.Labour,
-        Materials = calculation.Materials,
-        Machinery = calculation.Machinery,
         DirectCosts = calculation.DirectCosts,
         Overhead = calculation.Overhead,
         Profit = calculation.Profit,

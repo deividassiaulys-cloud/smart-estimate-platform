@@ -22,30 +22,6 @@ public sealed class EstimateNamesTests : IDisposable
     public void Dispose() => _factory.Dispose();
 
     [Fact]
-    public async Task Viewer_GetsNoKindsPartsHoursOrUnitPrices()
-    {
-        // Feature 017 (FR-017-9): the new Manager-only fields never reach a Viewer, even with a Machinery line.
-        var company = await _factory.RegisterCompanyAsync("Alpha UAB", "alpha@example.com");
-        var tools = await company.Client.PostAsJsonAsync("/api/materials", new Api.Models.DTOs.Materials.MaterialRequest
-        {
-            Name = "Įrankiai ir įrengimai", Unit = "vnt.", Price = 0.20m, Kind = MaterialKind.Machinery
-        });
-        var toolsId = (await tools.Content.ReadFromJsonAsync<Api.Models.DTOs.Materials.MaterialResponse>())!.Id;
-        var work = await company.CreateWorkAsync(WorkRequest("Siena A++", "m²", (toolsId, 1m, 0m)));
-        var estimate = await company.CreateEstimateAsync();
-        await company.Client.AddWorkLineAsync(estimate.Id, work.Id, 35m);
-        var viewer = await _factory.CreateViewerClientAsync(company);
-
-        var json = await (await viewer.GetAsync($"/api/estimates/{estimate.Id}/names")).Content.ReadAsStringAsync();
-
-        AssertOnlyNameProperties(json);
-        foreach (var field in new[] { "kind", "labour", "materials", "machinery", "amount", "hours", "unitPrice" })
-        {
-            Assert.DoesNotContain($"\"{field}\"", json);
-        }
-    }
-
-    [Fact]
     public async Task Viewer_ListsEveryEstimateByNameWhateverItsStatus()
     {
         var company = await _factory.RegisterCompanyAsync("Alpha UAB", "alpha@example.com");

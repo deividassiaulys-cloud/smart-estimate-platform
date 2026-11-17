@@ -2,7 +2,6 @@ import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ApiError } from '../../api/http'
 import { createMaterial, getMaterial, getUnits, updateMaterial } from '../../api/materials'
-import { MaterialKind, materialKindLabels } from '../../interfaces/material'
 import { toInputNumber } from '../../utils/format'
 import { ui } from '../../utils/ui'
 import { decimalPattern, parseDecimal, priceDecimals } from '../../utils/validation'
@@ -11,13 +10,12 @@ import { unexpectedError } from '../../utils/errors'
 interface MaterialForm {
   name: string
   unit: string
-  kind: string
   price: string
 }
 
 type MaterialErrors = Partial<Record<keyof MaterialForm, string>>
 
-const emptyForm: MaterialForm = { name: '', unit: '', kind: String(MaterialKind.Material), price: '' }
+const emptyForm: MaterialForm = { name: '', unit: '', price: '' }
 
 const pricePattern = decimalPattern(priceDecimals)
 
@@ -54,12 +52,7 @@ export default function MaterialFormPage() {
     if (materialId === null) return
     getMaterial(materialId)
       .then((material) => {
-        setForm({
-          name: material.name,
-          unit: material.unit,
-          kind: String(material.kind),
-          price: toInputNumber(material.price, 2),
-        })
+        setForm({ name: material.name, unit: material.unit, price: toInputNumber(material.price, 2) })
         setLoaded(true)
       })
       .catch((error) =>
@@ -87,7 +80,6 @@ export default function MaterialFormPage() {
     const request = {
       name: form.name.trim(),
       unit: form.unit,
-      kind: Number(form.kind) as MaterialKind,
       price: parseDecimal(form.price),
     }
 
@@ -159,17 +151,6 @@ export default function MaterialFormPage() {
               ))}
             </select>
             {fieldError('unit')}
-          </div>
-
-          <div className={ui.field}>
-            <label className={ui.label} htmlFor="kind">Rūšis</label>
-            <select className={ui.input} {...fieldProps('kind')}>
-              {Object.values(MaterialKind).map((kind) => (
-                <option key={kind} value={kind}>
-                  {materialKindLabels[kind]}
-                </option>
-              ))}
-            </select>
           </div>
 
           <div className={ui.field}>

@@ -1,7 +1,6 @@
 using System.Globalization;
 using ClosedXML.Excel;
 using SmartEstimatePlatform.Api.Models.DTOs.Estimates;
-using SmartEstimatePlatform.Api.Models.Entities;
 
 namespace SmartEstimatePlatform.Api.Services;
 
@@ -24,19 +23,7 @@ public class EstimateExportService(
     private const string NormFormat = "#,##0.######";
     private const string QuantityFormat = "#,##0.###";
     private const string PercentFormat = "0.## \"%\"";
-    // The table's columns, as in the Estimate Editor (FR-031).
-    private const int NoColumn = 1;
-    private const int NameColumn = 2;
-    private const int UnitColumn = 3;
-    private const int NormColumn = 4;
-    private const int WasteColumn = 5;
-    private const int PriceColumn = 6;
-    private const int QuantityColumn = 7;
-    private const int AmountColumn = 8;
-    private const int LabourColumn = 9;
-    private const int MaterialsColumn = 10;
-    private const int MachineryColumn = 11;
-    private const int LastColumn = MachineryColumn;
+    private const int LastColumn = 7;
 
     private static readonly TimeZoneInfo Lithuania = TimeZoneInfo.FindSystemTimeZoneById("Europe/Vilnius");
 
@@ -84,86 +71,57 @@ public class EstimateExportService(
         return header.Length + 1;
     }
 
-    // The table: each work line, then its labour row and its material lines, in the editor's 11 columns (FR-031).
-    // Returns the last row used.
+    // The table: each work line followed by its material lines, as in the editor. Returns the last row used.
     private static int WriteLines(IXLWorksheet sheet, int row, EstimateResponse estimate)
     {
-        string[] headings =
-        [
-            "Nr.", "Pavadinimas", "Mato vnt.", "Norma", "Atliekos %", "Kaina", "Kiekis", "Suma", "Darbas", "Medžiagos", "Mechanizmai"
-        ];
+        string[] headings = ["Pavadinimas", "Mato vnt.", "Kiekis", "Norma", "Atliekos %", "Kaina / Įkainis", "Suma"];
         for (var column = 1; column <= headings.Length; column++)
         {
             Text(sheet.Cell(row, column), headings[column - 1]).Style.Font.Bold = true;
         }
 
-        var number = 0;
         foreach (var work in estimate.WorkLines)
         {
             row++;
-            Number(sheet.Cell(row, NoColumn), ++number, "0");
-            Text(sheet.Cell(row, NameColumn), work.WorkName).Style.Font.Bold = true;
-            Text(sheet.Cell(row, UnitColumn), work.WorkUnit);
-            Number(sheet.Cell(row, PriceColumn), work.UnitPrice, MoneyFormat);
-            Number(sheet.Cell(row, QuantityColumn), work.Quantity, QuantityFormat);
-            Number(sheet.Cell(row, AmountColumn), work.Amount, MoneyFormat);
-            Number(sheet.Cell(row, LabourColumn), work.LabourCost, MoneyFormat);
-            Number(sheet.Cell(row, MaterialsColumn), work.Materials, MoneyFormat);
-            Number(sheet.Cell(row, MachineryColumn), work.Machinery, MoneyFormat);
-
-            row++;
-            Text(sheet.Cell(row, NameColumn), "Darbas").Style.Alignment.Indent = 1;
-            Text(sheet.Cell(row, UnitColumn), "val.");
-            Number(sheet.Cell(row, NormColumn), work.LabourNorm, NormFormat);
-            Number(sheet.Cell(row, PriceColumn), work.LabourRate, PriceFormat);
-            Number(sheet.Cell(row, QuantityColumn), work.Hours, QuantityFormat);
-            Number(sheet.Cell(row, AmountColumn), work.LabourCost, MoneyFormat);
-            Number(sheet.Cell(row, LabourColumn), work.LabourCost, MoneyFormat);
+            Text(sheet.Cell(row, 1), work.WorkName).Style.Font.Bold = true;
+            Text(sheet.Cell(row, 2), work.WorkUnit);
+            Number(sheet.Cell(row, 3), work.Quantity, QuantityFormat);
+            Number(sheet.Cell(row, 4), work.LabourNorm, NormFormat);
+            Number(sheet.Cell(row, 6), work.LabourRate, PriceFormat);
+            Number(sheet.Cell(row, 7), work.LabourCost, MoneyFormat);
 
             foreach (var material in work.MaterialLines)
             {
                 row++;
-                Text(sheet.Cell(row, NameColumn), material.MaterialName).Style.Alignment.Indent = 1;
-                Text(sheet.Cell(row, UnitColumn), material.MaterialUnit);
-                Number(sheet.Cell(row, NormColumn), material.ConsumptionNorm, NormFormat);
-                Number(sheet.Cell(row, WasteColumn), material.WastePercent, PercentFormat);
-                Number(sheet.Cell(row, PriceColumn), material.Price, PriceFormat);
-                Number(sheet.Cell(row, QuantityColumn), material.Quantity, QuantityFormat);
-                Number(sheet.Cell(row, AmountColumn), material.Cost, MoneyFormat);
-                var kindColumn = material.Kind == MaterialKind.Machinery ? MachineryColumn : MaterialsColumn;
-                Number(sheet.Cell(row, kindColumn), material.Cost, MoneyFormat);
+                Text(sheet.Cell(row, 1), material.MaterialName).Style.Alignment.Indent = 1;
+                Text(sheet.Cell(row, 2), material.MaterialUnit);
+                Number(sheet.Cell(row, 3), material.Quantity, QuantityFormat);
+                Number(sheet.Cell(row, 4), material.ConsumptionNorm, NormFormat);
+                Number(sheet.Cell(row, 5), material.WastePercent, PercentFormat);
+                Number(sheet.Cell(row, 6), material.Price, PriceFormat);
+                Number(sheet.Cell(row, 7), material.Cost, MoneyFormat);
             }
         }
 
         return row;
     }
 
-    // The three parts, the direct costs (also split into the three columns), the percentages and the total (BR-016).
     private static void WriteTotals(IXLWorksheet sheet, int row, EstimateResponse estimate)
     {
-        (string Label, decimal Amount, bool Split)[] totals =
+        (string Label, decimal Amount)[] totals =
         [
-            ("Darbas", estimate.Labour, false),
-            ("Medžiagos", estimate.Materials, false),
-            ("Mechanizmai", estimate.Machinery, false),
-            ("Tiesioginės išlaidos", estimate.DirectCosts, true),
-            ($"Pridėtinės išlaidos ({Percent(estimate.OverheadPercent)})", estimate.Overhead, false),
-            ($"Pelnas ({Percent(estimate.ProfitPercent)})", estimate.Profit, false),
-            ($"PVM ({Percent(estimate.VatPercent)})", estimate.Vat, false),
-            ("Iš viso su PVM", estimate.Total, false)
+            ("Tiesioginės išlaidos", estimate.DirectCosts),
+            ($"Pridėtinės išlaidos ({Percent(estimate.OverheadPercent)})", estimate.Overhead),
+            ($"Pelnas ({Percent(estimate.ProfitPercent)})", estimate.Profit),
+            ($"PVM ({Percent(estimate.VatPercent)})", estimate.Vat),
+            ("Iš viso su PVM", estimate.Total)
         ];
 
-        foreach (var (label, amount, split) in totals)
+        foreach (var (label, amount) in totals)
         {
             row++;
-            Text(sheet.Cell(row, NameColumn), label);
-            Number(sheet.Cell(row, AmountColumn), amount, MoneyFormat);
-            if (split)
-            {
-                Number(sheet.Cell(row, LabourColumn), estimate.Labour, MoneyFormat);
-                Number(sheet.Cell(row, MaterialsColumn), estimate.Materials, MoneyFormat);
-                Number(sheet.Cell(row, MachineryColumn), estimate.Machinery, MoneyFormat);
-            }
+            Text(sheet.Cell(row, 1), label);
+            Number(sheet.Cell(row, LastColumn), amount, MoneyFormat);
         }
 
         sheet.Row(row).Style.Font.Bold = true;

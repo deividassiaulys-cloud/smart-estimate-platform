@@ -23,24 +23,6 @@ public sealed record EstimateResponse
 
     public List<EstimateWorkLineResponse> WorkLines { get; init; } = [];
 
-    /// <summary>
-    /// Sum of the work lines' labour costs.
-    /// </summary>
-    public decimal Labour { get; init; }
-
-    /// <summary>
-    /// Sum of the work lines' Material costs.
-    /// </summary>
-    public decimal Materials { get; init; }
-
-    /// <summary>
-    /// Sum of the work lines' Machinery costs.
-    /// </summary>
-    public decimal Machinery { get; init; }
-
-    /// <summary>
-    /// Labour + Materials + Machinery.
-    /// </summary>
     public decimal DirectCosts { get; init; }
 
     public decimal Overhead { get; init; }

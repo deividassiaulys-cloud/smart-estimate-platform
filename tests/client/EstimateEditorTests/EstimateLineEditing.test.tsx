@@ -180,7 +180,7 @@ test('a stored 4-decimal price and 6-decimal labour norm are shown in full (feat
   await openEditor()
 
   expect((screen.getByLabelText('Kaina: Gipso plokštė') as HTMLInputElement).value).toBe('0,0616')
-  expect(screen.getByText('0,042002')).toBeTruthy()
+  expect(screen.getByText(/0,042002 val\./)).toBeTruthy()
 })
 
 test("a price the server rejects shows the field's message, not the server's text", async () => {
