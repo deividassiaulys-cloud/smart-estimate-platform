@@ -1,12 +1,9 @@
 import type { Estimate } from '../../interfaces/estimate'
 import { formatMoney, formatPercent } from '../../utils/format'
 
-/** The estimate's totals as calculated by the server (BR-015–BR-017), starting with Labour / Materials / Machinery (FR-031). */
+/** The estimate's totals as calculated by the server (BR-015–BR-017). */
 export default function EstimateTotals({ estimate }: { estimate: Estimate }) {
   const rows = [
-    ['Darbas', estimate.labour],
-    ['Medžiagos', estimate.materials],
-    ['Mechanizmai', estimate.machinery],
     ['Tiesioginės išlaidos', estimate.directCosts],
     [`Pridėtinės išlaidos (${formatPercent(estimate.overheadPercent)})`, estimate.overhead],
     [`Pelnas (${formatPercent(estimate.profitPercent)})`, estimate.profit],

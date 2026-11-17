@@ -173,27 +173,6 @@ public sealed class EstimateLineEditingTests : IDisposable
     }
 
     [Fact]
-    public async Task ReplaceMaterial_WithAMachineryMaterial_MovesTheCostToMachinery()
-    {
-        // Feature 017 US3-1: the line takes the replacement's kind; the total is unchanged at the same price.
-        var (company, estimate) = await ArrangeAsync();
-        var lift = await company.Client.PostAsJsonAsync("/api/materials", new MaterialRequest
-        {
-            Name = "Keltuvo nuoma", Unit = "m²", Price = 1.10m, Kind = Api.Models.Entities.MaterialKind.Machinery
-        });
-        var liftId = (await lift.Content.ReadFromJsonAsync<MaterialResponse>())!.Id;
-        var line = estimate.WorkLines[0];
-
-        var changed = await Ok(await company.Client.PatchAsJsonAsync(
-            ReplacePath(estimate.Id, line.Id, line.MaterialLines[2].Id), new { materialId = liftId }));
-
-        var work = changed.WorkLines[0];
-        Assert.Equal(Api.Models.Entities.MaterialKind.Machinery, work.MaterialLines[2].Kind);
-        Assert.Equal((364.88m, 40.43m), (work.Materials, work.Machinery));
-        AssertTotals(changed, 825.31m, 82.53m, 136.18m, 219.24m, 1263.26m);
-    }
-
-    [Fact]
     public async Task ReplacedMaterial_IsACopy_LaterCatalogChangesDoNotReachIt()
     {
         var (company, estimate) = await ArrangeAsync();
@@ -311,8 +290,8 @@ public sealed class EstimateLineEditingTests : IDisposable
         export.EnsureSuccessStatusCode();
         using var file = new XLWorkbook(new MemoryStream(await export.Content.ReadAsByteArrayAsync()));
         var sheet = file.Worksheet("Sąmata");
-        Assert.Equal(("Drėgmei atspari plokštė", 6.20m), (sheet.Cell("B9").GetString(), sheet.Cell("F9").GetValue<decimal>()));
-        Assert.Equal(("Varžtai", 0.03m), (sheet.Cell("B10").GetString(), sheet.Cell("F10").GetValue<decimal>()));
+        Assert.Equal(("Drėgmei atspari plokštė", 6.20m), (sheet.Cell("A8").GetString(), sheet.Cell("F8").GetValue<decimal>()));
+        Assert.Equal(("Varžtai", 0.03m), (sheet.Cell("A9").GetString(), sheet.Cell("F9").GetValue<decimal>()));
         Assert.NotEqual("Plėvelė", sheet.Cell("A10").GetString());
     }
 

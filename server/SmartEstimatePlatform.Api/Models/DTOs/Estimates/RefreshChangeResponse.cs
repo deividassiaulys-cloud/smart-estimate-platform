@@ -13,9 +13,6 @@ public sealed record RefreshChangeResponse
 
     public RefreshedField Field { get; init; }
 
-    /// <summary>
-    /// The value before the refresh; for <see cref="RefreshedField.Kind"/>, a MaterialKind number (0 or 1).
-    /// </summary>
     public decimal OldValue { get; init; }
 
     public decimal NewValue { get; init; }

@@ -3,7 +3,7 @@ using SmartEstimatePlatform.Api.Models.Entities;
 namespace SmartEstimatePlatform.Api.Services;
 
 /// <summary>
-/// Brings an estimate's copied prices, norms and material kinds up to date with the catalog (FR-024, spec 015). Lines keep no
+/// Brings an estimate's copied prices and norms up to date with the catalog (FR-024, spec 015). Lines keep no
 /// reference to the catalog (BR-010), so they are matched by name and unit, the catalog's identity (BR-006).
 /// Only values change: quantities, percentages and the set of lines stay as they are.
 /// </summary>
@@ -11,7 +11,7 @@ public static class EstimateCatalogRefresh
 {
     /// <summary>
     /// Updates the estimate's lines in memory and reports every changed value and every line that has no match.
-    /// A work line takes its work's labour rate and norm; a material line takes its material's price and kind, and its
+    /// A work line takes its work's labour rate and norm; a material line takes its material's price, and its
     /// norm and waste from its work's composition when the work and the material in it are found.
     /// </summary>
     public static CatalogRefreshResult Apply(Estimate estimate, IReadOnlyList<CatalogWork> works, IReadOnlyList<CatalogMaterial> materials)
@@ -45,10 +45,6 @@ public static class EstimateCatalogRefresh
                 }
 
                 Update(line.WorkName, materialLine.MaterialName, RefreshedField.Price, materialLine.Price, material.Price, materialLine.ChangePrice);
-                if (Record(line.WorkName, materialLine.MaterialName, RefreshedField.Kind, (int)materialLine.Kind, (int)material.Kind))
-                {
-                    materialLine.ChangeKind(material.Kind);
-                }
 
                 var component = unusedComponents.FirstOrDefault(c =>
                     Matches(c.MaterialName, c.MaterialUnit, materialLine.MaterialName, materialLine.MaterialUnit));
