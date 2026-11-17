@@ -15,7 +15,7 @@ public static class MaterialRules
 
     /// <summary>
     /// Returns the unit and price errors: the unit must be in the fixed list, and the price must be zero or more,
-    /// with at most 2 decimal places, and fit DECIMAL(18,2).
+    /// with at most 4 decimal places, and fit DECIMAL(18,4).
     /// </summary>
     public static IEnumerable<ValidationResult> Validate(string unit, decimal price)
     {
@@ -24,7 +24,7 @@ public static class MaterialRules
             yield return new ValidationResult("Unit must be one of the fixed measurement units.", ["Unit"]);
         }
 
-        if (NumberRules.MoneyError(price, "Price") is { } priceError)
+        if (NumberRules.UnitPriceError(price, "Price") is { } priceError)
         {
             yield return new ValidationResult(priceError, ["Price"]);
         }

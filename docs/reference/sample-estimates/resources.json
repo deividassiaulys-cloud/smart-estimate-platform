@@ -1,0 +1,1840 @@
+{
+ "resources": [
+  {
+   "code": "D-0001",
+   "name": "Karkaso surinkimas",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 25.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0002",
+   "name": "Barjero tvirtinimas",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 25.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0003",
+   "name": "Plėvelės sudėjimas 1 sl.",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 25.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0004",
+   "name": "Plokštės tvirtinimas 1 sl.",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 25.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0005",
+   "name": "Vatos 3 sl. sudėjimas",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 25.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0006",
+   "name": "Apdailos tvirtinimas 1 sl.",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 35.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0007",
+   "name": "Vatos 1 sl. sudėjimas",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 25.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0008",
+   "name": "Vatos 2 sl. sudėjimas",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 25.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0009",
+   "name": "Plėvelės sudėjimas 2 sl.",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 25.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0010",
+   "name": "Plėvelės sudėjimas 1 sl.",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 35.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0011",
+   "name": "Karkaso surinkimas",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 35.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0012",
+   "name": "Montavimas (objekte)",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 35.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0013",
+   "name": "Apdailos tvirtinimas 1 sl. (statybvietėje)",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 35.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0014",
+   "name": "Montavimo darbas (statybvietėje)",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 35.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0015",
+   "name": "Tinklelio tvirtinimas",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 35.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0016",
+   "name": "Surinkimas",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 25.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0017",
+   "name": "Dažymo darbai rankomis",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 25.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0018",
+   "name": "Apdailos tvirtinimas 1 sl. (objekte)",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 35.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0019",
+   "name": "Langų montavimas",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 25.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0020",
+   "name": "Montavimas (objekte, stoglangiai)",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 40.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0021",
+   "name": "Medienos apdirbimas",
+   "unit": "m3",
+   "type": "labour",
+   "price": 65.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0022",
+   "name": "Ankeravimo darbas (objekte)",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 35.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0023",
+   "name": "Montavimo darbas (objekte)",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 35.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0024",
+   "name": "Krovos darbai",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 25.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0025",
+   "name": "Namo brėžinių paruošimas",
+   "unit": "m2",
+   "type": "labour",
+   "price": 10.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0026",
+   "name": "Stoginių brėžinių paruošimas",
+   "unit": "m2",
+   "type": "labour",
+   "price": 5.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "D-0027",
+   "name": "Plokštės tvirtinimas 1 sl. (statybvietėje)",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 35.0,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "D-0028",
+   "name": "Plokštės tvirtinimas 1 sl. + siūlių aptaisymas (statybvietėje)",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 35.0,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "D-0029",
+   "name": "Bituminės dangos tvirtinimas (statybvietėje)",
+   "unit": "žm.val.",
+   "type": "labour",
+   "price": 35.0,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "D-0030",
+   "name": "Statikos projektas",
+   "unit": "vnt.",
+   "type": "labour",
+   "price": 3000.0,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0001",
+   "name": "Kalibruota mediena 28x45x6000 mm",
+   "unit": "m3",
+   "type": "material",
+   "price": 485.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0002",
+   "name": "Medsraigčiai ESSVE ESSDRIVE 5x100 CorrSeal C4",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.1,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0003",
+   "name": "Apsauginis profilis perforuotas",
+   "unit": "m",
+   "type": "material",
+   "price": 3.1,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0004",
+   "name": "Kalibruota mediena 20x45 mm",
+   "unit": "m3",
+   "type": "material",
+   "price": 440.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0005",
+   "name": "Išorinių GKP sraigtai ESSVE GU 3,9X40 C4",
+   "unit": "vnt.",
+   "type": "material",
+   "price": 0.022005,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0006",
+   "name": "Tyvek Soft",
+   "unit": "m2",
+   "type": "material",
+   "price": 1.15,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0007",
+   "name": "Lipni juosta Siga Wigluv 60 mm",
+   "unit": "m",
+   "type": "material",
+   "price": 0.8,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0008",
+   "name": "Kabė",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.001,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0009",
+   "name": "Priešvėjinis gipsas GTS 9, 9,5x1200x3000 mm",
+   "unit": "m2",
+   "type": "material",
+   "price": 3.25,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0010",
+   "name": "Kalibruota mediena 45x45 mm",
+   "unit": "m3",
+   "type": "material",
+   "price": 440.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0011",
+   "name": "Kalibruota mediena 45x95 mm C24",
+   "unit": "m3",
+   "type": "material",
+   "price": 505.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0012",
+   "name": "Kalibruota mediena 45x145 mm C24",
+   "unit": "m3",
+   "type": "material",
+   "price": 505.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0013",
+   "name": "Kalibruota mediena 45x195 mm C24",
+   "unit": "m3",
+   "type": "material",
+   "price": 505.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0014",
+   "name": "Kalibruota mediena 45x240 mm C24",
+   "unit": "m3",
+   "type": "material",
+   "price": 530.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0015",
+   "name": "Medsraigčiai ESSVE ESSDRIVE 6x120 FZB C1",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.11,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0016",
+   "name": "Medsraigčiai ESSVE ESSDRIVE 6x90 FZB C1",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.08,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0017",
+   "name": "Vinys 34° 3,1X90 M-FUSION C4",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.03,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0018",
+   "name": "Virvė",
+   "unit": "m",
+   "type": "material",
+   "price": 0.4,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0019",
+   "name": "Vata Paroc ultra 35 50 mm",
+   "unit": "m3",
+   "type": "material",
+   "price": 32.5,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0020",
+   "name": "Vata Paroc ultra 35 100 mm",
+   "unit": "m3",
+   "type": "material",
+   "price": 32.5,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0021",
+   "name": "PE plėvelė 200 mk",
+   "unit": "m2",
+   "type": "material",
+   "price": 0.36,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0022",
+   "name": "Dvipusė Stico lipni juosta 38x50000 mm",
+   "unit": "m",
+   "type": "material",
+   "price": 0.35,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0023",
+   "name": "Siga Rissan industrial 60x50000 mm",
+   "unit": "m",
+   "type": "material",
+   "price": 0.6,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0024",
+   "name": "Kalibruota mediena 45x45x6000 mm",
+   "unit": "m3",
+   "type": "material",
+   "price": 440.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0025",
+   "name": "Kalibruota mediena 45x95x6000 mm",
+   "unit": "m3",
+   "type": "material",
+   "price": 505.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0026",
+   "name": "Reguliuojami sraigtai KARM-L 6X110 FZB",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.1,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0027",
+   "name": "Dailylentė SD5 18x135x6000 mm",
+   "unit": "m2",
+   "type": "material",
+   "price": 14.64,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0028",
+   "name": "Dažai (juodi - RAL 9005)",
+   "unit": "ltr",
+   "type": "material",
+   "price": 10.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0029",
+   "name": "Sraigtai terasoms 4,2X55 nerūdijantis plienas A4",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.061637,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0030",
+   "name": "Dažyta dailylentė SD7 18x95x6000 mm",
+   "unit": "m2",
+   "type": "material",
+   "price": 13.94,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0031",
+   "name": "Kalibruota mediena 45x45 mm impr. 1 a. išorės sienoms",
+   "unit": "m3",
+   "type": "material",
+   "price": 483.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0032",
+   "name": "Kalibruota mediena 45x145 mm impr. 1 a. išorės sienoms",
+   "unit": "m3",
+   "type": "material",
+   "price": 548.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0033",
+   "name": "Kalibruota mediena 45x95 mm impr. 1 a. vidaus sienoms",
+   "unit": "m3",
+   "type": "material",
+   "price": 548.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0034",
+   "name": "Kalibruota mediena 45x145 mm impr. 1 a. vidaus sienoms",
+   "unit": "m3",
+   "type": "material",
+   "price": 548.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0035",
+   "name": "Kalibruota mediena 45x95 mm neimpr. 2 a. vidaus sienoms",
+   "unit": "m3",
+   "type": "material",
+   "price": 505.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0036",
+   "name": "Kalibruota mediena 45x195 mm impr. 2 a. vidaus sienoms",
+   "unit": "m3",
+   "type": "material",
+   "price": 505.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0037",
+   "name": "Kalibruota mediena 20x95 mm",
+   "unit": "m3",
+   "type": "material",
+   "price": 460.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0038",
+   "name": "Plėvelė 150 mk (juoda)",
+   "unit": "m2",
+   "type": "material",
+   "price": 0.3,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0039",
+   "name": "Plokštė Lignum Board P5 TG4 22x600x2400 mm",
+   "unit": "m2",
+   "type": "material",
+   "price": 8.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0040",
+   "name": "Sraigtai OSB plokštėms 4,2x57 FZB",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.03,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0041",
+   "name": "Klijai drožlių plokštėms ECO 300ML",
+   "unit": "tub.",
+   "type": "material",
+   "price": 2.9,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0042",
+   "name": "Tarpinė guminė 2/3 mm",
+   "unit": "m",
+   "type": "material",
+   "price": 1.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0043",
+   "name": "Medsraigčiai ESSVE ESSDRIVE 6x100 FZB C1",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.07,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0044",
+   "name": "Sraigtai WAF 8,0X420 TX40 FZB plačia galva Ottensten",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.9,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0045",
+   "name": "Atrama sijoms pusinė (kairinis) 30x140x2 mm",
+   "unit": "vnt",
+   "type": "material",
+   "price": 1.65,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0046",
+   "name": "Atrama sijoms pusinė (dešininis) 30x140x2 mm",
+   "unit": "vnt",
+   "type": "material",
+   "price": 1.65,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0047",
+   "name": "Atrama sijoms 45x168 mm",
+   "unit": "vnt",
+   "type": "material",
+   "price": 1.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0048",
+   "name": "Atrama sijoms 90x175 mm",
+   "unit": "vnt",
+   "type": "material",
+   "price": 1.47,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0049",
+   "name": "Atrama sijoms 140x165 mm",
+   "unit": "vnt",
+   "type": "material",
+   "price": 2.93,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0050",
+   "name": "Ankeriniai sraigtai 5,0X40 CorrSeal C4",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.024995,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0051",
+   "name": "Medsraigčiai ESSVE ESSDRIVE 5x120 FZB C4",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.12,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0052",
+   "name": "Izoliacinė juosta 3 mm x 45 mm (30 m)",
+   "unit": "m",
+   "type": "material",
+   "price": 0.3,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0053",
+   "name": "Tyvek PRO + tape",
+   "unit": "m2",
+   "type": "material",
+   "price": 2.1,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0054",
+   "name": "Kalibruota mediena 20x145x5000 mm",
+   "unit": "m3",
+   "type": "material",
+   "price": 460.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0055",
+   "name": "Medsraigčiai ESSVE ESSDRIVE 5x60 CorrSeal C4",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.05,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0056",
+   "name": "Kalibruota mediena gegnėms 45x145 mm C24",
+   "unit": "m3",
+   "type": "material",
+   "price": 505.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0057",
+   "name": "Kalibruota mediena gegnėms 45x195 mm C24",
+   "unit": "m3",
+   "type": "material",
+   "price": 505.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0058",
+   "name": "Kalibruota mediena gegnėms 45x240 mm C24",
+   "unit": "m3",
+   "type": "material",
+   "price": 530.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0059",
+   "name": "Kalibruota mediena stygoms 45x240x3600 mm C24",
+   "unit": "m3",
+   "type": "material",
+   "price": 530.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0060",
+   "name": "Kampas 90x90x65x2,5 sustiprintas",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.65,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0061",
+   "name": "Medsraigčiai Essdrive 5,0X80 FZB C1",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.06,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0062",
+   "name": "Medsraigčiai Essdrive 5,0X90 FZB C1",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.07,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0063",
+   "name": "Terasinė lenta Termo-D pušies 26x140 mm AB įvairūs ilgiai",
+   "unit": "m2",
+   "type": "material",
+   "price": 29.5,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0064",
+   "name": "Nerūdijančio plieno medsraigčiai 4.2x42",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.07,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0065",
+   "name": "Terasos tvirtinimo detalės BROfix",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.18,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0066",
+   "name": "EPDM juosta 50x25000 mm (Lemora)",
+   "unit": "m",
+   "type": "material",
+   "price": 0.35,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0067",
+   "name": "Eglė terasa, lygi, impregnuota 28x145x6000 mm",
+   "unit": "m2",
+   "type": "material",
+   "price": 18.9,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0068",
+   "name": "Sraigtas terasoms HDS 4,8X60 A4",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.09,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0069",
+   "name": "Kalibruota mediena 45x145x6000 mm impr. rudai",
+   "unit": "m3",
+   "type": "material",
+   "price": 463.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0070",
+   "name": "Sraigtai CONSTRUCTION-WAF 6,0X80 CS",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.11,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0071",
+   "name": "Medsraigčiai ESSVE ESSDRIVE 6x120 CorrSeal C4",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.14,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0072",
+   "name": "Sraigtai CONSTRUCTION-WAF 8,0X200 FZB-25",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.51,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0073",
+   "name": "Sraigtai CONSTRUCTION-WAF 8,0X60 CS",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.19,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0074",
+   "name": "Icopal Baltbit PF 160 (apatinis 10 m2)",
+   "unit": "m2",
+   "type": "material",
+   "price": 5.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0075",
+   "name": "Dažyta dailylentė SD5 18x135x6000 mm",
+   "unit": "m2",
+   "type": "material",
+   "price": 14.64,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0076",
+   "name": "Dažyta dailylentė SD7 18x145x6000 mm",
+   "unit": "m2",
+   "type": "material",
+   "price": 13.94,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0077",
+   "name": "Tinklelis",
+   "unit": "m2",
+   "type": "material",
+   "price": 1.25,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0078",
+   "name": "Kalibruota mediena 95x95 mm C24",
+   "unit": "m3",
+   "type": "material",
+   "price": 515.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0079",
+   "name": "Medsraigčiai ESSVE ESSDRIVE 6x140 FZB C4",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.12,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0080",
+   "name": "Medsraigčiai ESSVE ESSDRIVE 6x90 FZB C4",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.1,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0081",
+   "name": "Gaminiai (langai, durys)",
+   "unit": "m2",
+   "type": "material",
+   "price": 292.91,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0082",
+   "name": "Palanginis profilis 45x95mm",
+   "unit": "m",
+   "type": "material",
+   "price": 1.45,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0083",
+   "name": "Medsraigčiai SK Eurotec 6x160 FZB C1",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.19,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0084",
+   "name": "Siga Fentrim IS 2",
+   "unit": "m",
+   "type": "material",
+   "price": 1.36,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0085",
+   "name": "Siga Fentrim IS 20",
+   "unit": "m",
+   "type": "material",
+   "price": 1.29,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0086",
+   "name": "Elastingos putos Flexifoam 750 ml",
+   "unit": "vnt.",
+   "type": "material",
+   "price": 5.62,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0087",
+   "name": "Medsraigčiai Cutters 5x50 FZB C1",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.03,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0088",
+   "name": "Distancinės kaladėlės",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.05,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0089",
+   "name": "Stogo langas Velux GGL3066 550x980 PREMIUM PLUS Uw=1.0, atveriamas per vidurį",
+   "unit": "vnt",
+   "type": "material",
+   "price": 475.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0090",
+   "name": "Tarpinės komplektas Velux EDW 2000 BDX 550x980 banguotai dangai",
+   "unit": "vnt",
+   "type": "material",
+   "price": 133.13,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0091",
+   "name": "Velux garų izoliacija BBX 0000 550x980",
+   "unit": "vnt",
+   "type": "material",
+   "price": 28.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0092",
+   "name": "Klijuota mediena GL24 (kolonos 200x200x2400 mm 10 vnt.)",
+   "unit": "m3",
+   "type": "material",
+   "price": 760.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0093",
+   "name": "Klijuota mediena GL24 (kolonos 200x200x3600 mm 1 vnt.)",
+   "unit": "m3",
+   "type": "material",
+   "price": 760.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0094",
+   "name": "Klijuota mediena GL24 (kolonos 200x200x6000 mm 1 vnt.)",
+   "unit": "m3",
+   "type": "material",
+   "price": 760.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0095",
+   "name": "Klijuota mediena GL24 (sija 100x240x8500 mm 2 vnt.)",
+   "unit": "m3",
+   "type": "material",
+   "price": 760.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0096",
+   "name": "Klijuota mediena GL24 (sija 140x240x6600 mm 1 vnt.)",
+   "unit": "m3",
+   "type": "material",
+   "price": 760.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0097",
+   "name": "Klijuota mediena GL24 (sija 200x200x11100 mm 2 vnt.)",
+   "unit": "m3",
+   "type": "material",
+   "price": 760.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0098",
+   "name": "Klijuota mediena GL24 (sija 195x400x9400 mm 1 vnt.)",
+   "unit": "m3",
+   "type": "material",
+   "price": 760.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0099",
+   "name": "Klijuota mediena GL24 (sija 200x200x4700 mm 2 vnt.)",
+   "unit": "m3",
+   "type": "material",
+   "price": 760.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0100",
+   "name": "Klijuota mediena GL24 (sija 140x280x6200 mm 1 vnt.)",
+   "unit": "m3",
+   "type": "material",
+   "price": 760.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0101",
+   "name": "Klijuota mediena GL24 (sija 200x200x5200 mm 1 vnt.)",
+   "unit": "m3",
+   "type": "material",
+   "price": 760.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0102",
+   "name": "Klijuota mediena GL24 (sija 200x280x8250 mm 1 vnt.)",
+   "unit": "m3",
+   "type": "material",
+   "price": 760.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0103",
+   "name": "Skardos lankstinukas A (viršutinė palangėlė)",
+   "unit": "m",
+   "type": "material",
+   "price": 7.63,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0104",
+   "name": "Skardos lankstinukas B (viršutinė palangėlė)",
+   "unit": "m",
+   "type": "material",
+   "price": 4.01,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0105",
+   "name": "Montavimo sraigtai Li 4,2x25",
+   "unit": "vnt.",
+   "type": "material",
+   "price": 0.015,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0106",
+   "name": "Skardos lankstinukas (apatinė palangė langams)",
+   "unit": "m",
+   "type": "material",
+   "price": 9.23,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0107",
+   "name": "Skardos lankstinukas (apatinė palangėlė durims)",
+   "unit": "m",
+   "type": "material",
+   "price": 3.75,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0108",
+   "name": "Lygios skardos laštakis 100x140 mm",
+   "unit": "m",
+   "type": "material",
+   "price": 6.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0109",
+   "name": "Sraigtai į metalą 4,8x20 mm (250 vnt.)",
+   "unit": "pak.",
+   "type": "material",
+   "price": 10.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0110",
+   "name": "Ankeris ESSVE Golden M12/45/156 (cc 0,6 - 0,8 m)",
+   "unit": "vnt.",
+   "type": "material",
+   "price": 1.319429,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0111",
+   "name": "Juosta užtvara XSS002 kapiliar. drėgm. 200x40000 BA/1",
+   "unit": "m",
+   "type": "material",
+   "price": 0.785714,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0112",
+   "name": "Juosta užtvara XSS002 kapiliar. drėgm. 120x40000 BA/1",
+   "unit": "m",
+   "type": "material",
+   "price": 0.59,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0113",
+   "name": "Smulkios montavimo medžiagos",
+   "unit": "kompl.",
+   "type": "material",
+   "price": 2.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0114",
+   "name": "Juosta sand. XSI 001 22 120x15000 BA/5",
+   "unit": "m",
+   "type": "material",
+   "price": 0.66,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0115",
+   "name": "Klijai medienai Stenlim PRO PU D4 750 ml",
+   "unit": "tub.",
+   "type": "material",
+   "price": 8.24,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0116",
+   "name": "Sraigtai CONSTRUCTION-WAF 6,0X90 FZB-100",
+   "unit": "vnt.",
+   "type": "material",
+   "price": 0.09,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0117",
+   "name": "Sraigtai CONSTRUCTION-WAF 8,0X160 FZB-50",
+   "unit": "vnt.",
+   "type": "material",
+   "price": 0.29,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0118",
+   "name": "Sraigtai CONSTRUCTION-WAF 6,0X100 FZB-100",
+   "unit": "vnt.",
+   "type": "material",
+   "price": 0.09,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0119",
+   "name": "Sraigtai CONSTRUCTION-WAF 6,0X120 FZB-50",
+   "unit": "vnt.",
+   "type": "material",
+   "price": 0.14,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0120",
+   "name": "Sraigtai CONSTRUCTION-WAF 8,0X200 FZB-25",
+   "unit": "vnt.",
+   "type": "material",
+   "price": 0.42,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0121",
+   "name": "Sraigtai CONSTRUCTION-WAF 8,0X240 FZB-25",
+   "unit": "vnt.",
+   "type": "material",
+   "price": 0.48,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0122",
+   "name": "Sraigtai CONSTRUCTION-WAF 8,0X320 FZB-25",
+   "unit": "vnt.",
+   "type": "material",
+   "price": 0.7,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0123",
+   "name": "Sraigtai CONSTRUCTION-WAF 8,0X400 FZB-25",
+   "unit": "vnt.",
+   "type": "material",
+   "price": 0.9,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0124",
+   "name": "Sraigtai CONSTRUCTION-WAF 6,0X140 FZB-50",
+   "unit": "vnt.",
+   "type": "material",
+   "price": 0.16,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0125",
+   "name": "Siga Rissan 100 (100mm x 25m)",
+   "unit": "m",
+   "type": "material",
+   "price": 1.44,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0126",
+   "name": "Siga Wigluv 100 (100mm x 25m)",
+   "unit": "m",
+   "type": "material",
+   "price": 1.4,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0127",
+   "name": "Siga gruntas Docskin 1 kg",
+   "unit": "ind.",
+   "type": "material",
+   "price": 11.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0128",
+   "name": "Dvipusė lipni juosta Siga twinet 20x50000 mm",
+   "unit": "m",
+   "type": "material",
+   "price": 0.49,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "M-0129",
+   "name": "Fermacell GPP 2600x1200x12,5 mm plokštė",
+   "unit": "m2",
+   "type": "material",
+   "price": 9.5,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0130",
+   "name": "Fermacell GPP sraigtai 3,9x30 mm",
+   "unit": "vnt.",
+   "type": "material",
+   "price": 0.03,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0131",
+   "name": "Fermacell klijai (310 ml)",
+   "unit": "vnt.",
+   "type": "material",
+   "price": 14.36,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0132",
+   "name": "Knauf RED 3000x1200x12,5 mm plokštė",
+   "unit": "m2",
+   "type": "material",
+   "price": 3.45,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0133",
+   "name": "GKP sraigtai juostoje 3,9X30 FZB",
+   "unit": "vnt.",
+   "type": "material",
+   "price": 0.02,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0134",
+   "name": "Glaistas Knauf UNIFLOTT 25 kg",
+   "unit": "vnt.",
+   "type": "material",
+   "price": 33.0,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0135",
+   "name": "Stacbond aliuminio kompozitinė plokštė 4x1500x5000 mm",
+   "unit": "m2",
+   "type": "material",
+   "price": 42.0,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0136",
+   "name": "Juosta EPDM PRO 75 50 mm x 25 m (Lemora)",
+   "unit": "m",
+   "type": "material",
+   "price": 0.32,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0137",
+   "name": "Juosta EPDM PRO 75 100 mm x 25 m (Lemora)",
+   "unit": "m",
+   "type": "material",
+   "price": 0.62,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0138",
+   "name": "Lipni juosta Siga Wigluv black 60 mm",
+   "unit": "m",
+   "type": "material",
+   "price": 1.1,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0139",
+   "name": "Varžteliai (komplektas)",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.78,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0140",
+   "name": "Thermo dailylentė MAGDĖ 19x117 mm AB (už dengiamą plotą)",
+   "unit": "m2",
+   "type": "material",
+   "price": 24.0,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0141",
+   "name": "Kalibruota mediena 28x95x6000 mm",
+   "unit": "m3",
+   "type": "material",
+   "price": 465.0,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0142",
+   "name": "Sraigtai CONSTRUCTION-WAF 8,0X320 FZB-25",
+   "unit": "vnt",
+   "type": "material",
+   "price": 0.7,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0143",
+   "name": "Kampas 90x190x65x2,5 sustiprintas",
+   "unit": "vnt",
+   "type": "material",
+   "price": 1.07,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0144",
+   "name": "Montavimo perforuota juosta 40x2 mm",
+   "unit": "m",
+   "type": "material",
+   "price": 4.3,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0145",
+   "name": "Skardinė stogo danga sinusinis profilis FB 18 0,5 mm juoda",
+   "unit": "m2",
+   "type": "material",
+   "price": 10.8,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0146",
+   "name": "Tarpinė universali 1000 mm",
+   "unit": "vnt.",
+   "type": "material",
+   "price": 0.42,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0147",
+   "name": "Kraigo juosta 5 m",
+   "unit": "rul.",
+   "type": "material",
+   "price": 9.23,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0148",
+   "name": "Sraigtai į medį 4,8x20 (250 vnt.)",
+   "unit": "pak.",
+   "type": "material",
+   "price": 10.17,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0149",
+   "name": "Sraigtai į medį 4,8x28 (250 vnt.)",
+   "unit": "pak.",
+   "type": "material",
+   "price": 9.9,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0150",
+   "name": "Dažai matiniai 24 ml",
+   "unit": "vnt.",
+   "type": "material",
+   "price": 6.72,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0151",
+   "name": "Danga bituminė savalipė Elastoflex SA P 1x10 viršutinė",
+   "unit": "m2",
+   "type": "material",
+   "price": 6.69,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0152",
+   "name": "Danga bituminė Mida Self PV S2,0 s apatinė",
+   "unit": "m2",
+   "type": "material",
+   "price": 2.75,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0153",
+   "name": "Gruntas bituminis Icopal Siplast Primer 25 l",
+   "unit": "vnt.",
+   "type": "material",
+   "price": 86.28,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0154",
+   "name": "Dvit. sija HEB 220 S355J2+AR",
+   "unit": "m",
+   "type": "material",
+   "price": 70.0,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0155",
+   "name": "Pjovimas BOMAR staklėmis",
+   "unit": "vnt.",
+   "type": "material",
+   "price": 20.15,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0156",
+   "name": "Dvit. sija HEA 200 S355J2+AR",
+   "unit": "m",
+   "type": "material",
+   "price": 44.0,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "M-0157",
+   "name": "Dvit. sija HEA 140 S355J2+AR",
+   "unit": "m",
+   "type": "material",
+   "price": 32.0,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "T-0001",
+   "name": "Įrankiai ir įrengimai 1",
+   "unit": "vnt.",
+   "type": "machinery",
+   "price": 0.2,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "T-0002",
+   "name": "Įrankiai ir įrengimai 2",
+   "unit": "vnt.",
+   "type": "machinery",
+   "price": 0.2,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "T-0003",
+   "name": "Įrankiai ir įrengimai",
+   "unit": "vnt.",
+   "type": "machinery",
+   "price": 0.4,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "T-0004",
+   "name": "Transporto paslaugos",
+   "unit": "vnt.",
+   "type": "machinery",
+   "price": 200.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "T-0005",
+   "name": "Įrankiai (teptukai ir t.t.)",
+   "unit": "vnt.",
+   "type": "machinery",
+   "price": 0.478877,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "T-0006",
+   "name": "Transportavimas",
+   "unit": "reisas",
+   "type": "machinery",
+   "price": 304.81,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "T-0007",
+   "name": "Medienos pristatymas į įmonę",
+   "unit": "vnt.",
+   "type": "machinery",
+   "price": 80.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "T-0008",
+   "name": "Mechanizmai",
+   "unit": "m2",
+   "type": "machinery",
+   "price": 0.999909,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "T-0009",
+   "name": "Krautuvas/telferis",
+   "unit": "val.",
+   "type": "machinery",
+   "price": 40.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "T-0010",
+   "name": "Technikos transportavimas (abi kryptys)",
+   "unit": "km",
+   "type": "machinery",
+   "price": 1.8,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "T-0011",
+   "name": "Montavimo technika",
+   "unit": "val.",
+   "type": "machinery",
+   "price": 45.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "T-0012",
+   "name": "Samdomas transportas",
+   "unit": "reisas",
+   "type": "machinery",
+   "price": 400.0,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "T-0013",
+   "name": "Darbuotojų transportavimas (abi kryptys)",
+   "unit": "km",
+   "type": "machinery",
+   "price": 0.6,
+   "priceDate": "2026-10",
+   "source": "estimate_2026-10"
+  },
+  {
+   "code": "T-0014",
+   "name": "Pristatymas",
+   "unit": "vnt.",
+   "type": "machinery",
+   "price": 1.0,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "T-0015",
+   "name": "Įrankiai ir įrengimai (deimantiniai diskai, grąžtai)",
+   "unit": "vnt.",
+   "type": "machinery",
+   "price": 492.68,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "T-0016",
+   "name": "Transportavimas",
+   "unit": "vnt.",
+   "type": "machinery",
+   "price": 220.0,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  },
+  {
+   "code": "T-0017",
+   "name": "Pakuotė",
+   "unit": "vnt.",
+   "type": "machinery",
+   "price": 70.0,
+   "priceDate": "2026-05",
+   "source": "estimate_2026-05"
+  }
+ ]
+}

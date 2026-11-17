@@ -1,0 +1,205 @@
+﻿code,name,unit,type,price,priceDate,source
+D-0001,Karkaso surinkimas,žm.val.,labour,25.0000,2026-10,estimate_2026-10
+D-0002,Barjero tvirtinimas,žm.val.,labour,25.0000,2026-10,estimate_2026-10
+D-0003,Plėvelės sudėjimas 1 sl.,žm.val.,labour,25.0000,2026-10,estimate_2026-10
+D-0004,Plokštės tvirtinimas 1 sl.,žm.val.,labour,25.0000,2026-10,estimate_2026-10
+D-0005,Vatos 3 sl. sudėjimas,žm.val.,labour,25.0000,2026-10,estimate_2026-10
+D-0006,Apdailos tvirtinimas 1 sl.,žm.val.,labour,35.0000,2026-10,estimate_2026-10
+D-0007,Vatos 1 sl. sudėjimas,žm.val.,labour,25.0000,2026-10,estimate_2026-10
+D-0008,Vatos 2 sl. sudėjimas,žm.val.,labour,25.0000,2026-10,estimate_2026-10
+D-0009,Plėvelės sudėjimas 2 sl.,žm.val.,labour,25.0000,2026-10,estimate_2026-10
+D-0010,Plėvelės sudėjimas 1 sl.,žm.val.,labour,35.0000,2026-10,estimate_2026-10
+D-0011,Karkaso surinkimas,žm.val.,labour,35.0000,2026-10,estimate_2026-10
+D-0012,Montavimas (objekte),žm.val.,labour,35.0000,2026-10,estimate_2026-10
+D-0013,Apdailos tvirtinimas 1 sl. (statybvietėje),žm.val.,labour,35.0000,2026-10,estimate_2026-10
+D-0014,Montavimo darbas (statybvietėje),žm.val.,labour,35.0000,2026-10,estimate_2026-10
+D-0015,Tinklelio tvirtinimas,žm.val.,labour,35.0000,2026-10,estimate_2026-10
+D-0016,Surinkimas,žm.val.,labour,25.0000,2026-10,estimate_2026-10
+D-0017,Dažymo darbai rankomis,žm.val.,labour,25.0000,2026-10,estimate_2026-10
+D-0018,Apdailos tvirtinimas 1 sl. (objekte),žm.val.,labour,35.0000,2026-10,estimate_2026-10
+D-0019,Langų montavimas,žm.val.,labour,25.0000,2026-10,estimate_2026-10
+D-0020,"Montavimas (objekte, stoglangiai)",žm.val.,labour,40.0000,2026-10,estimate_2026-10
+D-0021,Medienos apdirbimas,m3,labour,65.0000,2026-10,estimate_2026-10
+D-0022,Ankeravimo darbas (objekte),žm.val.,labour,35.0000,2026-10,estimate_2026-10
+D-0023,Montavimo darbas (objekte),žm.val.,labour,35.0000,2026-10,estimate_2026-10
+D-0024,Krovos darbai,žm.val.,labour,25.0000,2026-10,estimate_2026-10
+D-0025,Namo brėžinių paruošimas,m2,labour,10.0000,2026-10,estimate_2026-10
+D-0026,Stoginių brėžinių paruošimas,m2,labour,5.0000,2026-10,estimate_2026-10
+D-0027,Plokštės tvirtinimas 1 sl. (statybvietėje),žm.val.,labour,35.0000,2026-05,estimate_2026-05
+D-0028,Plokštės tvirtinimas 1 sl. + siūlių aptaisymas (statybvietėje),žm.val.,labour,35.0000,2026-05,estimate_2026-05
+D-0029,Bituminės dangos tvirtinimas (statybvietėje),žm.val.,labour,35.0000,2026-05,estimate_2026-05
+D-0030,Statikos projektas,vnt.,labour,3000.0000,2026-05,estimate_2026-05
+M-0001,Kalibruota mediena 28x45x6000 mm,m3,material,485.0000,2026-10,estimate_2026-10
+M-0002,Medsraigčiai ESSVE ESSDRIVE 5x100 CorrSeal C4,vnt,material,0.1000,2026-10,estimate_2026-10
+M-0003,Apsauginis profilis perforuotas,m,material,3.1000,2026-10,estimate_2026-10
+M-0004,Kalibruota mediena 20x45 mm,m3,material,440.0000,2026-10,estimate_2026-10
+M-0005,"Išorinių GKP sraigtai ESSVE GU 3,9X40 C4",vnt.,material,0.0220,2026-10,estimate_2026-10
+M-0006,Tyvek Soft,m2,material,1.1500,2026-10,estimate_2026-10
+M-0007,Lipni juosta Siga Wigluv 60 mm,m,material,0.8000,2026-10,estimate_2026-10
+M-0008,Kabė,vnt,material,0.0010,2026-10,estimate_2026-10
+M-0009,"Priešvėjinis gipsas GTS 9, 9,5x1200x3000 mm",m2,material,3.2500,2026-10,estimate_2026-10
+M-0010,Kalibruota mediena 45x45 mm,m3,material,440.0000,2026-10,estimate_2026-10
+M-0011,Kalibruota mediena 45x95 mm C24,m3,material,505.0000,2026-10,estimate_2026-10
+M-0012,Kalibruota mediena 45x145 mm C24,m3,material,505.0000,2026-10,estimate_2026-10
+M-0013,Kalibruota mediena 45x195 mm C24,m3,material,505.0000,2026-10,estimate_2026-10
+M-0014,Kalibruota mediena 45x240 mm C24,m3,material,530.0000,2026-10,estimate_2026-10
+M-0015,Medsraigčiai ESSVE ESSDRIVE 6x120 FZB C1,vnt,material,0.1100,2026-10,estimate_2026-10
+M-0016,Medsraigčiai ESSVE ESSDRIVE 6x90 FZB C1,vnt,material,0.0800,2026-10,estimate_2026-10
+M-0017,"Vinys 34° 3,1X90 M-FUSION C4",vnt,material,0.0300,2026-10,estimate_2026-10
+M-0018,Virvė,m,material,0.4000,2026-10,estimate_2026-10
+M-0019,Vata Paroc ultra 35 50 mm,m3,material,32.5000,2026-10,estimate_2026-10
+M-0020,Vata Paroc ultra 35 100 mm,m3,material,32.5000,2026-10,estimate_2026-10
+M-0021,PE plėvelė 200 mk,m2,material,0.3600,2026-10,estimate_2026-10
+M-0022,Dvipusė Stico lipni juosta 38x50000 mm,m,material,0.3500,2026-10,estimate_2026-10
+M-0023,Siga Rissan industrial 60x50000 mm,m,material,0.6000,2026-10,estimate_2026-10
+M-0024,Kalibruota mediena 45x45x6000 mm,m3,material,440.0000,2026-10,estimate_2026-10
+M-0025,Kalibruota mediena 45x95x6000 mm,m3,material,505.0000,2026-10,estimate_2026-10
+M-0026,Reguliuojami sraigtai KARM-L 6X110 FZB,vnt,material,0.1000,2026-10,estimate_2026-10
+M-0027,Dailylentė SD5 18x135x6000 mm,m2,material,14.6400,2026-10,estimate_2026-10
+M-0028,Dažai (juodi - RAL 9005),ltr,material,10.0000,2026-10,estimate_2026-10
+M-0029,"Sraigtai terasoms 4,2X55 nerūdijantis plienas A4",vnt,material,0.0616,2026-10,estimate_2026-10
+M-0030,Dažyta dailylentė SD7 18x95x6000 mm,m2,material,13.9400,2026-10,estimate_2026-10
+M-0031,Kalibruota mediena 45x45 mm impr. 1 a. išorės sienoms,m3,material,483.0000,2026-10,estimate_2026-10
+M-0032,Kalibruota mediena 45x145 mm impr. 1 a. išorės sienoms,m3,material,548.0000,2026-10,estimate_2026-10
+M-0033,Kalibruota mediena 45x95 mm impr. 1 a. vidaus sienoms,m3,material,548.0000,2026-10,estimate_2026-10
+M-0034,Kalibruota mediena 45x145 mm impr. 1 a. vidaus sienoms,m3,material,548.0000,2026-10,estimate_2026-10
+M-0035,Kalibruota mediena 45x95 mm neimpr. 2 a. vidaus sienoms,m3,material,505.0000,2026-10,estimate_2026-10
+M-0036,Kalibruota mediena 45x195 mm impr. 2 a. vidaus sienoms,m3,material,505.0000,2026-10,estimate_2026-10
+M-0037,Kalibruota mediena 20x95 mm,m3,material,460.0000,2026-10,estimate_2026-10
+M-0038,Plėvelė 150 mk (juoda),m2,material,0.3000,2026-10,estimate_2026-10
+M-0039,Plokštė Lignum Board P5 TG4 22x600x2400 mm,m2,material,8.0000,2026-10,estimate_2026-10
+M-0040,"Sraigtai OSB plokštėms 4,2x57 FZB",vnt,material,0.0300,2026-10,estimate_2026-10
+M-0041,Klijai drožlių plokštėms ECO 300ML,tub.,material,2.9000,2026-10,estimate_2026-10
+M-0042,Tarpinė guminė 2/3 mm,m,material,1.0000,2026-10,estimate_2026-10
+M-0043,Medsraigčiai ESSVE ESSDRIVE 6x100 FZB C1,vnt,material,0.0700,2026-10,estimate_2026-10
+M-0044,"Sraigtai WAF 8,0X420 TX40 FZB plačia galva Ottensten",vnt,material,0.9000,2026-10,estimate_2026-10
+M-0045,Atrama sijoms pusinė (kairinis) 30x140x2 mm,vnt,material,1.6500,2026-10,estimate_2026-10
+M-0046,Atrama sijoms pusinė (dešininis) 30x140x2 mm,vnt,material,1.6500,2026-10,estimate_2026-10
+M-0047,Atrama sijoms 45x168 mm,vnt,material,1.0000,2026-10,estimate_2026-10
+M-0048,Atrama sijoms 90x175 mm,vnt,material,1.4700,2026-10,estimate_2026-10
+M-0049,Atrama sijoms 140x165 mm,vnt,material,2.9300,2026-10,estimate_2026-10
+M-0050,"Ankeriniai sraigtai 5,0X40 CorrSeal C4",vnt,material,0.0250,2026-10,estimate_2026-10
+M-0051,Medsraigčiai ESSVE ESSDRIVE 5x120 FZB C4,vnt,material,0.1200,2026-10,estimate_2026-10
+M-0052,Izoliacinė juosta 3 mm x 45 mm (30 m),m,material,0.3000,2026-10,estimate_2026-10
+M-0053,Tyvek PRO + tape,m2,material,2.1000,2026-10,estimate_2026-10
+M-0054,Kalibruota mediena 20x145x5000 mm,m3,material,460.0000,2026-10,estimate_2026-10
+M-0055,Medsraigčiai ESSVE ESSDRIVE 5x60 CorrSeal C4,vnt,material,0.0500,2026-10,estimate_2026-10
+M-0056,Kalibruota mediena gegnėms 45x145 mm C24,m3,material,505.0000,2026-10,estimate_2026-10
+M-0057,Kalibruota mediena gegnėms 45x195 mm C24,m3,material,505.0000,2026-10,estimate_2026-10
+M-0058,Kalibruota mediena gegnėms 45x240 mm C24,m3,material,530.0000,2026-10,estimate_2026-10
+M-0059,Kalibruota mediena stygoms 45x240x3600 mm C24,m3,material,530.0000,2026-10,estimate_2026-10
+M-0060,"Kampas 90x90x65x2,5 sustiprintas",vnt,material,0.6500,2026-10,estimate_2026-10
+M-0061,"Medsraigčiai Essdrive 5,0X80 FZB C1",vnt,material,0.0600,2026-10,estimate_2026-10
+M-0062,"Medsraigčiai Essdrive 5,0X90 FZB C1",vnt,material,0.0700,2026-10,estimate_2026-10
+M-0063,Terasinė lenta Termo-D pušies 26x140 mm AB įvairūs ilgiai,m2,material,29.5000,2026-10,estimate_2026-10
+M-0064,Nerūdijančio plieno medsraigčiai 4.2x42,vnt,material,0.0700,2026-10,estimate_2026-10
+M-0065,Terasos tvirtinimo detalės BROfix,vnt,material,0.1800,2026-10,estimate_2026-10
+M-0066,EPDM juosta 50x25000 mm (Lemora),m,material,0.3500,2026-10,estimate_2026-10
+M-0067,"Eglė terasa, lygi, impregnuota 28x145x6000 mm",m2,material,18.9000,2026-10,estimate_2026-10
+M-0068,"Sraigtas terasoms HDS 4,8X60 A4",vnt,material,0.0900,2026-10,estimate_2026-10
+M-0069,Kalibruota mediena 45x145x6000 mm impr. rudai,m3,material,463.0000,2026-10,estimate_2026-10
+M-0070,"Sraigtai CONSTRUCTION-WAF 6,0X80 CS",vnt,material,0.1100,2026-10,estimate_2026-10
+M-0071,Medsraigčiai ESSVE ESSDRIVE 6x120 CorrSeal C4,vnt,material,0.1400,2026-10,estimate_2026-10
+M-0072,"Sraigtai CONSTRUCTION-WAF 8,0X200 FZB-25",vnt,material,0.5100,2026-10,estimate_2026-10
+M-0073,"Sraigtai CONSTRUCTION-WAF 8,0X60 CS",vnt,material,0.1900,2026-10,estimate_2026-10
+M-0074,Icopal Baltbit PF 160 (apatinis 10 m2),m2,material,5.0000,2026-10,estimate_2026-10
+M-0075,Dažyta dailylentė SD5 18x135x6000 mm,m2,material,14.6400,2026-10,estimate_2026-10
+M-0076,Dažyta dailylentė SD7 18x145x6000 mm,m2,material,13.9400,2026-10,estimate_2026-10
+M-0077,Tinklelis,m2,material,1.2500,2026-10,estimate_2026-10
+M-0078,Kalibruota mediena 95x95 mm C24,m3,material,515.0000,2026-10,estimate_2026-10
+M-0079,Medsraigčiai ESSVE ESSDRIVE 6x140 FZB C4,vnt,material,0.1200,2026-10,estimate_2026-10
+M-0080,Medsraigčiai ESSVE ESSDRIVE 6x90 FZB C4,vnt,material,0.1000,2026-10,estimate_2026-10
+M-0081,"Gaminiai (langai, durys)",m2,material,292.9100,2026-10,estimate_2026-10
+M-0082,Palanginis profilis 45x95mm,m,material,1.4500,2026-10,estimate_2026-10
+M-0083,Medsraigčiai SK Eurotec 6x160 FZB C1,vnt,material,0.1900,2026-10,estimate_2026-10
+M-0084,Siga Fentrim IS 2,m,material,1.3600,2026-10,estimate_2026-10
+M-0085,Siga Fentrim IS 20,m,material,1.2900,2026-10,estimate_2026-10
+M-0086,Elastingos putos Flexifoam 750 ml,vnt.,material,5.6200,2026-10,estimate_2026-10
+M-0087,Medsraigčiai Cutters 5x50 FZB C1,vnt,material,0.0300,2026-10,estimate_2026-10
+M-0088,Distancinės kaladėlės,vnt,material,0.0500,2026-10,estimate_2026-10
+M-0089,"Stogo langas Velux GGL3066 550x980 PREMIUM PLUS Uw=1.0, atveriamas per vidurį",vnt,material,475.0000,2026-10,estimate_2026-10
+M-0090,Tarpinės komplektas Velux EDW 2000 BDX 550x980 banguotai dangai,vnt,material,133.1300,2026-10,estimate_2026-10
+M-0091,Velux garų izoliacija BBX 0000 550x980,vnt,material,28.0000,2026-10,estimate_2026-10
+M-0092,Klijuota mediena GL24 (kolonos 200x200x2400 mm 10 vnt.),m3,material,760.0000,2026-10,estimate_2026-10
+M-0093,Klijuota mediena GL24 (kolonos 200x200x3600 mm 1 vnt.),m3,material,760.0000,2026-10,estimate_2026-10
+M-0094,Klijuota mediena GL24 (kolonos 200x200x6000 mm 1 vnt.),m3,material,760.0000,2026-10,estimate_2026-10
+M-0095,Klijuota mediena GL24 (sija 100x240x8500 mm 2 vnt.),m3,material,760.0000,2026-10,estimate_2026-10
+M-0096,Klijuota mediena GL24 (sija 140x240x6600 mm 1 vnt.),m3,material,760.0000,2026-10,estimate_2026-10
+M-0097,Klijuota mediena GL24 (sija 200x200x11100 mm 2 vnt.),m3,material,760.0000,2026-10,estimate_2026-10
+M-0098,Klijuota mediena GL24 (sija 195x400x9400 mm 1 vnt.),m3,material,760.0000,2026-10,estimate_2026-10
+M-0099,Klijuota mediena GL24 (sija 200x200x4700 mm 2 vnt.),m3,material,760.0000,2026-10,estimate_2026-10
+M-0100,Klijuota mediena GL24 (sija 140x280x6200 mm 1 vnt.),m3,material,760.0000,2026-10,estimate_2026-10
+M-0101,Klijuota mediena GL24 (sija 200x200x5200 mm 1 vnt.),m3,material,760.0000,2026-10,estimate_2026-10
+M-0102,Klijuota mediena GL24 (sija 200x280x8250 mm 1 vnt.),m3,material,760.0000,2026-10,estimate_2026-10
+M-0103,Skardos lankstinukas A (viršutinė palangėlė),m,material,7.6300,2026-10,estimate_2026-10
+M-0104,Skardos lankstinukas B (viršutinė palangėlė),m,material,4.0100,2026-10,estimate_2026-10
+M-0105,"Montavimo sraigtai Li 4,2x25",vnt.,material,0.0150,2026-10,estimate_2026-10
+M-0106,Skardos lankstinukas (apatinė palangė langams),m,material,9.2300,2026-10,estimate_2026-10
+M-0107,Skardos lankstinukas (apatinė palangėlė durims),m,material,3.7500,2026-10,estimate_2026-10
+M-0108,Lygios skardos laštakis 100x140 mm,m,material,6.0000,2026-10,estimate_2026-10
+M-0109,"Sraigtai į metalą 4,8x20 mm (250 vnt.)",pak.,material,10.0000,2026-10,estimate_2026-10
+M-0110,"Ankeris ESSVE Golden M12/45/156 (cc 0,6 - 0,8 m)",vnt.,material,1.3194,2026-10,estimate_2026-10
+M-0111,Juosta užtvara XSS002 kapiliar. drėgm. 200x40000 BA/1,m,material,0.7857,2026-10,estimate_2026-10
+M-0112,Juosta užtvara XSS002 kapiliar. drėgm. 120x40000 BA/1,m,material,0.5900,2026-10,estimate_2026-10
+M-0113,Smulkios montavimo medžiagos,kompl.,material,2.0000,2026-10,estimate_2026-10
+M-0114,Juosta sand. XSI 001 22 120x15000 BA/5,m,material,0.6600,2026-10,estimate_2026-10
+M-0115,Klijai medienai Stenlim PRO PU D4 750 ml,tub.,material,8.2400,2026-10,estimate_2026-10
+M-0116,"Sraigtai CONSTRUCTION-WAF 6,0X90 FZB-100",vnt.,material,0.0900,2026-10,estimate_2026-10
+M-0117,"Sraigtai CONSTRUCTION-WAF 8,0X160 FZB-50",vnt.,material,0.2900,2026-10,estimate_2026-10
+M-0118,"Sraigtai CONSTRUCTION-WAF 6,0X100 FZB-100",vnt.,material,0.0900,2026-10,estimate_2026-10
+M-0119,"Sraigtai CONSTRUCTION-WAF 6,0X120 FZB-50",vnt.,material,0.1400,2026-10,estimate_2026-10
+M-0120,"Sraigtai CONSTRUCTION-WAF 8,0X200 FZB-25",vnt.,material,0.4200,2026-10,estimate_2026-10
+M-0121,"Sraigtai CONSTRUCTION-WAF 8,0X240 FZB-25",vnt.,material,0.4800,2026-10,estimate_2026-10
+M-0122,"Sraigtai CONSTRUCTION-WAF 8,0X320 FZB-25",vnt.,material,0.7000,2026-10,estimate_2026-10
+M-0123,"Sraigtai CONSTRUCTION-WAF 8,0X400 FZB-25",vnt.,material,0.9000,2026-10,estimate_2026-10
+M-0124,"Sraigtai CONSTRUCTION-WAF 6,0X140 FZB-50",vnt.,material,0.1600,2026-10,estimate_2026-10
+M-0125,Siga Rissan 100 (100mm x 25m),m,material,1.4400,2026-10,estimate_2026-10
+M-0126,Siga Wigluv 100 (100mm x 25m),m,material,1.4000,2026-10,estimate_2026-10
+M-0127,Siga gruntas Docskin 1 kg,ind.,material,11.0000,2026-10,estimate_2026-10
+M-0128,Dvipusė lipni juosta Siga twinet 20x50000 mm,m,material,0.4900,2026-10,estimate_2026-10
+M-0129,"Fermacell GPP 2600x1200x12,5 mm plokštė",m2,material,9.5000,2026-05,estimate_2026-05
+M-0130,"Fermacell GPP sraigtai 3,9x30 mm",vnt.,material,0.0300,2026-05,estimate_2026-05
+M-0131,Fermacell klijai (310 ml),vnt.,material,14.3600,2026-05,estimate_2026-05
+M-0132,"Knauf RED 3000x1200x12,5 mm plokštė",m2,material,3.4500,2026-05,estimate_2026-05
+M-0133,"GKP sraigtai juostoje 3,9X30 FZB",vnt.,material,0.0200,2026-05,estimate_2026-05
+M-0134,Glaistas Knauf UNIFLOTT 25 kg,vnt.,material,33.0000,2026-05,estimate_2026-05
+M-0135,Stacbond aliuminio kompozitinė plokštė 4x1500x5000 mm,m2,material,42.0000,2026-05,estimate_2026-05
+M-0136,Juosta EPDM PRO 75 50 mm x 25 m (Lemora),m,material,0.3200,2026-05,estimate_2026-05
+M-0137,Juosta EPDM PRO 75 100 mm x 25 m (Lemora),m,material,0.6200,2026-05,estimate_2026-05
+M-0138,Lipni juosta Siga Wigluv black 60 mm,m,material,1.1000,2026-05,estimate_2026-05
+M-0139,Varžteliai (komplektas),vnt,material,0.7800,2026-05,estimate_2026-05
+M-0140,Thermo dailylentė MAGDĖ 19x117 mm AB (už dengiamą plotą),m2,material,24.0000,2026-05,estimate_2026-05
+M-0141,Kalibruota mediena 28x95x6000 mm,m3,material,465.0000,2026-05,estimate_2026-05
+M-0142,"Sraigtai CONSTRUCTION-WAF 8,0X320 FZB-25",vnt,material,0.7000,2026-05,estimate_2026-05
+M-0143,"Kampas 90x190x65x2,5 sustiprintas",vnt,material,1.0700,2026-05,estimate_2026-05
+M-0144,Montavimo perforuota juosta 40x2 mm,m,material,4.3000,2026-05,estimate_2026-05
+M-0145,"Skardinė stogo danga sinusinis profilis FB 18 0,5 mm juoda",m2,material,10.8000,2026-05,estimate_2026-05
+M-0146,Tarpinė universali 1000 mm,vnt.,material,0.4200,2026-05,estimate_2026-05
+M-0147,Kraigo juosta 5 m,rul.,material,9.2300,2026-05,estimate_2026-05
+M-0148,"Sraigtai į medį 4,8x20 (250 vnt.)",pak.,material,10.1700,2026-05,estimate_2026-05
+M-0149,"Sraigtai į medį 4,8x28 (250 vnt.)",pak.,material,9.9000,2026-05,estimate_2026-05
+M-0150,Dažai matiniai 24 ml,vnt.,material,6.7200,2026-05,estimate_2026-05
+M-0151,Danga bituminė savalipė Elastoflex SA P 1x10 viršutinė,m2,material,6.6900,2026-05,estimate_2026-05
+M-0152,"Danga bituminė Mida Self PV S2,0 s apatinė",m2,material,2.7500,2026-05,estimate_2026-05
+M-0153,Gruntas bituminis Icopal Siplast Primer 25 l,vnt.,material,86.2800,2026-05,estimate_2026-05
+M-0154,Dvit. sija HEB 220 S355J2+AR,m,material,70.0000,2026-05,estimate_2026-05
+M-0155,Pjovimas BOMAR staklėmis,vnt.,material,20.1500,2026-05,estimate_2026-05
+M-0156,Dvit. sija HEA 200 S355J2+AR,m,material,44.0000,2026-05,estimate_2026-05
+M-0157,Dvit. sija HEA 140 S355J2+AR,m,material,32.0000,2026-05,estimate_2026-05
+T-0001,Įrankiai ir įrengimai 1,vnt.,machinery,0.2000,2026-10,estimate_2026-10
+T-0002,Įrankiai ir įrengimai 2,vnt.,machinery,0.2000,2026-10,estimate_2026-10
+T-0003,Įrankiai ir įrengimai,vnt.,machinery,0.4000,2026-10,estimate_2026-10
+T-0004,Transporto paslaugos,vnt.,machinery,200.0000,2026-10,estimate_2026-10
+T-0005,Įrankiai (teptukai ir t.t.),vnt.,machinery,0.4789,2026-10,estimate_2026-10
+T-0006,Transportavimas,reisas,machinery,304.8100,2026-10,estimate_2026-10
+T-0007,Medienos pristatymas į įmonę,vnt.,machinery,80.0000,2026-10,estimate_2026-10
+T-0008,Mechanizmai,m2,machinery,0.9999,2026-10,estimate_2026-10
+T-0009,Krautuvas/telferis,val.,machinery,40.0000,2026-10,estimate_2026-10
+T-0010,Technikos transportavimas (abi kryptys),km,machinery,1.8000,2026-10,estimate_2026-10
+T-0011,Montavimo technika,val.,machinery,45.0000,2026-10,estimate_2026-10
+T-0012,Samdomas transportas,reisas,machinery,400.0000,2026-10,estimate_2026-10
+T-0013,Darbuotojų transportavimas (abi kryptys),km,machinery,0.6000,2026-10,estimate_2026-10
+T-0014,Pristatymas,vnt.,machinery,1.0000,2026-05,estimate_2026-05
+T-0015,"Įrankiai ir įrengimai (deimantiniai diskai, grąžtai)",vnt.,machinery,492.6800,2026-05,estimate_2026-05
+T-0016,Transportavimas,vnt.,machinery,220.0000,2026-05,estimate_2026-05
+T-0017,Pakuotė,vnt.,machinery,70.0000,2026-05,estimate_2026-05

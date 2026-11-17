@@ -76,6 +76,29 @@ public sealed class EstimateExportTests : IDisposable
     }
 
     [Fact]
+    public async Task PrecisePricesAndNorms_AreWrittenInFullWithTheirOwnFormats()
+    {
+        // Feature 016: prices with 2 to 4 decimal places, norms with up to 6, amounts still with 2.
+        var company = await _factory.RegisterCompanyAsync("Alpha UAB", "alpha@example.com");
+        var screws = await company.CreateMaterialAsync("Sraigtai terasoms", "vnt.", 0.0616m);
+        var work = await company.CreateWorkAsync(CatalogRequests.WorkRequest("Terasa", "m²", (screws.Id, 0.000884m, 0))
+            with { LabourRate = 25.1234m, LabourNorm = 0.042002m });
+        var estimate = await company.CreateEstimateAsync();
+        await company.Client.AddWorkLineAsync(estimate.Id, work.Id, 10m);
+
+        using var file = await ExportAsync(company.Client, estimate.Id);
+        var sheet = file.Worksheet("Sąmata");
+
+        // Row 7 is the work line (norm D, rate F, labour cost G), row 8 its material line (norm D, price F, cost G).
+        Assert.Equal((0.042002m, "#,##0.######"), (Number(sheet, "D7"), sheet.Cell("D7").Style.NumberFormat.Format));
+        Assert.Equal((25.1234m, "#,##0.00## \"€\""), (Number(sheet, "F7"), sheet.Cell("F7").Style.NumberFormat.Format));
+        Assert.Equal((0.000884m, "#,##0.######"), (Number(sheet, "D8"), sheet.Cell("D8").Style.NumberFormat.Format));
+        Assert.Equal((0.0616m, "#,##0.00## \"€\""), (Number(sheet, "F8"), sheet.Cell("F8").Style.NumberFormat.Format));
+        Assert.Equal(MoneyFormat, sheet.Cell("G7").Style.NumberFormat.Format);
+        Assert.Equal(MoneyFormat, sheet.Cell("G8").Style.NumberFormat.Format);
+    }
+
+    [Fact]
     public async Task Export_OfAConfirmedEstimate_ShowsItsStatusAndFileName()
     {
         var company = await _factory.RegisterCompanyAsync("Alpha UAB", "alpha@example.com");

@@ -1,21 +1,21 @@
 import { useState, type KeyboardEvent } from 'react'
 import { toInputNumber } from '../../utils/format'
 import { ui } from '../../utils/ui'
-import { decimalPattern, parseDecimal } from '../../utils/validation'
+import { decimalPattern, parseDecimal, priceDecimals, quantityDecimals } from '../../utils/validation'
 
 /** The two kinds of numbers edited in an estimate line, with the server's rules mirrored for quick feedback. */
 const kinds = {
   quantity: {
-    pattern: decimalPattern(3),
+    pattern: decimalPattern(quantityDecimals),
     isValid: (value: number) => value > 0,
     text: (value: number) => toInputNumber(value),
-    error: 'Kiekis turi būti didesnis už 0, ne daugiau kaip 3 skaitmenys po kablelio.',
+    error: `Kiekis turi būti didesnis už 0, ne daugiau kaip ${quantityDecimals} skaitmenys po kablelio.`,
   },
   money: {
-    pattern: decimalPattern(2),
+    pattern: decimalPattern(priceDecimals),
     isValid: (value: number) => value >= 0,
     text: (value: number) => toInputNumber(value, 2),
-    error: 'Kaina turi būti 0 arba didesnė, ne daugiau kaip 2 skaitmenys po kablelio.',
+    error: `Kaina turi būti 0 arba didesnė, ne daugiau kaip ${priceDecimals} skaitmenys po kablelio.`,
   },
 }
 

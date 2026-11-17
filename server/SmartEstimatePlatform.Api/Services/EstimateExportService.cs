@@ -17,6 +17,10 @@ public class EstimateExportService(
 {
     private const string ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
     private const string MoneyFormat = "#,##0.00 \"€\"";
+
+    // Unit prices with 2 to 4 decimal places and norms with up to 6, as on screen (NFR-006, BR-017).
+    private const string PriceFormat = "#,##0.00## \"€\"";
+    private const string NormFormat = "#,##0.######";
     private const string QuantityFormat = "#,##0.###";
     private const string PercentFormat = "0.## \"%\"";
     private const int LastColumn = 7;
@@ -82,8 +86,8 @@ public class EstimateExportService(
             Text(sheet.Cell(row, 1), work.WorkName).Style.Font.Bold = true;
             Text(sheet.Cell(row, 2), work.WorkUnit);
             Number(sheet.Cell(row, 3), work.Quantity, QuantityFormat);
-            Number(sheet.Cell(row, 4), work.LabourNorm, QuantityFormat);
-            Number(sheet.Cell(row, 6), work.LabourRate, MoneyFormat);
+            Number(sheet.Cell(row, 4), work.LabourNorm, NormFormat);
+            Number(sheet.Cell(row, 6), work.LabourRate, PriceFormat);
             Number(sheet.Cell(row, 7), work.LabourCost, MoneyFormat);
 
             foreach (var material in work.MaterialLines)
@@ -92,9 +96,9 @@ public class EstimateExportService(
                 Text(sheet.Cell(row, 1), material.MaterialName).Style.Alignment.Indent = 1;
                 Text(sheet.Cell(row, 2), material.MaterialUnit);
                 Number(sheet.Cell(row, 3), material.Quantity, QuantityFormat);
-                Number(sheet.Cell(row, 4), material.ConsumptionNorm, QuantityFormat);
+                Number(sheet.Cell(row, 4), material.ConsumptionNorm, NormFormat);
                 Number(sheet.Cell(row, 5), material.WastePercent, PercentFormat);
-                Number(sheet.Cell(row, 6), material.Price, MoneyFormat);
+                Number(sheet.Cell(row, 6), material.Price, PriceFormat);
                 Number(sheet.Cell(row, 7), material.Cost, MoneyFormat);
             }
         }

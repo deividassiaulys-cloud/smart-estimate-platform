@@ -4,7 +4,7 @@ import { ApiError } from '../../api/http'
 import { createMaterial, getMaterial, getUnits, updateMaterial } from '../../api/materials'
 import { toInputNumber } from '../../utils/format'
 import { ui } from '../../utils/ui'
-import { decimalPattern, parseDecimal } from '../../utils/validation'
+import { decimalPattern, parseDecimal, priceDecimals } from '../../utils/validation'
 import { unexpectedError } from '../../utils/errors'
 
 interface MaterialForm {
@@ -17,14 +17,14 @@ type MaterialErrors = Partial<Record<keyof MaterialForm, string>>
 
 const emptyForm: MaterialForm = { name: '', unit: '', price: '' }
 
-const pricePattern = decimalPattern(2)
+const pricePattern = decimalPattern(priceDecimals)
 
 function validate(form: MaterialForm, units: string[]): MaterialErrors {
   const errors: MaterialErrors = {}
   if (!form.name.trim()) errors.name = 'Įveskite pavadinimą.'
   if (!units.includes(form.unit)) errors.unit = 'Pasirinkite mato vienetą.'
   if (!pricePattern.test(form.price.trim())) {
-    errors.price = 'Kaina turi būti 0 arba daugiau, ne daugiau kaip 2 skaitmenys po kablelio.'
+    errors.price = `Kaina turi būti 0 arba daugiau, ne daugiau kaip ${priceDecimals} skaitmenys po kablelio.`
   }
   return errors
 }

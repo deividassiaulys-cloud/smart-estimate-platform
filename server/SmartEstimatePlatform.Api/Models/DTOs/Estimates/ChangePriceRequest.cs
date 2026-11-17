@@ -9,16 +9,16 @@ namespace SmartEstimatePlatform.Api.Models.DTOs.Estimates;
 public sealed record ChangePriceRequest : IValidatableObject
 {
     /// <summary>
-    /// Euros per unit of the material: 0 or more, with at most 2 decimal places.
+    /// Euros per unit of the material: 0 or more, with at most 4 decimal places.
     /// </summary>
     public decimal Price { get; init; }
 
     /// <summary>
-    /// Applies the shared money rule (<see cref="NumberRules.MoneyError"/>).
+    /// Applies the shared unit-price rule (<see cref="NumberRules.UnitPriceError"/>).
     /// </summary>
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
-        if (NumberRules.MoneyError(Price, "Price") is { } error)
+        if (NumberRules.UnitPriceError(Price, "Price") is { } error)
         {
             yield return new ValidationResult(error, [nameof(Price)]);
         }

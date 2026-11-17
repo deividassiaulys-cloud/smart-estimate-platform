@@ -19,7 +19,7 @@ public sealed record MaterialRequest : IValidatableObject
     public string Unit { get; init; } = string.Empty;
 
     /// <summary>
-    /// Price per unit in euros: zero or more, with at most 2 decimal places.
+    /// Price per unit in euros: zero or more, with at most 4 decimal places.
     /// </summary>
     public decimal Price { get; init; }
 

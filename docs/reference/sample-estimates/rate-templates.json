@@ -1,0 +1,2662 @@
+{
+ "rateTemplates": [
+  {
+   "code": "RT-001",
+   "name": "Tašelis 28x45 mm ventiliaciniam tarpui",
+   "unit": "m2",
+   "category": "Lauko siena 28+9,5+195+45 mm šilta, horizontaliai medinei, dažytai lauko apdailai, išmesti ≥ 2,5 m2 langų/durų plotai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0001",
+     "norm": 0.042001643
+    },
+    {
+     "code": "M-0001",
+     "norm": 0.004000034
+    },
+    {
+     "code": "M-0002",
+     "norm": 5.0
+    },
+    {
+     "code": "T-0001",
+     "norm": 1.0
+    }
+   ]
+  },
+  {
+   "code": "RT-002",
+   "name": "Pelių barjeras",
+   "unit": "m",
+   "category": "Lauko siena 28+9,5+195+45 mm šilta, horizontaliai medinei, dažytai lauko apdailai, išmesti ≥ 2,5 m2 langų/durų plotai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0002",
+     "norm": 0.11000416
+    },
+    {
+     "code": "M-0003",
+     "norm": 1.1
+    },
+    {
+     "code": "M-0004",
+     "norm": 0.000884416
+    },
+    {
+     "code": "M-0005",
+     "norm": 10.0
+    }
+   ]
+  },
+  {
+   "code": "RT-003",
+   "name": "Difuzinė plėvelė iš lauko",
+   "unit": "m2",
+   "category": "Lauko siena 28+9,5+195+45 mm šilta, horizontaliai medinei, dažytai lauko apdailai, išmesti ≥ 2,5 m2 langų/durų plotai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0003",
+     "norm": 0.04
+    },
+    {
+     "code": "M-0006",
+     "norm": 1.3
+    },
+    {
+     "code": "M-0007",
+     "norm": 1.0
+    },
+    {
+     "code": "M-0008",
+     "norm": 10.0
+    }
+   ]
+  },
+  {
+   "code": "RT-004",
+   "name": "Priešvėjinė gipso plokštė",
+   "unit": "m2",
+   "category": "Lauko siena 28+9,5+195+45 mm šilta, horizontaliai medinei, dažytai lauko apdailai, išmesti ≥ 2,5 m2 langų/durų plotai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0004",
+     "norm": 0.15
+    },
+    {
+     "code": "M-0009",
+     "norm": 1.2
+    },
+    {
+     "code": "M-0005",
+     "norm": 34.0,
+     "price": 0.022
+    },
+    {
+     "code": "M-0007",
+     "norm": 1.092177486
+    }
+   ]
+  },
+  {
+   "code": "RT-005",
+   "name": "Karkasas 45x195 mm",
+   "unit": "m2",
+   "category": "Lauko siena 28+9,5+195+45 mm šilta, horizontaliai medinei, dažytai lauko apdailai, išmesti ≥ 2,5 m2 langų/durų plotai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0001",
+     "norm": 0.28
+    },
+    {
+     "code": "M-0010",
+     "norm": 0.001000037
+    },
+    {
+     "code": "M-0011",
+     "norm": 0.001000024
+    },
+    {
+     "code": "M-0012",
+     "norm": 0.001000024
+    },
+    {
+     "code": "M-0013",
+     "norm": 0.04
+    },
+    {
+     "code": "M-0014",
+     "norm": 0.000999984
+    },
+    {
+     "code": "M-0015",
+     "norm": 8.0
+    },
+    {
+     "code": "M-0016",
+     "norm": 4.0
+    },
+    {
+     "code": "M-0017",
+     "norm": 20.0
+    },
+    {
+     "code": "M-0018",
+     "norm": 0.4
+    },
+    {
+     "code": "T-0002",
+     "norm": 1.0
+    }
+   ]
+  },
+  {
+   "code": "RT-006",
+   "name": "Vata 200 mm",
+   "unit": "m2",
+   "category": "Lauko siena 28+9,5+195+45 mm šilta, horizontaliai medinei, dažytai lauko apdailai, išmesti ≥ 2,5 m2 langų/durų plotai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0005",
+     "norm": 0.27
+    },
+    {
+     "code": "M-0019",
+     "norm": 0.045004108
+    },
+    {
+     "code": "M-0019",
+     "norm": 0.045004108
+    },
+    {
+     "code": "M-0020",
+     "norm": 0.09
+    }
+   ]
+  },
+  {
+   "code": "RT-007",
+   "name": "Garo plėvelė iš vidaus",
+   "unit": "m2",
+   "category": "Lauko siena 28+9,5+195+45 mm šilta, horizontaliai medinei, dažytai lauko apdailai, išmesti ≥ 2,5 m2 langų/durų plotai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0003",
+     "norm": 0.04
+    },
+    {
+     "code": "M-0021",
+     "norm": 1.2
+    },
+    {
+     "code": "M-0022",
+     "norm": 0.457814297
+    },
+    {
+     "code": "M-0023",
+     "norm": 1.4
+    },
+    {
+     "code": "M-0008",
+     "norm": 10.0
+    }
+   ]
+  },
+  {
+   "code": "RT-008",
+   "name": "Karkasas vidaus pusei 45x45 mm",
+   "unit": "m2",
+   "category": "Lauko siena 28+9,5+195+45 mm šilta, horizontaliai medinei, dažytai lauko apdailai, išmesti ≥ 2,5 m2 langų/durų plotai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0001",
+     "norm": 0.042001643
+    },
+    {
+     "code": "M-0024",
+     "norm": 0.004963397
+    },
+    {
+     "code": "M-0025",
+     "norm": 0.001345623
+    },
+    {
+     "code": "M-0026",
+     "norm": 7.281199671
+    },
+    {
+     "code": "T-0001",
+     "norm": 1.0
+    }
+   ]
+  },
+  {
+   "code": "RT-009",
+   "name": "Vata 50 mm (komplektuojama)",
+   "unit": "m2",
+   "category": "Lauko siena 28+9,5+195+45 mm šilta, horizontaliai medinei, dažytai lauko apdailai, išmesti ≥ 2,5 m2 langų/durų plotai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0019",
+     "norm": 0.045004108
+    }
+   ]
+  },
+  {
+   "code": "RT-010",
+   "name": "Dažyta eglės lauko apdaila (jungiant į ilgį, išmesti ≥ 2,5 m2 langų plotai)",
+   "unit": "m2",
+   "category": "Lauko sienų, horizontaliai tvirtinamų, dažytų, eglės standartinių dailylenčių apdaila, išmesti ≥ 2,5 m2 langų/durų plotai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0027",
+     "norm": 1.2
+    },
+    {
+     "code": "M-0028",
+     "norm": 0.480035103
+    },
+    {
+     "code": "M-0029",
+     "norm": 44.0
+    },
+    {
+     "code": "T-0002",
+     "norm": 1.0,
+     "price": 0.205499
+    }
+   ]
+  },
+  {
+   "code": "RT-011",
+   "name": "Montavimo darbai",
+   "unit": "m2",
+   "category": "Lauko sienų, horizontaliai tvirtinamų, dažytų, eglės standartinių dailylenčių apdaila, išmesti ≥ 2,5 m2 langų/durų plotai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0006",
+     "norm": 0.4
+    }
+   ]
+  },
+  {
+   "code": "RT-012",
+   "name": "Langų nišų mediniai apvadai",
+   "unit": "m2",
+   "category": "Langų išorės nišų dailylenčių apvadai (iki 95 mm gylio)",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0030",
+     "norm": 1.2
+    },
+    {
+     "code": "M-0028",
+     "norm": 0.482309942
+    },
+    {
+     "code": "M-0029",
+     "norm": 44.0,
+     "price": 0.06
+    },
+    {
+     "code": "T-0002",
+     "norm": 0.5
+    }
+   ]
+  },
+  {
+   "code": "RT-013",
+   "name": "Montavimo darbai",
+   "unit": "m2",
+   "category": "Langų išorės nišų dailylenčių apvadai (iki 95 mm gylio)",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0006",
+     "norm": 0.6
+    }
+   ]
+  },
+  {
+   "code": "RT-014",
+   "name": "Kalibruota mediena",
+   "unit": "kompl.",
+   "category": "Sienų perimetriniai tašai ankeravimui preliminariai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0031",
+     "norm": 0.109
+    },
+    {
+     "code": "M-0032",
+     "norm": 0.352
+    },
+    {
+     "code": "M-0033",
+     "norm": 0.103
+    },
+    {
+     "code": "M-0034",
+     "norm": 0.039
+    },
+    {
+     "code": "M-0035",
+     "norm": 0.043
+    },
+    {
+     "code": "M-0036",
+     "norm": 0.088
+    },
+    {
+     "code": "M-0015",
+     "norm": 500.0
+    },
+    {
+     "code": "T-0002",
+     "norm": 1.0,
+     "price": 20.0
+    }
+   ]
+  },
+  {
+   "code": "RT-015",
+   "name": "Karkasas 45x95 mm cc 600 mm",
+   "unit": "m2",
+   "category": "Vidaus sienos 95 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0001",
+     "norm": 0.28000733
+    },
+    {
+     "code": "M-0037",
+     "norm": 6.7325e-05
+    },
+    {
+     "code": "M-0011",
+     "norm": 0.024000058
+    },
+    {
+     "code": "M-0013",
+     "norm": 0.001000078
+    },
+    {
+     "code": "M-0014",
+     "norm": 0.000999927
+    },
+    {
+     "code": "M-0015",
+     "norm": 10.0,
+     "price": 0.070991
+    },
+    {
+     "code": "M-0017",
+     "norm": 20.0,
+     "price": 0.021999
+    },
+    {
+     "code": "M-0018",
+     "norm": 0.4
+    },
+    {
+     "code": "T-0002",
+     "norm": 1.0
+    }
+   ]
+  },
+  {
+   "code": "RT-016",
+   "name": "Vata 100 mm (1 sl.)",
+   "unit": "m2",
+   "category": "Vidaus sienos 95 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0007",
+     "norm": 0.089996336
+    },
+    {
+     "code": "M-0020",
+     "norm": 0.089996336
+    }
+   ]
+  },
+  {
+   "code": "RT-017",
+   "name": "Vata 100 mm (2 sl. po 50 mm)",
+   "unit": "m2",
+   "category": "Vidaus sienos 95 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0008",
+     "norm": 0.179992671
+    },
+    {
+     "code": "M-0019",
+     "norm": 0.044998168
+    },
+    {
+     "code": "M-0019",
+     "norm": 0.044998168
+    }
+   ]
+  },
+  {
+   "code": "RT-018",
+   "name": "Juoda garo plėvelė iš abiejų pusių transportavimui",
+   "unit": "m2",
+   "category": "Vidaus sienos 95 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0009",
+     "norm": 0.08000733
+    },
+    {
+     "code": "M-0038",
+     "norm": 2.3
+    },
+    {
+     "code": "M-0008",
+     "norm": 10.0
+    }
+   ]
+  },
+  {
+   "code": "RT-019",
+   "name": "Karkasas 45x145 mm cc 600 mm",
+   "unit": "m2",
+   "category": "Vidaus sienos 145 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0001",
+     "norm": 0.28
+    },
+    {
+     "code": "M-0037",
+     "norm": 6.8966e-05
+    },
+    {
+     "code": "M-0012",
+     "norm": 0.028
+    },
+    {
+     "code": "M-0013",
+     "norm": 0.000999659
+    },
+    {
+     "code": "M-0014",
+     "norm": 0.001000651
+    },
+    {
+     "code": "M-0015",
+     "norm": 10.0,
+     "price": 0.09
+    },
+    {
+     "code": "M-0017",
+     "norm": 20.0,
+     "price": 0.022
+    },
+    {
+     "code": "M-0018",
+     "norm": 0.4
+    },
+    {
+     "code": "T-0002",
+     "norm": 1.0
+    }
+   ]
+  },
+  {
+   "code": "RT-020",
+   "name": "Vata 150 mm",
+   "unit": "m2",
+   "category": "Vidaus sienos 145 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0008",
+     "norm": 0.18
+    },
+    {
+     "code": "M-0020",
+     "norm": 0.09
+    },
+    {
+     "code": "M-0019",
+     "norm": 0.045034483
+    }
+   ]
+  },
+  {
+   "code": "RT-021",
+   "name": "Juoda garo plėvelė iš abiejų pusių transportavimui",
+   "unit": "m2",
+   "category": "Vidaus sienos 145 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0009",
+     "norm": 0.08
+    },
+    {
+     "code": "M-0038",
+     "norm": 2.3
+    },
+    {
+     "code": "M-0008",
+     "norm": 10.0
+    }
+   ]
+  },
+  {
+   "code": "RT-022",
+   "name": "Medienos pagrindo plokštė 22 mm",
+   "unit": "m2",
+   "category": "2 a. Perdanga 22+240+45 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0004",
+     "norm": 0.2
+    },
+    {
+     "code": "M-0039",
+     "norm": 1.04999196
+    },
+    {
+     "code": "M-0040",
+     "norm": 24.636050812
+    },
+    {
+     "code": "M-0041",
+     "norm": 0.223958836
+    },
+    {
+     "code": "M-0042",
+     "norm": 2.239636598
+    },
+    {
+     "code": "T-0003",
+     "norm": 1.0
+    }
+   ]
+  },
+  {
+   "code": "RT-023",
+   "name": "Karkasas 240 mm cc 600 mm",
+   "unit": "m2",
+   "category": "2 a. Perdanga 22+240+45 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0001",
+     "norm": 0.3
+    },
+    {
+     "code": "M-0024",
+     "norm": 0.000530632
+    },
+    {
+     "code": "M-0014",
+     "norm": 0.028000012
+    },
+    {
+     "code": "M-0015",
+     "norm": 5.0
+    },
+    {
+     "code": "M-0043",
+     "norm": 5.0
+    },
+    {
+     "code": "M-0044",
+     "norm": 0.486476926
+    },
+    {
+     "code": "M-0017",
+     "norm": 20.0,
+     "price": 0.021997
+    },
+    {
+     "code": "M-0045",
+     "norm": 0.07962695
+    },
+    {
+     "code": "M-0046",
+     "norm": 0.07962695
+    },
+    {
+     "code": "M-0047",
+     "norm": 0.597186043
+    },
+    {
+     "code": "M-0048",
+     "norm": 0.031853996
+    },
+    {
+     "code": "M-0049",
+     "norm": 0.015918958
+    },
+    {
+     "code": "M-0050",
+     "norm": 10.351149703
+    },
+    {
+     "code": "M-0018",
+     "norm": 0.4
+    },
+    {
+     "code": "T-0002",
+     "norm": 1.0
+    }
+   ]
+  },
+  {
+   "code": "RT-024",
+   "name": "Vata 250 mm",
+   "unit": "m2",
+   "category": "2 a. Perdanga 22+240+45 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0005",
+     "norm": 0.269995176
+    },
+    {
+     "code": "M-0020",
+     "norm": 0.089998392
+    },
+    {
+     "code": "M-0020",
+     "norm": 0.089998392
+    },
+    {
+     "code": "M-0019",
+     "norm": 0.044998578
+    }
+   ]
+  },
+  {
+   "code": "RT-025",
+   "name": "Garo plėvelė iš vidaus (statybvietėje)",
+   "unit": "m2",
+   "category": "2 a. Perdanga 22+240+45 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0010",
+     "norm": 0.040006432
+    },
+    {
+     "code": "M-0021",
+     "norm": 1.2,
+     "price": 0.4
+    },
+    {
+     "code": "M-0022",
+     "norm": 0.457806721,
+     "price": 0.4
+    },
+    {
+     "code": "M-0023",
+     "norm": 1.4
+    },
+    {
+     "code": "M-0008",
+     "norm": 10.0
+    }
+   ]
+  },
+  {
+   "code": "RT-026",
+   "name": "Karkasas vidaus pusei 45x45 mm cc 400 mm (statybvietėje)",
+   "unit": "m2",
+   "category": "2 a. Perdanga 22+240+45 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0011",
+     "norm": 0.042000322
+    },
+    {
+     "code": "M-0024",
+     "norm": 0.005999942
+    },
+    {
+     "code": "M-0026",
+     "norm": 8.0,
+     "price": 0.09
+    },
+    {
+     "code": "T-0001",
+     "norm": 1.0
+    }
+   ]
+  },
+  {
+   "code": "RT-027",
+   "name": "Vata 50 mm (komplektuojama)",
+   "unit": "m2",
+   "category": "2 a. Perdanga 22+240+45 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0019",
+     "norm": 0.044998578
+    }
+   ]
+  },
+  {
+   "code": "RT-028",
+   "name": "Tašelis 45x45 mm cc 300 mm",
+   "unit": "m2",
+   "category": "Šlaitinio stogo konstrukcija skydais 45+45+240+45 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0001",
+     "norm": 0.041998248
+    },
+    {
+     "code": "M-0024",
+     "norm": 0.006914671
+    },
+    {
+     "code": "M-0051",
+     "norm": 4.401732475
+    },
+    {
+     "code": "T-0001",
+     "norm": 1.0
+    }
+   ]
+  },
+  {
+   "code": "RT-029",
+   "name": "Tašelis 45x45 mm cc 600 mm ventiliacinis",
+   "unit": "m2",
+   "category": "Šlaitinio stogo konstrukcija skydais 45+45+240+45 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0001",
+     "norm": 0.041998248
+    },
+    {
+     "code": "M-0024",
+     "norm": 0.005000035
+    },
+    {
+     "code": "M-0051",
+     "norm": 4.0
+    },
+    {
+     "code": "M-0052",
+     "norm": 1.834055515
+    },
+    {
+     "code": "M-0008",
+     "norm": 3.0
+    },
+    {
+     "code": "T-0001",
+     "norm": 1.0
+    }
+   ]
+  },
+  {
+   "code": "RT-030",
+   "name": "Difuzinė plėvelė Tyvek Pro + tape",
+   "unit": "m2",
+   "category": "Šlaitinio stogo konstrukcija skydais 45+45+240+45 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0003",
+     "norm": 0.044001066
+    },
+    {
+     "code": "M-0053",
+     "norm": 1.3
+    },
+    {
+     "code": "M-0007",
+     "norm": 1.1
+    },
+    {
+     "code": "M-0008",
+     "norm": 12.0,
+     "price": 0.003
+    }
+   ]
+  },
+  {
+   "code": "RT-031",
+   "name": "Lentų paklotas stogo dangai 20x145 mm visu plotu",
+   "unit": "m2",
+   "category": "Šlaitinio stogo konstrukcija skydais 45+45+240+45 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0001",
+     "norm": 0.08
+    },
+    {
+     "code": "M-0054",
+     "norm": 0.021
+    },
+    {
+     "code": "M-0055",
+     "norm": 23.843
+    },
+    {
+     "code": "T-0001",
+     "norm": 1.0
+    }
+   ]
+  },
+  {
+   "code": "RT-032",
+   "name": "Gegnių karkasas 45x240 mm cc 600 mm",
+   "unit": "m2",
+   "category": "Šlaitinio stogo konstrukcija skydais 45+45+240+45 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0001",
+     "norm": 0.3
+    },
+    {
+     "code": "M-0024",
+     "norm": 0.001000024
+    },
+    {
+     "code": "M-0056",
+     "norm": 0.001000014
+    },
+    {
+     "code": "M-0057",
+     "norm": 0.001000014
+    },
+    {
+     "code": "M-0058",
+     "norm": 0.030000022
+    },
+    {
+     "code": "M-0059",
+     "norm": 0.011737943
+    },
+    {
+     "code": "M-0044",
+     "norm": 0.366812626
+    },
+    {
+     "code": "M-0015",
+     "norm": 6.0
+    },
+    {
+     "code": "M-0016",
+     "norm": 2.200864334,
+     "price": 0.09
+    },
+    {
+     "code": "M-0060",
+     "norm": 0.146723527
+    },
+    {
+     "code": "M-0045",
+     "norm": 0.036682786
+    },
+    {
+     "code": "M-0046",
+     "norm": 0.036682786
+    },
+    {
+     "code": "M-0047",
+     "norm": 0.880344972
+    },
+    {
+     "code": "M-0050",
+     "norm": 17.606926094,
+     "price": 0.024999
+    },
+    {
+     "code": "M-0018",
+     "norm": 0.4
+    },
+    {
+     "code": "T-0002",
+     "norm": 1.0,
+     "price": 0.5
+    }
+   ]
+  },
+  {
+   "code": "RT-033",
+   "name": "Vata 250 mm",
+   "unit": "m2",
+   "category": "Šlaitinio stogo konstrukcija skydais 45+45+240+45 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0005",
+     "norm": 0.270001111
+    },
+    {
+     "code": "M-0019",
+     "norm": 0.045001111
+    },
+    {
+     "code": "M-0020",
+     "norm": 0.090002222
+    },
+    {
+     "code": "M-0020",
+     "norm": 0.090002222
+    }
+   ]
+  },
+  {
+   "code": "RT-034",
+   "name": "Garo plėvelė iš vidaus (statybvietėje)",
+   "unit": "m2",
+   "category": "Šlaitinio stogo konstrukcija skydais 45+45+240+45 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0012",
+     "norm": 0.044001333
+    },
+    {
+     "code": "M-0021",
+     "norm": 1.2
+    },
+    {
+     "code": "M-0023",
+     "norm": 1.4
+    },
+    {
+     "code": "M-0022",
+     "norm": 0.45781493
+    },
+    {
+     "code": "M-0008",
+     "norm": 10.0
+    }
+   ]
+  },
+  {
+   "code": "RT-035",
+   "name": "Karkasas vidaus pusei 45x45 mm (statybvietėje)",
+   "unit": "m2",
+   "category": "Šlaitinio stogo konstrukcija skydais 45+45+240+45 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0012",
+     "norm": 0.042001777
+    },
+    {
+     "code": "M-0024",
+     "norm": 0.006000056
+    },
+    {
+     "code": "M-0061",
+     "norm": 5.0
+    },
+    {
+     "code": "M-0062",
+     "norm": 5.0
+    },
+    {
+     "code": "T-0001",
+     "norm": 1.0,
+     "price": 0.1999
+    }
+   ]
+  },
+  {
+   "code": "RT-036",
+   "name": "Vata 50 mm (komplektuojama)",
+   "unit": "m2",
+   "category": "Šlaitinio stogo konstrukcija skydais 45+45+240+45 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0019",
+     "norm": 0.045001111
+    }
+   ]
+  },
+  {
+   "code": "RT-037",
+   "name": "Terasinė lenta Termo-D pušies 26x140 mm AB su paslėptu tvirtinimu (variantas)",
+   "unit": "m2",
+   "category": "Terasa 28+145 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0063",
+     "norm": 1.3
+    },
+    {
+     "code": "M-0064",
+     "norm": 23.557
+    },
+    {
+     "code": "M-0065",
+     "norm": 23.557
+    },
+    {
+     "code": "M-0066",
+     "norm": 2.5
+    },
+    {
+     "code": "T-0004",
+     "norm": 0.029
+    },
+    {
+     "code": "T-0002",
+     "norm": 1.472,
+     "price": 0.5
+    }
+   ]
+  },
+  {
+   "code": "RT-038",
+   "name": "Terasinė lenta 28x145 mm rudai impregnuota eglė",
+   "unit": "m2",
+   "category": "Terasa 28+145 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0067",
+     "norm": 1.232096759
+    },
+    {
+     "code": "M-0066",
+     "norm": 2.5
+    },
+    {
+     "code": "M-0068",
+     "norm": 35.0
+    },
+    {
+     "code": "T-0002",
+     "norm": 1.0,
+     "price": 0.5
+    }
+   ]
+  },
+  {
+   "code": "RT-039",
+   "name": "Montavimo darbas",
+   "unit": "m2",
+   "category": "Terasa 28+145 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0013",
+     "norm": 0.5
+    }
+   ]
+  },
+  {
+   "code": "RT-040",
+   "name": "Šoninės lentelės kraštų uždarymui Termo-D (variantas)",
+   "unit": "m2",
+   "category": "Terasa 28+145 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0063",
+     "norm": 1.3
+    },
+    {
+     "code": "M-0064",
+     "norm": 40.0
+    },
+    {
+     "code": "M-0065",
+     "norm": 40.0
+    },
+    {
+     "code": "T-0002",
+     "norm": 1.472,
+     "price": 0.5
+    }
+   ]
+  },
+  {
+   "code": "RT-041",
+   "name": "Šoninės lentelės kraštų uždarymui (viena eilė iš priekio)",
+   "unit": "m2",
+   "category": "Terasa 28+145 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0013",
+     "norm": 0.5
+    },
+    {
+     "code": "M-0067",
+     "norm": 1.0
+    },
+    {
+     "code": "M-0068",
+     "norm": 40.0
+    },
+    {
+     "code": "T-0002",
+     "norm": 1.0,
+     "price": 0.5
+    }
+   ]
+  },
+  {
+   "code": "RT-042",
+   "name": "Karkasas 45x145 mm (ruošiamas, pripjaunamas objekte)",
+   "unit": "m2",
+   "category": "Terasa 28+145 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0069",
+     "norm": 0.042999952
+    },
+    {
+     "code": "M-0070",
+     "norm": 7.867817191
+    },
+    {
+     "code": "M-0071",
+     "norm": 3.933913376
+    },
+    {
+     "code": "M-0072",
+     "norm": 3.933913376
+    },
+    {
+     "code": "M-0073",
+     "norm": 1.966956688
+    },
+    {
+     "code": "T-0002",
+     "norm": 1.0,
+     "price": 1.573573
+    },
+    {
+     "code": "M-0074",
+     "norm": 0.1573573
+    }
+   ]
+  },
+  {
+   "code": "RT-043",
+   "name": "Montavimo darbas",
+   "unit": "m2",
+   "category": "Terasa 28+145 mm",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0014",
+     "norm": 0.6
+    }
+   ]
+  },
+  {
+   "code": "RT-044",
+   "name": "Vėjalentės galuose 3x18x135 mm",
+   "unit": "m2",
+   "category": "Vėjalentės stogui",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0075",
+     "norm": 1.1
+    },
+    {
+     "code": "M-0028",
+     "norm": 0.440064103,
+     "price": 9.5
+    },
+    {
+     "code": "M-0029",
+     "norm": 44.0,
+     "price": 0.06
+    },
+    {
+     "code": "T-0002",
+     "norm": 0.5
+    }
+   ]
+  },
+  {
+   "code": "RT-045",
+   "name": "Vėjalentės ties loveliais 1x18x145 mm",
+   "unit": "m2",
+   "category": "Vėjalentės stogui",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0076",
+     "norm": 1.1
+    },
+    {
+     "code": "M-0028",
+     "norm": 0.419964664
+    },
+    {
+     "code": "M-0029",
+     "norm": 44.0,
+     "price": 0.06
+    },
+    {
+     "code": "T-0002",
+     "norm": 0.5
+    }
+   ]
+  },
+  {
+   "code": "RT-046",
+   "name": "Pakalimai dengtai terasai",
+   "unit": "m2",
+   "category": "Pakalimai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0030",
+     "norm": 1.05
+    },
+    {
+     "code": "M-0028",
+     "norm": 0.419978518
+    },
+    {
+     "code": "M-0029",
+     "norm": 60.0,
+     "price": 0.06
+    },
+    {
+     "code": "M-0077",
+     "norm": 1.1
+    },
+    {
+     "code": "M-0008",
+     "norm": 12.0,
+     "price": 0.004
+    }
+   ]
+  },
+  {
+   "code": "RT-047",
+   "name": "Pakalimai stogo apačioje, ties loveliu 1",
+   "unit": "m2",
+   "category": "Pakalimai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0030",
+     "norm": 1.050026983
+    },
+    {
+     "code": "M-0028",
+     "norm": 0.419859687
+    },
+    {
+     "code": "M-0029",
+     "norm": 60.0,
+     "price": 0.06
+    },
+    {
+     "code": "M-0077",
+     "norm": 1.1
+    },
+    {
+     "code": "M-0008",
+     "norm": 12.0,
+     "price": 0.004
+    }
+   ]
+  },
+  {
+   "code": "RT-048",
+   "name": "Pakalimai stogo apačioje, ties loveliu 2",
+   "unit": "m2",
+   "category": "Pakalimai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0030",
+     "norm": 1.050067476
+    },
+    {
+     "code": "M-0028",
+     "norm": 0.419838057
+    },
+    {
+     "code": "M-0029",
+     "norm": 60.0,
+     "price": 0.06
+    },
+    {
+     "code": "M-0077",
+     "norm": 1.1
+    },
+    {
+     "code": "M-0008",
+     "norm": 12.0,
+     "price": 0.004
+    }
+   ]
+  },
+  {
+   "code": "RT-049",
+   "name": "Montavimo darbai",
+   "unit": "m2",
+   "category": "Pakalimai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0006",
+     "norm": 0.6
+    },
+    {
+     "code": "D-0015",
+     "norm": 0.15
+    }
+   ]
+  },
+  {
+   "code": "RT-050",
+   "name": "Mediniai turėklai iki 1,2 m aukščio",
+   "unit": "m",
+   "category": "1 a. terasos mediniai turėklai (preliminariai)",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0016",
+     "norm": 0.4
+    },
+    {
+     "code": "M-0078",
+     "norm": 0.028000011
+    },
+    {
+     "code": "M-0011",
+     "norm": 0.020000054
+    },
+    {
+     "code": "M-0079",
+     "norm": 10.0
+    },
+    {
+     "code": "M-0080",
+     "norm": 10.0
+    },
+    {
+     "code": "M-0029",
+     "norm": 60.0,
+     "price": 0.06
+    },
+    {
+     "code": "T-0002",
+     "norm": 1.0,
+     "price": 0.5
+    },
+    {
+     "code": "M-0028",
+     "norm": 0.623058054
+    },
+    {
+     "code": "D-0017",
+     "norm": 0.311529027
+    },
+    {
+     "code": "T-0005",
+     "norm": 1.0
+    },
+    {
+     "code": "M-0060",
+     "norm": 2.725538294
+    },
+    {
+     "code": "M-0050",
+     "norm": 43.608612701,
+     "price": 0.025
+    }
+   ]
+  },
+  {
+   "code": "RT-051",
+   "name": "Montavimo darbai",
+   "unit": "m",
+   "category": "1 a. terasos mediniai turėklai (preliminariai)",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0012",
+     "norm": 0.5
+    }
+   ]
+  },
+  {
+   "code": "RT-052",
+   "name": "Langai ir lauko durys",
+   "unit": "m2",
+   "category": "Langai ir lauko durys (plastikiniai), I variantas – dvivėrės durys",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0081",
+     "norm": 1.0
+    },
+    {
+     "code": "T-0006",
+     "norm": 0.01415313
+    }
+   ]
+  },
+  {
+   "code": "RT-053",
+   "name": "Palangė (preliminariai)",
+   "unit": "m",
+   "category": "Langų ir durų sumontavimas",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0018",
+     "norm": 0.05
+    },
+    {
+     "code": "M-0028",
+     "norm": 0.124,
+     "price": 9.0
+    },
+    {
+     "code": "M-0082",
+     "norm": 1.667
+    },
+    {
+     "code": "M-0083",
+     "norm": 2.5
+    },
+    {
+     "code": "T-0002",
+     "norm": 0.5
+    }
+   ]
+  },
+  {
+   "code": "RT-054",
+   "name": "Darbas ir montavimo medžiagos",
+   "unit": "m2",
+   "category": "Langų ir durų sumontavimas",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0019",
+     "norm": 0.8
+    },
+    {
+     "code": "M-0084",
+     "norm": 3.2
+    },
+    {
+     "code": "M-0085",
+     "norm": 3.2
+    },
+    {
+     "code": "M-0086",
+     "norm": 0.355235095
+    },
+    {
+     "code": "M-0087",
+     "norm": 3.593238003
+    },
+    {
+     "code": "M-0088",
+     "norm": 5.920673776
+    },
+    {
+     "code": "T-0002",
+     "norm": 1.0,
+     "price": 0.7
+    }
+   ]
+  },
+  {
+   "code": "RT-055",
+   "name": "Stogo langas Velux GGL3066 550x980 PREMIUM PLUS Uw=1.0",
+   "unit": "kompl.",
+   "category": "Stoglangiai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0089",
+     "norm": 1.0
+    },
+    {
+     "code": "M-0090",
+     "norm": 1.0
+    },
+    {
+     "code": "M-0091",
+     "norm": 1.0
+    }
+   ]
+  },
+  {
+   "code": "RT-056",
+   "name": "Montavimo darbai",
+   "unit": "kompl.",
+   "category": "Stoglangių montavimas",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0020",
+     "norm": 5.0
+    }
+   ]
+  },
+  {
+   "code": "RT-057",
+   "name": "Klijuota mediena kolonoms",
+   "unit": "kompl.",
+   "category": "Klijuota mediena",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0092",
+     "norm": 0.96
+    },
+    {
+     "code": "M-0093",
+     "norm": 0.144
+    },
+    {
+     "code": "M-0094",
+     "norm": 0.24
+    },
+    {
+     "code": "D-0021",
+     "norm": 1.344
+    }
+   ]
+  },
+  {
+   "code": "RT-058",
+   "name": "Klijuota mediena sijoms",
+   "unit": "kompl.",
+   "category": "Klijuota mediena",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0095",
+     "norm": 0.408
+    },
+    {
+     "code": "M-0096",
+     "norm": 0.222
+    },
+    {
+     "code": "M-0097",
+     "norm": 0.888
+    },
+    {
+     "code": "M-0098",
+     "norm": 0.733
+    },
+    {
+     "code": "M-0099",
+     "norm": 0.376
+    },
+    {
+     "code": "M-0100",
+     "norm": 0.243
+    },
+    {
+     "code": "M-0101",
+     "norm": 0.208
+    },
+    {
+     "code": "M-0102",
+     "norm": 0.462
+    },
+    {
+     "code": "D-0021",
+     "norm": 3.54
+    },
+    {
+     "code": "T-0007",
+     "norm": 1.0
+    }
+   ]
+  },
+  {
+   "code": "RT-059",
+   "name": "Matomų dalių dažymas rankomis 2 k. (kolonos, 53,76 m2)",
+   "unit": "kompl.",
+   "category": "Klijuota mediena",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0028",
+     "norm": 7.0
+    },
+    {
+     "code": "D-0017",
+     "norm": 8.0
+    },
+    {
+     "code": "T-0005",
+     "norm": 1.0,
+     "price": 5.0
+    }
+   ]
+  },
+  {
+   "code": "RT-060",
+   "name": "Matomų dalių dažymas rankomis 2 k. (sijos, 140,66 m2)",
+   "unit": "kompl.",
+   "category": "Klijuota mediena",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0028",
+     "norm": 5.0,
+     "price": 12.0
+    },
+    {
+     "code": "D-0017",
+     "norm": 20.0
+    },
+    {
+     "code": "T-0005",
+     "norm": 1.0,
+     "price": 5.0
+    }
+   ]
+  },
+  {
+   "code": "RT-061",
+   "name": "Viršutinė horizontali palangėlė (langams ir durims)",
+   "unit": "kompl.",
+   "category": "Skardos palangės preliminariai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0103",
+     "norm": 2.7
+    },
+    {
+     "code": "M-0104",
+     "norm": 2.7
+    },
+    {
+     "code": "M-0105",
+     "norm": 100.0
+    }
+   ]
+  },
+  {
+   "code": "RT-062",
+   "name": "Montavimo darbas",
+   "unit": "m",
+   "category": "Skardos palangės preliminariai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0012",
+     "norm": 0.1
+    }
+   ]
+  },
+  {
+   "code": "RT-063",
+   "name": "Apatinė horizontali palangė (langams)",
+   "unit": "kompl.",
+   "category": "Skardos palangės preliminariai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0106",
+     "norm": 7.5
+    },
+    {
+     "code": "M-0105",
+     "norm": 50.0
+    }
+   ]
+  },
+  {
+   "code": "RT-064",
+   "name": "Apatinė horizontali palangėlė (durims ir vitrinoms)",
+   "unit": "kompl.",
+   "category": "Skardos palangės preliminariai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0107",
+     "norm": 7.5
+    },
+    {
+     "code": "M-0105",
+     "norm": 50.0
+    }
+   ]
+  },
+  {
+   "code": "RT-065",
+   "name": "Montavimo darbas",
+   "unit": "m",
+   "category": "Skardos palangės preliminariai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0012",
+     "norm": 0.2
+    }
+   ]
+  },
+  {
+   "code": "RT-066",
+   "name": "Kampas į lataką",
+   "unit": "kompl.",
+   "category": "Skarda (kampas į lataką šlaitiniams stogams) preliminariai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0108",
+     "norm": 129.0
+    },
+    {
+     "code": "M-0109",
+     "norm": 3.0
+    }
+   ]
+  },
+  {
+   "code": "RT-067",
+   "name": "Namo sienų ankeravimas",
+   "unit": "m",
+   "category": "Namo montavimo darbai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0022",
+     "norm": 0.3
+    }
+   ]
+  },
+  {
+   "code": "RT-068",
+   "name": "Namo montavimas",
+   "unit": "m2",
+   "category": "Namo montavimo darbai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0023",
+     "norm": 1.7
+    }
+   ]
+  },
+  {
+   "code": "RT-069",
+   "name": "Stoginių montavimas",
+   "unit": "m2",
+   "category": "Namo montavimo darbai",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0023",
+     "norm": 0.7
+    }
+   ]
+  },
+  {
+   "code": "RT-070",
+   "name": "Ankeravimo medžiagos",
+   "unit": "kompl.",
+   "category": "Namo montavimo medžiagos (preliminariai)",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0110",
+     "norm": 175.0
+    },
+    {
+     "code": "M-0111",
+     "norm": 7.0
+    },
+    {
+     "code": "M-0112",
+     "norm": 17.0
+    }
+   ]
+  },
+  {
+   "code": "RT-071",
+   "name": "Medžiagos namo sumontavimui preliminariai (tarpinės, varžtai, putos, gruntas, Siga prie pamato)",
+   "unit": "m2",
+   "category": "Namo montavimo medžiagos (preliminariai)",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "M-0113",
+     "norm": 1.0
+    },
+    {
+     "code": "T-0008",
+     "norm": 1.0
+    },
+    {
+     "code": "M-0114",
+     "norm": 1.166810678
+    },
+    {
+     "code": "M-0115",
+     "norm": 0.04460412
+    },
+    {
+     "code": "M-0116",
+     "norm": 3.271822275
+    },
+    {
+     "code": "M-0117",
+     "norm": 1.963095184
+    },
+    {
+     "code": "M-0118",
+     "norm": 4.580553913
+    },
+    {
+     "code": "M-0119",
+     "norm": 1.635913411
+    },
+    {
+     "code": "M-0120",
+     "norm": 1.635913411
+    },
+    {
+     "code": "M-0121",
+     "norm": 1.635913411
+    },
+    {
+     "code": "M-0122",
+     "norm": 1.635913411
+    },
+    {
+     "code": "M-0123",
+     "norm": 1.308727091
+    },
+    {
+     "code": "M-0124",
+     "norm": 1.635913411
+    },
+    {
+     "code": "M-0125",
+     "norm": 0.446063941
+    },
+    {
+     "code": "M-0126",
+     "norm": 0.446063941
+    },
+    {
+     "code": "M-0023",
+     "norm": 0.743439902,
+     "price": 0.57
+    },
+    {
+     "code": "M-0007",
+     "norm": 0.743439902,
+     "price": 0.76
+    },
+    {
+     "code": "M-0127",
+     "norm": 0.02230206
+    },
+    {
+     "code": "M-0128",
+     "norm": 1.486879804
+    },
+    {
+     "code": "M-0088",
+     "norm": 2.693242076
+    },
+    {
+     "code": "M-0105",
+     "norm": 0.669907681
+    }
+   ]
+  },
+  {
+   "code": "RT-072",
+   "name": "Pakrovimas",
+   "unit": "d.d.",
+   "category": "Pakrovimas",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0024",
+     "norm": 12.0
+    },
+    {
+     "code": "T-0009",
+     "norm": 5.0
+    }
+   ]
+  },
+  {
+   "code": "RT-073",
+   "name": "Transportavimo ir montavimo technika",
+   "unit": "kompl.",
+   "category": "Transportavimo ir montavimo technika, darbuotojų transportas (preliminariai)",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "T-0010",
+     "norm": 710.0
+    },
+    {
+     "code": "T-0011",
+     "norm": 5.0
+    }
+   ]
+  },
+  {
+   "code": "RT-074",
+   "name": "Samdomas transportas",
+   "unit": "kompl.",
+   "category": "Transportavimo ir montavimo technika, darbuotojų transportas (preliminariai)",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "T-0012",
+     "norm": 1.0
+    }
+   ]
+  },
+  {
+   "code": "RT-075",
+   "name": "Darbuotojų transportavimas",
+   "unit": "kompl.",
+   "category": "Transportavimo ir montavimo technika, darbuotojų transportas (preliminariai)",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "T-0013",
+     "norm": 710.0
+    }
+   ]
+  },
+  {
+   "code": "RT-076",
+   "name": "Darbo brėžinių paruošimas",
+   "unit": "vnt",
+   "category": "Darbo brėžinių paruošimas",
+   "source": "estimate_2026-10",
+   "resources": [
+    {
+     "code": "D-0025",
+     "norm": 172.7
+    },
+    {
+     "code": "D-0026",
+     "norm": 47.19
+    }
+   ]
+  },
+  {
+   "code": "RT-077",
+   "name": "Fermacell plokštės 1 sl. (tik komplektavimas)",
+   "unit": "m2",
+   "category": "Vidaus apdailos plokštės",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "M-0129",
+     "norm": 1.15
+    },
+    {
+     "code": "M-0130",
+     "norm": 24.0
+    },
+    {
+     "code": "M-0131",
+     "norm": 0.06
+    }
+   ]
+  },
+  {
+   "code": "RT-078",
+   "name": "Fermacell plokščių tvirtinimas ant sienų statybvietėje",
+   "unit": "m2",
+   "category": "Vidaus apdailos plokštės",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "D-0027",
+     "norm": 0.8
+    }
+   ]
+  },
+  {
+   "code": "RT-079",
+   "name": "Vienos pusės montuojamos ceche Fermacell plokštės 1 sl.",
+   "unit": "m2",
+   "category": "Vidaus apdailos plokštės",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "D-0004",
+     "norm": 0.2
+    },
+    {
+     "code": "M-0129",
+     "norm": 1.15
+    },
+    {
+     "code": "M-0130",
+     "norm": 24.0
+    },
+    {
+     "code": "M-0131",
+     "norm": 0.06
+    },
+    {
+     "code": "T-0003",
+     "norm": 1.0,
+     "price": 0.6
+    }
+   ]
+  },
+  {
+   "code": "RT-080",
+   "name": "Knauf RED plokštės 1 sl. (tik medžiagos)",
+   "unit": "m2",
+   "category": "Vidaus apdailos plokštės",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "M-0132",
+     "norm": 1.1
+    },
+    {
+     "code": "M-0133",
+     "norm": 26.0
+    },
+    {
+     "code": "M-0134",
+     "norm": 0.007
+    },
+    {
+     "code": "T-0003",
+     "norm": 2.0,
+     "price": 0.6
+    }
+   ]
+  },
+  {
+   "code": "RT-081",
+   "name": "Pirmo sluoksnio plokščių tvirtinimas statybvietėje (+ siūlių aptaisymas)",
+   "unit": "m2",
+   "category": "Vidaus apdailos plokštės",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "D-0028",
+     "norm": 1.0
+    }
+   ]
+  },
+  {
+   "code": "RT-082",
+   "name": "Antro sluoksnio plokščių tvirtinimas statybvietėje",
+   "unit": "m2",
+   "category": "Vidaus apdailos plokštės",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "D-0027",
+     "norm": 0.6
+    }
+   ]
+  },
+  {
+   "code": "RT-083",
+   "name": "Stacbond aliuminio kompozitinė plokštė 4x1500x5000 mm SOLID COLLECTION",
+   "unit": "m2",
+   "category": "Fasado apdaila",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "M-0135",
+     "norm": 1.1
+    },
+    {
+     "code": "M-0136",
+     "norm": 1.584
+    },
+    {
+     "code": "M-0137",
+     "norm": 1.109
+    },
+    {
+     "code": "M-0138",
+     "norm": 0.544
+    },
+    {
+     "code": "M-0139",
+     "norm": 20.0
+    },
+    {
+     "code": "T-0014",
+     "norm": 0.745
+    },
+    {
+     "code": "T-0015",
+     "norm": 0.003
+    }
+   ]
+  },
+  {
+   "code": "RT-084",
+   "name": "Stacbond plokščių montavimo darbas",
+   "unit": "m2",
+   "category": "Fasado apdaila",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "D-0012",
+     "norm": 0.5
+    }
+   ]
+  },
+  {
+   "code": "RT-085",
+   "name": "Vertikali Thermo dailylentė 19x117 mm AB (jungiant į ilgį)",
+   "unit": "m2",
+   "category": "Fasado apdaila",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "M-0140",
+     "norm": 1.1
+    },
+    {
+     "code": "M-0029",
+     "norm": 30.0
+    },
+    {
+     "code": "T-0016",
+     "norm": 0.005
+    },
+    {
+     "code": "T-0002",
+     "norm": 1.0
+    }
+   ]
+  },
+  {
+   "code": "RT-086",
+   "name": "Thermo dailylenčių montavimo darbas",
+   "unit": "m2",
+   "category": "Fasado apdaila",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "D-0012",
+     "norm": 0.7
+    }
+   ]
+  },
+  {
+   "code": "RT-087",
+   "name": "Tašelis 28x95 mm horizontalus apdailai",
+   "unit": "m2",
+   "category": "Lauko sienos",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "D-0001",
+     "norm": 0.042
+    },
+    {
+     "code": "M-0141",
+     "norm": 0.008
+    },
+    {
+     "code": "M-0051",
+     "norm": 6.0
+    },
+    {
+     "code": "T-0001",
+     "norm": 1.0
+    }
+   ]
+  },
+  {
+   "code": "RT-088",
+   "name": "Karkasas 45x145 mm (lauko siena)",
+   "unit": "m2",
+   "category": "Lauko sienos",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "D-0001",
+     "norm": 0.28
+    },
+    {
+     "code": "M-0010",
+     "norm": 0.001
+    },
+    {
+     "code": "M-0011",
+     "norm": 0.004
+    },
+    {
+     "code": "M-0012",
+     "norm": 0.034
+    },
+    {
+     "code": "M-0013",
+     "norm": 0.002
+    },
+    {
+     "code": "M-0014",
+     "norm": 0.005
+    },
+    {
+     "code": "M-0015",
+     "norm": 8.0
+    },
+    {
+     "code": "M-0016",
+     "norm": 4.0
+    },
+    {
+     "code": "M-0017",
+     "norm": 20.0
+    },
+    {
+     "code": "M-0018",
+     "norm": 0.4
+    },
+    {
+     "code": "T-0002",
+     "norm": 1.0
+    }
+   ]
+  },
+  {
+   "code": "RT-089",
+   "name": "Vata 50 mm montavimo darbas (statybvietėje)",
+   "unit": "m2",
+   "category": "Lauko sienos",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "D-0012",
+     "norm": 0.09
+    }
+   ]
+  },
+  {
+   "code": "RT-090",
+   "name": "Karkasas 240 mm cc 300 mm (perdanga)",
+   "unit": "m2",
+   "category": "Perdanga",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "D-0001",
+     "norm": 0.3
+    },
+    {
+     "code": "M-0024",
+     "norm": 0.001
+    },
+    {
+     "code": "M-0014",
+     "norm": 0.084
+    },
+    {
+     "code": "M-0012",
+     "norm": 0.003
+    },
+    {
+     "code": "M-0015",
+     "norm": 5.0
+    },
+    {
+     "code": "M-0043",
+     "norm": 5.0
+    },
+    {
+     "code": "M-0044",
+     "norm": 1.001
+    },
+    {
+     "code": "M-0017",
+     "norm": 20.0
+    },
+    {
+     "code": "M-0045",
+     "norm": 0.027
+    },
+    {
+     "code": "M-0046",
+     "norm": 0.027
+    },
+    {
+     "code": "M-0047",
+     "norm": 0.332
+    },
+    {
+     "code": "M-0048",
+     "norm": 0.04
+    },
+    {
+     "code": "M-0050",
+     "norm": 8.294
+    },
+    {
+     "code": "M-0018",
+     "norm": 0.4
+    },
+    {
+     "code": "T-0002",
+     "norm": 1.0
+    }
+   ]
+  },
+  {
+   "code": "RT-091",
+   "name": "Gegnių karkasas 45x240 mm cc 400 mm",
+   "unit": "m2",
+   "category": "Stogas",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "D-0001",
+     "norm": 0.4
+    },
+    {
+     "code": "M-0024",
+     "norm": 0.003
+    },
+    {
+     "code": "M-0056",
+     "norm": 0.002
+    },
+    {
+     "code": "M-0058",
+     "norm": 0.053
+    },
+    {
+     "code": "M-0142",
+     "norm": 1.269
+    },
+    {
+     "code": "M-0015",
+     "norm": 2.677
+    },
+    {
+     "code": "M-0143",
+     "norm": 0.427
+    },
+    {
+     "code": "M-0060",
+     "norm": 0.644
+    },
+    {
+     "code": "M-0050",
+     "norm": 2.538
+    },
+    {
+     "code": "M-0144",
+     "norm": 0.305
+    },
+    {
+     "code": "M-0018",
+     "norm": 0.4
+    },
+    {
+     "code": "T-0002",
+     "norm": 1.0,
+     "price": 0.5
+    }
+   ]
+  },
+  {
+   "code": "RT-092",
+   "name": "Lentų paklotas stogo dangai 20x145 mm kas antra lenta",
+   "unit": "m2",
+   "category": "Stogas",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "D-0001",
+     "norm": 0.042
+    },
+    {
+     "code": "M-0054",
+     "norm": 0.011
+    },
+    {
+     "code": "M-0055",
+     "norm": 15.0
+    },
+    {
+     "code": "T-0001",
+     "norm": 1.0
+    }
+   ]
+  },
+  {
+   "code": "RT-093",
+   "name": "Sinusinė skardos stogo danga",
+   "unit": "m2",
+   "category": "Stogo danga",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "M-0145",
+     "norm": 1.2
+    },
+    {
+     "code": "M-0146",
+     "norm": 0.135
+    },
+    {
+     "code": "M-0147",
+     "norm": 0.027
+    },
+    {
+     "code": "M-0148",
+     "norm": 0.024
+    },
+    {
+     "code": "M-0149",
+     "norm": 0.054
+    },
+    {
+     "code": "M-0150",
+     "norm": 0.004
+    },
+    {
+     "code": "T-0017",
+     "norm": 0.005
+    },
+    {
+     "code": "T-0006",
+     "norm": 0.005,
+     "price": 160.0
+    }
+   ]
+  },
+  {
+   "code": "RT-094",
+   "name": "Sinusinės stogo dangos montavimo darbas",
+   "unit": "m2",
+   "category": "Stogo danga",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "D-0012",
+     "norm": 0.45
+    }
+   ]
+  },
+  {
+   "code": "RT-095",
+   "name": "Balkono bituminė danga 2 sl.",
+   "unit": "m2",
+   "category": "Balkonai",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "M-0151",
+     "norm": 1.2
+    },
+    {
+     "code": "M-0152",
+     "norm": 1.2
+    },
+    {
+     "code": "M-0153",
+     "norm": 0.031
+    },
+    {
+     "code": "T-0003",
+     "norm": 7.822,
+     "price": 1.0
+    }
+   ]
+  },
+  {
+   "code": "RT-096",
+   "name": "Bituminės dangos 2 sl. montavimo darbas",
+   "unit": "m2",
+   "category": "Balkonai",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "D-0029",
+     "norm": 0.35
+    }
+   ]
+  },
+  {
+   "code": "RT-097",
+   "name": "Dvitėjinė sija HEB 220 S355J2+AR",
+   "unit": "m",
+   "category": "Metalo konstrukcijos",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "M-0154",
+     "norm": 1.0
+    },
+    {
+     "code": "M-0155",
+     "norm": 0.166
+    }
+   ]
+  },
+  {
+   "code": "RT-098",
+   "name": "Dvitėjinė sija HEA 200 S355J2+AR",
+   "unit": "m",
+   "category": "Metalo konstrukcijos",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "M-0156",
+     "norm": 1.0
+    },
+    {
+     "code": "M-0155",
+     "norm": 0.166,
+     "price": 18.75
+    }
+   ]
+  },
+  {
+   "code": "RT-099",
+   "name": "Dvitėjinė sija HEA 140 S355J2+AR",
+   "unit": "m",
+   "category": "Metalo konstrukcijos",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "M-0157",
+     "norm": 1.0
+    },
+    {
+     "code": "M-0155",
+     "norm": 0.166,
+     "price": 16.05
+    }
+   ]
+  },
+  {
+   "code": "RT-100",
+   "name": "Namo sienų montavimas (daugiabutis, 2 žm.val./m2)",
+   "unit": "m2",
+   "category": "Montavimo darbai",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "D-0023",
+     "norm": 2.0
+    }
+   ]
+  },
+  {
+   "code": "RT-101",
+   "name": "Balkonų ir jų nišų įrengimas",
+   "unit": "m2",
+   "category": "Montavimo darbai",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "D-0023",
+     "norm": 1.25
+    }
+   ]
+  },
+  {
+   "code": "RT-102",
+   "name": "Statikos projekto paruošimas",
+   "unit": "vnt",
+   "category": "Projektavimas",
+   "source": "estimate_2026-05",
+   "resources": [
+    {
+     "code": "D-0030",
+     "norm": 1.0
+    }
+   ]
+  }
+ ]
+}

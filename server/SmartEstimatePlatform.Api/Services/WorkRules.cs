@@ -15,7 +15,7 @@ public static class WorkRules
 
     /// <summary>
     /// Returns the unit, labour rate and labour norm errors: the unit must be in the fixed list, the rate (€/h)
-    /// zero or more with at most 2 decimal places, and the norm (h per unit) zero or more with at most 3.
+    /// zero or more with at most 4 decimal places, and the norm (h per unit) zero or more with at most 6.
     /// </summary>
     public static IEnumerable<ValidationResult> Validate(string unit, decimal labourRate, decimal labourNorm)
     {
@@ -24,32 +24,28 @@ public static class WorkRules
             yield return new ValidationResult("Unit must be one of the fixed measurement units.", ["Unit"]);
         }
 
-        if (NumberRules.MoneyError(labourRate, "Labour rate") is { } rateError)
+        if (NumberRules.UnitPriceError(labourRate, "Labour rate") is { } rateError)
         {
             yield return new ValidationResult(rateError, ["LabourRate"]);
         }
 
-        if (labourNorm < 0)
+        if (NumberRules.NormError(labourNorm, "Labour norm") is { } normError)
         {
-            yield return new ValidationResult("Labour norm cannot be negative.", ["LabourNorm"]);
-        }
-        else if (!NumberRules.HasAtMostDecimals(labourNorm, 3))
-        {
-            yield return new ValidationResult("Labour norm can have at most 3 decimal places.", ["LabourNorm"]);
-        }
-        else if (labourNorm > NumberRules.MaxQuantity)
-        {
-            yield return new ValidationResult("Labour norm is too large.", ["LabourNorm"]);
+            yield return new ValidationResult(normError, ["LabourNorm"]);
         }
     }
 
     /// <summary>
     /// Returns the errors of one material line: the consumption norm must be greater than 0 with at most
-    /// 3 decimal places, and the waste percentage between 0 and 100 inclusive with at most 2 decimal places.
+    /// 6 decimal places, and the waste percentage between 0 and 100 inclusive with at most 2 decimal places.
     /// </summary>
     public static IEnumerable<ValidationResult> ValidateLine(decimal consumptionNorm, decimal wastePercent)
     {
-        if (NumberRules.PositiveQuantityError(consumptionNorm, "Consumption norm") is { } normError)
+        if (consumptionNorm <= 0)
+        {
+            yield return new ValidationResult("Consumption norm must be greater than 0.", ["ConsumptionNorm"]);
+        }
+        else if (NumberRules.NormError(consumptionNorm, "Consumption norm") is { } normError)
         {
             yield return new ValidationResult(normError, ["ConsumptionNorm"]);
         }

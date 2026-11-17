@@ -91,8 +91,8 @@ namespace SmartEstimatePlatform.Api.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("ConsumptionNorm")
-                        .HasPrecision(18, 3)
-                        .HasColumnType("decimal(18,3)");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)");
 
                     b.Property<string>("MaterialName")
                         .IsRequired()
@@ -105,8 +105,8 @@ namespace SmartEstimatePlatform.Api.Migrations
                         .HasColumnType("varchar(16)");
 
                     b.Property<decimal>("Price")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<decimal>("WastePercent")
                         .HasPrecision(5, 2)
@@ -134,12 +134,12 @@ namespace SmartEstimatePlatform.Api.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("LabourNorm")
-                        .HasPrecision(18, 3)
-                        .HasColumnType("decimal(18,3)");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)");
 
                     b.Property<decimal>("LabourRate")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<decimal>("Quantity")
                         .HasPrecision(18, 3)
@@ -180,8 +180,8 @@ namespace SmartEstimatePlatform.Api.Migrations
                         .UseCollation("utf8mb4_0900_as_ci");
 
                     b.Property<decimal>("Price")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("Unit")
                         .IsRequired()
@@ -289,12 +289,12 @@ namespace SmartEstimatePlatform.Api.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("LabourNorm")
-                        .HasPrecision(18, 3)
-                        .HasColumnType("decimal(18,3)");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)");
 
                     b.Property<decimal>("LabourRate")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -324,8 +324,8 @@ namespace SmartEstimatePlatform.Api.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("ConsumptionNorm")
-                        .HasPrecision(18, 3)
-                        .HasColumnType("decimal(18,3)");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)");
 
                     b.Property<int>("MaterialId")
                         .HasColumnType("int");

@@ -59,7 +59,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
                 .UseCollation("utf8mb4_0900_as_ci");
 
             material.Property(m => m.Unit).HasMaxLength(16);
-            material.Property(m => m.Price).HasPrecision(18, 2);
+            material.Property(m => m.Price).HasPrecision(18, 4);
 
             material.HasIndex(m => new { m.CompanyId, m.Name, m.Unit }).IsUnique();
 
@@ -76,8 +76,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
                 .UseCollation("utf8mb4_0900_as_ci");
 
             work.Property(w => w.Unit).HasMaxLength(16);
-            work.Property(w => w.LabourRate).HasPrecision(18, 2);
-            work.Property(w => w.LabourNorm).HasPrecision(18, 3);
+            work.Property(w => w.LabourRate).HasPrecision(18, 4);
+            work.Property(w => w.LabourNorm).HasPrecision(18, 6);
 
             work.HasIndex(w => new { w.CompanyId, w.Name, w.Unit }).IsUnique();
 
@@ -93,7 +93,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
 
         modelBuilder.Entity<WorkMaterialLine>(line =>
         {
-            line.Property(l => l.ConsumptionNorm).HasPrecision(18, 3);
+            line.Property(l => l.ConsumptionNorm).HasPrecision(18, 6);
             line.Property(l => l.WastePercent).HasPrecision(5, 2);
 
             // A line has no CompanyId of its own; it belongs to its work's company, so it is filtered like
@@ -147,8 +147,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
         {
             line.Property(l => l.WorkName).HasMaxLength(WorkRules.NameMaxLength);
             line.Property(l => l.WorkUnit).HasMaxLength(16);
-            line.Property(l => l.LabourRate).HasPrecision(18, 2);
-            line.Property(l => l.LabourNorm).HasPrecision(18, 3);
+            line.Property(l => l.LabourRate).HasPrecision(18, 4);
+            line.Property(l => l.LabourNorm).HasPrecision(18, 6);
             line.Property(l => l.Quantity).HasPrecision(18, 3);
 
             // Removing a work line removes its material lines.
@@ -165,8 +165,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
         {
             line.Property(m => m.MaterialName).HasMaxLength(MaterialRules.NameMaxLength);
             line.Property(m => m.MaterialUnit).HasMaxLength(16);
-            line.Property(m => m.Price).HasPrecision(18, 2);
-            line.Property(m => m.ConsumptionNorm).HasPrecision(18, 3);
+            line.Property(m => m.Price).HasPrecision(18, 4);
+            line.Property(m => m.ConsumptionNorm).HasPrecision(18, 6);
             line.Property(m => m.WastePercent).HasPrecision(5, 2);
 
             // Filtered like its work line's estimate.

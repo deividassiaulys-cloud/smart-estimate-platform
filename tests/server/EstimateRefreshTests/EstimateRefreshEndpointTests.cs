@@ -75,6 +75,27 @@ public sealed class EstimateRefreshEndpointTests : IDisposable
         Assert.Equal(preview.CurrentTotal, preview.NewTotal);
     }
 
+    [Fact]
+    public async Task PreciseCatalogValues_ArePreviewedAndStoredExactly()
+    {
+        // Feature 016 US2-5: a 4-decimal price and rate and a 6-decimal norm come through the refresh unrounded.
+        var (company, estimate) = await ArrangeAsync();
+        await ChangeCatalogAsync(company, labourRate: 15.1234m, boardPrice: 4.5616m, boardNorm: 2.000884m);
+
+        var preview = await PreviewAsync(company.Client, estimate.Id);
+        var refreshed = await RefreshAsync(company.Client, estimate.Id);
+
+        Assert.Equal(
+        [
+            (RefreshedField.LabourRate, 15m, 15.1234m),
+            (RefreshedField.Price, 4.50m, 4.5616m),
+            (RefreshedField.ConsumptionNorm, 2m, 2.000884m)
+        ], preview.Changes.Select(c => (c.Field, c.OldValue, c.NewValue)));
+        var line = refreshed.WorkLines[0];
+        Assert.Equal((15.1234m, 4.5616m, 2.000884m), (line.LabourRate, line.MaterialLines[0].Price, line.MaterialLines[0].ConsumptionNorm));
+        Assert.Equal(preview.NewTotal, refreshed.Total);
+    }
+
     // ---- US2: update ----
 
     [Fact]

@@ -44,6 +44,25 @@ public sealed class EstimateCalculatorTests
     }
 
     [Fact]
+    public void PrecisePricesAndNorms_AreUsedUnroundedAndOnlyAmountsAreRounded()
+    {
+        // Feature 016 US2-1: "Tašelis 28x45 mm", 121,7 m², labour 25,00 €/h × 0,042002 h; screws 5 × 0,1000 €.
+        var batten = new EstimateWorkLine("Tašelis 28x45 mm", "m²", 25.00m, 0.042002m, 121.7m,
+            [new EstimateMaterialLine("Medsraigčiai", "vnt.", 0.1000m, 5m, 0m)]);
+        // US2-2: a calculated quantity of 1 234,5 vnt. at 0,0616 €.
+        var screws = new EstimateWorkLine("Terasa", "m²", 0m, 0m, 1234.5m,
+            [new EstimateMaterialLine("Sraigtai terasoms", "vnt.", 0.0616m, 1m, 0m)]);
+
+        var result = EstimateCalculator.Calculate(EstimateWith(0m, 0m, 0m, batten, screws));
+
+        Assert.Equal(127.79m, result.WorkLines[0].LabourCost); // 127,791085
+        Assert.Equal(608.5m, result.WorkLines[0].MaterialLines[0].Quantity);
+        Assert.Equal(60.85m, result.WorkLines[0].MaterialLines[0].Cost);
+        Assert.Equal(76.05m, result.WorkLines[1].MaterialLines[0].Cost); // 76,0452
+        Assert.Equal(127.79m + 60.85m + 76.05m, result.Total);
+    }
+
+    [Fact]
     public void MidpointMaterialCost_IsRoundedAwayFromZero()
     {
         var result = EstimateCalculator.Calculate(EstimateWith(0m, 0m, 0m, WallLine(35m)));

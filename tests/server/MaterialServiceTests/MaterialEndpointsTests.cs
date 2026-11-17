@@ -33,7 +33,7 @@ public sealed class MaterialEndpointsTests : IDisposable
 
     [Theory]
     [InlineData("-0.01", "kg")]
-    [InlineData("12.345", "kg")]
+    [InlineData("12.34567", "kg")]
     [InlineData("10000000000000000.00", "kg")]
     [InlineData("1", "cm")]
     [InlineData("1", "m2")]
@@ -83,6 +83,20 @@ public sealed class MaterialEndpointsTests : IDisposable
 
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         Assert.Equal(2, (await ListAsync(company)).Count);
+    }
+
+    [Fact]
+    public async Task PriceWith4Decimals_IsStoredExactlyAndKeptWhenSavedUnchanged()
+    {
+        var company = await _factory.RegisterCompanyAsync("Alpha UAB", "alpha@example.com");
+        var created = await ReadAsync(await CreateAsync(company, "Sraigtai terasoms", "vnt.", 0.0616m));
+
+        var response = await company.Client.PutAsJsonAsync($"/api/materials/{created.Id}",
+            new MaterialRequest { Name = created.Name, Unit = created.Unit, Price = created.Price });
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var material = await company.Client.GetFromJsonAsync<MaterialResponse>($"/api/materials/{created.Id}");
+        Assert.Equal(0.0616m, material!.Price);
     }
 
     [Fact]

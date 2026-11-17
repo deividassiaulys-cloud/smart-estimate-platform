@@ -1,7 +1,7 @@
 import { useState, type ChangeEvent } from 'react'
 import type { EstimateMaterialLine } from '../../interfaces/estimate'
 import type { Material } from '../../interfaces/material'
-import { formatMoney, formatQuantity } from '../../utils/format'
+import { formatMoney, formatPrice, formatQuantity } from '../../utils/format'
 import { ui } from '../../utils/ui'
 import InlineNumberField from './InlineNumberField'
 
@@ -70,7 +70,7 @@ export default function EstimateMaterialLineRow({
                   </option>
                   {replacements.map((m) => (
                     <option key={m.id} value={m.id}>
-                      {m.name} ({formatMoney(m.price)})
+                      {m.name} ({formatPrice(m.price)})
                     </option>
                   ))}
                 </select>

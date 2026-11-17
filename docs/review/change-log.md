@@ -1,3 +1,18 @@
+# Change log
+
+## 2026-11-17 — Higher price and norm precision (gap A)
+
+Source: docs/reference/ANALYSIS.md §3, gap A; feature specs/016-price-norm-precision.
+Reason: real sample estimates need sub-cent prices and norms below 0,0005. With 4 / 6 decimal places the
+sample estimate totals 135 414,34 € against 135 414,29 € in the source PDF (135 385,31 € with today's 2 / 3).
+
+- Changed NFR-006 (unit prices shown with 2–4 decimal places) and BR-017 (prices up to 4 decimals, norms up to 6,
+  quantities up to 3; norms shown with up to 6, spec 016 clarification Q1).
+- Changed specs/shared-technical-rules.md: DECIMAL(18,4) for prices and labour rates, DECIMAL(18,6) for norms.
+- Not changed: BR-016 calculation, the Out of Scope list.
+
+---
+
 ## Article X — Code Structure and Design Principles
 
 1. DRY, KISS and YAGNI apply to all code. Duplicated code MUST be extracted when it appears a second time; abstractions, parameters, options and layers that no current requirement needs MUST NOT be added.

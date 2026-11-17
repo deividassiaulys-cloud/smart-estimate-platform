@@ -14,7 +14,7 @@ public sealed record WorkMaterialLineRequest : IValidatableObject
     public int MaterialId { get; init; }
 
     /// <summary>
-    /// Material quantity per unit of work: greater than 0, with at most 3 decimal places.
+    /// Material quantity per unit of work: greater than 0, with at most 6 decimal places.
     /// </summary>
     public decimal ConsumptionNorm { get; init; }
 

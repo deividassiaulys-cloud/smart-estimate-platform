@@ -41,6 +41,21 @@ public sealed class EstimateRequestValidationTests
     }
 
     [Theory]
+    [InlineData("0", true)]
+    [InlineData("0.0616", true)]
+    [InlineData("25.1234", true)]
+    [InlineData("-0.01", false)]
+    [InlineData("0.06164", false)]
+    [InlineData("100000000000000.0000", false)]
+    public void EstimatePriceAndLabourRate_MustBe0OrMoreWithAtMost4Decimals(string price, bool valid)
+    {
+        var value = decimal.Parse(price, CultureInfo.InvariantCulture);
+
+        Assert.Equal(valid, IsValid(new ChangePriceRequest { Price = value }));
+        Assert.Equal(valid, IsValid(new ChangeLabourRateRequest { LabourRate = value }));
+    }
+
+    [Theory]
     [InlineData("")]
     [InlineData("   ")]
     public void EmptyEstimateName_IsRejected(string name) =>

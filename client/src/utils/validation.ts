@@ -17,6 +17,15 @@ export function passwordError(password: string, email: string): string | undefin
   return undefined
 }
 
+/** Decimal places of a unit price (material price, labour rate); mirrors NumberRules.UnitPriceError. */
+export const priceDecimals = 4
+
+/** Decimal places of a norm (consumption norm, labour norm); mirrors NumberRules.NormError. */
+export const normDecimals = 6
+
+/** Decimal places of an estimate quantity; mirrors NumberRules.PositiveQuantityError. */
+export const quantityDecimals = 3
+
 /**
  * Matches a number that is zero or more with at most `places` decimal places; a comma is accepted as the
  * decimal separator. Mirrors the server's checks for immediate feedback.

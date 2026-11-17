@@ -31,7 +31,7 @@ public class Material : ICompanyScoped
     public string Unit { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Price per unit in euros: zero or more, with at most 2 decimal places.
+    /// Price per unit in euros: zero or more, with at most 4 decimal places.
     /// </summary>
     public decimal Price { get; private set; }
 

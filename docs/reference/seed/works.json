@@ -1,0 +1,2978 @@
+[
+ {
+  "source": "RT-001",
+  "name": "Tašelis 28x45 mm ventiliaciniam tarpui",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.042,
+  "lines": [
+   {
+    "material": "Kalibruota mediena 28x45x6000 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.004,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai ESSVE ESSDRIVE 5x100 CorrSeal C4",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 5.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 1 [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-002",
+  "name": "Pelių barjeras",
+  "unit": "m",
+  "labourRate": 25.0,
+  "labourNorm": 0.11,
+  "lines": [
+   {
+    "material": "Apsauginis profilis perforuotas",
+    "materialUnit": "m",
+    "consumptionNorm": 1.1,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena 20x45 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.001,
+    "wastePercent": 0
+   },
+   {
+    "material": "Išorinių GKP sraigtai ESSVE GU 3,9X40 C4 (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-003",
+  "name": "Difuzinė plėvelė iš lauko",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.04,
+  "lines": [
+   {
+    "material": "Tyvek Soft",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.3,
+    "wastePercent": 0
+   },
+   {
+    "material": "Lipni juosta Siga Wigluv 60 mm",
+    "materialUnit": "m",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kabė (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-004",
+  "name": "Priešvėjinė gipso plokštė",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.15,
+  "lines": [
+   {
+    "material": "Priešvėjinis gipsas GTS 9, 9,5x1200x3000 mm",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.2,
+    "wastePercent": 0
+   },
+   {
+    "material": "Išorinių GKP sraigtai ESSVE GU 3,9X40 C4 (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 3.4,
+    "wastePercent": 0
+   },
+   {
+    "material": "Lipni juosta Siga Wigluv 60 mm",
+    "materialUnit": "m",
+    "consumptionNorm": 1.092,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-005",
+  "name": "Karkasas 45x195 mm",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.28,
+  "lines": [
+   {
+    "material": "Kalibruota mediena 45x45 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.001,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena 45x95 mm C24",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.001,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena 45x145 mm C24",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.001,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena 45x195 mm C24",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.04,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena 45x240 mm C24",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.001,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai ESSVE ESSDRIVE 6x120 FZB C1",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 8.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai ESSVE ESSDRIVE 6x90 FZB C1",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 4.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Vinys 34° 3,1X90 M-FUSION C4",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 20.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Virvė",
+    "materialUnit": "m",
+    "consumptionNorm": 0.4,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 2 [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-006",
+  "name": "Vata 200 mm",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.27,
+  "lines": [
+   {
+    "material": "Vata Paroc ultra 35 50 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.09,
+    "wastePercent": 0
+   },
+   {
+    "material": "Vata Paroc ultra 35 100 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.09,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-007",
+  "name": "Garo plėvelė iš vidaus",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.04,
+  "lines": [
+   {
+    "material": "PE plėvelė 200 mk",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.2,
+    "wastePercent": 0
+   },
+   {
+    "material": "Dvipusė Stico lipni juosta 38x50000 mm",
+    "materialUnit": "m",
+    "consumptionNorm": 0.458,
+    "wastePercent": 0
+   },
+   {
+    "material": "Siga Rissan industrial 60x50000 mm",
+    "materialUnit": "m",
+    "consumptionNorm": 1.4,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kabė (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-008",
+  "name": "Karkasas vidaus pusei 45x45 mm",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.042,
+  "lines": [
+   {
+    "material": "Kalibruota mediena 45x45x6000 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.005,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena 45x95x6000 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.001,
+    "wastePercent": 0
+   },
+   {
+    "material": "Reguliuojami sraigtai KARM-L 6X110 FZB",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 7.281,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 1 [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-009",
+  "name": "Vata 50 mm (komplektuojama)",
+  "unit": "m²",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Vata Paroc ultra 35 50 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.045,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-010",
+  "name": "Dažyta eglės lauko apdaila (jungiant į ilgį, išmesti ≥ 2,5 m2 langų plotai)",
+  "unit": "m²",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Dailylentė SD5 18x135x6000 mm",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.2,
+    "wastePercent": 0
+   },
+   {
+    "material": "Dažai (juodi - RAL 9005)",
+    "materialUnit": "l",
+    "consumptionNorm": 0.48,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai terasoms 4,2X55 nerūdijantis plienas A4 (pack 100 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 0.44,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 2 [mech.] (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 0.1,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-011",
+  "name": "Montavimo darbai",
+  "unit": "m²",
+  "labourRate": 35.0,
+  "labourNorm": 0.4,
+  "lines": []
+ },
+ {
+  "source": "RT-012",
+  "name": "Langų nišų mediniai apvadai",
+  "unit": "m²",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Dažyta dailylentė SD7 18x95x6000 mm",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.2,
+    "wastePercent": 0
+   },
+   {
+    "material": "Dažai (juodi - RAL 9005)",
+    "materialUnit": "l",
+    "consumptionNorm": 0.482,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai terasoms 4,2X55 nerūdijantis plienas A4",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 44.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 2 [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.5,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-013",
+  "name": "Montavimo darbai – Langų išorės nišų dailylenčių apvadai (iki 95 mm gylio)",
+  "unit": "m²",
+  "labourRate": 35.0,
+  "labourNorm": 0.6,
+  "lines": []
+ },
+ {
+  "source": "RT-014",
+  "name": "Kalibruota mediena",
+  "unit": "kompl.",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Kalibruota mediena 45x45 mm impr. 1 a. išorės sienoms",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.109,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena 45x145 mm impr. 1 a. išorės sienoms",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.352,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena 45x95 mm impr. 1 a. vidaus sienoms",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.103,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena 45x145 mm impr. 1 a. vidaus sienoms",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.039,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena 45x95 mm neimpr. 2 a. vidaus sienoms",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.043,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena 45x195 mm impr. 2 a. vidaus sienoms",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.088,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai ESSVE ESSDRIVE 6x120 FZB C1",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 500.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 2 [mech.] – 20.00 €",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-015",
+  "name": "Karkasas 45x95 mm cc 600 mm",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.28,
+  "lines": [
+   {
+    "material": "Kalibruota mediena 45x95 mm C24",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.024,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena 45x195 mm C24",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.001,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena 45x240 mm C24",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.001,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai ESSVE ESSDRIVE 6x120 FZB C1 (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Vinys 34° 3,1X90 M-FUSION C4 (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 2.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Virvė",
+    "materialUnit": "m",
+    "consumptionNorm": 0.4,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 2 [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-016",
+  "name": "Vata 100 mm (1 sl.)",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.09,
+  "lines": [
+   {
+    "material": "Vata Paroc ultra 35 100 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.09,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-017",
+  "name": "Vata 100 mm (2 sl. po 50 mm)",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.18,
+  "lines": [
+   {
+    "material": "Vata Paroc ultra 35 50 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.09,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-018",
+  "name": "Juoda garo plėvelė iš abiejų pusių transportavimui",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.08,
+  "lines": [
+   {
+    "material": "Plėvelė 150 mk (juoda)",
+    "materialUnit": "m²",
+    "consumptionNorm": 2.3,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kabė (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-019",
+  "name": "Karkasas 45x145 mm cc 600 mm",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.28,
+  "lines": [
+   {
+    "material": "Kalibruota mediena 45x145 mm C24",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.028,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena 45x195 mm C24",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.001,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena 45x240 mm C24",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.001,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai ESSVE ESSDRIVE 6x120 FZB C1 – 0.09 €",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 10.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Vinys 34° 3,1X90 M-FUSION C4 (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 2.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Virvė",
+    "materialUnit": "m",
+    "consumptionNorm": 0.4,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 2 [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-020",
+  "name": "Vata 150 mm",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.18,
+  "lines": [
+   {
+    "material": "Vata Paroc ultra 35 100 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.09,
+    "wastePercent": 0
+   },
+   {
+    "material": "Vata Paroc ultra 35 50 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.045,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-021",
+  "name": "Juoda garo plėvelė iš abiejų pusių transportavimui – Vidaus sienos 145 mm",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.08,
+  "lines": [
+   {
+    "material": "Plėvelė 150 mk (juoda)",
+    "materialUnit": "m²",
+    "consumptionNorm": 2.3,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kabė (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-022",
+  "name": "Medienos pagrindo plokštė 22 mm",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.2,
+  "lines": [
+   {
+    "material": "Plokštė Lignum Board P5 TG4 22x600x2400 mm",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.05,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai OSB plokštėms 4,2x57 FZB",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 24.636,
+    "wastePercent": 0
+   },
+   {
+    "material": "Klijai drožlių plokštėms ECO 300ML (tūb.)",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.224,
+    "wastePercent": 0
+   },
+   {
+    "material": "Tarpinė guminė 2/3 mm",
+    "materialUnit": "m",
+    "consumptionNorm": 2.24,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-023",
+  "name": "Karkasas 240 mm cc 600 mm",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.3,
+  "lines": [
+   {
+    "material": "Kalibruota mediena 45x45x6000 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.001,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena 45x240 mm C24",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.028,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai ESSVE ESSDRIVE 6x120 FZB C1",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 5.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai ESSVE ESSDRIVE 6x100 FZB C1",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 5.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai WAF 8,0X420 TX40 FZB plačia galva Ottensten",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.486,
+    "wastePercent": 0
+   },
+   {
+    "material": "Vinys 34° 3,1X90 M-FUSION C4 (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 2.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Atrama sijoms pusinė (kairinis) 30x140x2 mm",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.08,
+    "wastePercent": 0
+   },
+   {
+    "material": "Atrama sijoms pusinė (dešininis) 30x140x2 mm",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.08,
+    "wastePercent": 0
+   },
+   {
+    "material": "Atrama sijoms 45x168 mm",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.597,
+    "wastePercent": 0
+   },
+   {
+    "material": "Atrama sijoms 90x175 mm",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.032,
+    "wastePercent": 0
+   },
+   {
+    "material": "Atrama sijoms 140x165 mm",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.016,
+    "wastePercent": 0
+   },
+   {
+    "material": "Ankeriniai sraigtai 5,0X40 CorrSeal C4 (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 1.035,
+    "wastePercent": 0
+   },
+   {
+    "material": "Virvė",
+    "materialUnit": "m",
+    "consumptionNorm": 0.4,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 2 [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-024",
+  "name": "Vata 250 mm",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.27,
+  "lines": [
+   {
+    "material": "Vata Paroc ultra 35 100 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.18,
+    "wastePercent": 0
+   },
+   {
+    "material": "Vata Paroc ultra 35 50 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.045,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-025",
+  "name": "Garo plėvelė iš vidaus (statybvietėje)",
+  "unit": "m²",
+  "labourRate": 35.0,
+  "labourNorm": 0.04,
+  "lines": [
+   {
+    "material": "PE plėvelė 200 mk – 0.40 €",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.2,
+    "wastePercent": 0
+   },
+   {
+    "material": "Dvipusė Stico lipni juosta 38x50000 mm – 0.40 €",
+    "materialUnit": "m",
+    "consumptionNorm": 0.458,
+    "wastePercent": 0
+   },
+   {
+    "material": "Siga Rissan industrial 60x50000 mm",
+    "materialUnit": "m",
+    "consumptionNorm": 1.4,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kabė (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-026",
+  "name": "Karkasas vidaus pusei 45x45 mm cc 400 mm (statybvietėje)",
+  "unit": "m²",
+  "labourRate": 35.0,
+  "labourNorm": 0.042,
+  "lines": [
+   {
+    "material": "Kalibruota mediena 45x45x6000 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.006,
+    "wastePercent": 0
+   },
+   {
+    "material": "Reguliuojami sraigtai KARM-L 6X110 FZB – 0.09 €",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 8.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 1 [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-027",
+  "name": "Vata 50 mm (komplektuojama) – 2 a. Perdanga 22+240+45 mm",
+  "unit": "m²",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Vata Paroc ultra 35 50 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.045,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-028",
+  "name": "Tašelis 45x45 mm cc 300 mm",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.042,
+  "lines": [
+   {
+    "material": "Kalibruota mediena 45x45x6000 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.007,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai ESSVE ESSDRIVE 5x120 FZB C4",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 4.402,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 1 [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-029",
+  "name": "Tašelis 45x45 mm cc 600 mm ventiliacinis",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.042,
+  "lines": [
+   {
+    "material": "Kalibruota mediena 45x45x6000 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.005,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai ESSVE ESSDRIVE 5x120 FZB C4",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 4.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Izoliacinė juosta 3 mm x 45 mm (30 m)",
+    "materialUnit": "m",
+    "consumptionNorm": 1.834,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kabė (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 0.3,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 1 [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-030",
+  "name": "Difuzinė plėvelė Tyvek Pro + tape",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.044,
+  "lines": [
+   {
+    "material": "Tyvek PRO + tape",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.3,
+    "wastePercent": 0
+   },
+   {
+    "material": "Lipni juosta Siga Wigluv 60 mm",
+    "materialUnit": "m",
+    "consumptionNorm": 1.1,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kabė (pack 10 vnt.) – 0.03 €",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 1.2,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-031",
+  "name": "Lentų paklotas stogo dangai 20x145 mm visu plotu",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.08,
+  "lines": [
+   {
+    "material": "Kalibruota mediena 20x145x5000 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.021,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai ESSVE ESSDRIVE 5x60 CorrSeal C4",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 23.843,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 1 [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-032",
+  "name": "Gegnių karkasas 45x240 mm cc 600 mm",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.3,
+  "lines": [
+   {
+    "material": "Kalibruota mediena 45x45x6000 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.001,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena gegnėms 45x145 mm C24",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.001,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena gegnėms 45x195 mm C24",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.001,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena gegnėms 45x240 mm C24",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.03,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena stygoms 45x240x3600 mm C24",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.012,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai WAF 8,0X420 TX40 FZB plačia galva Ottensten",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.367,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai ESSVE ESSDRIVE 6x120 FZB C1",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 6.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai ESSVE ESSDRIVE 6x90 FZB C1 – 0.09 €",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 2.201,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kampas 90x90x65x2,5 sustiprintas",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.147,
+    "wastePercent": 0
+   },
+   {
+    "material": "Atrama sijoms pusinė (kairinis) 30x140x2 mm",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.037,
+    "wastePercent": 0
+   },
+   {
+    "material": "Atrama sijoms pusinė (dešininis) 30x140x2 mm",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.037,
+    "wastePercent": 0
+   },
+   {
+    "material": "Atrama sijoms 45x168 mm",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.88,
+    "wastePercent": 0
+   },
+   {
+    "material": "Ankeriniai sraigtai 5,0X40 CorrSeal C4 (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 1.761,
+    "wastePercent": 0
+   },
+   {
+    "material": "Virvė",
+    "materialUnit": "m",
+    "consumptionNorm": 0.4,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 2 [mech.] – 0.50 €",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-033",
+  "name": "Vata 250 mm – Šlaitinio stogo konstrukcija skydais 45+45+240+45 mm",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.27,
+  "lines": [
+   {
+    "material": "Vata Paroc ultra 35 50 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.045,
+    "wastePercent": 0
+   },
+   {
+    "material": "Vata Paroc ultra 35 100 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.18,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-034",
+  "name": "Garo plėvelė iš vidaus (statybvietėje) – Šlaitinio stogo konstrukcija skydais 45+45+240+45 mm",
+  "unit": "m²",
+  "labourRate": 35.0,
+  "labourNorm": 0.044,
+  "lines": [
+   {
+    "material": "PE plėvelė 200 mk",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.2,
+    "wastePercent": 0
+   },
+   {
+    "material": "Siga Rissan industrial 60x50000 mm",
+    "materialUnit": "m",
+    "consumptionNorm": 1.4,
+    "wastePercent": 0
+   },
+   {
+    "material": "Dvipusė Stico lipni juosta 38x50000 mm",
+    "materialUnit": "m",
+    "consumptionNorm": 0.458,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kabė (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-035",
+  "name": "Karkasas vidaus pusei 45x45 mm (statybvietėje)",
+  "unit": "m²",
+  "labourRate": 35.0,
+  "labourNorm": 0.042,
+  "lines": [
+   {
+    "material": "Kalibruota mediena 45x45x6000 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.006,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai Essdrive 5,0X80 FZB C1",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 5.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai Essdrive 5,0X90 FZB C1",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 5.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 1 [mech.] (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 0.1,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-036",
+  "name": "Vata 50 mm (komplektuojama) – Šlaitinio stogo konstrukcija skydais 45+45+240+45 mm",
+  "unit": "m²",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Vata Paroc ultra 35 50 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.045,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-037",
+  "name": "Terasinė lenta Termo-D pušies 26x140 mm AB su paslėptu tvirtinimu (variantas)",
+  "unit": "m²",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Terasinė lenta Termo-D pušies 26x140 mm AB įvairūs ilgiai",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.3,
+    "wastePercent": 0
+   },
+   {
+    "material": "Nerūdijančio plieno medsraigčiai 4.2x42",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 23.557,
+    "wastePercent": 0
+   },
+   {
+    "material": "Terasos tvirtinimo detalės BROfix",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 23.557,
+    "wastePercent": 0
+   },
+   {
+    "material": "EPDM juosta 50x25000 mm (Lemora)",
+    "materialUnit": "m",
+    "consumptionNorm": 2.5,
+    "wastePercent": 0
+   },
+   {
+    "material": "Transporto paslaugos [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.029,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 2 [mech.] – 0.50 €",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.472,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-038",
+  "name": "Terasinė lenta 28x145 mm rudai impregnuota eglė",
+  "unit": "m²",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Eglė terasa, lygi, impregnuota 28x145x6000 mm",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.232,
+    "wastePercent": 0
+   },
+   {
+    "material": "EPDM juosta 50x25000 mm (Lemora)",
+    "materialUnit": "m",
+    "consumptionNorm": 2.5,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtas terasoms HDS 4,8X60 A4",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 35.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 2 [mech.] – 0.50 €",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-039",
+  "name": "Montavimo darbas",
+  "unit": "m²",
+  "labourRate": 35.0,
+  "labourNorm": 0.5,
+  "lines": []
+ },
+ {
+  "source": "RT-040",
+  "name": "Šoninės lentelės kraštų uždarymui Termo-D (variantas)",
+  "unit": "m²",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Terasinė lenta Termo-D pušies 26x140 mm AB įvairūs ilgiai",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.3,
+    "wastePercent": 0
+   },
+   {
+    "material": "Nerūdijančio plieno medsraigčiai 4.2x42",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 40.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Terasos tvirtinimo detalės BROfix",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 40.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 2 [mech.] – 0.50 €",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.472,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-041",
+  "name": "Šoninės lentelės kraštų uždarymui (viena eilė iš priekio)",
+  "unit": "m²",
+  "labourRate": 35.0,
+  "labourNorm": 0.5,
+  "lines": [
+   {
+    "material": "Eglė terasa, lygi, impregnuota 28x145x6000 mm",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtas terasoms HDS 4,8X60 A4",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 40.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 2 [mech.] – 0.50 €",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-042",
+  "name": "Karkasas 45x145 mm (ruošiamas, pripjaunamas objekte)",
+  "unit": "m²",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Kalibruota mediena 45x145x6000 mm impr. rudai",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.043,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai CONSTRUCTION-WAF 6,0X80 CS",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 7.868,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai ESSVE ESSDRIVE 6x120 CorrSeal C4",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 3.934,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai CONSTRUCTION-WAF 8,0X200 FZB-25",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 3.934,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai CONSTRUCTION-WAF 8,0X60 CS",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.967,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 2 [mech.] (pack 10 vnt.) – 15.74 €",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 0.1,
+    "wastePercent": 0
+   },
+   {
+    "material": "Icopal Baltbit PF 160 (apatinis 10 m2)",
+    "materialUnit": "m²",
+    "consumptionNorm": 0.157,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-043",
+  "name": "Montavimo darbas – Terasa 28+145 mm",
+  "unit": "m²",
+  "labourRate": 35.0,
+  "labourNorm": 0.6,
+  "lines": []
+ },
+ {
+  "source": "RT-044",
+  "name": "Vėjalentės galuose 3x18x135 mm",
+  "unit": "m²",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Dažyta dailylentė SD5 18x135x6000 mm",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.1,
+    "wastePercent": 0
+   },
+   {
+    "material": "Dažai (juodi - RAL 9005) – 9.50 €",
+    "materialUnit": "l",
+    "consumptionNorm": 0.44,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai terasoms 4,2X55 nerūdijantis plienas A4",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 44.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 2 [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.5,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-045",
+  "name": "Vėjalentės ties loveliais 1x18x145 mm",
+  "unit": "m²",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Dažyta dailylentė SD7 18x145x6000 mm",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.1,
+    "wastePercent": 0
+   },
+   {
+    "material": "Dažai (juodi - RAL 9005)",
+    "materialUnit": "l",
+    "consumptionNorm": 0.42,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai terasoms 4,2X55 nerūdijantis plienas A4",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 44.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 2 [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.5,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-046",
+  "name": "Pakalimai dengtai terasai",
+  "unit": "m²",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Dažyta dailylentė SD7 18x95x6000 mm",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.05,
+    "wastePercent": 0
+   },
+   {
+    "material": "Dažai (juodi - RAL 9005)",
+    "materialUnit": "l",
+    "consumptionNorm": 0.42,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai terasoms 4,2X55 nerūdijantis plienas A4",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 60.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Tinklelis",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.1,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kabė (pack 10 vnt.) – 0.04 €",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 1.2,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-047",
+  "name": "Pakalimai stogo apačioje, ties loveliu 1",
+  "unit": "m²",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Dažyta dailylentė SD7 18x95x6000 mm",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.05,
+    "wastePercent": 0
+   },
+   {
+    "material": "Dažai (juodi - RAL 9005)",
+    "materialUnit": "l",
+    "consumptionNorm": 0.42,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai terasoms 4,2X55 nerūdijantis plienas A4",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 60.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Tinklelis",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.1,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kabė (pack 10 vnt.) – 0.04 €",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 1.2,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-048",
+  "name": "Pakalimai stogo apačioje, ties loveliu 2",
+  "unit": "m²",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Dažyta dailylentė SD7 18x95x6000 mm",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.05,
+    "wastePercent": 0
+   },
+   {
+    "material": "Dažai (juodi - RAL 9005)",
+    "materialUnit": "l",
+    "consumptionNorm": 0.42,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai terasoms 4,2X55 nerūdijantis plienas A4",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 60.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Tinklelis",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.1,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kabė (pack 10 vnt.) – 0.04 €",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 1.2,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-049",
+  "name": "Montavimo darbai – Pakalimai",
+  "unit": "m²",
+  "labourRate": 35.0,
+  "labourNorm": 0.75,
+  "lines": []
+ },
+ {
+  "source": "RT-050",
+  "name": "Mediniai turėklai iki 1,2 m aukščio",
+  "unit": "m",
+  "labourRate": 25.0,
+  "labourNorm": 0.712,
+  "lines": [
+   {
+    "material": "Kalibruota mediena 95x95 mm C24",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.028,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena 45x95 mm C24",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.02,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai ESSVE ESSDRIVE 6x140 FZB C4",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 10.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai ESSVE ESSDRIVE 6x90 FZB C4",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 10.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai terasoms 4,2X55 nerūdijantis plienas A4",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 60.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 2 [mech.] – 0.50 €",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Dažai (juodi - RAL 9005)",
+    "materialUnit": "l",
+    "consumptionNorm": 0.623,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai (teptukai ir t.t.) [mech.] (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 0.1,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kampas 90x90x65x2,5 sustiprintas",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 2.726,
+    "wastePercent": 0
+   },
+   {
+    "material": "Ankeriniai sraigtai 5,0X40 CorrSeal C4 (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 4.361,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-051",
+  "name": "Montavimo darbai",
+  "unit": "m",
+  "labourRate": 35.0,
+  "labourNorm": 0.5,
+  "lines": []
+ },
+ {
+  "source": "RT-052",
+  "name": "Langai ir lauko durys",
+  "unit": "m²",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Gaminiai (langai, durys)",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Transportavimas (reisas) [mech.]",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 0.014,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-053",
+  "name": "Palangė (preliminariai)",
+  "unit": "m",
+  "labourRate": 35.0,
+  "labourNorm": 0.05,
+  "lines": [
+   {
+    "material": "Dažai (juodi - RAL 9005) – 9.00 €",
+    "materialUnit": "l",
+    "consumptionNorm": 0.124,
+    "wastePercent": 0
+   },
+   {
+    "material": "Palanginis profilis 45x95mm",
+    "materialUnit": "m",
+    "consumptionNorm": 1.667,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai SK Eurotec 6x160 FZB C1",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 2.5,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 2 [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.5,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-054",
+  "name": "Darbas ir montavimo medžiagos",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.8,
+  "lines": [
+   {
+    "material": "Siga Fentrim IS 2",
+    "materialUnit": "m",
+    "consumptionNorm": 3.2,
+    "wastePercent": 0
+   },
+   {
+    "material": "Siga Fentrim IS 20",
+    "materialUnit": "m",
+    "consumptionNorm": 3.2,
+    "wastePercent": 0
+   },
+   {
+    "material": "Elastingos putos Flexifoam 750 ml",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.355,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai Cutters 5x50 FZB C1",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 3.593,
+    "wastePercent": 0
+   },
+   {
+    "material": "Distancinės kaladėlės",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 5.921,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 2 [mech.] – 0.70 €",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-055",
+  "name": "Stogo langas Velux GGL3066 550x980 PREMIUM PLUS Uw=1.0",
+  "unit": "kompl.",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Stogo langas Velux GGL3066 550x980 PREMIUM PLUS Uw=1.0, atveriamas per vidurį",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Tarpinės komplektas Velux EDW 2000 BDX 550x980 banguotai dangai",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Velux garų izoliacija BBX 0000 550x980",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-056",
+  "name": "Montavimo darbai",
+  "unit": "kompl.",
+  "labourRate": 40.0,
+  "labourNorm": 5.0,
+  "lines": []
+ },
+ {
+  "source": "RT-057",
+  "name": "Klijuota mediena kolonoms",
+  "unit": "kompl.",
+  "labourRate": 65.0,
+  "labourNorm": 1.344,
+  "lines": [
+   {
+    "material": "Klijuota mediena GL24 (kolonos 200x200x2400 mm 10 vnt.)",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.96,
+    "wastePercent": 0
+   },
+   {
+    "material": "Klijuota mediena GL24 (kolonos 200x200x3600 mm 1 vnt.)",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.144,
+    "wastePercent": 0
+   },
+   {
+    "material": "Klijuota mediena GL24 (kolonos 200x200x6000 mm 1 vnt.)",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.24,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-058",
+  "name": "Klijuota mediena sijoms",
+  "unit": "kompl.",
+  "labourRate": 65.0,
+  "labourNorm": 3.54,
+  "lines": [
+   {
+    "material": "Klijuota mediena GL24 (sija 100x240x8500 mm 2 vnt.)",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.408,
+    "wastePercent": 0
+   },
+   {
+    "material": "Klijuota mediena GL24 (sija 140x240x6600 mm 1 vnt.)",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.222,
+    "wastePercent": 0
+   },
+   {
+    "material": "Klijuota mediena GL24 (sija 200x200x11100 mm 2 vnt.)",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.888,
+    "wastePercent": 0
+   },
+   {
+    "material": "Klijuota mediena GL24 (sija 195x400x9400 mm 1 vnt.)",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.733,
+    "wastePercent": 0
+   },
+   {
+    "material": "Klijuota mediena GL24 (sija 200x200x4700 mm 2 vnt.)",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.376,
+    "wastePercent": 0
+   },
+   {
+    "material": "Klijuota mediena GL24 (sija 140x280x6200 mm 1 vnt.)",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.243,
+    "wastePercent": 0
+   },
+   {
+    "material": "Klijuota mediena GL24 (sija 200x200x5200 mm 1 vnt.)",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.208,
+    "wastePercent": 0
+   },
+   {
+    "material": "Klijuota mediena GL24 (sija 200x280x8250 mm 1 vnt.)",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.462,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medienos pristatymas į įmonę [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-059",
+  "name": "Matomų dalių dažymas rankomis 2 k. (kolonos, 53,76 m2)",
+  "unit": "kompl.",
+  "labourRate": 25.0,
+  "labourNorm": 8.0,
+  "lines": [
+   {
+    "material": "Dažai (juodi - RAL 9005)",
+    "materialUnit": "l",
+    "consumptionNorm": 7.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai (teptukai ir t.t.) [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-060",
+  "name": "Matomų dalių dažymas rankomis 2 k. (sijos, 140,66 m2)",
+  "unit": "kompl.",
+  "labourRate": 25.0,
+  "labourNorm": 20.0,
+  "lines": [
+   {
+    "material": "Dažai (juodi - RAL 9005) – 12.00 €",
+    "materialUnit": "l",
+    "consumptionNorm": 5.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai (teptukai ir t.t.) [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-061",
+  "name": "Viršutinė horizontali palangėlė (langams ir durims)",
+  "unit": "kompl.",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Skardos lankstinukas A (viršutinė palangėlė)",
+    "materialUnit": "m",
+    "consumptionNorm": 2.7,
+    "wastePercent": 0
+   },
+   {
+    "material": "Skardos lankstinukas B (viršutinė palangėlė)",
+    "materialUnit": "m",
+    "consumptionNorm": 2.7,
+    "wastePercent": 0
+   },
+   {
+    "material": "Montavimo sraigtai Li 4,2x25 (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 10.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-062",
+  "name": "Montavimo darbas",
+  "unit": "m",
+  "labourRate": 35.0,
+  "labourNorm": 0.1,
+  "lines": []
+ },
+ {
+  "source": "RT-063",
+  "name": "Apatinė horizontali palangė (langams)",
+  "unit": "kompl.",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Skardos lankstinukas (apatinė palangė langams)",
+    "materialUnit": "m",
+    "consumptionNorm": 7.5,
+    "wastePercent": 0
+   },
+   {
+    "material": "Montavimo sraigtai Li 4,2x25 (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 5.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-064",
+  "name": "Apatinė horizontali palangėlė (durims ir vitrinoms)",
+  "unit": "kompl.",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Skardos lankstinukas (apatinė palangėlė durims)",
+    "materialUnit": "m",
+    "consumptionNorm": 7.5,
+    "wastePercent": 0
+   },
+   {
+    "material": "Montavimo sraigtai Li 4,2x25 (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 5.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-065",
+  "name": "Montavimo darbas – Skardos palangės preliminariai",
+  "unit": "m",
+  "labourRate": 35.0,
+  "labourNorm": 0.2,
+  "lines": []
+ },
+ {
+  "source": "RT-066",
+  "name": "Kampas į lataką",
+  "unit": "kompl.",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Lygios skardos laštakis 100x140 mm",
+    "materialUnit": "m",
+    "consumptionNorm": 129.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai į metalą 4,8x20 mm (250 vnt.) (pak.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 3.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-067",
+  "name": "Namo sienų ankeravimas",
+  "unit": "m",
+  "labourRate": 35.0,
+  "labourNorm": 0.3,
+  "lines": []
+ },
+ {
+  "source": "RT-068",
+  "name": "Namo montavimas",
+  "unit": "m²",
+  "labourRate": 35.0,
+  "labourNorm": 1.7,
+  "lines": []
+ },
+ {
+  "source": "RT-069",
+  "name": "Stoginių montavimas",
+  "unit": "m²",
+  "labourRate": 35.0,
+  "labourNorm": 0.7,
+  "lines": []
+ },
+ {
+  "source": "RT-070",
+  "name": "Ankeravimo medžiagos",
+  "unit": "kompl.",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Ankeris ESSVE Golden M12/45/156 (cc 0,6 - 0,8 m) (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 17.5,
+    "wastePercent": 0
+   },
+   {
+    "material": "Juosta užtvara XSS002 kapiliar. drėgm. 200x40000 BA/1 (pack 10 m)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 0.7,
+    "wastePercent": 0
+   },
+   {
+    "material": "Juosta užtvara XSS002 kapiliar. drėgm. 120x40000 BA/1",
+    "materialUnit": "m",
+    "consumptionNorm": 17.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-071",
+  "name": "Medžiagos namo sumontavimui preliminariai (tarpinės, varžtai, putos, gruntas, Siga prie pamato)",
+  "unit": "m²",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Smulkios montavimo medžiagos",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Mechanizmai [mech.] (pack 10 m²)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 0.1,
+    "wastePercent": 0
+   },
+   {
+    "material": "Juosta sand. XSI 001 22 120x15000 BA/5",
+    "materialUnit": "m",
+    "consumptionNorm": 1.167,
+    "wastePercent": 0
+   },
+   {
+    "material": "Klijai medienai Stenlim PRO PU D4 750 ml (tūb.)",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.045,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai CONSTRUCTION-WAF 6,0X90 FZB-100",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 3.272,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai CONSTRUCTION-WAF 8,0X160 FZB-50",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.963,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai CONSTRUCTION-WAF 6,0X100 FZB-100",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 4.581,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai CONSTRUCTION-WAF 6,0X120 FZB-50",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.636,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai CONSTRUCTION-WAF 8,0X200 FZB-25 – 0.42 €",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.636,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai CONSTRUCTION-WAF 8,0X240 FZB-25",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.636,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai CONSTRUCTION-WAF 8,0X320 FZB-25",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.636,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai CONSTRUCTION-WAF 8,0X400 FZB-25",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.309,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai CONSTRUCTION-WAF 6,0X140 FZB-50",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.636,
+    "wastePercent": 0
+   },
+   {
+    "material": "Siga Rissan 100 (100mm x 25m)",
+    "materialUnit": "m",
+    "consumptionNorm": 0.446,
+    "wastePercent": 0
+   },
+   {
+    "material": "Siga Wigluv 100 (100mm x 25m)",
+    "materialUnit": "m",
+    "consumptionNorm": 0.446,
+    "wastePercent": 0
+   },
+   {
+    "material": "Siga Rissan industrial 60x50000 mm – 0.57 €",
+    "materialUnit": "m",
+    "consumptionNorm": 0.743,
+    "wastePercent": 0
+   },
+   {
+    "material": "Lipni juosta Siga Wigluv 60 mm – 0.76 €",
+    "materialUnit": "m",
+    "consumptionNorm": 0.743,
+    "wastePercent": 0
+   },
+   {
+    "material": "Siga gruntas Docskin 1 kg (ind.)",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.022,
+    "wastePercent": 0
+   },
+   {
+    "material": "Dvipusė lipni juosta Siga twinet 20x50000 mm",
+    "materialUnit": "m",
+    "consumptionNorm": 1.487,
+    "wastePercent": 0
+   },
+   {
+    "material": "Distancinės kaladėlės",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 2.693,
+    "wastePercent": 0
+   },
+   {
+    "material": "Montavimo sraigtai Li 4,2x25 (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 0.067,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-072",
+  "name": "Pakrovimas (d.d.)",
+  "unit": "kompl.",
+  "labourRate": 25.0,
+  "labourNorm": 12.0,
+  "lines": [
+   {
+    "material": "Krautuvas/telferis [mech.]",
+    "materialUnit": "val.",
+    "consumptionNorm": 5.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-073",
+  "name": "Transportavimo ir montavimo technika",
+  "unit": "kompl.",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Technikos transportavimas (abi kryptys) (1 km) [mech.]",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 710.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Montavimo technika [mech.]",
+    "materialUnit": "val.",
+    "consumptionNorm": 5.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-074",
+  "name": "Samdomas transportas",
+  "unit": "kompl.",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Samdomas transportas (reisas) [mech.]",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-075",
+  "name": "Darbuotojų transportavimas",
+  "unit": "kompl.",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Darbuotojų transportavimas (abi kryptys) (1 km) [mech.]",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 710.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-076",
+  "name": "Darbo brėžinių paruošimas",
+  "unit": "vnt.",
+  "labourRate": 10.0,
+  "labourNorm": 196.295,
+  "lines": []
+ },
+ {
+  "source": "RT-077",
+  "name": "Fermacell plokštės 1 sl. (tik komplektavimas)",
+  "unit": "m²",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Fermacell GPP 2600x1200x12,5 mm plokštė",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.15,
+    "wastePercent": 0
+   },
+   {
+    "material": "Fermacell GPP sraigtai 3,9x30 mm",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 24.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Fermacell klijai (310 ml)",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.06,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-078",
+  "name": "Fermacell plokščių tvirtinimas ant sienų statybvietėje",
+  "unit": "m²",
+  "labourRate": 35.0,
+  "labourNorm": 0.8,
+  "lines": []
+ },
+ {
+  "source": "RT-079",
+  "name": "Vienos pusės montuojamos ceche Fermacell plokštės 1 sl.",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.2,
+  "lines": [
+   {
+    "material": "Fermacell GPP 2600x1200x12,5 mm plokštė",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.15,
+    "wastePercent": 0
+   },
+   {
+    "material": "Fermacell GPP sraigtai 3,9x30 mm",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 24.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Fermacell klijai (310 ml)",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.06,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai [mech.] – 0.60 €",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-080",
+  "name": "Knauf RED plokštės 1 sl. (tik medžiagos)",
+  "unit": "m²",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Knauf RED 3000x1200x12,5 mm plokštė",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.1,
+    "wastePercent": 0
+   },
+   {
+    "material": "GKP sraigtai juostoje 3,9X30 FZB",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 26.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Glaistas Knauf UNIFLOTT 25 kg",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.007,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai [mech.] – 0.60 €",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 2.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-081",
+  "name": "Pirmo sluoksnio plokščių tvirtinimas statybvietėje (+ siūlių aptaisymas)",
+  "unit": "m²",
+  "labourRate": 35.0,
+  "labourNorm": 1.0,
+  "lines": []
+ },
+ {
+  "source": "RT-082",
+  "name": "Antro sluoksnio plokščių tvirtinimas statybvietėje",
+  "unit": "m²",
+  "labourRate": 35.0,
+  "labourNorm": 0.6,
+  "lines": []
+ },
+ {
+  "source": "RT-083",
+  "name": "Stacbond aliuminio kompozitinė plokštė 4x1500x5000 mm SOLID COLLECTION",
+  "unit": "m²",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Stacbond aliuminio kompozitinė plokštė 4x1500x5000 mm",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.1,
+    "wastePercent": 0
+   },
+   {
+    "material": "Juosta EPDM PRO 75 50 mm x 25 m (Lemora)",
+    "materialUnit": "m",
+    "consumptionNorm": 1.584,
+    "wastePercent": 0
+   },
+   {
+    "material": "Juosta EPDM PRO 75 100 mm x 25 m (Lemora)",
+    "materialUnit": "m",
+    "consumptionNorm": 1.109,
+    "wastePercent": 0
+   },
+   {
+    "material": "Lipni juosta Siga Wigluv black 60 mm",
+    "materialUnit": "m",
+    "consumptionNorm": 0.544,
+    "wastePercent": 0
+   },
+   {
+    "material": "Varžteliai (komplektas)",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 20.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Pristatymas [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.745,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai (deimantiniai diskai, grąžtai) [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.003,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-084",
+  "name": "Stacbond plokščių montavimo darbas",
+  "unit": "m²",
+  "labourRate": 35.0,
+  "labourNorm": 0.5,
+  "lines": []
+ },
+ {
+  "source": "RT-085",
+  "name": "Vertikali Thermo dailylentė 19x117 mm AB (jungiant į ilgį)",
+  "unit": "m²",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Thermo dailylentė MAGDĖ 19x117 mm AB (už dengiamą plotą)",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.1,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai terasoms 4,2X55 nerūdijantis plienas A4 (pack 100 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 0.3,
+    "wastePercent": 0
+   },
+   {
+    "material": "Transportavimas [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.005,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 2 [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-086",
+  "name": "Thermo dailylenčių montavimo darbas",
+  "unit": "m²",
+  "labourRate": 35.0,
+  "labourNorm": 0.7,
+  "lines": []
+ },
+ {
+  "source": "RT-087",
+  "name": "Tašelis 28x95 mm horizontalus apdailai",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.042,
+  "lines": [
+   {
+    "material": "Kalibruota mediena 28x95x6000 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.008,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai ESSVE ESSDRIVE 5x120 FZB C4",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 6.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 1 [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-088",
+  "name": "Karkasas 45x145 mm (lauko siena)",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.28,
+  "lines": [
+   {
+    "material": "Kalibruota mediena 45x45 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.001,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena 45x95 mm C24",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.004,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena 45x145 mm C24",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.034,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena 45x195 mm C24",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.002,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena 45x240 mm C24",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.005,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai ESSVE ESSDRIVE 6x120 FZB C1",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 8.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai ESSVE ESSDRIVE 6x90 FZB C1",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 4.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Vinys 34° 3,1X90 M-FUSION C4",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 20.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Virvė",
+    "materialUnit": "m",
+    "consumptionNorm": 0.4,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 2 [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-089",
+  "name": "Vata 50 mm montavimo darbas (statybvietėje)",
+  "unit": "m²",
+  "labourRate": 35.0,
+  "labourNorm": 0.09,
+  "lines": []
+ },
+ {
+  "source": "RT-090",
+  "name": "Karkasas 240 mm cc 300 mm (perdanga)",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.3,
+  "lines": [
+   {
+    "material": "Kalibruota mediena 45x45x6000 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.001,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena 45x240 mm C24",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.084,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena 45x145 mm C24",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.003,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai ESSVE ESSDRIVE 6x120 FZB C1",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 5.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai ESSVE ESSDRIVE 6x100 FZB C1",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 5.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai WAF 8,0X420 TX40 FZB plačia galva Ottensten",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.001,
+    "wastePercent": 0
+   },
+   {
+    "material": "Vinys 34° 3,1X90 M-FUSION C4",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 20.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Atrama sijoms pusinė (kairinis) 30x140x2 mm",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.027,
+    "wastePercent": 0
+   },
+   {
+    "material": "Atrama sijoms pusinė (dešininis) 30x140x2 mm",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.027,
+    "wastePercent": 0
+   },
+   {
+    "material": "Atrama sijoms 45x168 mm",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.332,
+    "wastePercent": 0
+   },
+   {
+    "material": "Atrama sijoms 90x175 mm",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.04,
+    "wastePercent": 0
+   },
+   {
+    "material": "Ankeriniai sraigtai 5,0X40 CorrSeal C4 (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 0.829,
+    "wastePercent": 0
+   },
+   {
+    "material": "Virvė",
+    "materialUnit": "m",
+    "consumptionNorm": 0.4,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 2 [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-091",
+  "name": "Gegnių karkasas 45x240 mm cc 400 mm",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.4,
+  "lines": [
+   {
+    "material": "Kalibruota mediena 45x45x6000 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.003,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena gegnėms 45x145 mm C24",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.002,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kalibruota mediena gegnėms 45x240 mm C24",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.053,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai CONSTRUCTION-WAF 8,0X320 FZB-25",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.269,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai ESSVE ESSDRIVE 6x120 FZB C1",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 2.677,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kampas 90x190x65x2,5 sustiprintas",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.427,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kampas 90x90x65x2,5 sustiprintas",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.644,
+    "wastePercent": 0
+   },
+   {
+    "material": "Ankeriniai sraigtai 5,0X40 CorrSeal C4 (pack 10 vnt.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 0.254,
+    "wastePercent": 0
+   },
+   {
+    "material": "Montavimo perforuota juosta 40x2 mm",
+    "materialUnit": "m",
+    "consumptionNorm": 0.305,
+    "wastePercent": 0
+   },
+   {
+    "material": "Virvė",
+    "materialUnit": "m",
+    "consumptionNorm": 0.4,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 2 [mech.] – 0.50 €",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-092",
+  "name": "Lentų paklotas stogo dangai 20x145 mm kas antra lenta",
+  "unit": "m²",
+  "labourRate": 25.0,
+  "labourNorm": 0.042,
+  "lines": [
+   {
+    "material": "Kalibruota mediena 20x145x5000 mm",
+    "materialUnit": "m³",
+    "consumptionNorm": 0.011,
+    "wastePercent": 0
+   },
+   {
+    "material": "Medsraigčiai ESSVE ESSDRIVE 5x60 CorrSeal C4",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 15.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai 1 [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-093",
+  "name": "Sinusinė skardos stogo danga",
+  "unit": "m²",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Skardinė stogo danga sinusinis profilis FB 18 0,5 mm juoda",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.2,
+    "wastePercent": 0
+   },
+   {
+    "material": "Tarpinė universali 1000 mm",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.135,
+    "wastePercent": 0
+   },
+   {
+    "material": "Kraigo juosta 5 m (rul.)",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.027,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai į medį 4,8x20 (250 vnt.) (pak.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 0.024,
+    "wastePercent": 0
+   },
+   {
+    "material": "Sraigtai į medį 4,8x28 (250 vnt.) (pak.)",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 0.054,
+    "wastePercent": 0
+   },
+   {
+    "material": "Dažai matiniai 24 ml",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.004,
+    "wastePercent": 0
+   },
+   {
+    "material": "Pakuotė [mech.]",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.005,
+    "wastePercent": 0
+   },
+   {
+    "material": "Transportavimas (reisas) [mech.] – 160.00 €",
+    "materialUnit": "kompl.",
+    "consumptionNorm": 0.005,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-094",
+  "name": "Sinusinės stogo dangos montavimo darbas",
+  "unit": "m²",
+  "labourRate": 35.0,
+  "labourNorm": 0.45,
+  "lines": []
+ },
+ {
+  "source": "RT-095",
+  "name": "Balkono bituminė danga 2 sl.",
+  "unit": "m²",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Danga bituminė savalipė Elastoflex SA P 1x10 viršutinė",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.2,
+    "wastePercent": 0
+   },
+   {
+    "material": "Danga bituminė Mida Self PV S2,0 s apatinė",
+    "materialUnit": "m²",
+    "consumptionNorm": 1.2,
+    "wastePercent": 0
+   },
+   {
+    "material": "Gruntas bituminis Icopal Siplast Primer 25 l",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.031,
+    "wastePercent": 0
+   },
+   {
+    "material": "Įrankiai ir įrengimai [mech.] – 1.00 €",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 7.822,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-096",
+  "name": "Bituminės dangos 2 sl. montavimo darbas",
+  "unit": "m²",
+  "labourRate": 35.0,
+  "labourNorm": 0.35,
+  "lines": []
+ },
+ {
+  "source": "RT-097",
+  "name": "Dvitėjinė sija HEB 220 S355J2+AR",
+  "unit": "m",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Dvit. sija HEB 220 S355J2+AR",
+    "materialUnit": "m",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Pjovimas BOMAR staklėmis",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.166,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-098",
+  "name": "Dvitėjinė sija HEA 200 S355J2+AR",
+  "unit": "m",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Dvit. sija HEA 200 S355J2+AR",
+    "materialUnit": "m",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Pjovimas BOMAR staklėmis – 18.75 €",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.166,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-099",
+  "name": "Dvitėjinė sija HEA 140 S355J2+AR",
+  "unit": "m",
+  "labourRate": 0.0,
+  "labourNorm": 0.0,
+  "lines": [
+   {
+    "material": "Dvit. sija HEA 140 S355J2+AR",
+    "materialUnit": "m",
+    "consumptionNorm": 1.0,
+    "wastePercent": 0
+   },
+   {
+    "material": "Pjovimas BOMAR staklėmis – 16.05 €",
+    "materialUnit": "vnt.",
+    "consumptionNorm": 0.166,
+    "wastePercent": 0
+   }
+  ]
+ },
+ {
+  "source": "RT-100",
+  "name": "Namo sienų montavimas (daugiabutis, 2 žm.val./m2)",
+  "unit": "m²",
+  "labourRate": 35.0,
+  "labourNorm": 2.0,
+  "lines": []
+ },
+ {
+  "source": "RT-101",
+  "name": "Balkonų ir jų nišų įrengimas",
+  "unit": "m²",
+  "labourRate": 35.0,
+  "labourNorm": 1.25,
+  "lines": []
+ },
+ {
+  "source": "RT-102",
+  "name": "Statikos projekto paruošimas",
+  "unit": "vnt.",
+  "labourRate": 3000.0,
+  "labourNorm": 1.0,
+  "lines": []
+ }
+]
