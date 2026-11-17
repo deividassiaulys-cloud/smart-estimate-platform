@@ -8,7 +8,7 @@
 
 ## Phase 1: Setup: requirements prerequisite
 
-- [ ] T263 Write the approved Step 1 requirements change. **Blocked until the student approves it** (plan.md Prerequisite, Constitution VII.3).
+- [X] T263 Write the approved Step 1 requirements change. **Blocked until the student approves it** (plan.md Prerequisite, Constitution VII.3).
   - docs/requirements.md:
     - NFR-006: amounts are shown with 2 decimals; unit prices (material price, labour rate) with 2–4.
     - BR-017: unit prices are stored with up to 4 decimals, norms with up to 6 and quantities with up to 3. A value with more decimals is rejected, not rounded. Quantities are shown with 3 decimals, norms with up to 6 (spec Q1) and unit prices with up to 4.

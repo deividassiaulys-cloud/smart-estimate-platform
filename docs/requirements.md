@@ -167,7 +167,7 @@ NFR-002	Passwords MUST be stored only as a password hash. It MUST NOT be possibl
 NFR-003	The system MUST require a password of at least 8 characters.	Must have
 NFR-004	After 5 unsuccessful login attempts within 10 minutes, the system MUST block further attempts on that account for 15 minutes.	Should have
 NFR-005	Automated tests MUST verify that a user of each role does not receive unauthorized data or actions (FR-006, FR-007, FR-026), including requests for another company’s data by identifier.	Must have
-NFR-006	Monetary amounts MUST be calculated and stored using a decimal type, and displayed with 2 decimal places. The same data MUST always produce the same result.	Must have
+NFR-006	Money MUST be calculated and stored using a decimal type. Amounts (line costs, direct costs, overhead, profit, VAT, total) MUST be displayed with 2 decimal places; unit prices (material price, labour rate) with 2 to 4 decimal places. The same data MUST always produce the same result.	Must have
 NFR-007	In the exported Excel file, text cells beginning with the characters =, +, -, or @ MUST be written as text.	Must have
 NFR-008	The system MUST have an appropriate layout from 360px to 1920px screen widths, without horizontal page scrolling for normal content.	Must have
 NFR-009	An estimate page (up to 200 lines) MUST load within 3 seconds, and totals MUST be recalculated within 1 second of a change.	Must have
@@ -201,7 +201,7 @@ BR-016. Percentages are calculated sequentially, and the final total is their su
 overhead = direct costs × p₁ %;
 profit = (direct costs + overhead) × p₂ %;
 VAT = (direct costs + overhead + profit) × p₃ %.
-BR-017. Only monetary amounts are rounded, to 2 decimal places (0.005 → 0.01). The final total is the sum of the already-rounded parts. Quantities and norms are not rounded, shown to 3 decimal places.
+BR-017. Only monetary amounts are rounded, to 2 decimal places (0.005 → 0.01). The final total is the sum of the already-rounded parts. Unit prices (material price, labour rate) have up to 4 decimal places, norms up to 6 and quantities up to 3; a value with more decimal places is rejected, not rounded, and none of them is rounded in calculations. Quantities are shown to 3 decimal places, norms to up to 6, unit prices to up to 4.
 
 10. Main Data Entities
 Company: a construction company or contractor (name).
