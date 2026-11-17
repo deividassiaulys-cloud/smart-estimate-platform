@@ -2,7 +2,7 @@
 
 ## Automated checks
 ```bash
-dotnet test            # repository root
+cd server && dotnet test   # the solution is in server/
 cd client && npm run test
 ```
 Expected results:

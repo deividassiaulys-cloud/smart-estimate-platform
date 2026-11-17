@@ -12,9 +12,10 @@
 - **Alternatives**: DECIMAL(18,6) for prices, rejected by the spec. A free-precision column was rejected because NFR-006 asks for fixed, reproducible values.
 
 ## R2. Migration keeps existing values
-- **Decision**: one EF Core migration that only widens the scale of the nine columns. MySQL `ALTER … DECIMAL(18,4)` / `(18,6)` pads existing values with zeros (4,50 → 4,5000), so no value changes (FR-016-8).
+- **Decision**: one EF Core migration that only widens the scale of the eight columns (four prices and rates, four norms). MySQL `ALTER … DECIMAL(18,4)` / `(18,6)` pads existing values with zeros (4,50 → 4,5000), so no value changes (FR-016-8).
 - **Risk**: the largest storable price falls from 10¹⁶ to 10¹⁴ €. If an existing value were larger, the ALTER would fail. Such a value is unrealistic (no real price is anywhere near 10¹⁴ €), and the migration would stop rather than change data.
 - **Note**: `MaxUnitPrice` (18 significant digits) cannot be represented exactly as a browser number. This is the same as today's `MaxMoney`, and the server remains the authoritative check.
+- **Verified (T282)**: the generated migration `20261117073912_WidenPriceAndNormPrecision` contains only 8 `AlterColumn` type changes (decimal(18,2)→(18,4) and (18,3)→(18,6)) in Up and their reverse in Down, with no `Sql()`, default or nullability change. All existing tests pass unchanged on the new model (worked example 1263,26 €, refresh, export). EF warns "may result in the loss of data" because the integer part shrinks (see Risk).
 - **Alternatives**: DECIMAL(20,4) / (21,6) would keep the old maximum. Rejected: the spec states (18,4) and (18,6), and the edge cases document the new maximum.
 
 ## R3. One validation rule per value kind (Constitution X.10)

@@ -7,7 +7,7 @@
 Gap A (ANALYSIS.md §3). Prices and labour rates are stored and validated with up to 4 decimals, and consumption and labour norms with up to 6, in the catalog and in estimate lines. Quantities, percentages and the calculation are unchanged. Norms are shown with up to 6 decimals (spec Q1) and prices with 2–4.
 
 - **Server:**
-  - Nine `HasPrecision` changes in `AppDbContext` and one migration that only widens columns.
+  - Eight `HasPrecision` changes in `AppDbContext` and one migration that only widens columns.
   - `NumberRules.MoneyError` is replaced by `UnitPriceError` (4 decimals), and `NormError` (6 decimals) is added. `PositiveQuantityError` now covers quantities only.
   - The export's price and norm number formats change.
 - **Client:**
@@ -24,7 +24,7 @@ Decisions are in [research.md](research.md), columns in [data-model.md](data-mod
 
 **Primary Dependencies**: unchanged. No new dependencies.
 
-**Storage**: MySQL, one migration widening 9 DECIMAL columns (research R2). Tests run on SQLite, so a model test checks the configured precision.
+**Storage**: MySQL, one migration widening 8 DECIMAL columns (research R2). Tests run on SQLite, so a model test checks the configured precision.
 
 **Testing**:
 - xUnit unit tests:
@@ -71,7 +71,7 @@ Decisions are in [research.md](research.md), columns in [data-model.md](data-mod
 
 ```text
 server/SmartEstimatePlatform.Api/
-├── Data/AppDbContext.cs                         # 9 × HasPrecision (18,4) / (18,6)
+├── Data/AppDbContext.cs                         # 8 × HasPrecision (18,4) / (18,6)
 ├── Migrations/<timestamp>_WidenPriceAndNormPrecision.cs   # new, generated
 ├── Services/NumberRules.cs                      # UnitPriceError, NormError, MaxUnitPrice, MaxNorm; MoneyError/MaxMoney removed
 ├── Services/MaterialRules.cs, WorkRules.cs      # use the new rules

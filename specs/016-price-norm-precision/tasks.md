@@ -18,12 +18,12 @@
 
 ## Phase 2: Foundational: shared rules (blocks every story)
 
-- [ ] T264 In server/SmartEstimatePlatform.Api/Services/NumberRules.cs (research R3, data-model.md):
+- [X] T264 In server/SmartEstimatePlatform.Api/Services/NumberRules.cs (research R3, data-model.md):
   - Replace `MaxMoney` and `MoneyError` with `MaxUnitPrice = 99_999_999_999_999.9999m` and `UnitPriceError(value, label)`: "cannot be negative" / "can have at most 4 decimal places" / "is too large".
   - Add `MaxNorm = 999_999_999_999.999999m` and `NormError(value, label)`: "cannot be negative" / "can have at most 6 decimal places" / "is too large".
   - Keep `PositiveQuantityError` (3 decimals, `MaxQuantity`), now documented as quantities only.
   - Update the doc comments.
-- [ ] T265 Use the rules:
+- [X] T265 Use the rules:
   - server/SmartEstimatePlatform.Api/Services/MaterialRules.cs: `UnitPriceError` for the price.
   - WorkRules.cs:
     - `UnitPriceError` for the labour rate.
@@ -32,7 +32,7 @@
   - Models/DTOs/Estimates/ChangePriceRequest.cs and ChangeLabourRateRequest.cs: `UnitPriceError`.
   - Update the doc comments that say "2 decimal places" or "3 decimal places" for these values (Material.cs, the request records, WorkRules).
   - The quantity in EstimateRules stays on `PositiveQuantityError`.
-- [ ] T266 [P] Unit tests in tests/server/RequestValidationTests/ (RequestValidationTests.cs, WorkRequestValidationTests.cs, EstimateRequestValidationTests.cs):
+- [X] T266 [P] Unit tests in tests/server/RequestValidationTests/ (RequestValidationTests.cs, WorkRequestValidationTests.cs, EstimateRequestValidationTests.cs):
   - price and labour rate: 0,0616 and 25,1234 accepted; 0,06164 refused; −0,01 refused; `MaxUnitPrice` accepted; one step above it refused
   - labour norm: 0,042002 accepted; 0,0000884 refused; 0 accepted
   - consumption norm: 0,000884 accepted; 0 refused; 7 decimals refused
@@ -45,30 +45,30 @@
 **Goal**: the catalog stores and shows 0,0616 € and 0,000884 exactly; saving unchanged never rounds.
 **Independent Test**: spec US1.
 
-- [ ] T267 [US1] In server/SmartEstimatePlatform.Api/Data/AppDbContext.cs (data-model.md):
+- [X] T267 [US1] In server/SmartEstimatePlatform.Api/Data/AppDbContext.cs (data-model.md):
   - `Material.Price` HasPrecision(18, 4).
   - `Work.LabourRate` (18, 4); `Work.LabourNorm` (18, 6).
   - `WorkMaterialLine.ConsumptionNorm` (18, 6).
   - `EstimateWorkLine.LabourRate` (18, 4); `EstimateWorkLine.LabourNorm` (18, 6). `Quantity` stays (18, 3).
   - `EstimateMaterialLine.Price` (18, 4); `EstimateMaterialLine.ConsumptionNorm` (18, 6).
   - Leave the WastePercent and percentage columns at (5, 2).
-- [ ] T268 [US1] Generate the migration `WidenPriceAndNormPrecision` with `dotnet ef migrations add` in server/SmartEstimatePlatform.Api, using the dummy connection string command in quickstart.md "Migration commands". Check that it only alters those 9 columns' type, with no data or other schema change (research R2), and that `has-pending-model-changes` then reports none.
-- [ ] T269 [P] [US1] Add tests/server/CrossCuttingTests/NumberPrecisionModelTests.cs. From `AppDbContext.Model`, assert precision 18 and scale 4 for the 4 price/rate properties, scale 6 for the 4 norm properties, scale 3 for `EstimateWorkLine.Quantity`, and (5, 2) for the 5 percentage properties.
-- [ ] T270 [P] [US1] Integration test in tests/server/MaterialServiceTests/ and WorkServiceTests/ (existing ApiFactory). Create a material at 0,0616 and a work with labour rate 25,1234, labour norm 0,042002 and consumption norm 0,000884. GET returns exactly these values; PUT with the same body leaves them unchanged.
-- [ ] T271 [P] [US1] In client/src/utils/format.ts:
+- [X] T268 [US1] Generate the migration `WidenPriceAndNormPrecision` with `dotnet ef migrations add` in server/SmartEstimatePlatform.Api, using the dummy connection string command in quickstart.md "Migration commands". Check that it only alters those 8 columns' type, with no data or other schema change (research R2), and that `has-pending-model-changes` then reports none.
+- [X] T269 [P] [US1] Add tests/server/CrossCuttingTests/NumberPrecisionModelTests.cs. From `AppDbContext.Model`, assert precision 18 and scale 4 for the 4 price/rate properties, scale 6 for the 4 norm properties, scale 3 for `EstimateWorkLine.Quantity`, and (5, 2) for the 5 percentage properties.
+- [X] T270 [P] [US1] Integration test in tests/server/MaterialServiceTests/ and WorkServiceTests/ (existing ApiFactory). Create a material at 0,0616 and a work with labour rate 25,1234, labour norm 0,042002 and consumption norm 0,000884. GET returns exactly these values; PUT with the same body leaves them unchanged.
+- [X] T271 [P] [US1] In client/src/utils/format.ts:
   - Add `formatPrice(value)`: € with `minimumFractionDigits: 2, maximumFractionDigits: 4` (lt-LT).
   - Add `formatNorm(value)`: `maximumFractionDigits: 6`.
   - Change `toInputNumber(value, minDecimals?)` to pad to at least `minDecimals` but never cut digits (4.5 → "4,50", 0.0616 → "0,0616"). Update its doc comment.
   - `formatQuantity` and `formatMoney` stay.
-- [ ] T272 [P] [US1] In client/src/utils/validation.ts, add exported `priceDecimals = 4`, `normDecimals = 6` and `quantityDecimals = 3`, each with a comment naming the server rule it mirrors.
-- [ ] T273 [US1] Catalog pages, using T271/T272:
+- [X] T272 [P] [US1] In client/src/utils/validation.ts, add exported `priceDecimals = 4`, `normDecimals = 6` and `quantityDecimals = 3`, each with a comment naming the server rule it mirrors.
+- [X] T273 [US1] Catalog pages, using T271/T272:
   - client/src/pages/Materials/MaterialFormPage.tsx: `decimalPattern(priceDecimals)`; message "Kaina turi būti 0 arba didesnė, ne daugiau kaip 4 skaitmenys po kablelio."; `toInputNumber(material.price, 2)` keeps its call and now never cuts digits.
   - MaterialsTable.tsx: `formatPrice`.
   - client/src/pages/Works/WorkFormPage.tsx:
     - labour rate: `decimalPattern(priceDecimals)` and a 4-decimal message
     - labour norm and consumption norm: `decimalPattern(normDecimals)` and 6-decimal messages
   - WorksTable.tsx: `formatPrice` for the rate, `formatNorm` for the norm.
-- [ ] T274 [US1] Add client tests in tests/client/PrecisionTests/Precision.test.tsx (mock the API as the other client tests do):
+- [X] T274 [US1] Add client tests in tests/client/PrecisionTests/Precision.test.tsx (mock the API as the other client tests do):
   - the material form shows 0,0616 and submits 0.0616 when saved unchanged
   - 0,06164 shows the 4-decimal message and is not submitted
   - the work form accepts 0,000884 and refuses 0,0000884
@@ -80,33 +80,33 @@
 **Goal**: estimate lines copy, edit, refresh, show and export the precise values; amounts rounded to 2 as before.
 **Independent Test**: spec US2.
 
-- [ ] T275 [P] [US2] In tests/server/EstimateCalculatorTests/EstimateCalculatorTests.cs, add:
+- [X] T275 [P] [US2] In tests/server/EstimateCalculatorTests/EstimateCalculatorTests.cs, add:
   - 121,7 × 0,042002 × 25,00 → labour 127,79 €
   - 608,5 vnt. × 0,1000 → 60,85 €
   - 1 234,5 × 0,0616 → 76,05 € (spec US2-1, US2-2)
 
   The worked example still gives 1263,26 €.
-- [ ] T276 [P] [US2] Integration tests in tests/server/EstimateLineEditingTests/ and EstimateRefreshTests/:
+- [X] T276 [P] [US2] Integration tests in tests/server/EstimateLineEditingTests/ and EstimateRefreshTests/:
   - Adding a work with 0,042002 / 0,000884 copies them exactly.
   - Inline price 0,0616 and labour rate 25,1234 are accepted; 5 decimals return 400 (US2-4).
   - Refresh: an estimate at 0,06 and a catalog at 0,0616 give preview 0,06 → 0,0616 and the update stores 0,0616 (US2-5).
-- [ ] T277 [US2] In server/SmartEstimatePlatform.Api/Services/EstimateExportService.cs:
+- [X] T277 [US2] In server/SmartEstimatePlatform.Api/Services/EstimateExportService.cs:
   - Add `PriceFormat = "#,##0.00## \"€\""` for the work-line labour rate and the material price cells.
   - Add `NormFormat = "#,##0.######"` for the labour norm and consumption norm cells.
   - Amounts keep `MoneyFormat`; quantities keep `QuantityFormat` (contracts/precision-api.md).
-- [ ] T278 [P] [US2] In tests/server/EstimateExportTests/EstimateExportTests.cs, assert:
+- [X] T278 [P] [US2] In tests/server/EstimateExportTests/EstimateExportTests.cs, assert:
   - a price cell holds 0.0616 with format `#,##0.00## "€"`
   - a norm cell holds 0.000884 with format `#,##0.######`
   - amount cells keep 2-decimal formats
-- [ ] T279 [US2] Estimate editor, using T271/T272:
+- [X] T279 [US2] Estimate editor, using T271/T272:
   - client/src/pages/Estimates/InlineNumberField.tsx: the `money` kind uses `decimalPattern(priceDecimals)` and the message "Kaina turi būti 0 arba didesnė, ne daugiau kaip 4 skaitmenys po kablelio."; `toInputNumber(value, 2)` stays and now never cuts digits.
   - EstimateWorkLineRow.tsx: `formatNorm` for the labour norm.
   - EstimateMaterialLineRow.tsx: `formatPrice` in the replace-material list. Material quantities keep `formatQuantity`.
   - EstimateRefreshButton.tsx: `formatPrice` for LabourRate/Price, `formatNorm` for LabourNorm/ConsumptionNorm.
-- [ ] T280 [US2] Extend tests/client/EstimateEditorTests/EstimateLineEditing.test.tsx and EstimateRefresh.test.tsx:
+- [X] T280 [US2] Extend tests/client/EstimateEditorTests/EstimateLineEditing.test.tsx and EstimateRefresh.test.tsx:
   - the inline price field shows 0,0616 and accepts it; 0,06164 shows the 4-decimal message
   - the refresh dialog shows "0,06 € → 0,0616 €" and a norm 0,000884
-- [ ] T281 [US2] Add tests/server/SampleEstimateTests/SampleEstimateAcceptanceTests.cs (research R6, spec "Acceptance test", FR-016-9):
+- [X] T281 [US2] Add tests/server/SampleEstimateTests/SampleEstimateAcceptanceTests.cs (research R6, spec "Acceptance test", FR-016-9):
   - Find the repository root by walking up from `AppContext.BaseDirectory` to the folder that contains `docs/reference/sample-estimates`. Read `resources.json` and `sample-estimate.json` (read-only).
   - Through the API, as one logged-in Manager:
     - one material per (resource code, price rounded to 4 decimals, half away from zero): name "<code> <name>", with " – <price> €" added when the same code has more than one rounded price (BR-006: name + unit must be unique; 16 sample codes have several prices), unit mapped m2→m², m3→m³, vnt→vnt., ltr→l, and any other unit not in `MeasurementUnit.All` → "vnt." with "(<unit>)" added to the name
@@ -122,7 +122,7 @@
 **Goal**: the upgrade changes no stored value or total.
 **Independent Test**: spec US3.
 
-- [ ] T282 [US3] Check the migration from T268 against existing data:
+- [X] T282 [US3] Check the migration from T268 against existing data:
   - It must contain only `AlterColumn` type changes from `decimal(18,2)`/`(18,3)` to `(18,4)`/`(18,6)`, with no `Sql()`, default or nullability change.
   - Record in research.md R2 that the existing tests (worked example 1263,26 €, refresh, export) pass unchanged on the new model (SC-016-3).
   - The before/after comparison on a real MySQL database (quickstart.md step 2) is a required manual step before merging, done by the student. Note in tasks.md whether it has been run.
@@ -130,7 +130,12 @@
 ## Phase 6: Polish
 
 - [ ] T283 docs/ux.md: where the catalog forms and the editor describe price and norm inputs, say "iki 4 skaitmenų po kablelio" for prices and "iki 6" for norms. Check the materials, works and estimate editor pages at 360 px with 0,0616 € and 0,000884: no horizontal page scroll (NFR-008).
-- [ ] T284 Run the full check set (`dotnet build`, `dotnet test`, `npm run lint`, `npm run build`, `npm run test`) and the quickstart.md steps that don't need the real database. Fix any regression.
+- [X] T284 Run the full check set (`dotnet build`, `dotnet test`, `npm run lint`, `npm run build`, `npm run test`) and the quickstart.md steps that don't need the real database. Fix any regression.
+
+**Status notes (2026-11-17)**:
+- T282: the migration was reviewed (research R2). The real-MySQL before/after comparison (quickstart.md step 2) has **not** been run yet; the student must run it before merging.
+- T283: the docs/ux.md limits are updated. The 360 px browser check has **not** been done in this session, so T283 stays open.
+- T284: `dotnet build` (0 warnings), `dotnet test` (337 passed), `npm run lint`, `npm run build` and `npm run test` (87 passed) all pass. The manual quickstart steps 1–8 need the running app and were not run.
 
 ## Dependencies
 
