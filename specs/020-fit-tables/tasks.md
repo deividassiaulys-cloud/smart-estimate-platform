@@ -79,6 +79,7 @@
 - T340: the visible labels shortened to "Keisti" / "Šalinti". The accessible names ("Pakeisti medžiagą: …", "Pašalinti …", "Pašalinti skyrių …") are unchanged, so existing tests and screen-reader users are unaffected.
 - T342: list actions keep their labels and accessible names (FR-020-3 clarified accordingly); the project description wraps like names.
 - T344: docs/ux.md updated (§8 rule, §14 editor). The manual width check at 1280 / 1920 / 360 px and the touch-target check have **not** been done in this session (jsdom has no layout), so T344 stays open.
+- Found in the student's review: row action cells had `flex` on the `<td>`, so with a 2-line name their bottom line sat higher than the row's. Fixed in `ui.ts` (the cell stays a table cell; cards below 768 px keep the flex row), with a regression test in FitTables.test.tsx.
 - T345: `npm run lint`, `npm run build`, `npm run test` (114 passed, twice) and `dotnet test` (368 passed) all pass.
 
 ## Dependencies
