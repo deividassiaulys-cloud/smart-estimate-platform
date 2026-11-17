@@ -1,4 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from 'react'
+import { createPortal } from 'react-dom'
 import type { Material } from '../../interfaces/material'
 import { formatPrice } from '../../utils/format'
 import { ui } from '../../utils/ui'
@@ -16,6 +17,8 @@ interface ReplaceMaterialDialogProps {
  * Chooses a replacement material for an estimate material line (FR-023, spec 020 US2): a search field at the top
  * (focused on open) filters the list by part of the name, ignoring letter case. Arrow keys move through the list,
  * Enter or a click chooses, Escape or "Atšaukti" closes without a change, and Tab stays inside the dialog.
+ * It is rendered at the end of the page, not inside the table row that opens it, so it never inherits the table's
+ * no-wrap text and long names wrap inside it.
  */
 export default function ReplaceMaterialDialog({ materialName, options, onChoose, onCancel }: ReplaceMaterialDialogProps) {
   const titleId = useId()
@@ -57,7 +60,7 @@ export default function ReplaceMaterialDialog({ materialName, options, onChoose,
     }
   }
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-10 flex items-center justify-center bg-black/45 p-4">
       <div
         ref={dialogRef}
@@ -95,7 +98,7 @@ export default function ReplaceMaterialDialog({ materialName, options, onChoose,
                   className="flex w-full cursor-pointer items-start justify-between gap-3 rounded-md px-3 py-2 text-left hover:bg-accent-soft focus:bg-accent-soft"
                   onClick={() => onChoose(option.id)}
                 >
-                  <span className="break-words">{option.name}</span>
+                  <span className="min-w-0 break-words">{option.name}</span>
                   <span className="whitespace-nowrap">{formatPrice(option.price)}</span>
                 </button>
               </li>
@@ -108,6 +111,7 @@ export default function ReplaceMaterialDialog({ materialName, options, onChoose,
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }

@@ -161,3 +161,10 @@ test('a line with no other material of its unit has no Keisti button', async () 
   expect(screen.queryByRole('button', { name: 'Pakeisti medžiagą: Varžtai' })).toBeNull()
   expect(screen.getByRole('button', { name: 'Pašalinti Varžtai' })).toBeTruthy()
 })
+
+test('the dialog is not inside the table, so it never inherits the table cells\' no-wrap text', async () => {
+  // Regression: opened from a table cell, a long material name ran out of the dialog.
+  const { dialog } = await openDialog()
+
+  expect(dialog.closest('td, table')).toBeNull()
+})
