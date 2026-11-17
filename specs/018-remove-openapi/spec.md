@@ -45,7 +45,7 @@ As the developer, I want the unused API description and its annotations gone, so
 
 ### Functional Requirements
 - **FR-018-1**: The API no longer registers, generates or serves an API description in any environment.
-- **FR-018-2**: The package that exists only to generate the description is removed from the server project.
+- **FR-018-2**: The packages that exist only to generate an API description are removed from the server project: the built-in OpenAPI package and Swashbuckle.AspNetCore (referenced since 2026-10-12 but never used, contrary to docs/architecture.md; found during implementation).
 - **FR-018-3**: No controller or controller base declares response-type annotations; each controller action keeps its current behaviour (route, authorization, validation, status code, body).
 - **FR-018-4**: Every existing automated test passes unchanged. The backend and frontend test counts equal those on `main` before this feature.
 - **FR-018-5**: docs/architecture.md and docs/review/change-log.md record the decision and its reason; the feature contracts in specs/*/contracts remain the endpoint documentation.

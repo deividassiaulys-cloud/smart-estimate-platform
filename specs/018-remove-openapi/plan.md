@@ -17,7 +17,7 @@ Decisions are in [research.md](research.md); the only external change is in [con
 
 **Language/Version**: C# / .NET 10 (server only; no client change)
 
-**Primary Dependencies**: one removed (`Microsoft.AspNetCore.OpenApi`), none added
+**Primary Dependencies**: two removed (`Microsoft.AspNetCore.OpenApi`, and the never-used `Swashbuckle.AspNetCore` found during implementation), none added
 
 **Storage**: no change, no migration
 
@@ -48,7 +48,7 @@ Decisions are in [research.md](research.md); the only external change is in [con
 ```text
 server/SmartEstimatePlatform.Api/
 ├── Program.cs                                   # remove AddOpenApi() and the Development MapOpenApi() block
-├── SmartEstimatePlatform.Api.csproj             # remove the Microsoft.AspNetCore.OpenApi PackageReference
+├── SmartEstimatePlatform.Api.csproj             # remove the Microsoft.AspNetCore.OpenApi and Swashbuckle.AspNetCore PackageReferences
 └── Controllers/
     ├── ApiControllerBase.cs                     # keep [ApiController]; remove the 400 attribute; update the doc comment
     ├── AuthController.cs, EstimatesController.cs, EstimateNamesController.cs, MaterialsController.cs,
