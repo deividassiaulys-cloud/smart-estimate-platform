@@ -23,6 +23,16 @@ public sealed record EstimateResponse
 
     public List<EstimateWorkLineResponse> WorkLines { get; init; } = [];
 
+    /// <summary>
+    /// The estimate's sections in the order they were added, each with its subtotal (FR-034).
+    /// </summary>
+    public List<EstimateSectionResponse> Sections { get; init; } = [];
+
+    /// <summary>
+    /// Subtotal of the work lines without a section.
+    /// </summary>
+    public decimal UnsectionedSubtotal { get; init; }
+
     public decimal DirectCosts { get; init; }
 
     public decimal Overhead { get; init; }

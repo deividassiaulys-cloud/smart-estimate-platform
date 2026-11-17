@@ -4,6 +4,7 @@ import { getEstimateNames } from '../../api/estimates'
 import { ApiError } from '../../api/http'
 import type { EstimateNames } from '../../interfaces/estimate'
 import { ui } from '../../utils/ui'
+import EstimateWorkNames from './EstimateWorkNames'
 import { unexpectedError } from '../../utils/errors'
 
 /**
@@ -48,20 +49,18 @@ export default function EstimateViewPage() {
       {estimate && (
         <>
           <h1 className={ui.h1}>{estimate.name}</h1>
-          {estimate.works.length === 0 && <p>Sąmatoje dar nėra darbų.</p>}
-          {estimate.works.map((work, index) => (
-            <section key={index} className="mb-6">
-              <h2 className={ui.h2}>{work.workName}</h2>
-              {work.materialNames.length === 0 ? (
-                <p>Darbas be medžiagų.</p>
-              ) : (
-                <ul className="list-disc pl-6">
-                  {work.materialNames.map((name, materialIndex) => (
-                    <li key={materialIndex}>{name}</li>
-                  ))}
-                </ul>
-              )}
+          {estimate.sections.length === 0 && estimate.works.length === 0 && <p>Sąmatoje dar nėra darbų.</p>}
+          {estimate.sections.map((section, sectionIndex) => (
+            <section key={sectionIndex} className="mb-8">
+              <h2 className={ui.h2}>{section.name}</h2>
+              {section.works.map((work, index) => (
+                <EstimateWorkNames key={index} work={work} inSection />
+              ))}
             </section>
+          ))}
+          {estimate.sections.length > 0 && estimate.works.length > 0 && <h2 className={ui.h2}>Be skyriaus</h2>}
+          {estimate.works.map((work, index) => (
+            <EstimateWorkNames key={index} work={work} inSection={estimate.sections.length > 0} />
           ))}
         </>
       )}

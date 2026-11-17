@@ -31,6 +31,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
 
     public DbSet<EstimateMaterialLine> EstimateMaterialLines => Set<EstimateMaterialLine>();
 
+    public DbSet<CatalogSection> CatalogSections => Set<CatalogSection>();
+
+    public DbSet<CatalogSectionLine> CatalogSectionLines => Set<CatalogSectionLine>();
+
+    public DbSet<EstimateSection> EstimateSections => Set<EstimateSection>();
+
     // Read by the query filters each time a query runs, so each request sees only its own company.
     private int? CurrentCompanyId => currentUser?.CompanyId;
 
@@ -108,6 +114,42 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
                 .OnDelete(DeleteBehavior.Restrict);
         });
 
+        modelBuilder.Entity<CatalogSection>(section =>
+        {
+            // Same case-insensitive collation as works, so the unique index and search ignore letter case.
+            section.Property(c => c.Name)
+                .HasMaxLength(CatalogSectionRules.NameMaxLength)
+                .UseCollation("utf8mb4_0900_as_ci");
+
+            section.Property(c => c.Unit).HasMaxLength(16);
+
+            section.HasIndex(c => new { c.CompanyId, c.Name, c.Unit }).IsUnique();
+
+            section.HasOne(c => c.Company)
+                .WithMany()
+                .HasForeignKey(c => c.CompanyId);
+
+            section.HasMany(c => c.Lines)
+                .WithOne(l => l.CatalogSection)
+                .HasForeignKey(l => l.CatalogSectionId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<CatalogSectionLine>(line =>
+        {
+            line.Property(l => l.Coefficient).HasPrecision(18, 6);
+
+            // Filtered like its section, which is filtered by company.
+            line.HasQueryFilter(l => l.CatalogSection.CompanyId == CurrentCompanyId);
+
+            // A work used in a catalog section cannot be deleted (WorkService reports it first, FR-030).
+            // No unique index on (CatalogSectionId, WorkId): the same work may repeat in one section.
+            line.HasOne(l => l.Work)
+                .WithMany()
+                .HasForeignKey(l => l.WorkId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
         modelBuilder.Entity<Project>(project =>
         {
             // No unique index: two projects of a company may share a name.
@@ -140,6 +182,11 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
                 .WithOne(l => l.Estimate)
                 .HasForeignKey(l => l.EstimateId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            estimate.HasMany(e => e.Sections)
+                .WithOne(s => s.Estimate)
+                .HasForeignKey(s => s.EstimateId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         // Estimate lines hold copies of the catalog data and have no foreign keys to it (BR-010).
@@ -150,6 +197,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
             line.Property(l => l.LabourRate).HasPrecision(18, 4);
             line.Property(l => l.LabourNorm).HasPrecision(18, 6);
             line.Property(l => l.Quantity).HasPrecision(18, 3);
+            line.Property(l => l.Coefficient).HasPrecision(18, 6);
+
+            // Removing an estimate section removes its work lines (BR-011); a line without a section has none.
+            line.HasOne(l => l.Section)
+                .WithMany()
+                .HasForeignKey(l => l.SectionId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Removing a work line removes its material lines.
             line.HasMany(l => l.MaterialLines)
@@ -159,6 +213,17 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
 
             // Filtered like its estimate, which is filtered by company.
             line.HasQueryFilter(l => l.Estimate.CompanyId == CurrentCompanyId);
+        });
+
+        // A copy of the catalog section's name and unit, with no foreign key to the catalog (BR-010).
+        modelBuilder.Entity<EstimateSection>(section =>
+        {
+            section.Property(s => s.Name).HasMaxLength(CatalogSectionRules.NameMaxLength);
+            section.Property(s => s.Unit).HasMaxLength(16);
+            section.Property(s => s.Quantity).HasPrecision(18, 3);
+
+            // Filtered like its estimate, which is filtered by company.
+            section.HasQueryFilter(s => s.Estimate.CompanyId == CurrentCompanyId);
         });
 
         modelBuilder.Entity<EstimateMaterialLine>(line =>

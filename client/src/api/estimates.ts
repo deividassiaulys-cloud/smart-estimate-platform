@@ -24,8 +24,23 @@ export function getEstimate(id: number): Promise<Estimate> {
 }
 
 /** Adds a catalog work with a quantity; returns the recalculated estimate. */
-export function addWorkLine(id: number, workId: number, quantity: number): Promise<Estimate> {
-  return apiFetch(`/api/estimates/${id}/lines`, { method: 'POST', body: JSON.stringify({ workId, quantity }) })
+export function addWorkLine(id: number, workId: number, quantity: number, sectionId: number | null = null): Promise<Estimate> {
+  return apiFetch(`/api/estimates/${id}/lines`, { method: 'POST', body: JSON.stringify({ workId, quantity, sectionId }) })
+}
+
+/** Adds a catalog section with a section quantity (FR-031); returns the recalculated estimate. */
+export function addSection(id: number, catalogSectionId: number, quantity: number): Promise<Estimate> {
+  return apiFetch(`/api/estimates/${id}/sections`, { method: 'POST', body: JSON.stringify({ catalogSectionId, quantity }) })
+}
+
+/** Changes a section's quantity, recalculating its works from the catalog section (FR-032). */
+export function changeSectionQuantity(id: number, sectionId: number, quantity: number): Promise<Estimate> {
+  return apiFetch(`/api/estimates/${id}/sections/${sectionId}`, { method: 'PATCH', body: JSON.stringify({ quantity }) })
+}
+
+/** Removes a section with its work lines (FR-033). */
+export function removeSection(id: number, sectionId: number): Promise<Estimate> {
+  return apiFetch(`/api/estimates/${id}/sections/${sectionId}`, { method: 'DELETE' })
 }
 
 /** Changes a work line's quantity; returns the recalculated estimate. */

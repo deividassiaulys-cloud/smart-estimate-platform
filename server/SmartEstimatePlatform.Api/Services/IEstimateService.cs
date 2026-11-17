@@ -85,6 +85,31 @@ public interface IEstimateService
     Task<EstimateResponse> RemoveWorkLineAsync(int id, int lineId);
 
     /// <summary>
+    /// Adds a catalog section with a section quantity (FR-031): a section with copies of its works, each with quantity
+    /// = section quantity × coefficient (rounded to 3 decimal places), and their material lines.
+    /// </summary>
+    /// <exception cref="NotFoundException">No such estimate, or no such catalog section in the company.</exception>
+    /// <exception cref="EstimateNotDraftException">The estimate is not Draft.</exception>
+    /// <exception cref="ZeroSectionQuantityException">A work quantity rounds to 0; nothing is added.</exception>
+    Task<EstimateResponse> AddSectionAsync(int id, AddSectionRequest request);
+
+    /// <summary>
+    /// Changes a section's quantity and recalculates every work line created from the catalog section (FR-032).
+    /// Lines added to the section on their own keep their quantity.
+    /// </summary>
+    /// <exception cref="NotFoundException">No such estimate, or no such section in it.</exception>
+    /// <exception cref="EstimateNotDraftException">The estimate is not Draft.</exception>
+    /// <exception cref="ZeroSectionQuantityException">A work quantity rounds to 0; nothing is changed.</exception>
+    Task<EstimateResponse> ChangeSectionQuantityAsync(int id, int sectionId, ChangeSectionQuantityRequest request);
+
+    /// <summary>
+    /// Removes a section together with its work lines and their material lines (FR-033).
+    /// </summary>
+    /// <exception cref="NotFoundException">No such estimate, or no such section in it.</exception>
+    /// <exception cref="EstimateNotDraftException">The estimate is not Draft.</exception>
+    Task<EstimateResponse> RemoveSectionAsync(int id, int sectionId);
+
+    /// <summary>
     /// Changes one work line's labour rate in this estimate only; the catalog work is not changed (BR-010).
     /// </summary>
     /// <exception cref="NotFoundException">No such estimate, or no such line in it.</exception>

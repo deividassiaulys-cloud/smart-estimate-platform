@@ -44,7 +44,7 @@ test("a Manager's menu shows the company name and every Manager item", async () 
   renderAt('/projects', 'Manager')
 
   expect(await screen.findByText('Statyba UAB')).toBeTruthy()
-  expect(menuLinks()).toEqual(['Pagrindinis', 'Projektai', 'Medžiagos', 'Darbai', 'Komanda'])
+  expect(menuLinks()).toEqual(['Pagrindinis', 'Projektai', 'Medžiagos', 'Darbai', 'Skyriai', 'Komanda'])
   expect(screen.getAllByRole('button', { name: 'Atsijungti' })).toHaveLength(1)
 })
 
@@ -81,7 +81,7 @@ test('the mobile menu opens, closes with Escape, and closes after choosing an it
 
   await userEvent.click(menuButton)
   expect(menuButton.getAttribute('aria-expanded')).toBe('true')
-  expect(within(screen.getByRole('dialog', { name: 'Meniu' })).getAllByRole('link')).toHaveLength(5)
+  expect(within(screen.getByRole('dialog', { name: 'Meniu' })).getAllByRole('link')).toHaveLength(6)
 
   await userEvent.keyboard('{Escape}')
   expect(screen.queryByRole('dialog', { name: 'Meniu' })).toBeNull()

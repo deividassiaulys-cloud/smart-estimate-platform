@@ -19,8 +19,20 @@ export interface EstimateMaterialLine {
   cost: number
 }
 
+/** A section of an estimate with its subtotal (FR-034); its work lines carry its ID. */
+export interface EstimateSection {
+  id: number
+  name: string
+  unit: string
+  quantity: number
+  /** Sum of the section's work lines' labour and material costs, calculated by the server. */
+  subtotal: number
+}
+
 export interface EstimateWorkLine {
   id: number
+  /** The section the line belongs to, or null. */
+  sectionId: number | null
   workName: string
   workUnit: string
   quantity: number
@@ -40,6 +52,9 @@ export interface Estimate {
   profitPercent: number
   vatPercent: number
   workLines: EstimateWorkLine[]
+  /** In the order they were added; empty for an estimate without sections. */
+  sections: EstimateSection[]
+  unsectionedSubtotal: number
   directCosts: number
   overhead: number
   profit: number
@@ -72,9 +87,17 @@ export interface WorkNames {
   materialNames: string[]
 }
 
+/** One section of an estimate as a Viewer sees it: its name and its works' names. */
+export interface SectionNames {
+  name: string
+  works: WorkNames[]
+}
+
 /** An estimate as a Viewer sees it: names only, nothing commercial (BR-005). */
 export interface EstimateNames {
   name: string
+  sections: SectionNames[]
+  /** The works without a section. */
   works: WorkNames[]
 }
 

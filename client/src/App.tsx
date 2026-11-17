@@ -19,6 +19,8 @@ import ResetPasswordPage from './pages/Team/ResetPasswordPage'
 import TeamPage from './pages/Team/TeamPage'
 import ViewerFormPage from './pages/Team/ViewerFormPage'
 import WorkFormPage from './pages/Works/WorkFormPage'
+import CatalogSectionFormPage from './pages/CatalogSections/CatalogSectionFormPage'
+import CatalogSectionsPage from './pages/CatalogSections/CatalogSectionsPage'
 import WorksPage from './pages/Works/WorksPage'
 
 function App() {
@@ -118,6 +120,30 @@ function App() {
             element={
               <ManagerRoute>
                 <WorkFormPage />
+              </ManagerRoute>
+            }
+          />
+          <Route
+            path="/catalog-sections"
+            element={
+              <ManagerRoute>
+                <CatalogSectionsPage />
+              </ManagerRoute>
+            }
+          />
+          <Route
+            path="/catalog-sections/new"
+            element={
+              <ManagerRoute>
+                <CatalogSectionFormPage />
+              </ManagerRoute>
+            }
+          />
+          <Route
+            path="/catalog-sections/:id/edit"
+            element={
+              <ManagerRoute>
+                <CatalogSectionFormPage />
               </ManagerRoute>
             }
           />

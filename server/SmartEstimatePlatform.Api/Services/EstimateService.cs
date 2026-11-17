@@ -53,17 +53,68 @@ public class EstimateService(AppDbContext db) : IEstimateService
     public async Task<EstimateResponse> AddWorkLineAsync(int id, AddWorkLineRequest request)
     {
         var estimate = await FindDraftAsync(id);
+        var section = request.SectionId is { } sectionId ? FindSection(estimate, sectionId) : null;
         var work = await db.Works
                        .Include(w => w.Lines).ThenInclude(l => l.Material)
                        .SingleOrDefaultAsync(w => w.Id == request.WorkId)
                    ?? throw new UnknownWorkException(request.WorkId);
 
-        // Copies, not references: later catalog changes never reach the estimate (BR-010).
-        var materialLines = work.Lines.OrderBy(l => l.Id).Select(l => new EstimateMaterialLine(
-            l.Material.Name, l.Material.Unit, l.Material.Price, l.ConsumptionNorm, l.WastePercent));
-        estimate.AddWorkLine(new EstimateWorkLine(
-            work.Name, work.Unit, work.LabourRate, work.LabourNorm, request.Quantity, materialLines));
+        var line = CopyWork(work, request.Quantity);
+        if (section is not null)
+        {
+            // Added on its own, so it has no coefficient and keeps its quantity when the section quantity changes.
+            line.PlaceInSection(section, coefficient: null);
+        }
 
+        estimate.AddWorkLine(line);
+        await db.SaveChangesAsync();
+        return Respond(estimate);
+    }
+
+    /// <inheritdoc />
+    public async Task<EstimateResponse> AddSectionAsync(int id, AddSectionRequest request)
+    {
+        var estimate = await FindDraftAsync(id);
+        var catalogSection = await db.CatalogSections
+                                 .Include(s => s.Lines.OrderBy(l => l.Id))
+                                 .ThenInclude(l => l.Work).ThenInclude(w => w.Lines).ThenInclude(l => l.Material)
+                                 .SingleOrDefaultAsync(s => s.Id == request.CatalogSectionId)
+                             ?? throw new NotFoundException("Catalog section not found.");
+
+        // A copy of the name and unit, not a reference (BR-010).
+        var section = new EstimateSection(catalogSection.Name, catalogSection.Unit, request.Quantity);
+        estimate.AddSection(section);
+        foreach (var catalogLine in catalogSection.Lines.OrderBy(l => l.Id))
+        {
+            var line = CopyWork(catalogLine.Work, SectionQuantity(catalogLine.Work.Name, request.Quantity, catalogLine.Coefficient));
+            line.PlaceInSection(section, catalogLine.Coefficient);
+            estimate.AddWorkLine(line);
+        }
+
+        await db.SaveChangesAsync();
+        return Respond(estimate);
+    }
+
+    /// <inheritdoc />
+    public async Task<EstimateResponse> ChangeSectionQuantityAsync(int id, int sectionId, ChangeSectionQuantityRequest request)
+    {
+        var estimate = await FindDraftAsync(id);
+        var section = FindSection(estimate, sectionId);
+        section.ChangeQuantity(request.Quantity);
+        foreach (var line in estimate.WorkLines.Where(l => l.SectionId == section.Id && l.Coefficient is not null))
+        {
+            line.ChangeQuantity(SectionQuantity(line.WorkName, request.Quantity, line.Coefficient!.Value));
+        }
+
+        await db.SaveChangesAsync();
+        return Respond(estimate);
+    }
+
+    /// <inheritdoc />
+    public async Task<EstimateResponse> RemoveSectionAsync(int id, int sectionId)
+    {
+        var estimate = await FindDraftAsync(id);
+        estimate.RemoveSection(FindSection(estimate, sectionId));
         await db.SaveChangesAsync();
         return Respond(estimate);
     }
@@ -199,7 +250,26 @@ public class EstimateService(AppDbContext db) : IEstimateService
         estimate.ToResponse(EstimateCalculator.Calculate(estimate));
 
     private IQueryable<Estimate> EstimatesWithLines() =>
-        db.Estimates.Include(e => e.WorkLines).ThenInclude(l => l.MaterialLines);
+        db.Estimates.Include(e => e.WorkLines).ThenInclude(l => l.MaterialLines).Include(e => e.Sections);
+
+    // A copy of a catalog work and its composition, not references: later catalog changes never reach the estimate (BR-010).
+    private static EstimateWorkLine CopyWork(Work work, decimal quantity)
+    {
+        var materialLines = work.Lines.OrderBy(l => l.Id).Select(l => new EstimateMaterialLine(
+            l.Material.Name, l.Material.Unit, l.Material.Price, l.ConsumptionNorm, l.WastePercent));
+        return new EstimateWorkLine(work.Name, work.Unit, work.LabourRate, work.LabourNorm, quantity, materialLines);
+    }
+
+    // The work quantity for a section quantity (BR-017); a result of 0 is refused (BR-007).
+    private static decimal SectionQuantity(string workName, decimal sectionQuantity, decimal coefficient)
+    {
+        var quantity = EstimateCalculator.SectionWorkQuantity(sectionQuantity, coefficient);
+        return quantity > 0 ? quantity : throw new ZeroSectionQuantityException(workName);
+    }
+
+    private static EstimateSection FindSection(Estimate estimate, int sectionId) =>
+        estimate.Sections.SingleOrDefault(s => s.Id == sectionId)
+        ?? throw new NotFoundException("Section not found.");
 
     private async Task<Estimate> FindAsync(int id) =>
         await EstimatesWithLines().SingleOrDefaultAsync(e => e.Id == id)

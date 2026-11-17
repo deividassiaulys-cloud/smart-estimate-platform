@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { ApiError } from '../../api/http'
 import { deleteWork, getWorks } from '../../api/works'
 import ConfirmDialog from '../../components/ConfirmDialog'
 import SearchField from '../../components/SearchField'
@@ -27,8 +28,13 @@ export default function WorksPage() {
       await deleteWork(toDelete.id)
       setWorks((current) => current?.filter((work) => work.id !== toDelete.id) ?? null)
       setError(null)
-    } catch {
-      setError(unexpectedError('ištrinti darbo'))
+    } catch (deleteError) {
+      if (deleteError instanceof ApiError && deleteError.status === 409) {
+        const sections = Array.isArray(deleteError.body.sections) ? deleteError.body.sections.join(', ') : ''
+        setError(`Darbo negalima ištrinti, nes jis naudojamas skyriuose${sections ? `: ${sections}` : ''}.`)
+      } else {
+        setError(unexpectedError('ištrinti darbo'))
+      }
     } finally {
       setDeleting(false)
       setToDelete(null)

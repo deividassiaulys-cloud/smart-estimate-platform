@@ -1,32 +1,46 @@
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import {
+  addSection,
   addWorkLine,
   changeLabourRate,
   changeMaterialPrice,
   changePercentages,
   changeQuantity,
+  changeSectionQuantity,
   confirmEstimate,
   getEstimate,
   refreshEstimate,
   removeMaterialLine,
+  removeSection,
   removeWorkLine,
   replaceMaterial,
   returnEstimateToDraft,
 } from '../../api/estimates'
+import { getCatalogSections } from '../../api/catalogSections'
 import { ApiError } from '../../api/http'
 import { getMaterials } from '../../api/materials'
 import { getWorks } from '../../api/works'
 import ConfirmDialog from '../../components/ConfirmDialog'
-import { EstimateStatus, type Estimate, type EstimateMaterialLine, type EstimateWorkLine } from '../../interfaces/estimate'
+import type { CatalogSection } from '../../interfaces/catalogSection'
+import {
+  EstimateStatus,
+  type Estimate,
+  type EstimateMaterialLine,
+  type EstimateSection,
+  type EstimateWorkLine,
+} from '../../interfaces/estimate'
 import type { Material } from '../../interfaces/material'
 import type { Work } from '../../interfaces/work'
 import { ui } from '../../utils/ui'
+import AddSectionForm from './AddSectionForm'
 import AddWorkForm from './AddWorkForm'
 import EstimateExportButton from './EstimateExportButton'
 import EstimatePercentagesForm from './EstimatePercentagesForm'
 import EstimateRefreshButton from './EstimateRefreshButton'
+import EstimateSectionHeaderRow from './EstimateSectionHeaderRow'
 import EstimateStatusActions from './EstimateStatusActions'
+import EstimateSubtotalRow from './EstimateSubtotalRow'
 import EstimateTotals from './EstimateTotals'
 import EstimateWorkLineRow from './EstimateWorkLineRow'
 import { unexpectedError } from '../../utils/errors'
@@ -51,6 +65,16 @@ export default function EstimateEditorPage() {
   const [removing, setRemoving] = useState(false)
   const [materials, setMaterials] = useState<Material[]>([])
   const [materialToRemove, setMaterialToRemove] = useState<{ line: EstimateWorkLine; material: EstimateMaterialLine } | null>(null)
+  const [catalogSections, setCatalogSections] = useState<CatalogSection[]>([])
+  const [sectionToRemove, setSectionToRemove] = useState<EstimateSection | null>(null)
+  // A section quantity waiting for the recalculation warning (FR-032); `done` tells the field the outcome.
+  const [quantityChange, setQuantityChange] = useState<{
+    section: EstimateSection
+    quantity: number
+    done: (accepted: boolean) => void
+  } | null>(null)
+  // Bumped when a quantity change is cancelled, so the section's field shows the stored quantity again.
+  const [sectionFieldsVersion, setSectionFieldsVersion] = useState(0)
 
   useEffect(() => {
     Promise.all([getEstimate(estimateId), getWorks()])
@@ -76,6 +100,9 @@ export default function EstimateEditorPage() {
     getMaterials()
       .then(setMaterials)
       .catch(() => setMaterials([]))
+    getCatalogSections()
+      .then(setCatalogSections)
+      .catch(() => setCatalogSections([]))
   }, [loaded, readOnly])
 
   // Runs a change and shows the recalculated estimate, or a message when the server rejects it.
@@ -115,6 +142,86 @@ export default function EstimateEditorPage() {
     await apply(() => removeWorkLine(estimateId, toRemove.id))
     setRemoving(false)
     setToRemove(null)
+  }
+
+  async function handleConfirmSectionRemove() {
+    if (!sectionToRemove) return
+    setRemoving(true)
+    await apply(() => removeSection(estimateId, sectionToRemove.id))
+    setRemoving(false)
+    setSectionToRemove(null)
+  }
+
+  // The section quantity field resolves once the Manager confirms or cancels the recalculation warning.
+  function requestQuantityChange(section: EstimateSection, quantity: number): Promise<boolean> {
+    return new Promise((done) => setQuantityChange({ section, quantity, done }))
+  }
+
+  async function handleConfirmQuantityChange() {
+    if (!quantityChange) return
+    const { section, quantity, done } = quantityChange
+    setQuantityChange(null)
+    done(await applyField(() => changeSectionQuantity(estimateId, section.id, quantity)))
+  }
+
+  function handleCancelQuantityChange() {
+    quantityChange?.done(true)
+    setQuantityChange(null)
+    setSectionFieldsVersion((version) => version + 1)
+  }
+
+  function renderLines(lines: EstimateWorkLine[]) {
+    if (!estimate) return null
+    return lines.map((line) => (
+      <EstimateWorkLineRow
+        key={`${line.id}-${estimate.status}`}
+        line={line}
+        catalog={materials}
+        readOnly={readOnly}
+        onQuantityChange={(lineId, quantity) => applyField(() => changeQuantity(estimateId, lineId, quantity))}
+        onLabourRateChange={(lineId, labourRate) => applyField(() => changeLabourRate(estimateId, lineId, labourRate))}
+        onMaterialPriceChange={(lineId, materialLineId, price) =>
+          applyField(() => changeMaterialPrice(estimateId, lineId, materialLineId, price))
+        }
+        onMaterialReplace={(lineId, materialLineId, materialId) =>
+          applyField(() => replaceMaterial(estimateId, lineId, materialLineId, materialId))
+        }
+        onRemove={setToRemove}
+        onMaterialRemove={(removedLine, material) => setMaterialToRemove({ line: removedLine, material })}
+      />
+    ))
+  }
+
+  // With sections, the lines are grouped under their section with a subtotal, the lines without a section last;
+  // without sections, the estimate looks as it always did (spec 019 Q2).
+  function renderBody() {
+    if (!estimate) return null
+    if (estimate.sections.length === 0) return renderLines(estimate.workLines)
+    const unsectioned = estimate.workLines.filter((line) => line.sectionId === null)
+    return (
+      <>
+        {estimate.sections.map((section) => (
+          <Fragment key={section.id}>
+            <EstimateSectionHeaderRow
+              key={`${section.id}-${section.quantity}-${estimate.status}-${sectionFieldsVersion}`}
+              section={section}
+              readOnly={readOnly}
+              onQuantityChange={requestQuantityChange}
+              onRemove={setSectionToRemove}
+            />
+            {renderLines(estimate.workLines.filter((line) => line.sectionId === section.id))}
+            <EstimateSubtotalRow name={section.name} subtotal={section.subtotal} />
+          </Fragment>
+        ))}
+        {unsectioned.length > 0 && (
+          <>
+            <EstimateSectionHeaderRow section={null} readOnly={readOnly} onQuantityChange={requestQuantityChange} onRemove={setSectionToRemove} />
+            {renderLines(unsectioned)}
+            <EstimateSubtotalRow name="Be skyriaus" subtotal={estimate.unsectionedSubtotal} />
+          </>
+        )}
+      </>
+    )
   }
 
   async function handleConfirmMaterialRemove() {
@@ -164,7 +271,17 @@ export default function EstimateEditorPage() {
           </div>
 
           {!readOnly && (
-            <AddWorkForm works={works} onAdd={(workId, quantity) => apply(() => addWorkLine(estimateId, workId, quantity))} />
+            <>
+              <AddSectionForm
+                sections={catalogSections}
+                onAdd={(catalogSectionId, quantity) => apply(() => addSection(estimateId, catalogSectionId, quantity))}
+              />
+              <AddWorkForm
+                works={works}
+                sections={estimate.sections}
+                onAdd={(workId, quantity, sectionId) => apply(() => addWorkLine(estimateId, workId, quantity, sectionId))}
+              />
+            </>
           )}
 
           {estimate.workLines.length === 0 && <p>Sąmatoje dar nėra darbų.</p>}
@@ -181,26 +298,7 @@ export default function EstimateEditorPage() {
                     <th className={ui.cell}></th>
                   </tr>
                 </thead>
-                {estimate.workLines.map((line) => (
-                  <EstimateWorkLineRow
-                    key={`${line.id}-${estimate.status}`}
-                    line={line}
-                    catalog={materials}
-                    readOnly={readOnly}
-                    onQuantityChange={(lineId, quantity) => applyField(() => changeQuantity(estimateId, lineId, quantity))}
-                    onLabourRateChange={(lineId, labourRate) =>
-                      applyField(() => changeLabourRate(estimateId, lineId, labourRate))
-                    }
-                    onMaterialPriceChange={(lineId, materialLineId, price) =>
-                      applyField(() => changeMaterialPrice(estimateId, lineId, materialLineId, price))
-                    }
-                    onMaterialReplace={(lineId, materialLineId, materialId) =>
-                      applyField(() => replaceMaterial(estimateId, lineId, materialLineId, materialId))
-                    }
-                    onRemove={setToRemove}
-                    onMaterialRemove={(removedLine, material) => setMaterialToRemove({ line: removedLine, material })}
-                  />
-                ))}
+                {renderBody()}
               </table>
             </div>
           )}
@@ -223,6 +321,24 @@ export default function EstimateEditorPage() {
         busy={removing}
         onConfirm={handleConfirmRemove}
         onCancel={() => setToRemove(null)}
+      />
+      <ConfirmDialog
+        open={sectionToRemove !== null}
+        title="Pašalinti skyrių?"
+        message={sectionToRemove ? `Skyrius „${sectionToRemove.name}“ ir visi jo darbai su medžiagomis bus pašalinti iš sąmatos.` : ''}
+        confirmLabel="Pašalinti"
+        busy={removing}
+        onConfirm={handleConfirmSectionRemove}
+        onCancel={() => setSectionToRemove(null)}
+      />
+      <ConfirmDialog
+        open={quantityChange !== null}
+        title="Perskaičiuoti skyriaus darbus?"
+        message="Visų skyriaus darbų kiekiai bus perskaičiuoti pagal naują skyriaus kiekį; ranka pakeisti kiekiai bus perrašyti. Ranka pridėti darbai liks nepakeisti."
+        confirmLabel="Perskaičiuoti"
+        confirmTone="primary"
+        onConfirm={handleConfirmQuantityChange}
+        onCancel={handleCancelQuantityChange}
       />
       <ConfirmDialog
         open={materialToRemove !== null}

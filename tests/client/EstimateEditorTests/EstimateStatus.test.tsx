@@ -21,6 +21,8 @@ const draft = {
   overheadPercent: 0,
   profitPercent: 0,
   vatPercent: 21,
+  sections: [],
+  unsectionedSubtotal: 0,
   workLines: [
     { id: 21, workName: 'Siena A++', workUnit: 'm²', quantity: 35, labourNorm: 0.8, labourRate: 15, labourCost: 420, materialLines: [] },
   ],

@@ -33,6 +33,8 @@ const estimate = {
   overheadPercent: 10,
   profitPercent: 15,
   vatPercent: 21,
+  sections: [],
+  unsectionedSubtotal: 0,
   workLines: [
     {
       id: 21,

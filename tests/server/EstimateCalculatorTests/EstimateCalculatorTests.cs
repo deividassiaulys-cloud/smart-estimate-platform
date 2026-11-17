@@ -62,6 +62,47 @@ public sealed class EstimateCalculatorTests
         Assert.Equal(127.79m + 60.85m + 76.05m, result.Total);
     }
 
+    // ---- Feature 019: sections ----
+
+    [Theory]
+    [InlineData(121.7, 0.4, 48.68)]
+    [InlineData(121.7, 0.3955, 48.132)] // 48,13235: rounded to 3 decimal places
+    [InlineData(10, 0.00005, 0.001)] // 0,0005: an exact half goes away from zero
+    [InlineData(0.1, 0.0001, 0)] // rounds to 0, which the service refuses
+    public void SectionWorkQuantity_IsSectionQuantityTimesCoefficientRoundedTo3Decimals(
+        decimal sectionQuantity, decimal coefficient, decimal expected) =>
+        Assert.Equal(expected, EstimateCalculator.SectionWorkQuantity(sectionQuantity, coefficient));
+
+    [Fact]
+    public void SectionSubtotals_AndTheLinesWithoutASection_AddUpToTheDirectCosts()
+    {
+        var wall = new EstimateSection("A++ siena", "m²", 35m);
+        var roof = new EstimateSection("Stogas", "m²", 12.345m);
+        var inWall = WallLine(35m);
+        inWall.PlaceInSection(wall, 1m);
+        var inRoof = WallLine(12.345m);
+        inRoof.PlaceInSection(roof, 1m);
+        var estimate = EstimateWith(10m, 15m, 21m, inWall, inRoof, WallLine(1m));
+        estimate.AddSection(wall);
+        estimate.AddSection(roof);
+
+        var result = EstimateCalculator.Calculate(estimate);
+
+        Assert.Equal(["A++ siena", "Stogas"], result.Sections.Select(s => s.Section.Name));
+        Assert.Equal(825.31m, result.Sections[0].Subtotal);
+        Assert.Equal(result.DirectCosts, result.Sections.Sum(s => s.Subtotal) + result.UnsectionedSubtotal);
+        Assert.True(result.UnsectionedSubtotal > 0);
+    }
+
+    [Fact]
+    public void EstimateWithoutSections_HasOnlyTheUnsectionedSubtotal()
+    {
+        var result = EstimateCalculator.Calculate(EstimateWith(10m, 15m, 21m, WallLine(35m)));
+
+        Assert.Empty(result.Sections);
+        Assert.Equal((825.31m, 1263.26m), (result.UnsectionedSubtotal, result.Total));
+    }
+
     [Fact]
     public void MidpointMaterialCost_IsRoundedAwayFromZero()
     {

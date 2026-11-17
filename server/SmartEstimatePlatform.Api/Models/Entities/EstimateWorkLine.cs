@@ -31,6 +31,19 @@ public class EstimateWorkLine
     public int EstimateId { get; private set; }
 
     /// <summary>
+    /// The estimate section this line belongs to, or null for a line without a section (FR-033).
+    /// </summary>
+    public int? SectionId { get; private set; }
+
+    public EstimateSection? Section { get; private set; }
+
+    /// <summary>
+    /// The coefficient copied from the catalog section line this line was created from, or null for a line added on
+    /// its own. A section quantity change recalculates only lines that have one (FR-032).
+    /// </summary>
+    public decimal? Coefficient { get; private set; }
+
+    /// <summary>
     /// The estimate this line belongs to; its company is the line's company.
     /// </summary>
     public Estimate Estimate { get; private set; } = null!;
@@ -63,6 +76,16 @@ public class EstimateWorkLine
     /// Replaces the quantity with an already validated value.
     /// </summary>
     public void ChangeQuantity(decimal quantity) => Quantity = quantity;
+
+    /// <summary>
+    /// Puts the line in an estimate section, with the coefficient of its catalog section line or null when the work was
+    /// added on its own.
+    /// </summary>
+    public void PlaceInSection(EstimateSection section, decimal? coefficient)
+    {
+        Section = section;
+        Coefficient = coefficient;
+    }
 
     /// <summary>
     /// Replaces the labour rate with an already validated value; the catalog work is not changed.

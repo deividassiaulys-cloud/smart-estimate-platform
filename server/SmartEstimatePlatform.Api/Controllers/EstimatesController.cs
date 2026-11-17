@@ -57,6 +57,27 @@ public class EstimatesController(IEstimateService estimateService, IEstimateExpo
         estimateService.RemoveWorkLineAsync(id, lineId);
 
     /// <summary>
+    /// Adds a catalog section with a section quantity to a Draft estimate (FR-031).
+    /// </summary>
+    [HttpPost("estimates/{id:int}/sections")]
+    public Task<EstimateResponse> AddSection(int id, AddSectionRequest request) =>
+        estimateService.AddSectionAsync(id, request);
+
+    /// <summary>
+    /// Changes a section's quantity, recalculating its works from the catalog section (FR-032).
+    /// </summary>
+    [HttpPatch("estimates/{id:int}/sections/{sectionId:int}")]
+    public Task<EstimateResponse> ChangeSectionQuantity(int id, int sectionId, ChangeSectionQuantityRequest request) =>
+        estimateService.ChangeSectionQuantityAsync(id, sectionId, request);
+
+    /// <summary>
+    /// Removes a section with its work lines (FR-033).
+    /// </summary>
+    [HttpDelete("estimates/{id:int}/sections/{sectionId:int}")]
+    public Task<EstimateResponse> RemoveSection(int id, int sectionId) =>
+        estimateService.RemoveSectionAsync(id, sectionId);
+
+    /// <summary>
     /// Changes a work line's labour rate in this estimate only.
     /// </summary>
     [HttpPatch("estimates/{id:int}/lines/{lineId:int}/labour-rate")]

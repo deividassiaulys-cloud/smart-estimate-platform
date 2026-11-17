@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Http.Json;
 using System.Text.RegularExpressions;
 using ClosedXML.Excel;
 using SmartEstimatePlatform.Api.Tests.TestSupport;
@@ -149,6 +150,39 @@ public sealed class EstimateExportTests : IDisposable
             Assert.True(cell.Style.IncludeQuotePrefix);
             Assert.Equal(expected, cell.GetString());
         }
+    }
+
+    [Fact]
+    public async Task EstimateWithSections_IsExportedGroupedWithSubtotals()
+    {
+        // Feature 019 US3: "=A++ siena" (a formula-like name, still text) with the wall work, plus one work without a section.
+        var company = await _factory.RegisterCompanyAsync("Alpha UAB", "alpha@example.com");
+        var workId = await company.CreateWallWorkAsync();
+        var section = await company.Client.PostAsJsonAsync("/api/catalog-sections", new Api.Models.DTOs.CatalogSections.CatalogSectionRequest
+        {
+            Name = "=A++ siena", Unit = "m²", Lines = [new() { WorkId = workId, Coefficient = 1m }]
+        });
+        var sectionId = (await section.Content.ReadFromJsonAsync<Api.Models.DTOs.CatalogSections.CatalogSectionResponse>())!.Id;
+        var estimate = await company.CreateEstimateAsync();
+        (await company.Client.PostAsJsonAsync($"/api/estimates/{estimate.Id}/sections",
+            new Api.Models.DTOs.Estimates.AddSectionRequest { CatalogSectionId = sectionId, Quantity = 35m })).EnsureSuccessStatusCode();
+        await company.Client.AddWorkLineAsync(estimate.Id, workId, 10m);
+        await company.Client.PatchPercentagesAsync(estimate.Id, 10m, 15m, 21m);
+        var onScreen = await company.Client.GetEstimateAsync(estimate.Id);
+
+        using var file = await ExportAsync(company.Client, estimate.Id);
+        var sheet = file.Worksheet("Sąmata");
+
+        // Row 7: the section heading; rows 8-11: its work and 3 materials; row 12: its subtotal; then "Be skyriaus".
+        Assert.Equal("=A++ siena — 35 m²", sheet.Cell("A7").GetString());
+        Assert.True(sheet.Cell("A7").Style.IncludeQuotePrefix);
+        Assert.False(sheet.Cell("A7").HasFormula);
+        Assert.Equal("Siena A++", sheet.Cell("A8").GetString());
+        Assert.Equal(("Skyriaus suma", onScreen.Sections[0].Subtotal), (sheet.Cell("A12").GetString(), Number(sheet, "G12")));
+        Assert.Equal("Be skyriaus", sheet.Cell("A13").GetString());
+        Assert.Equal(("Skyriaus suma", onScreen.UnsectionedSubtotal), (sheet.Cell("A18").GetString(), Number(sheet, "G18")));
+        Assert.Equal(onScreen.DirectCosts, Number(sheet, "G12") + Number(sheet, "G18"));
+        Assert.Equal(onScreen.Total, Total(sheet, "Iš viso su PVM"));
     }
 
     [Fact]

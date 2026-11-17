@@ -1,4 +1,5 @@
 using SmartEstimatePlatform.Api.Models.DTOs.Auth;
+using SmartEstimatePlatform.Api.Models.DTOs.CatalogSections;
 using SmartEstimatePlatform.Api.Models.DTOs.Estimates;
 using SmartEstimatePlatform.Api.Models.DTOs.Materials;
 using SmartEstimatePlatform.Api.Models.DTOs.Projects;
@@ -59,6 +60,24 @@ public static class DtoMapper
     };
 
     /// <summary>
+    /// A catalog section with its works in order. Each line's work must be loaded.
+    /// </summary>
+    public static CatalogSectionResponse ToResponse(this CatalogSection section) => new()
+    {
+        Id = section.Id,
+        Name = section.Name,
+        Unit = section.Unit,
+        Lines = section.Lines.OrderBy(l => l.Id).Select(line => new CatalogSectionLineResponse
+        {
+            Id = line.Id,
+            WorkId = line.WorkId,
+            WorkName = line.Work.Name,
+            WorkUnit = line.Work.Unit,
+            Coefficient = line.Coefficient
+        }).ToList()
+    };
+
+    /// <summary>
     /// A work with its composition. Each line's material must be loaded.
     /// </summary>
     public static WorkResponse ToResponse(this Work work) => new()
@@ -104,6 +123,7 @@ public static class DtoMapper
         WorkLines = calculation.WorkLines.Select(work => new EstimateWorkLineResponse
         {
             Id = work.Line.Id,
+            SectionId = work.Line.SectionId ?? work.Line.Section?.Id,
             WorkName = work.Line.WorkName,
             WorkUnit = work.Line.WorkUnit,
             Quantity = work.Line.Quantity,
@@ -122,6 +142,15 @@ public static class DtoMapper
                 Cost = material.Cost
             }).ToList()
         }).ToList(),
+        Sections = calculation.Sections.Select(section => new EstimateSectionResponse
+        {
+            Id = section.Section.Id,
+            Name = section.Section.Name,
+            Unit = section.Section.Unit,
+            Quantity = section.Section.Quantity,
+            Subtotal = section.Subtotal
+        }).ToList(),
+        UnsectionedSubtotal = calculation.UnsectionedSubtotal,
         DirectCosts = calculation.DirectCosts,
         Overhead = calculation.Overhead,
         Profit = calculation.Profit,
@@ -155,12 +184,20 @@ public static class DtoMapper
     public static EstimateNamesResponse ToNamesResponse(this Estimate estimate) => new()
     {
         Name = estimate.Name,
-        Works = estimate.WorkLines.OrderBy(w => w.Id).Select(work => new WorkNamesResponse
+        Sections = estimate.Sections.OrderBy(s => s.Id).Select(section => new SectionNamesResponse
+        {
+            Name = section.Name,
+            Works = WorkNames(estimate.WorkLines.Where(w => w.SectionId == section.Id))
+        }).ToList(),
+        Works = WorkNames(estimate.WorkLines.Where(w => w.SectionId is null))
+    };
+
+    private static List<WorkNamesResponse> WorkNames(IEnumerable<EstimateWorkLine> lines) =>
+        lines.OrderBy(w => w.Id).Select(work => new WorkNamesResponse
         {
             WorkName = work.WorkName,
             MaterialNames = work.MaterialLines.OrderBy(m => m.Id).Select(m => m.MaterialName).ToList()
-        }).ToList()
-    };
+        }).ToList();
 
     /// <summary>
     /// A catalog refresh's changes and lines not found, with the totals before and after it.
