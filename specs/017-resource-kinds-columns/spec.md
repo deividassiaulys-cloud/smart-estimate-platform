@@ -73,7 +73,7 @@ As a Manager, I want the Excel export to use the columns No., Name, Unit, Norm, 
 - The sample export has a "Code" column; the platform has no resource codes, so this column is not added.
 - The waste % column ("Atliekos %") stays, as an extra column right after "Norma", on screen and in the export; it is filled only on material line rows (spec Q2).
 - On a narrow screen (360px, NFR-008) the extra amounts are shown in the existing stacked line layout, without horizontal page scrolling.
-- Copying an estimate or other features that copy lines keep each material line's kind.
+- Estimate copying (FR-025) is not built yet; when it is, a copied material line keeps its kind.
 - A Viewer's names view and permissions are unchanged; a Viewer still cannot export (BR-004).
 
 ## Requirements

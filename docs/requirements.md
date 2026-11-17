@@ -122,6 +122,8 @@ Estimate copying.
 Editing an estimate line: changing the price, removing or replacing a material only within that estimate.
 Updating an estimate’s prices and norms from the current catalog.
 PDF export.
+Material kinds (Material / Machinery) and Labour / Materials / Machinery amounts per work line and estimate.
+A unit price for each estimate work line.
 
 Could Have
 
@@ -137,7 +139,7 @@ FR-004	The system MUST allow a Manager to create a Viewer account (name, surname
 FR-005	The system MUST allow a Manager to set a new password for a Viewer.	Should have
 FR-006	The system MUST show and return to a user only their own company’s data.	Must have
 FR-007	The system MUST reject any action not permitted by the user’s role.	Must have
-FR-008	The system MUST allow a Manager to create, edit, and delete materials (name, unit of measurement, price).	Must have
+FR-008	The system MUST allow a Manager to create, edit, and delete materials (name, unit of measurement, kind (FR-030), price).	Must have
 FR-009	The system MUST allow a Manager to create, edit, and delete works (name, unit of measurement, labour rate €/h, labour norm h/unit) and to link materials to a work with a consumption norm per work unit and a waste/loss percentage.	Must have
 FR-010	The system MUST allow a Manager to search materials and works by part of the name, case-insensitively.	Must have
 FR-011	The system MUST allow a Manager to create, edit, and delete projects.	Must have
@@ -159,6 +161,9 @@ FR-026	The system MUST show a Viewer only the project list and the names of work
 FR-027	The system MUST allow a Manager to export an estimate to an Excel file containing the same data they see in the system, including status.	Must have
 FR-028	The system MUST allow a Manager to export an estimate to a PDF file.	Should have
 FR-029	The system MUST allow a Manager to assign a category to materials and works and to filter lists by it.	Could have
+FR-030	The system MUST let a Manager set a catalog material's kind: Material or Machinery (default Material). An estimate material line copies the kind together with its price and norms (BR-010). Replacing a material line (FR-023) or refreshing it from the catalog (FR-024) takes the catalog material's current kind. Existing materials and estimate material lines get kind Material.	Should have
+FR-031	The system MUST show each estimate work line's amount and the estimate's direct costs split into Labour, Materials and Machinery (BR-015), with a labour row under each work line (labour norm, labour rate, hours, labour cost) and the waste % column kept, both on screen and in the Excel export (FR-027).	Should have
+FR-032	The system MUST show each estimate work line's unit price (BR-017), both on screen and in the Excel export (FR-027).	Should have
 
 8. Non-Functional Requirements
 ID	Requirement	Priority
@@ -167,7 +172,7 @@ NFR-002	Passwords MUST be stored only as a password hash. It MUST NOT be possibl
 NFR-003	The system MUST require a password of at least 8 characters.	Must have
 NFR-004	After 5 unsuccessful login attempts within 10 minutes, the system MUST block further attempts on that account for 15 minutes.	Should have
 NFR-005	Automated tests MUST verify that a user of each role does not receive unauthorized data or actions (FR-006, FR-007, FR-026), including requests for another company’s data by identifier.	Must have
-NFR-006	Money MUST be calculated and stored using a decimal type. Amounts (line costs, direct costs, overhead, profit, VAT, total) MUST be displayed with 2 decimal places; unit prices (material price, labour rate) with 2 to 4 decimal places. The same data MUST always produce the same result.	Must have
+NFR-006	Money MUST be calculated and stored using a decimal type. Amounts (line costs, Labour / Materials / Machinery, direct costs, overhead, profit, VAT, total) and work-line unit prices MUST be displayed with 2 decimal places; unit prices (material price, labour rate) with 2 to 4 decimal places. The same data MUST always produce the same result.	Must have
 NFR-007	In the exported Excel file, text cells beginning with the characters =, +, -, or @ MUST be written as text.	Must have
 NFR-008	The system MUST have an appropriate layout from 360px to 1920px screen widths, without horizontal page scrolling for normal content.	Must have
 NFR-009	An estimate page (up to 200 lines) MUST load within 3 seconds, and totals MUST be recalculated within 1 second of a change.	Must have
@@ -187,7 +192,7 @@ BR-006. A material or work is identified within a company by its name and unit o
 BR-007. Price and norm cannot be negative; waste and estimate percentages must be between 0 and 100; estimate quantity must be greater than 0.
 BR-008. Units of measurement come from a fixed system list (pcs, m, m², m³, kg, t, l, h, set).
 BR-009. A work may have zero or more materials; the same material may be used in multiple works.
-BR-010. An estimate line stores a copy of its price and norms. Catalog changes or deletions do not affect estimates.
+BR-010. An estimate line stores a copy of its price and norms, and a material line also copies its kind. Catalog changes or deletions do not affect estimates.
 BR-011. A project belongs to one company, an estimate to one project. Deleting a project deletes its estimates. Deletion is irreversible.
 BR-012. A new estimate is always created with “Draft” status.
 BR-013. An estimate’s works, materials, quantities, and percentages cannot be changed while its status is “Confirmed.” To edit, the estimate must be returned to “Draft.”
@@ -196,24 +201,25 @@ BR-015. Line calculation:
 labour cost = quantity × labour norm (h/unit) × labour rate (€/h);
 material quantity = work quantity × consumption norm × (1 + waste % / 100);
 material cost = material quantity × unit price;
-direct costs = sum of all labour and material costs.
+a work line's Labour = its labour cost; its Materials / Machinery = the sum of its material line costs of that kind (FR-030); its amount = Labour + Materials + Machinery;
+direct costs = sum of all work-line amounts (= total Labour + total Materials + total Machinery).
 BR-016. Percentages are calculated sequentially, and the final total is their sum:
 overhead = direct costs × p₁ %;
 profit = (direct costs + overhead) × p₂ %;
 VAT = (direct costs + overhead + profit) × p₃ %.
-BR-017. Only monetary amounts are rounded, to 2 decimal places (0.005 → 0.01). The final total is the sum of the already-rounded parts. Unit prices (material price, labour rate) have up to 4 decimal places, norms up to 6 and quantities up to 3; a value with more decimal places is rejected, not rounded, and none of them is rounded in calculations. Quantities are shown to 3 decimal places, norms to up to 6, unit prices to up to 4.
+BR-017. Only monetary amounts are rounded, to 2 decimal places (0.005 → 0.01). The final total is the sum of the already-rounded parts. Unit prices (material price, labour rate) have up to 4 decimal places, norms up to 6 and quantities up to 3; a value with more decimal places is rejected, not rounded, and none of them is rounded in calculations. Quantities are shown to 3 decimal places, norms to up to 6, unit prices to up to 4. A work line's unit price = its amount ÷ its quantity, rounded to 2 decimal places; it is shown only and never used in another calculation.
 
 10. Main Data Entities
 Company: a construction company or contractor (name).
 User: an account (name, surname, email, password), role (Manager / Viewer), belongs to one company.
-Material: a company catalog material (name, unit, price).
+Material: a company catalog material (name, unit, kind: Material / Machinery, price).
 Work: a company catalog work (name, unit, labour rate, labour norm per hour per unit).
 Work Material Norm: the relationship between a work and a material (consumption norm, waste %). Forms the work’s “composition.”
 Unit of Measurement: a fixed system list.
 Project: an order or site (name, description).
 Estimate: a project’s calculation (name, status: Draft / Confirmed, overhead, profit, and VAT percentages).
 Estimate Work Line: a work with a quantity and a copy of its price and norms.
-Estimate Material Line: generated from the work’s composition, belongs to a work line, stores a copy of its own price and norms.
+Estimate Material Line: generated from the work’s composition, belongs to a work line, stores a copy of its own kind, price and norms.
 Category: groups materials and works.
 Relationships: a company has many users, materials, works, and projects. A project has many estimates; an estimate has work lines; a work line has material lines. Estimate lines are only derived from the catalog but do not depend on it. Everything except the unit of measurement belongs to one company. An estimate’s status controls whether its lines can be changed (BR-013).
 

@@ -1,5 +1,20 @@
 # Change log
 
+## 2026-11-17 — Material kinds, estimate columns and unit prices (gaps B and C)
+
+Source: docs/reference/ANALYSIS.md §3, gaps B and C; feature specs/017-resource-kinds-columns.
+Reason: Lithuanian local estimates split every amount into labour, materials and machinery and show each work's
+price per unit; clients expect this layout.
+
+- Added FR-030 (material kind), FR-031 (Labour / Materials / Machinery with a labour row and the waste % column,
+  on screen and in the export) and FR-032 (work-line unit price), all Should have.
+- Changed FR-008, NFR-006, BR-010, BR-015, BR-017 (unit price rounded to 2 decimal places, display only),
+  §6 Should Have, §10 Material and Estimate Material Line.
+- Changed specs/shared-technical-rules.md: unit-price rounding, the split in EstimateCalculator, material kind.
+- Not changed: BR-016 calculation, BR-008 units (gap F), the Out of Scope list.
+
+---
+
 ## 2026-11-17 — Higher price and norm precision (gap A)
 
 Source: docs/reference/ANALYSIS.md §3, gap A; feature specs/016-price-norm-precision.

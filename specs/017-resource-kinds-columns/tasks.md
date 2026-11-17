@@ -8,7 +8,7 @@
 
 ## Phase 1: Setup: requirements prerequisite
 
-- [ ] T285 Write the approved requirements change for gaps B and C before any code (Constitution VII.3).
+- [X] T285 Write the approved requirements change for gaps B and C before any code (Constitution VII.3).
   - docs/requirements.md:
     - Add FR-030 (material kind), FR-031 (Labour / Materials / Machinery on screen and in the export) and FR-032 (work-line unit price), all Should have. Use the Step 1 wording, and add to FR-031 the labour row and the "Atliekos %" column (spec Q1, Q2).
     - FR-008: "(name, unit of measurement, kind (FR-030), price)".
@@ -147,14 +147,14 @@
     - Iš viso su PVM
 
     Amounts go in column 8 (Suma).
-  - Number cells and text protection are unchanged (NFR-007). Kind labels come from `EstimateStatusNames`-style static names on the server (`MaterialKindNames`), defined once.
+  - Number cells and text protection are unchanged (NFR-007). The export writes no kind names: a material line's kind shows only as the column its cost is in.
 - [ ] T307 [P] [US4] Rewrite the layout assertions in tests/server/EstimateExportTests/EstimateExportTests.cs, using the US2-2 estimate:
   - the 11 headings
   - work row cells (1, "Siena A++", m², 23.78, 35, 832.31, 420, 405.31, 7)
   - labour row (Darbas, val., 0.8, 15, 28, 420 in columns 8 and 9)
   - the machinery row's cost is in column 11 and column 10 is empty
   - direct costs row with 832.31 and the three totals
-  - total 1263.26 + the machinery effect, computed by `EstimateCalculator`
+  - with overhead 10 %, profit 15 % and VAT 21 %: overhead 83.23, profit 137.33, VAT 221.10, total 1273.97 (hand calculation from BR-016)
   - the formula-injection test still passes
 
 ## Phase 7: Polish
@@ -169,7 +169,7 @@
 - US1: T291 → T292; T293 → T294. US2 needs Phase 2: T295 → T296, T297; T298 → T299 → T300 → T301, T302.
 - US3 needs T286 and T295: T303 → T304; T298 → T305. US4 needs T295: T306 → T307.
 - T308 and T309 run last.
-- If feature 016 is merged first, rebase this branch on main before T286; its price/norm formats then apply in the new cells.
+- This branch is rebased onto 016-price-norm-precision (2026-11-17). In the new cells, unit prices use `formatPrice` / `PriceFormat`, norms `formatNorm` / `NormFormat`, hours `formatQuantity` / `QuantityFormat`, and amounts and unit prices of work lines `formatMoney` / `MoneyFormat`.
 
 ## Parallel Execution Examples
 
