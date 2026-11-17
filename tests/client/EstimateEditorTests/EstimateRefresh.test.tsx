@@ -97,6 +97,25 @@ test('the dialog lists the changes, the lines not found and both totals in Lithu
   expect(normalize(within(dialog).getByText(/Iš viso su PVM/).textContent)).toBe('Iš viso su PVM: 1 263,26 € → 1 365,05 €')
 })
 
+test('precise prices and norms are shown in full in the dialog (feature 016)', async () => {
+  previewAnswer = () =>
+    Response.json({
+      ...preview,
+      changes: [
+        { workName: 'Siena A++', materialName: 'Gipso plokštė', field: 2, oldValue: 0.06, newValue: 0.0616 },
+        { workName: 'Siena A++', materialName: 'Gipso plokštė', field: 3, oldValue: 0.001, newValue: 0.000884 },
+      ],
+      notFound: [],
+    })
+  const dialog = await openPreview()
+
+  const items = within(dialog).getAllByRole('listitem').map((item) => normalize(item.textContent))
+  expect(items).toEqual([
+    'Siena A++ / Gipso plokštė — Kaina: 0,06 € → 0,0616 €',
+    'Siena A++ / Gipso plokštė — Sunaudojimo norma: 0,001 → 0,000884',
+  ])
+})
+
 test('cancelling sends no update', async () => {
   const dialog = await openPreview()
 

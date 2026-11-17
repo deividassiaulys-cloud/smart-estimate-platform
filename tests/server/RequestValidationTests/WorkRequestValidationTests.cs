@@ -38,28 +38,33 @@ public sealed class WorkRequestValidationTests
 
     [Theory]
     [InlineData("0.001", true)]
+    [InlineData("0.000884", true)]
+    [InlineData("999999999999.999999", true)]
     [InlineData("0", false)]
     [InlineData("-0.001", false)]
-    [InlineData("1.2345", false)]
-    [InlineData("1000000000000000.000", false)]
-    public void ConsumptionNorm_MustBeGreaterThan0WithAtMost3Decimals(string norm, bool valid) =>
+    [InlineData("0.0000884", false)]
+    [InlineData("1000000000000.000000", false)]
+    public void ConsumptionNorm_MustBeGreaterThan0WithAtMost6Decimals(string norm, bool valid) =>
         Assert.Equal(valid, IsValid(ValidRequest() with { Lines = [Line(norm, "0")] }));
 
     [Theory]
     [InlineData("0", true)]
     [InlineData("0.125", true)]
+    [InlineData("0.042002", true)]
     [InlineData("-0.001", false)]
-    [InlineData("0.1234", false)]
-    public void LabourNorm_MayBe0WithAtMost3Decimals(string norm, bool valid) =>
+    [InlineData("0.0420021", false)]
+    [InlineData("1000000000000.000000", false)]
+    public void LabourNorm_MayBe0WithAtMost6Decimals(string norm, bool valid) =>
         Assert.Equal(valid, IsValid(ValidRequest() with { LabourNorm = decimal.Parse(norm, CultureInfo.InvariantCulture) }));
 
     [Theory]
     [InlineData("0", true)]
     [InlineData("18.50", true)]
+    [InlineData("25.1234", true)]
     [InlineData("-0.01", false)]
-    [InlineData("1.234", false)]
-    [InlineData("10000000000000000.00", false)]
-    public void LabourRate_MustBe0OrMoreWithAtMost2Decimals(string rate, bool valid) =>
+    [InlineData("25.12345", false)]
+    [InlineData("100000000000000.0000", false)]
+    public void LabourRate_MustBe0OrMoreWithAtMost4Decimals(string rate, bool valid) =>
         Assert.Equal(valid, IsValid(ValidRequest() with { LabourRate = decimal.Parse(rate, CultureInfo.InvariantCulture) }));
 
     [Theory]

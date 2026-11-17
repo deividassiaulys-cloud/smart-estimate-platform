@@ -9,16 +9,16 @@ namespace SmartEstimatePlatform.Api.Models.DTOs.Estimates;
 public sealed record ChangeLabourRateRequest : IValidatableObject
 {
     /// <summary>
-    /// Euros per hour: 0 or more, with at most 2 decimal places.
+    /// Euros per hour: 0 or more, with at most 4 decimal places.
     /// </summary>
     public decimal LabourRate { get; init; }
 
     /// <summary>
-    /// Applies the shared money rule (<see cref="NumberRules.MoneyError"/>).
+    /// Applies the shared unit-price rule (<see cref="NumberRules.UnitPriceError"/>).
     /// </summary>
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
-        if (NumberRules.MoneyError(LabourRate, "Labour rate") is { } error)
+        if (NumberRules.UnitPriceError(LabourRate, "Labour rate") is { } error)
         {
             yield return new ValidationResult(error, [nameof(LabourRate)]);
         }

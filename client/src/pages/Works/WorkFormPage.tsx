@@ -7,7 +7,7 @@ import type { Material } from '../../interfaces/material'
 import type { WorkRequest } from '../../interfaces/work'
 import { toInputNumber } from '../../utils/format'
 import { ui } from '../../utils/ui'
-import { decimalPattern, parseDecimal } from '../../utils/validation'
+import { decimalPattern, normDecimals, parseDecimal, priceDecimals } from '../../utils/validation'
 import WorkLinesEditor, { type LineErrors, type LineForm } from './WorkLinesEditor'
 import { unexpectedError } from '../../utils/errors'
 
@@ -23,18 +23,19 @@ type WorkErrors = Partial<Record<keyof WorkForm, string>>
 const emptyForm: WorkForm = { name: '', unit: '', labourRate: '', labourNorm: '' }
 
 // The same limits as WorkRules on the server, which stays the authoritative check.
-const moneyPattern = decimalPattern(2)
-const normPattern = decimalPattern(3)
+const ratePattern = decimalPattern(priceDecimals)
+const normPattern = decimalPattern(normDecimals)
+const percentPattern = decimalPattern(2)
 
 function validate(form: WorkForm, units: string[]): WorkErrors {
   const errors: WorkErrors = {}
   if (!form.name.trim()) errors.name = 'Įveskite pavadinimą.'
   if (!units.includes(form.unit)) errors.unit = 'Pasirinkite mato vienetą.'
-  if (!moneyPattern.test(form.labourRate.trim())) {
-    errors.labourRate = 'Įkainis turi būti 0 arba daugiau, ne daugiau kaip 2 skaitmenys po kablelio.'
+  if (!ratePattern.test(form.labourRate.trim())) {
+    errors.labourRate = `Įkainis turi būti 0 arba daugiau, ne daugiau kaip ${priceDecimals} skaitmenys po kablelio.`
   }
   if (!normPattern.test(form.labourNorm.trim())) {
-    errors.labourNorm = 'Darbo norma turi būti 0 arba daugiau, ne daugiau kaip 3 skaitmenys po kablelio.'
+    errors.labourNorm = `Darbo norma turi būti 0 arba daugiau, ne daugiau kaip ${normDecimals} skaitmenys po kablelio.`
   }
   return errors
 }
@@ -43,9 +44,9 @@ function validateLine(line: LineForm): LineErrors {
   const errors: LineErrors = {}
   if (!line.materialId) errors.materialId = 'Pasirinkite medžiagą.'
   if (!normPattern.test(line.consumptionNorm.trim()) || parseDecimal(line.consumptionNorm) <= 0) {
-    errors.consumptionNorm = 'Sąnaudų norma turi būti didesnė už 0, ne daugiau kaip 3 skaitmenys po kablelio.'
+    errors.consumptionNorm = `Sąnaudų norma turi būti didesnė už 0, ne daugiau kaip ${normDecimals} skaitmenys po kablelio.`
   }
-  if (!moneyPattern.test(line.wastePercent.trim()) || parseDecimal(line.wastePercent) > 100) {
+  if (!percentPattern.test(line.wastePercent.trim()) || parseDecimal(line.wastePercent) > 100) {
     errors.wastePercent = 'Atliekos turi būti nuo 0 iki 100 %, ne daugiau kaip 2 skaitmenys po kablelio.'
   }
   return errors

@@ -143,8 +143,44 @@ test('an invalid price shows a Lithuanian message and is not sent', async () => 
   await userEvent.clear(price)
   await userEvent.type(price, '-1{Enter}')
 
-  expect(screen.getByText('Kaina turi būti 0 arba didesnė, ne daugiau kaip 2 skaitmenys po kablelio.')).toBeTruthy()
+  expect(screen.getByText('Kaina turi būti 0 arba didesnė, ne daugiau kaip 4 skaitmenys po kablelio.')).toBeTruthy()
   expect(changes()).toEqual([])
+})
+
+test('a price with 4 decimal places is sent unrounded; 5 decimal places are refused (feature 016)', async () => {
+  await openEditor()
+  const price = screen.getByLabelText('Kaina: Gipso plokštė')
+
+  await userEvent.clear(price)
+  await userEvent.type(price, '0,06164{Enter}')
+  expect(screen.getByText('Kaina turi būti 0 arba didesnė, ne daugiau kaip 4 skaitmenys po kablelio.')).toBeTruthy()
+  expect(changes()).toEqual([])
+
+  await userEvent.clear(price)
+  await userEvent.type(price, '0,0616{Enter}')
+  expect(changes()).toEqual([
+    { path: '/api/estimates/9/lines/21/materials/51/price', method: 'PATCH', body: JSON.stringify({ price: 0.0616 }) },
+  ])
+})
+
+test('a stored 4-decimal price and 6-decimal labour norm are shown in full (feature 016)', async () => {
+  const precise = {
+    ...estimate,
+    workLines: [
+      {
+        ...estimate.workLines[0],
+        labourNorm: 0.042002,
+        materialLines: [{ ...estimate.workLines[0].materialLines[0], price: 0.0616 }],
+      },
+    ],
+  }
+  fetchMock.mockImplementation(async (path: string) =>
+    Response.json(path === '/api/estimates/9' ? precise : path === '/api/materials' ? catalog : []),
+  )
+  await openEditor()
+
+  expect((screen.getByLabelText('Kaina: Gipso plokštė') as HTMLInputElement).value).toBe('0,0616')
+  expect(screen.getByText(/0,042002 val\./)).toBeTruthy()
 })
 
 test("a price the server rejects shows the field's message, not the server's text", async () => {
@@ -155,7 +191,7 @@ test("a price the server rejects shows the field's message, not the server's tex
   await userEvent.clear(price)
   await userEvent.type(price, '4{Enter}')
 
-  expect(await screen.findByText('Kaina turi būti 0 arba didesnė, ne daugiau kaip 2 skaitmenys po kablelio.')).toBeTruthy()
+  expect(await screen.findByText('Kaina turi būti 0 arba didesnė, ne daugiau kaip 4 skaitmenys po kablelio.')).toBeTruthy()
   expect(document.body.textContent).not.toContain('XYZ')
 })
 

@@ -1,6 +1,6 @@
 import type { EstimateMaterialLine, EstimateWorkLine } from '../../interfaces/estimate'
 import type { Material } from '../../interfaces/material'
-import { formatMoney, formatQuantity } from '../../utils/format'
+import { formatMoney, formatNorm } from '../../utils/format'
 import { ui } from '../../utils/ui'
 import EstimateMaterialLineRow from './EstimateMaterialLineRow'
 import InlineNumberField from './InlineNumberField'
@@ -50,7 +50,7 @@ export default function EstimateWorkLineRow({
         </td>
         <td className={ui.cell}>
           <div className="flex items-start gap-2 whitespace-nowrap">
-            <span className="py-2">Darbas: {formatQuantity(line.labourNorm)} val. ×</span>
+            <span className="py-2">Darbas: {formatNorm(line.labourNorm)} val. ×</span>
             <InlineNumberField
               key={line.labourRate}
               kind="money"

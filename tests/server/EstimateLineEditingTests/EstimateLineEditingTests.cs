@@ -77,7 +77,7 @@ public sealed class EstimateLineEditingTests : IDisposable
 
     [Theory]
     [InlineData(-1)]
-    [InlineData(4.001)]
+    [InlineData(4.00001)]
     [InlineData(99999999999999999)]
     public async Task InvalidPrices_AreRefusedAndNothingChanges(decimal value)
     {
@@ -89,6 +89,37 @@ public sealed class EstimateLineEditingTests : IDisposable
 
         Assert.Equal((HttpStatusCode.BadRequest, HttpStatusCode.BadRequest), (rate.StatusCode, price.StatusCode));
         AssertTotals(await company.Client.GetEstimateAsync(estimate.Id), 825.31m, 82.53m, 136.18m, 219.24m, 1263.26m);
+    }
+
+    [Fact]
+    public async Task PrecisePriceAndLabourRate_AreAcceptedAndUsedUnrounded()
+    {
+        // Feature 016 US2-4: 4 decimal places are accepted; only the amounts are rounded.
+        var (company, estimate) = await ArrangeAsync();
+        var line = estimate.WorkLines[0];
+
+        await Ok(await company.Client.PatchAsJsonAsync(LabourRatePath(estimate.Id, line.Id), new { labourRate = 25.1234m }));
+        var changed = await Ok(await company.Client.PatchAsJsonAsync(PricePath(estimate.Id, line.Id, line.MaterialLines[0].Id), new { price = 0.0616m }));
+
+        var work = changed.WorkLines[0];
+        Assert.Equal((25.1234m, 703.46m), (work.LabourRate, work.LabourCost)); // 35 × 0.8 × 25.1234 = 703.4552
+        Assert.Equal((0.0616m, 4.74m), (work.MaterialLines[0].Price, work.MaterialLines[0].Cost)); // 77 × 0.0616 = 4.7432
+    }
+
+    [Fact]
+    public async Task AddedWork_CopiesPreciseNormsExactly()
+    {
+        var company = await _factory.RegisterCompanyAsync("Alpha UAB", "alpha@example.com");
+        var timber = await company.CreateMaterialAsync("Kalibruota mediena", "m³", 440);
+        var work = await company.CreateWorkAsync(CatalogRequests.WorkRequest("Pelių barjeras", "m", (timber.Id, 0.000884m, 0))
+            with { LabourRate = 25m, LabourNorm = 0.042002m });
+        var estimate = await company.CreateEstimateAsync();
+
+        var added = (await company.Client.AddWorkLineAsync(estimate.Id, work.Id, 48.08m)).WorkLines[0];
+
+        Assert.Equal((25m, 0.042002m), (added.LabourRate, added.LabourNorm));
+        Assert.Equal(0.000884m, added.MaterialLines[0].ConsumptionNorm);
+        Assert.Equal(48.08m * 0.000884m, added.MaterialLines[0].Quantity);
     }
 
     // ---- US2: removal ----

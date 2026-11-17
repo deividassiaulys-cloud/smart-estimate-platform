@@ -19,12 +19,12 @@ public sealed record WorkRequest : IValidatableObject
     public string Unit { get; init; } = string.Empty;
 
     /// <summary>
-    /// Labour rate in euros per hour: zero or more, with at most 2 decimal places.
+    /// Labour rate in euros per hour: zero or more, with at most 4 decimal places.
     /// </summary>
     public decimal LabourRate { get; init; }
 
     /// <summary>
-    /// Labour hours per unit of work: zero or more, with at most 3 decimal places.
+    /// Labour hours per unit of work: zero or more, with at most 6 decimal places.
     /// </summary>
     public decimal LabourNorm { get; init; }
 

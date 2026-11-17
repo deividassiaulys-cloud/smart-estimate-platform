@@ -4,14 +4,14 @@ import { ApiError } from '../../api/http'
 import ConfirmDialog from '../../components/ConfirmDialog'
 import { RefreshedField, type EstimateRefreshPreview } from '../../interfaces/estimate'
 import { unexpectedError } from '../../utils/errors'
-import { formatMoney, formatPercent, formatQuantity } from '../../utils/format'
+import { formatMoney, formatNorm, formatPercent, formatPrice } from '../../utils/format'
 import { ui } from '../../utils/ui'
 
 const fields: Record<RefreshedField, { label: string; format: (value: number) => string }> = {
-  [RefreshedField.LabourRate]: { label: 'Darbo įkainis', format: formatMoney },
-  [RefreshedField.LabourNorm]: { label: 'Darbo norma', format: formatQuantity },
-  [RefreshedField.Price]: { label: 'Kaina', format: formatMoney },
-  [RefreshedField.ConsumptionNorm]: { label: 'Sunaudojimo norma', format: formatQuantity },
+  [RefreshedField.LabourRate]: { label: 'Darbo įkainis', format: formatPrice },
+  [RefreshedField.LabourNorm]: { label: 'Darbo norma', format: formatNorm },
+  [RefreshedField.Price]: { label: 'Kaina', format: formatPrice },
+  [RefreshedField.ConsumptionNorm]: { label: 'Sunaudojimo norma', format: formatNorm },
   [RefreshedField.WastePercent]: { label: 'Nuostoliai', format: formatPercent },
 }
 

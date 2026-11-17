@@ -93,6 +93,26 @@ public sealed class WorkEndpointsTests : IDisposable
     }
 
     [Fact]
+    public async Task PreciseRateAndNorms_AreStoredExactlyAndKeptWhenSavedUnchanged()
+    {
+        var company = await _factory.RegisterCompanyAsync("Alpha UAB", "alpha@example.com");
+        var timber = await company.CreateMaterialAsync("Kalibruota mediena", "m³", 440);
+        var request = WorkRequest("Pelių barjeras", "m", (timber.Id, 0.000884m, 0)) with
+        {
+            LabourRate = 25.1234m,
+            LabourNorm = 0.042002m
+        };
+        var work = await company.CreateWorkAsync(request);
+
+        var response = await company.Client.PutAsJsonAsync($"/api/works/{work.Id}", request);
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var saved = (await company.Client.GetFromJsonAsync<WorkResponse>($"/api/works/{work.Id}"))!;
+        Assert.Equal((25.1234m, 0.042002m), (saved.LabourRate, saved.LabourNorm));
+        Assert.Equal(0.000884m, Assert.Single(saved.Lines).ConsumptionNorm);
+    }
+
+    [Fact]
     public async Task Update_ReplacesTheWholeComposition()
     {
         var company = await _factory.RegisterCompanyAsync("Alpha UAB", "alpha@example.com");

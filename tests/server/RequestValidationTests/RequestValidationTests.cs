@@ -62,9 +62,11 @@ public sealed class RequestValidationTests
     [Theory]
     [InlineData("0", "kg", true)]
     [InlineData("12.34", "kg", true)]
+    [InlineData("0.0616", "vnt.", true)]
+    [InlineData("99999999999999.9999", "kg", true)]
     [InlineData("-0.01", "kg", false)]
-    [InlineData("12.345", "kg", false)]
-    [InlineData("10000000000000000.00", "kg", false)]
+    [InlineData("0.06164", "kg", false)]
+    [InlineData("100000000000000.0000", "kg", false)]
     [InlineData("1", "pcs", false)]
     [InlineData("1", "", false)]
     public void MaterialRequest_ChecksUnitAndPrice(string price, string unit, bool valid) =>
