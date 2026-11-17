@@ -1,5 +1,20 @@
 # Change log
 
+## 2026-11-17 — Removed the OpenAPI document (feature 018)
+
+Source: specs/018-remove-openapi.
+Reason: nothing read the generated OpenAPI description. The React client uses its own TypeScript interfaces,
+and there is no Swagger UI and no client generation. Its 89 [ProducesResponseType] attributes had to be kept in
+sync with the code by hand.
+
+- Removed AddOpenApi()/MapOpenApi(), the Microsoft.AspNetCore.OpenApi package, the never-used
+  Swashbuckle.AspNetCore package and every [ProducesResponseType] attribute.
+- Changed docs/architecture.md: the hand-written contracts in specs/*/contracts are the endpoint documentation.
+- Not changed: every route, status code, response body, authorization rule and validation response;
+  all requirements (FR/NFR/BR).
+
+---
+
 ## 2026-11-17 — Higher price and norm precision (gap A)
 
 Source: docs/reference/ANALYSIS.md §3, gap A; feature specs/016-price-norm-precision.

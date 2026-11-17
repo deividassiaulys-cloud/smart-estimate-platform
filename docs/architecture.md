@@ -12,7 +12,7 @@
 | Backend testing | xUnit + WebApplicationFactory (integration tests) | Standard .NET test framework; integration tests verify role/company data isolation end-to-end. |
 | Frontend testing | Vitest + React Testing Library | Native Vite integration; tests component behaviour, not implementation details. |
 | Excel export | ClosedXML | Open-source, MIT-licensed, generates .xlsx server-side without commercial licensing concerns. |
-| API documentation | Built-in ASP.NET Core OpenAPI document (Microsoft.AspNetCore.OpenApi) | Already part of the ASP.NET Core project template, so no extra dependency; it documents the real endpoints for Independent Work 5. No Swagger UI or Swashbuckle is used. |
+| API documentation | Hand-written endpoint contracts in specs/*/contracts | No generated API description is published (feature 018): nothing read the OpenAPI document, and its 89 response-type attributes had to be maintained by hand. The OpenAPI and the never-used Swashbuckle packages were removed. |
 | HTTP client | Fetch API (native) | No extra dependency needed for this project's size. |
 | Routing | React Router | Standard for role-dependent, multi-screen SPA navigation. |
 

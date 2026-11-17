@@ -12,8 +12,6 @@ public class AuthController(IAuthService authService) : ApiControllerBase
     /// Registers a visitor, creating their company and their Manager account, and logs them in.
     /// </summary>
     [HttpPost("register")]
-    [ProducesResponseType<AuthResponse>(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<ActionResult<AuthResponse>> Register(RegisterRequest request) =>
         StatusCode(StatusCodes.Status201Created, await authService.RegisterAsync(request));
 
@@ -21,9 +19,6 @@ public class AuthController(IAuthService authService) : ApiControllerBase
     /// Logs a user in. Wrong email and wrong password get the same error; a locked account reports the minutes remaining.
     /// </summary>
     [HttpPost("login")]
-    [ProducesResponseType<AuthResponse>(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status423Locked)]
     public Task<AuthResponse> Login(LoginRequest request) =>
         authService.LoginAsync(request);
 
@@ -32,8 +27,6 @@ public class AuthController(IAuthService authService) : ApiControllerBase
     /// </summary>
     [Authorize]
     [HttpGet("me")]
-    [ProducesResponseType<CurrentUserResponse>(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public Task<CurrentUserResponse> Me() =>
         authService.GetCurrentUserAsync();
 }

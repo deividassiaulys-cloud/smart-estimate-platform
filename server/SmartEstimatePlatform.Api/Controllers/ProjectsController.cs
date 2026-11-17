@@ -12,14 +12,12 @@ namespace SmartEstimatePlatform.Api.Controllers;
 /// </summary>
 [Route("api/projects")]
 [Authorize]
-[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 public class ProjectsController(IProjectService projectService) : ApiControllerBase
 {
     /// <summary>
     /// Lists the company's projects sorted by name.
     /// </summary>
     [HttpGet]
-    [ProducesResponseType<List<ProjectResponse>>(StatusCodes.Status200OK)]
     public Task<List<ProjectResponse>> List() =>
         projectService.ListAsync();
 
@@ -27,8 +25,6 @@ public class ProjectsController(IProjectService projectService) : ApiControllerB
     /// Returns one project, for Project Detail and the edit form.
     /// </summary>
     [HttpGet("{id:int}")]
-    [ProducesResponseType<ProjectResponse>(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public Task<ProjectResponse> Get(int id) =>
         projectService.GetAsync(id);
 
@@ -37,8 +33,6 @@ public class ProjectsController(IProjectService projectService) : ApiControllerB
     /// </summary>
     [HttpPost]
     [Authorize(Roles = nameof(UserRole.Manager))]
-    [ProducesResponseType<ProjectResponse>(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<ActionResult<ProjectResponse>> Create(ProjectRequest request) =>
         StatusCode(StatusCodes.Status201Created, await projectService.CreateAsync(request));
 
@@ -47,9 +41,6 @@ public class ProjectsController(IProjectService projectService) : ApiControllerB
     /// </summary>
     [HttpPut("{id:int}")]
     [Authorize(Roles = nameof(UserRole.Manager))]
-    [ProducesResponseType<ProjectResponse>(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public Task<ProjectResponse> Update(int id, ProjectRequest request) =>
         projectService.UpdateAsync(id, request);
 
@@ -58,9 +49,6 @@ public class ProjectsController(IProjectService projectService) : ApiControllerB
     /// </summary>
     [HttpDelete("{id:int}")]
     [Authorize(Roles = nameof(UserRole.Manager))]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id)
     {
         await projectService.DeleteAsync(id);
