@@ -15,9 +15,9 @@ function token(): string {
   return `${encode({ alg: 'none' })}.${encode({ [roleClaim]: 'Manager' })}.signature`
 }
 
-const screws = { id: 7, name: 'Sraigtai terasoms', unit: 'vnt.', price: 0.0616 }
-const film = { id: 8, name: 'Plėvelė', unit: 'm²', price: 4.5 }
-const timber = { id: 9, name: 'Kalibruota mediena', unit: 'm³', price: 440 }
+const screws = { id: 7, name: 'Sraigtai terasoms', unit: 'vnt.', kind: 0, price: 0.0616 }
+const film = { id: 8, name: 'Plėvelė', unit: 'm²', kind: 0, price: 4.5 }
+const timber = { id: 9, name: 'Kalibruota mediena', unit: 'm³', kind: 0, price: 440 }
 const barrier = { id: 3, name: 'Pelių barjeras', unit: 'm', labourRate: 25, labourNorm: 0.042002, lines: [] }
 
 let fetchMock: ReturnType<typeof vi.fn>
@@ -68,7 +68,7 @@ test('saving a material form unchanged keeps a 4-decimal price', async () => {
   await vi.waitFor(() => expect((price as HTMLInputElement).value).toBe('0,0616'))
   await userEvent.click(screen.getByRole('button', { name: 'Išsaugoti' }))
 
-  expect(sentBodies('PUT')).toEqual([{ name: 'Sraigtai terasoms', unit: 'vnt.', price: 0.0616 }])
+  expect(sentBodies('PUT')).toEqual([{ name: 'Sraigtai terasoms', unit: 'vnt.', kind: 0, price: 0.0616 }])
 })
 
 test('a price with 5 decimal places is refused and not sent', async () => {

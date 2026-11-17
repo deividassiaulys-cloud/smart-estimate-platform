@@ -3,6 +3,7 @@ import { previewRefresh } from '../../api/estimates'
 import { ApiError } from '../../api/http'
 import ConfirmDialog from '../../components/ConfirmDialog'
 import { RefreshedField, type EstimateRefreshPreview } from '../../interfaces/estimate'
+import { materialKindLabels, type MaterialKind } from '../../interfaces/material'
 import { unexpectedError } from '../../utils/errors'
 import { formatMoney, formatNorm, formatPercent, formatPrice } from '../../utils/format'
 import { ui } from '../../utils/ui'
@@ -13,6 +14,7 @@ const fields: Record<RefreshedField, { label: string; format: (value: number) =>
   [RefreshedField.Price]: { label: 'Kaina', format: formatPrice },
   [RefreshedField.ConsumptionNorm]: { label: 'Sunaudojimo norma', format: formatNorm },
   [RefreshedField.WastePercent]: { label: 'Nuostoliai', format: formatPercent },
+  [RefreshedField.Kind]: { label: 'Rūšis', format: (value) => materialKindLabels[value as MaterialKind] },
 }
 
 const lineName = (workName: string, materialName: string | null) =>

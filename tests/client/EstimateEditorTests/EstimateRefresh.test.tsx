@@ -116,6 +116,21 @@ test('precise prices and norms are shown in full in the dialog (feature 016)', a
   ])
 })
 
+test('a changed kind is shown with its Lithuanian names (feature 017)', async () => {
+  previewAnswer = () =>
+    Response.json({
+      ...preview,
+      changes: [{ workName: 'Siena A++', materialName: 'Plėvelė', field: 5, oldValue: 0, newValue: 1 }],
+      notFound: [],
+      newTotal: 1263.26,
+    })
+  const dialog = await openPreview()
+
+  expect(within(dialog).getAllByRole('listitem').map((item) => normalize(item.textContent))).toEqual([
+    'Siena A++ / Plėvelė — Rūšis: Medžiaga → Mechanizmas',
+  ])
+})
+
 test('cancelling sends no update', async () => {
   const dialog = await openPreview()
 

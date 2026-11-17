@@ -6,10 +6,14 @@ export const EstimateStatus = {
 
 export type EstimateStatus = (typeof EstimateStatus)[keyof typeof EstimateStatus]
 
+import type { MaterialKind } from './material'
+
 export interface EstimateMaterialLine {
   id: number
   materialName: string
   materialUnit: string
+  /** Copied from the catalog material; decides the Medžiagos or Mechanizmai column. */
+  kind: MaterialKind
   consumptionNorm: number
   wastePercent: number
   /** Calculated by the server, not rounded. */
@@ -27,6 +31,15 @@ export interface EstimateWorkLine {
   labourNorm: number
   labourRate: number
   labourCost: number
+  /** Quantity × labour norm, not rounded. */
+  hours: number
+  /** Sums of the rounded Material and Machinery line costs. */
+  materials: number
+  machinery: number
+  /** Labour cost + materials + machinery. */
+  amount: number
+  /** Amount ÷ quantity, rounded to 2 decimal places by the server; shown only. */
+  unitPrice: number
   materialLines: EstimateMaterialLine[]
 }
 
@@ -40,6 +53,9 @@ export interface Estimate {
   profitPercent: number
   vatPercent: number
   workLines: EstimateWorkLine[]
+  labour: number
+  materials: number
+  machinery: number
   directCosts: number
   overhead: number
   profit: number
@@ -85,6 +101,8 @@ export const RefreshedField = {
   Price: 2,
   ConsumptionNorm: 3,
   WastePercent: 4,
+  /** The values are MaterialKind numbers (feature 017). */
+  Kind: 5,
 } as const
 
 export type RefreshedField = (typeof RefreshedField)[keyof typeof RefreshedField]

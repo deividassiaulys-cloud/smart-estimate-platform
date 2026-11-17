@@ -1,12 +1,15 @@
 import type { EstimateMaterialLine, EstimateWorkLine } from '../../interfaces/estimate'
 import type { Material } from '../../interfaces/material'
-import { formatMoney, formatNorm } from '../../utils/format'
+import { formatMoney } from '../../utils/format'
 import { ui } from '../../utils/ui'
+import EstimateLabourRow from './EstimateLabourRow'
 import EstimateMaterialLineRow from './EstimateMaterialLineRow'
 import InlineNumberField from './InlineNumberField'
 
 interface EstimateWorkLineRowProps {
   line: EstimateWorkLine
+  /** The line's number in the estimate, 1, 2, … in the order of the lines. */
+  number: number
   /** The company's catalog materials, offered as replacements for the line's materials. */
   catalog: Material[]
   /** A Confirmed estimate: nothing in the line can be changed or removed. */
@@ -20,11 +23,13 @@ interface EstimateWorkLineRowProps {
 }
 
 /**
- * One work line and its material lines. The quantity, labour rate and material prices are edited in place;
- * every amount shown comes from the server.
+ * One work line with its unit price, amount and Labour / Materials / Machinery (FR-031, FR-032), followed by its labour
+ * row and its material lines. The quantity, labour rate and material prices are edited in place; every amount shown
+ * comes from the server.
  */
 export default function EstimateWorkLineRow({
   line,
+  number,
   catalog,
   readOnly,
   onQuantityChange,
@@ -37,8 +42,14 @@ export default function EstimateWorkLineRow({
   return (
     <tbody className="border-b-2 border-line">
       <tr className="align-top">
+        <td className={`${ui.cell} font-medium text-heading`}>{number}</td>
         <td className={`${ui.cell} font-medium text-heading`}>{line.workName}</td>
         <td className={ui.cell}>{line.workUnit}</td>
+        <td className={ui.cell}></td>
+        <td className={ui.cell}></td>
+        <td className={`${ui.cell} text-right`} aria-label={`Vieneto kaina: ${line.workName}`}>
+          {formatMoney(line.unitPrice)}
+        </td>
         <td className={ui.cell}>
           <InlineNumberField
             kind="quantity"
@@ -48,21 +59,10 @@ export default function EstimateWorkLineRow({
             onSave={(quantity) => onQuantityChange(line.id, quantity)}
           />
         </td>
-        <td className={ui.cell}>
-          <div className="flex items-start gap-2 whitespace-nowrap">
-            <span className="py-2">Darbas: {formatNorm(line.labourNorm)} val. ×</span>
-            <InlineNumberField
-              key={line.labourRate}
-              kind="money"
-              value={line.labourRate}
-              label={`Darbo įkainis, €/val.: ${line.workName}`}
-              readOnly={readOnly}
-              onSave={(labourRate) => onLabourRateChange(line.id, labourRate)}
-            />
-            <span className="py-2">€/val.</span>
-          </div>
-        </td>
+        <td className={`${ui.cell} text-right font-medium text-heading`}>{formatMoney(line.amount)}</td>
         <td className={`${ui.cell} text-right`}>{formatMoney(line.labourCost)}</td>
+        <td className={`${ui.cell} text-right`}>{formatMoney(line.materials)}</td>
+        <td className={`${ui.cell} text-right`}>{formatMoney(line.machinery)}</td>
         <td className={ui.cell}>
           {!readOnly && (
             <button
@@ -76,6 +76,11 @@ export default function EstimateWorkLineRow({
           )}
         </td>
       </tr>
+      <EstimateLabourRow
+        line={line}
+        readOnly={readOnly}
+        onLabourRateChange={(labourRate) => onLabourRateChange(line.id, labourRate)}
+      />
       {line.materialLines.map((material) => (
         <EstimateMaterialLineRow
           key={material.id}

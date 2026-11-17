@@ -60,7 +60,7 @@ public class EstimateService(AppDbContext db) : IEstimateService
 
         // Copies, not references: later catalog changes never reach the estimate (BR-010).
         var materialLines = work.Lines.OrderBy(l => l.Id).Select(l => new EstimateMaterialLine(
-            l.Material.Name, l.Material.Unit, l.Material.Price, l.ConsumptionNorm, l.WastePercent));
+            l.Material.Name, l.Material.Unit, l.Material.Price, l.ConsumptionNorm, l.WastePercent, l.Material.Kind));
         estimate.AddWorkLine(new EstimateWorkLine(
             work.Name, work.Unit, work.LabourRate, work.LabourNorm, request.Quantity, materialLines));
 
@@ -126,7 +126,7 @@ public class EstimateService(AppDbContext db) : IEstimateService
         }
 
         // A copy, not a reference: later catalog changes never reach the estimate (BR-010).
-        materialLine.ReplaceMaterial(material.Name, material.Unit, material.Price);
+        materialLine.ReplaceMaterial(material.Name, material.Unit, material.Price, material.Kind);
         await db.SaveChangesAsync();
         return Respond(estimate);
     }
@@ -191,7 +191,7 @@ public class EstimateService(AppDbContext db) : IEstimateService
                     .Select(l => new CatalogComponent(l.Material.Name, l.Material.Unit, l.ConsumptionNorm, l.WastePercent))
                     .ToList()))
             .ToListAsync();
-        var materials = await db.Materials.Select(m => new CatalogMaterial(m.Name, m.Unit, m.Price)).ToListAsync();
+        var materials = await db.Materials.Select(m => new CatalogMaterial(m.Name, m.Unit, m.Price, m.Kind)).ToListAsync();
         return EstimateCatalogRefresh.Apply(estimate, works, materials);
     }
 

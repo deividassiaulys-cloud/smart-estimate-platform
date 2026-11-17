@@ -31,6 +31,21 @@ import EstimateTotals from './EstimateTotals'
 import EstimateWorkLineRow from './EstimateWorkLineRow'
 import { unexpectedError } from '../../utils/errors'
 
+// The Estimate Editor's columns, the same as the Excel export's (FR-031); the actions column follows them.
+const estimateColumns = [
+  'Nr.',
+  'Pavadinimas',
+  'Mato vnt.',
+  'Norma',
+  'Atliekos %',
+  'Kaina',
+  'Kiekis',
+  'Suma',
+  'Darbas',
+  'Medžiagos',
+  'Mechanizmai',
+]
+
 function saveErrorMessage(error: unknown): string {
   if (error instanceof ApiError && error.status === 400) return 'Patikrinkite įvestus duomenis.'
   if (error instanceof ApiError && error.status === 409) return 'Sąmatos būsena jau pasikeitė, todėl pakeitimas neišsaugotas.'
@@ -173,18 +188,19 @@ export default function EstimateEditorPage() {
               <table className={ui.table}>
                 <thead>
                   <tr>
-                    <th className={ui.cell}>Pavadinimas</th>
-                    <th className={ui.cell}>Mato vnt.</th>
-                    <th className={ui.cell}>Kiekis</th>
-                    <th className={ui.cell}>Norma ir kaina</th>
-                    <th className={`${ui.cell} text-right`}>Suma</th>
+                    {estimateColumns.map((heading) => (
+                      <th key={heading} className={ui.cell}>
+                        {heading}
+                      </th>
+                    ))}
                     <th className={ui.cell}></th>
                   </tr>
                 </thead>
-                {estimate.workLines.map((line) => (
+                {estimate.workLines.map((line, index) => (
                   <EstimateWorkLineRow
                     key={`${line.id}-${estimate.status}`}
                     line={line}
+                    number={index + 1}
                     catalog={materials}
                     readOnly={readOnly}
                     onQuantityChange={(lineId, quantity) => applyField(() => changeQuantity(estimateId, lineId, quantity))}

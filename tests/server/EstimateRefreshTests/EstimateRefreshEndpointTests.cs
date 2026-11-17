@@ -198,7 +198,28 @@ public sealed class EstimateRefreshEndpointTests : IDisposable
         export.EnsureSuccessStatusCode();
         using var file = new XLWorkbook(new MemoryStream(await export.Content.ReadAsByteArrayAsync()));
         var sheet = file.Worksheet("Sąmata");
-        Assert.Equal((16m, 5.00m), (sheet.Cell("F7").GetValue<decimal>(), sheet.Cell("F8").GetValue<decimal>()));
+        // Row 8 is the labour row (rate in F), row 9 the first material line (price in F).
+        Assert.Equal((16m, 5.00m), (sheet.Cell("F8").GetValue<decimal>(), sheet.Cell("F9").GetValue<decimal>()));
+    }
+
+    [Fact]
+    public async Task ChangedKind_IsPreviewedAndMovesTheCostToMachinery()
+    {
+        // Feature 017 US3-2: "Plėvelė" became Machinery in the catalog; the total stays 1263.26.
+        var (company, estimate) = await ArrangeAsync();
+        var film = await MaterialAsync(company, "Plėvelė");
+        (await company.Client.PutAsJsonAsync($"/api/materials/{film.Id}", new MaterialRequest
+        {
+            Name = film.Name, Unit = film.Unit, Price = film.Price, Kind = Api.Models.Entities.MaterialKind.Machinery
+        })).EnsureSuccessStatusCode();
+
+        var preview = await PreviewAsync(company.Client, estimate.Id);
+        var refreshed = await RefreshAsync(company.Client, estimate.Id);
+
+        Assert.Equal([("Plėvelė", RefreshedField.Kind, 0m, 1m)],
+            preview.Changes.Select(c => (c.MaterialName, c.Field, c.OldValue, c.NewValue)));
+        Assert.Equal((1263.26m, 1263.26m), (preview.CurrentTotal, preview.NewTotal));
+        Assert.Equal((364.88m, 40.43m, 1263.26m), (refreshed.WorkLines[0].Materials, refreshed.WorkLines[0].Machinery, refreshed.Total));
     }
 
     // ---- Refusals (FR-015-6) ----

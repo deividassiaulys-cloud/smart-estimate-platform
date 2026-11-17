@@ -72,7 +72,8 @@ test('the Estimate View shows the work and material names and nothing commercial
   expect(page.getAllByRole('listitem').map((item) => item.textContent)).toEqual(['Gipso plokštė', 'Varžtai', 'Plėvelė'])
 
   const text = document.body.textContent ?? ''
-  for (const forbidden of ['€', '35', '77', '918,75', '420,00', 'Juodraštis', 'Patvirtinta']) {
+  // Feature 017: nor the Labour / Materials / Machinery columns, the labour row or kinds (BR-005).
+  for (const forbidden of ['€', '35', '77', '918,75', '420,00', 'Juodraštis', 'Patvirtinta', 'Mechanizm', 'Atliekos', 'val.']) {
     expect(text).not.toContain(forbidden)
   }
   // The only estimate data requested is the names; the shared menu (012) also asks for the company name.
