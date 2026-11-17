@@ -28,7 +28,7 @@
   - Labour row: "Darbas", "val.", labour norm, labour rate (edited inline, FR-023), hours, labour cost in "Suma" and "Darbas".
   - Material rows: name, unit, norm, waste %, price, quantity, cost in "Suma" and in the kind's column.
 
-  On screen the editor table gets the remove and replace action cells after the eleven columns. Below 768 px the existing stacked row layout applies (NFR-008). The work quantity stays editable on the work row.
+  On screen the editor table gets the remove and replace action cells after the eleven columns. Like the existing editor tables (utils/ui.ts, docs/ux.md §8), it stays a table and scrolls inside its own frame on narrow screens; the page itself never scrolls sideways (NFR-008). The work quantity stays editable on the work row. (Corrected during implementation: an earlier draft said the rows would stack, which is the lists' card layout, not the editors'.)
 - **Rationale**: FR-027 (export = screen). Hours are shown with `formatQuantity` / `#,##0.###`.
 
 ## R6. Totals block

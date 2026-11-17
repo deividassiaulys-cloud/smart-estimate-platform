@@ -4,8 +4,8 @@
 2	Register	Create a new account; registration also creates the company and makes the user its Manager.	Visitor
 3	Login	Authenticate with email and password.	Visitor
 4	Dashboard	Landing screen after login; shows a summary (recent projects/estimates) and role-appropriate shortcuts.	Manager, Viewer
-5	Materials List	Browse, search and manage the company's materials (name, unit, price).	Manager (full), Viewer (not accessible — no pricing data)
-6	Material Form (create / edit)	Add or edit a single material.	Manager
+5	Materials List	Browse, search and manage the company's materials (name, unit, kind — Medžiaga / Mechanizmas, price).	Manager (full), Viewer (not accessible — no pricing data)
+6	Material Form (create / edit)	Add or edit a single material, including its kind (Medžiaga by default, or Mechanizmas).	Manager
 7	Works List	Browse, search and manage the company's works (name, unit, labour rate, labour norm).	Manager
 8	Work Form (create / edit)	Create or edit a work, including its material composition (linked materials, consumption norm, waste %).	Manager
 9	Team / Viewers List	List of Viewer accounts in the company; create, remove, reset password.	Manager
@@ -13,7 +13,7 @@
 11	Projects List	List of the company's projects.	Manager, Viewer
 12	Project Form (create / edit)	Create or edit a project (name, description).	Manager
 13	Project Detail	Shows one project and the list of its estimates.	Manager, Viewer
-14	Estimate Editor	Main working screen: add works, set quantities, view auto-generated material lines, edit a line's labour rate or material price, replace (same unit) or remove a material line (Draft only, this estimate only), update prices and norms from the catalog after a preview of every change (Draft only), set overhead/profit/VAT %, see totals, change status (Draft/Confirmed).	Manager
+14	Estimate Editor	Main working screen, in the same 11 columns as the Excel export (Nr., Pavadinimas, Mato vnt., Norma, Atliekos %, Kaina, Kiekis, Suma, Darbas, Medžiagos, Mechanizmai): each work line shows its unit price, amount and Labour / Materials / Machinery, followed by its labour row (norm, rate, hours) and its material lines; the totals start with Darbas, Medžiagos and Mechanizmai. Add works, set quantities, view auto-generated material lines, edit a line's labour rate or material price, replace (same unit) or remove a material line (Draft only, this estimate only), update prices and norms from the catalog after a preview of every change (Draft only), set overhead/profit/VAT %, see totals, change status (Draft/Confirmed).	Manager
 15	Estimate View (read-only)	Read-only view of an estimate. Manager sees full data (quantities, prices, sums, status); Viewer sees only work and material names.	Manager, Viewer
 16	Export Confirmation	Confirms and triggers the Excel (and later PDF) export of an estimate.	Manager
 17	Not Found (404)	Shown when a route or resource does not exist or does not belong to the user's company.	All authenticated roles
