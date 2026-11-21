@@ -21,6 +21,7 @@ const responses: Record<string, unknown> = {
   ],
   '/api/estimates/9/names': {
     name: 'Pradinė sąmata',
+    sections: [],
     works: [{ workName: 'Siena A++', materialNames: ['Gipso plokštė', 'Varžtai', 'Plėvelė'] }],
   },
 }
@@ -89,4 +90,23 @@ test('a Viewer can go from Project Detail to the Estimate View', async () => {
   await userEvent.click((await screen.findAllByRole('link', { name: 'Atidaryti' }))[0])
 
   expect(await screen.findByRole('heading', { name: 'Siena A++' })).toBeTruthy()
+})
+
+test('the Estimate View shows each section with its works, then the works without a section (feature 019)', async () => {
+  responses['/api/estimates/11/names'] = {
+    name: 'Namas',
+    sections: [{ name: 'A++ siena', works: [{ workName: 'Tašelis 28x45 mm', materialNames: ['Kalibruota mediena'] }] }],
+    works: [{ workName: 'Šiukšlių išvežimas', materialNames: [] }],
+  }
+  render(
+    <MemoryRouter initialEntries={['/estimates/11/view']}>
+      <App />
+    </MemoryRouter>,
+  )
+
+  expect(await screen.findByRole('heading', { name: 'A++ siena', level: 2 })).toBeTruthy()
+  expect(screen.getByRole('heading', { name: 'Tašelis 28x45 mm', level: 3 })).toBeTruthy()
+  expect(screen.getByRole('heading', { name: 'Be skyriaus', level: 2 })).toBeTruthy()
+  expect(screen.getByRole('heading', { name: 'Šiukšlių išvežimas', level: 3 })).toBeTruthy()
+  expect(document.body.textContent ?? '').not.toContain('€')
 })

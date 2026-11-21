@@ -1,3 +1,4 @@
+import ClampedText from '../../components/ClampedText'
 import { Link } from 'react-router-dom'
 import type { Material } from '../../interfaces/material'
 import { formatPrice } from '../../utils/format'
@@ -24,14 +25,16 @@ export default function MaterialsTable({ materials, onDelete }: MaterialsTablePr
         <tbody className={ui.listBody}>
           {materials.map((material) => (
             <tr className={ui.listRow} key={material.id}>
-              <td className={ui.listTitleCell}>{material.name}</td>
+              <td className={ui.listTitleCell}>
+                <ClampedText text={material.name} />
+              </td>
               <td className={ui.listCell} data-label="Mato vnt.">{material.unit}</td>
               <td className={`${ui.listCell} text-right`} data-label="Kaina">{formatPrice(material.price)}</td>
               <td className={ui.listActionsCell}>
-                <Link className={ui.link} to={`/materials/${material.id}/edit`}>
+                <Link className={ui.smallLink} to={`/materials/${material.id}/edit`}>
                   Redaguoti
                 </Link>
-                <button type="button" className={ui.dangerOutlineButton} onClick={() => onDelete(material)}>
+                <button type="button" className={ui.smallDangerButton} onClick={() => onDelete(material)}>
                   Ištrinti
                 </button>
               </td>

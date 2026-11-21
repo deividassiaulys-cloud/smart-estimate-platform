@@ -42,8 +42,12 @@ public class DomainExceptionHandler(ProblemDetailsFactory problemDetailsFactory)
                 return Problem(StatusCodes.Status409Conflict, "A material with this name and unit already exists.");
             case DuplicateWorkException:
                 return Problem(StatusCodes.Status409Conflict, "A work with this name and unit already exists.");
+            case DuplicateCatalogSectionException:
+                return Problem(StatusCodes.Status409Conflict, "A catalog section with this name and unit already exists.");
             case UnknownMaterialException:
                 return Problem(StatusCodes.Status400BadRequest, "Each line must use a material from your catalog.");
+            case ZeroSectionQuantityException:
+                return Problem(StatusCodes.Status400BadRequest, exception.Message);
             case MaterialUnitMismatchException:
                 return Problem(StatusCodes.Status400BadRequest, exception.Message);
             case UnknownWorkException:
@@ -54,6 +58,10 @@ public class DomainExceptionHandler(ProblemDetailsFactory problemDetailsFactory)
                 var inUseProblem = Problem(StatusCodes.Status409Conflict, inUse.Message);
                 inUseProblem.Extensions["works"] = inUse.WorkNames;
                 return inUseProblem;
+            case WorkInUseException workInUse:
+                var workInUseProblem = Problem(StatusCodes.Status409Conflict, workInUse.Message);
+                workInUseProblem.Extensions["sections"] = workInUse.SectionNames;
+                return workInUseProblem;
             case InvalidCredentialsException:
                 return Problem(StatusCodes.Status401Unauthorized, exception.Message);
             case AccountLockedException locked:

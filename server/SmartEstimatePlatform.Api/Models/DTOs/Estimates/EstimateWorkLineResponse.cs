@@ -7,6 +7,11 @@ public sealed record EstimateWorkLineResponse
 {
     public int Id { get; init; }
 
+    /// <summary>
+    /// The estimate section the line belongs to, or null.
+    /// </summary>
+    public int? SectionId { get; init; }
+
     public string WorkName { get; init; } = string.Empty;
 
     public string WorkUnit { get; init; } = string.Empty;

@@ -21,6 +21,8 @@ const draft = {
   overheadPercent: 0,
   profitPercent: 0,
   vatPercent: 21,
+  sections: [],
+  unsectionedSubtotal: 0,
   workLines: [
     { id: 21, workName: 'Siena A++', workUnit: 'm²', quantity: 35, labourNorm: 0.8, labourRate: 15, labourCost: 420, materialLines: [] },
   ],
@@ -83,7 +85,7 @@ test('a confirmed estimate is read-only, and returning it to Draft makes it edit
 
   expect(patchCalls()).toEqual(['/api/estimates/9/confirm'])
   expect(await screen.findByText('Patvirtinta')).toBeTruthy()
-  expect(screen.queryByRole('button', { name: 'Pridėti darbą' })).toBeNull()
+  expect(screen.queryByRole('button', { name: '+ Pridėti darbą' })).toBeNull()
   expect(screen.queryByRole('button', { name: 'Pašalinti Siena A++' })).toBeNull()
   expect((screen.getByLabelText('Kiekis: Siena A++') as HTMLInputElement).disabled).toBe(true)
   expect((screen.getByLabelText('PVM, %') as HTMLInputElement).disabled).toBe(true)
@@ -93,7 +95,7 @@ test('a confirmed estimate is read-only, and returning it to Draft makes it edit
 
   expect(patchCalls()).toEqual(['/api/estimates/9/confirm', '/api/estimates/9/draft'])
   expect(await screen.findByText('Juodraštis')).toBeTruthy()
-  expect(screen.getByRole('button', { name: 'Pridėti darbą' })).toBeTruthy()
+  expect(screen.getByRole('button', { name: '+ Pridėti darbą' })).toBeTruthy()
   expect((screen.getByLabelText('Kiekis: Siena A++') as HTMLInputElement).disabled).toBe(false)
 })
 

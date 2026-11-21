@@ -9,6 +9,7 @@ const managerItems: NavItem[] = [
   { label: 'Projektai', to: '/projects' },
   { label: 'Medžiagos', to: '/materials' },
   { label: 'Darbai', to: '/works' },
+  { label: 'Skyriai', to: '/catalog-sections' },
   { label: 'Komanda', to: '/team' },
 ]
 

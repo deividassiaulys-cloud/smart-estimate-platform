@@ -21,6 +21,8 @@ const estimate = {
   overheadPercent: 0,
   profitPercent: 0,
   vatPercent: 21,
+  sections: [],
+  unsectionedSubtotal: 0,
   workLines: [],
   directCosts: 0,
   overhead: 0,
@@ -35,7 +37,7 @@ let downloadedAs: string[]
 function mockApi(exportResponse: () => Response) {
   fetchMock = vi.fn(async (path: string) => {
     if (path === '/api/estimates/9/export') return exportResponse()
-    if (path === '/api/estimates/9/names') return Response.json({ name: 'Pradinė sąmata', works: [] })
+    if (path === '/api/estimates/9/names') return Response.json({ name: 'Pradinė sąmata', sections: [], works: [] })
     return Response.json(path === '/api/estimates/9' ? estimate : [])
   })
   vi.stubGlobal('fetch', fetchMock)

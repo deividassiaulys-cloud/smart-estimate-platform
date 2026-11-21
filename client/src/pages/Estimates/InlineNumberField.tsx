@@ -58,7 +58,7 @@ export default function InlineNumberField({ kind, value, label, readOnly, onSave
   return (
     <div className={ui.field}>
       <input
-        className={`${ui.input} w-28`}
+        className={`${ui.input} w-24`}
         type="text"
         inputMode="decimal"
         autoComplete="off"

@@ -71,7 +71,9 @@ public class EstimateExportService(
         return header.Length + 1;
     }
 
-    // The table: each work line followed by its material lines, as in the editor. Returns the last row used.
+    // The table: each work line followed by its material lines, as in the editor. With sections, the lines are
+    // grouped under a heading per section with a subtotal row, and the lines without a section come last (FR-034);
+    // without sections, the table is as before. Returns the last row used.
     private static int WriteLines(IXLWorksheet sheet, int row, EstimateResponse estimate)
     {
         string[] headings = ["Pavadinimas", "Mato vnt.", "Kiekis", "Norma", "Atliekos %", "Kaina / Įkainis", "Suma"];
@@ -80,7 +82,39 @@ public class EstimateExportService(
             Text(sheet.Cell(row, column), headings[column - 1]).Style.Font.Bold = true;
         }
 
-        foreach (var work in estimate.WorkLines)
+        if (estimate.Sections.Count == 0)
+        {
+            return WriteWorkLines(sheet, row, estimate.WorkLines);
+        }
+
+        foreach (var section in estimate.Sections)
+        {
+            row = WriteGroup(sheet, row, $"{section.Name} — {section.Quantity.ToString("0.###", Lithuanian)} {section.Unit}",
+                estimate.WorkLines.Where(l => l.SectionId == section.Id), section.Subtotal);
+        }
+
+        var unsectioned = estimate.WorkLines.Where(l => l.SectionId is null).ToList();
+        return unsectioned.Count == 0
+            ? row
+            : WriteGroup(sheet, row, "Be skyriaus", unsectioned, estimate.UnsectionedSubtotal);
+    }
+
+    // A section heading, its lines and its subtotal row. Returns the last row used.
+    private static int WriteGroup(IXLWorksheet sheet, int row, string heading, IEnumerable<EstimateWorkLineResponse> lines, decimal subtotal)
+    {
+        row++;
+        Text(sheet.Cell(row, 1), heading).Style.Font.Bold = true;
+        row = WriteWorkLines(sheet, row, lines);
+        row++;
+        Text(sheet.Cell(row, 1), "Skyriaus suma").Style.Font.Bold = true;
+        Number(sheet.Cell(row, LastColumn), subtotal, MoneyFormat);
+        sheet.Cell(row, LastColumn).Style.Font.Bold = true;
+        return row;
+    }
+
+    private static int WriteWorkLines(IXLWorksheet sheet, int row, IEnumerable<EstimateWorkLineResponse> lines)
+    {
+        foreach (var work in lines)
         {
             row++;
             Text(sheet.Cell(row, 1), work.WorkName).Style.Font.Bold = true;

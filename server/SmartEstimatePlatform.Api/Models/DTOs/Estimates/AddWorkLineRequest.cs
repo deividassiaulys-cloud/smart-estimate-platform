@@ -19,6 +19,11 @@ public sealed record AddWorkLineRequest : IValidatableObject
     public decimal Quantity { get; init; }
 
     /// <summary>
+    /// A section of this estimate to put the work in, or null for no section (FR-033).
+    /// </summary>
+    public int? SectionId { get; init; }
+
+    /// <summary>
     /// Applies the <see cref="EstimateRules"/> for the quantity.
     /// </summary>
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext) =>

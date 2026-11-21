@@ -75,6 +75,7 @@ Overhead, profit, and VAT percentages.
 Estimate status (Draft / Confirmed) with editing restrictions.
 Role-based viewing (Manager sees everything, Viewer sees only names).
 Estimate export to Excel.
+Catalog sections (templates of works) and estimate sections with subtotals.
 Works in a browser on desktop and mobile.
 If time allows: estimate copying, editing estimate lines, and PDF export.
 
@@ -85,7 +86,7 @@ An administrator interface and company approval (registration works immediately)
 Invitations, emails, email-based password recovery, two-factor authentication.
 Multiple Manager roles per company, a Viewer with prices, a user belonging to multiple companies.
 Concurrent-editing conflict warnings and real-time editing.
-Estimate version history, templates, sections, discounts.
+Estimate version history, discounts.
 Commercial offers, a client role, invoices, payments, integrations.
 Price history, multiple prices for the same material, automatic price updates.
 Activity log, backup management, a mobile app, multiple languages.
@@ -122,6 +123,7 @@ Estimate copying.
 Editing an estimate line: changing the price, removing or replacing a material only within that estimate.
 Updating an estimate’s prices and norms from the current catalog.
 PDF export.
+Catalog sections (templates of works) and estimate sections with subtotals.
 
 Could Have
 
@@ -159,6 +161,11 @@ FR-026	The system MUST show a Viewer only the project list and the names of work
 FR-027	The system MUST allow a Manager to export an estimate to an Excel file containing the same data they see in the system, including status.	Must have
 FR-028	The system MUST allow a Manager to export an estimate to a PDF file.	Should have
 FR-029	The system MUST allow a Manager to assign a category to materials and works and to filter lists by it.	Could have
+FR-030	The system MUST allow a Manager to create, edit, delete, and search catalog sections: a name, a unit of measurement, and one or more catalog works, each with a coefficient (work quantity per 1 unit of the section, greater than 0). Name and unit are unique within the company. A work used in a catalog section cannot be deleted.	Should have
+FR-031	The system MUST allow a Manager to add a catalog section to a Draft estimate with one section quantity, creating an estimate section with copies of its works (quantity = section quantity × coefficient) and their material lines, as in FR-012–FR-014.	Should have
+FR-032	The system MUST allow a Manager to change an estimate section's quantity (Draft status only), recalculating the quantities of the works created from the catalog section after warning that quantities changed by hand will be overwritten.	Should have
+FR-033	The system MUST allow a Manager to remove an estimate section together with its work and material lines (Draft status only, with confirmation), and to add a single work to a section or to no section.	Should have
+FR-034	The system MUST show and export an estimate that has sections grouped by section, with a subtotal per section and for the lines without a section; a Viewer sees only section names with work and material names.	Should have
 
 8. Non-Functional Requirements
 ID	Requirement	Priority
@@ -188,7 +195,7 @@ BR-007. Price and norm cannot be negative; waste and estimate percentages must b
 BR-008. Units of measurement come from a fixed system list (pcs, m, m², m³, kg, t, l, h, set).
 BR-009. A work may have zero or more materials; the same material may be used in multiple works.
 BR-010. An estimate line stores a copy of its price and norms. Catalog changes or deletions do not affect estimates.
-BR-011. A project belongs to one company, an estimate to one project. Deleting a project deletes its estimates. Deletion is irreversible.
+BR-011. A project belongs to one company, an estimate to one project. Deleting a project deletes its estimates. An estimate may have sections; deleting a section deletes its work lines. Deletion is irreversible.
 BR-012. A new estimate is always created with “Draft” status.
 BR-013. An estimate’s works, materials, quantities, and percentages cannot be changed while its status is “Confirmed.” To edit, the estimate must be returned to “Draft.”
 BR-014. Only a Manager can change an estimate’s status.
@@ -201,7 +208,7 @@ BR-016. Percentages are calculated sequentially, and the final total is their su
 overhead = direct costs × p₁ %;
 profit = (direct costs + overhead) × p₂ %;
 VAT = (direct costs + overhead + profit) × p₃ %.
-BR-017. Only monetary amounts are rounded, to 2 decimal places (0.005 → 0.01). The final total is the sum of the already-rounded parts. Unit prices (material price, labour rate) have up to 4 decimal places, norms up to 6 and quantities up to 3; a value with more decimal places is rejected, not rounded, and none of them is rounded in calculations. Quantities are shown to 3 decimal places, norms to up to 6, unit prices to up to 4.
+BR-017. Only monetary amounts are rounded, to 2 decimal places (0.005 → 0.01). The final total is the sum of the already-rounded parts. Unit prices (material price, labour rate) have up to 4 decimal places, norms up to 6 and quantities up to 3; a value with more decimal places is rejected, not rounded, and none of them is rounded in calculations. Quantities are shown to 3 decimal places, norms to up to 6, unit prices to up to 4. A work quantity computed from a section (section quantity × coefficient) is rounded to 3 decimal places, half away from zero, when it is created or recalculated; a result of 0 is refused.
 
 10. Main Data Entities
 Company: a construction company or contractor (name).
@@ -212,10 +219,12 @@ Work Material Norm: the relationship between a work and a material (consumption 
 Unit of Measurement: a fixed system list.
 Project: an order or site (name, description).
 Estimate: a project’s calculation (name, status: Draft / Confirmed, overhead, profit, and VAT percentages).
-Estimate Work Line: a work with a quantity and a copy of its price and norms.
+Catalog Section: a company catalog template (name, unit) made of catalog works, each with a coefficient (Catalog Section Line).
+Estimate Section: a section of an estimate (copied name and unit, section quantity); not linked to the catalog section.
+Estimate Work Line: a work with a quantity and a copy of its price and norms; may belong to one estimate section, and keeps the coefficient it was created with.
 Estimate Material Line: generated from the work’s composition, belongs to a work line, stores a copy of its own price and norms.
 Category: groups materials and works.
-Relationships: a company has many users, materials, works, and projects. A project has many estimates; an estimate has work lines; a work line has material lines. Estimate lines are only derived from the catalog but do not depend on it. Everything except the unit of measurement belongs to one company. An estimate’s status controls whether its lines can be changed (BR-013).
+Relationships: a company has many users, materials, works, and projects. A project has many estimates; an estimate has sections and work lines (each in at most one section); a work line has material lines. A catalog section has catalog section lines, each referring to a catalog work. Estimate lines are only derived from the catalog but do not depend on it. Everything except the unit of measurement belongs to one company. An estimate’s status controls whether its lines can be changed (BR-013).
 
 11. Assumptions, Constraints, and Dependencies
 

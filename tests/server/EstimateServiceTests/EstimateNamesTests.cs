@@ -15,11 +15,41 @@ namespace SmartEstimatePlatform.Api.Tests.EstimateServiceTests;
 /// </summary>
 public sealed class EstimateNamesTests : IDisposable
 {
-    private static readonly string[] AllowedJsonProperties = ["id", "name", "works", "workName", "materialNames"];
+    // "sections" (feature 019) holds only section names and their works' names.
+    private static readonly string[] AllowedJsonProperties = ["id", "name", "sections", "works", "workName", "materialNames"];
 
     private readonly ApiFactory _factory = new();
 
     public void Dispose() => _factory.Dispose();
+
+    [Fact]
+    public async Task Viewer_GetsSectionNamesWithTheirWorks_AndNothingElse()
+    {
+        // Feature 019 (FR-034, BR-005).
+        var company = await _factory.RegisterCompanyAsync("Alpha UAB", "alpha@example.com");
+        var workId = await company.CreateWallWorkAsync();
+        var section = await company.Client.PostAsJsonAsync("/api/catalog-sections", new Api.Models.DTOs.CatalogSections.CatalogSectionRequest
+        {
+            Name = "A++ siena", Unit = "m²", Lines = [new() { WorkId = workId, Coefficient = 1m }]
+        });
+        var sectionId = (await section.Content.ReadFromJsonAsync<Api.Models.DTOs.CatalogSections.CatalogSectionResponse>())!.Id;
+        var estimate = await company.CreateEstimateAsync();
+        (await company.Client.PostAsJsonAsync($"/api/estimates/{estimate.Id}/sections",
+            new AddSectionRequest { CatalogSectionId = sectionId, Quantity = 35m })).EnsureSuccessStatusCode();
+        await company.Client.AddWorkLineAsync(estimate.Id, workId, 2m);
+        var viewer = await _factory.CreateViewerClientAsync(company);
+
+        var response = await viewer.GetAsync($"/api/estimates/{estimate.Id}/names");
+
+        var names = (await response.Content.ReadFromJsonAsync<EstimateNamesResponse>())!;
+        var wall = Assert.Single(names.Sections);
+        Assert.Equal(("A++ siena", "Siena A++"), (wall.Name, Assert.Single(wall.Works).WorkName));
+        Assert.Equal("Siena A++", Assert.Single(names.Works).WorkName);
+        var json = await response.Content.ReadAsStringAsync();
+        AssertOnlyNameProperties(json);
+        Assert.DoesNotContain("35", json);
+        Assert.DoesNotContain("m²", json);
+    }
 
     [Fact]
     public async Task Viewer_ListsEveryEstimateByNameWhateverItsStatus()

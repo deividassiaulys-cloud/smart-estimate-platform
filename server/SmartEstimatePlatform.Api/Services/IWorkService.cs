@@ -40,5 +40,6 @@ public interface IWorkService
     /// Deletes a work and its material lines. Estimates keep their own copies, so they are not affected.
     /// </summary>
     /// <exception cref="NotFoundException">No work with this ID in the current company.</exception>
+    /// <exception cref="WorkInUseException">The work is used in one or more catalog sections (FR-030).</exception>
     Task DeleteAsync(int id);
 }

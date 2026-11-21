@@ -1,3 +1,4 @@
+import ClampedText from '../../components/ClampedText'
 import { Link } from 'react-router-dom'
 import type { EstimateSummary } from '../../interfaces/estimate'
 import { estimateStatusNames } from '../../utils/estimateStatus'
@@ -20,11 +21,13 @@ export default function ProjectEstimatesTable({ estimates }: { estimates: Estima
         <tbody className={ui.listBody}>
           {estimates.map((estimate) => (
             <tr className={ui.listRow} key={estimate.id}>
-              <td className={ui.listTitleCell}>{estimate.name}</td>
+              <td className={ui.listTitleCell}>
+                <ClampedText text={estimate.name} />
+              </td>
               <td className={ui.listCell} data-label="Būsena">{estimateStatusNames[estimate.status]}</td>
               <td className={`${ui.listCell} text-right`} data-label="Suma su PVM">{formatMoney(estimate.total)}</td>
               <td className={ui.listActionsCell}>
-                <Link className={ui.link} to={`/estimates/${estimate.id}`}>
+                <Link className={ui.smallLink} to={`/estimates/${estimate.id}`}>
                   Atidaryti
                 </Link>
               </td>

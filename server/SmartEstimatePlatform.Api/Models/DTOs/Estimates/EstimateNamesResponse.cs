@@ -8,5 +8,13 @@ public sealed record EstimateNamesResponse
 {
     public string Name { get; init; } = string.Empty;
 
+    /// <summary>
+    /// The estimate's sections in order, each with its works' names (FR-034).
+    /// </summary>
+    public List<SectionNamesResponse> Sections { get; init; } = [];
+
+    /// <summary>
+    /// The works without a section.
+    /// </summary>
     public List<WorkNamesResponse> Works { get; init; } = [];
 }

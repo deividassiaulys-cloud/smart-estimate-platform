@@ -60,6 +60,11 @@ public class Estimate : ICompanyScoped
     public List<EstimateWorkLine> WorkLines { get; private set; } = [];
 
     /// <summary>
+    /// The estimate's sections in the order they were added (FR-031); a work line may belong to one of them.
+    /// </summary>
+    public List<EstimateSection> Sections { get; private set; } = [];
+
+    /// <summary>
     /// Replaces the three percentages with already validated values.
     /// </summary>
     public void ChangePercentages(decimal overheadPercent, decimal profitPercent, decimal vatPercent)
@@ -88,4 +93,18 @@ public class Estimate : ICompanyScoped
     /// Removes a work line; its material lines go with it.
     /// </summary>
     public void RemoveWorkLine(EstimateWorkLine workLine) => WorkLines.Remove(workLine);
+
+    /// <summary>
+    /// Adds a section; its work lines are added with <see cref="AddWorkLine"/>.
+    /// </summary>
+    public void AddSection(EstimateSection section) => Sections.Add(section);
+
+    /// <summary>
+    /// Removes a section together with its work lines and their material lines (BR-011).
+    /// </summary>
+    public void RemoveSection(EstimateSection section)
+    {
+        WorkLines.RemoveAll(line => line.Section == section);
+        Sections.Remove(section);
+    }
 }

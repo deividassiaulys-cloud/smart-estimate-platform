@@ -22,6 +22,63 @@ namespace SmartEstimatePlatform.Api.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
+            modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.CatalogSection", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)")
+                        .UseCollation("utf8mb4_0900_as_ci");
+
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId", "Name", "Unit")
+                        .IsUnique();
+
+                    b.ToTable("CatalogSections");
+                });
+
+            modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.CatalogSectionLine", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CatalogSectionId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Coefficient")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)");
+
+                    b.Property<int>("WorkId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CatalogSectionId");
+
+                    b.HasIndex("WorkId");
+
+                    b.ToTable("CatalogSectionLines");
+                });
+
             modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.Company", b =>
                 {
                     b.Property<int>("Id")
@@ -122,6 +179,38 @@ namespace SmartEstimatePlatform.Api.Migrations
                     b.ToTable("EstimateMaterialLines");
                 });
 
+            modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.EstimateSection", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EstimateId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<decimal>("Quantity")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EstimateId");
+
+                    b.ToTable("EstimateSections");
+                });
+
             modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.EstimateWorkLine", b =>
                 {
                     b.Property<int>("Id")
@@ -129,6 +218,10 @@ namespace SmartEstimatePlatform.Api.Migrations
                         .HasColumnType("int");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal?>("Coefficient")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)");
 
                     b.Property<int>("EstimateId")
                         .HasColumnType("int");
@@ -145,6 +238,9 @@ namespace SmartEstimatePlatform.Api.Migrations
                         .HasPrecision(18, 3)
                         .HasColumnType("decimal(18,3)");
 
+                    b.Property<int?>("SectionId")
+                        .HasColumnType("int");
+
                     b.Property<string>("WorkName")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -158,6 +254,8 @@ namespace SmartEstimatePlatform.Api.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("EstimateId");
+
+                    b.HasIndex("SectionId");
 
                     b.ToTable("EstimateWorkLines");
                 });
@@ -346,6 +444,36 @@ namespace SmartEstimatePlatform.Api.Migrations
                     b.ToTable("WorkMaterialLines");
                 });
 
+            modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.CatalogSection", b =>
+                {
+                    b.HasOne("SmartEstimatePlatform.Api.Models.Entities.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.CatalogSectionLine", b =>
+                {
+                    b.HasOne("SmartEstimatePlatform.Api.Models.Entities.CatalogSection", "CatalogSection")
+                        .WithMany("Lines")
+                        .HasForeignKey("CatalogSectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SmartEstimatePlatform.Api.Models.Entities.Work", "Work")
+                        .WithMany()
+                        .HasForeignKey("WorkId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CatalogSection");
+
+                    b.Navigation("Work");
+                });
+
             modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.Estimate", b =>
                 {
                     b.HasOne("SmartEstimatePlatform.Api.Models.Entities.Company", "Company")
@@ -376,6 +504,17 @@ namespace SmartEstimatePlatform.Api.Migrations
                     b.Navigation("WorkLine");
                 });
 
+            modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.EstimateSection", b =>
+                {
+                    b.HasOne("SmartEstimatePlatform.Api.Models.Entities.Estimate", "Estimate")
+                        .WithMany("Sections")
+                        .HasForeignKey("EstimateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Estimate");
+                });
+
             modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.EstimateWorkLine", b =>
                 {
                     b.HasOne("SmartEstimatePlatform.Api.Models.Entities.Estimate", "Estimate")
@@ -384,7 +523,14 @@ namespace SmartEstimatePlatform.Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SmartEstimatePlatform.Api.Models.Entities.EstimateSection", "Section")
+                        .WithMany()
+                        .HasForeignKey("SectionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.Navigation("Estimate");
+
+                    b.Navigation("Section");
                 });
 
             modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.Material", b =>
@@ -450,6 +596,11 @@ namespace SmartEstimatePlatform.Api.Migrations
                     b.Navigation("Work");
                 });
 
+            modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.CatalogSection", b =>
+                {
+                    b.Navigation("Lines");
+                });
+
             modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.Company", b =>
                 {
                     b.Navigation("Users");
@@ -457,6 +608,8 @@ namespace SmartEstimatePlatform.Api.Migrations
 
             modelBuilder.Entity("SmartEstimatePlatform.Api.Models.Entities.Estimate", b =>
                 {
+                    b.Navigation("Sections");
+
                     b.Navigation("WorkLines");
                 });
 

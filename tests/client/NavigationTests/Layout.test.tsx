@@ -21,6 +21,8 @@ const estimate = {
   overheadPercent: 12.5,
   profitPercent: 15,
   vatPercent: 21,
+  sections: [],
+  unsectionedSubtotal: 0,
   workLines: [],
   directCosts: 0,
   overhead: 0,
@@ -58,7 +60,7 @@ test("a Viewer's Estimate View links back to the project it was opened from", as
   renderAt('/projects/4', 'Viewer', {
     '/api/projects/4': { id: 4, name: 'Buto remontas', description: null },
     '/api/projects/4/estimate-names': [{ id: 9, name: 'Pradinė sąmata' }],
-    '/api/estimates/9/names': { name: 'Pradinė sąmata', works: [] },
+    '/api/estimates/9/names': { name: 'Pradinė sąmata', sections: [], works: [] },
   })
 
   await userEvent.click(await screen.findByRole('link', { name: 'Atidaryti' }))
@@ -68,7 +70,7 @@ test("a Viewer's Estimate View links back to the project it was opened from", as
 })
 
 test('an Estimate View opened directly links to the project list', async () => {
-  renderAt('/estimates/9/view', 'Viewer', { '/api/estimates/9/names': { name: 'Pradinė sąmata', works: [] } })
+  renderAt('/estimates/9/view', 'Viewer', { '/api/estimates/9/names': { name: 'Pradinė sąmata', sections: [], works: [] } })
 
   const back = await screen.findByRole('link', { name: '← Projektai' })
   expect(back.getAttribute('href')).toBe('/projects')

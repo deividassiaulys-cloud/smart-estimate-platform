@@ -115,7 +115,7 @@ export default function WorkLinesEditor({ lines, materials, errors, onChange }: 
                 <td className={ui.listActionsCell}>
                   <button
                     type="button"
-                    className={ui.dangerOutlineButton}
+                    className={ui.smallDangerButton}
                     aria-label={`Pašalinti ${index + 1} eilutę`}
                     onClick={() => onChange(lines.filter((_, i) => i !== index))}
                   >

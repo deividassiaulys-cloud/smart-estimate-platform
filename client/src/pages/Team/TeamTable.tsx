@@ -1,3 +1,4 @@
+import ClampedText from '../../components/ClampedText'
 import { Link } from 'react-router-dom'
 import { UserRole } from '../../interfaces/auth'
 import type { TeamMember } from '../../interfaces/team'
@@ -26,17 +27,17 @@ export default function TeamTable({ members, onRemove }: TeamTableProps) {
           {members.map((member) => (
             <tr className={ui.listRow} key={member.id}>
               <td className={ui.listTitleCell}>
-                {member.firstName} {member.lastName}
+                <ClampedText text={`${member.firstName} ${member.lastName}`} />
               </td>
               <td className={ui.listCell} data-label="El. paštas">{member.email}</td>
               <td className={ui.listCell} data-label="Rolė">{roleNames[member.role]}</td>
               <td className={ui.listActionsCell}>
                 {member.role === UserRole.Viewer && (
                   <>
-                    <Link className={ui.link} to={`/team/${member.id}/password`}>
+                    <Link className={ui.smallLink} to={`/team/${member.id}/password`}>
                       Keisti slaptažodį
                     </Link>
-                    <button type="button" className={ui.dangerOutlineButton} onClick={() => onRemove(member)}>
+                    <button type="button" className={ui.smallDangerButton} onClick={() => onRemove(member)}>
                       Pašalinti
                     </button>
                   </>

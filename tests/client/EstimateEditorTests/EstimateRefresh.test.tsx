@@ -21,6 +21,8 @@ const estimate = {
   overheadPercent: 10,
   profitPercent: 15,
   vatPercent: 21,
+  sections: [],
+  unsectionedSubtotal: 0,
   workLines: [],
   directCosts: 825.31,
   overhead: 82.53,

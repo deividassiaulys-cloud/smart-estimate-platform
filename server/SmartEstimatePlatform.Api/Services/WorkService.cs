@@ -54,6 +54,17 @@ public class WorkService(AppDbContext db) : IWorkService
     public async Task DeleteAsync(int id)
     {
         var work = await FindAsync(id);
+        var sectionNames = await db.CatalogSectionLines
+            .Where(l => l.WorkId == id)
+            .Select(l => l.CatalogSection.Name)
+            .Distinct()
+            .OrderBy(name => name)
+            .ToListAsync();
+        if (sectionNames.Count > 0)
+        {
+            throw new WorkInUseException(sectionNames);
+        }
+
         db.Works.Remove(work);
         await db.SaveChangesAsync();
     }

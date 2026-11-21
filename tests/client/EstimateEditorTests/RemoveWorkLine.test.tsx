@@ -32,6 +32,8 @@ const estimate = {
   overheadPercent: 0,
   profitPercent: 0,
   vatPercent: 21,
+  sections: [],
+  unsectionedSubtotal: 0,
   workLines: [workLine(21, 'Siena A++', 420), workLine(22, 'Lubų dažymas', 100)],
   directCosts: 520,
   overhead: 0,
