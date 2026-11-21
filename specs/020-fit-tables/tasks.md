@@ -71,14 +71,14 @@
 
 ## Phase 5: Polish
 
-- [ ] T344 docs/ux.md: §14 Estimate Editor (small "Keisti"/"Šalinti", the replacement dialog with search) and the wrapping rule for names in tables (§8). Do the quickstart.md manual check at 1280 px, 1920 px and 360 px and record the result here; touch-target check in DevTools.
+- [X] T344 docs/ux.md: §14 Estimate Editor (small "Keisti"/"Šalinti", the replacement dialog with search) and the wrapping rule for names in tables (§8). Do the quickstart.md manual check at 1280 px, 1920 px and 360 px and record the result here; touch-target check in DevTools.
 - [X] T345 Run the full check set (`npm run lint`, `npm run build`, `npm run test`, `dotnet test`). Fix any regression.
 
 **Status notes (2026-11-17)**:
 - T336: `ClampedText` also sets `whitespace-normal`, so it wraps inside cells that otherwise keep text on one line.
 - T340: the visible labels shortened to "Keisti" / "Šalinti". The accessible names ("Pakeisti medžiagą: …", "Pašalinti …", "Pašalinti skyrių …") are unchanged, so existing tests and screen-reader users are unaffected.
 - T342: list actions keep their labels and accessible names (FR-020-3 clarified accordingly); the project description wraps like names.
-- T344: docs/ux.md updated (§8 rule, §14 editor). The manual width check at 1280 / 1920 / 360 px and the touch-target check have **not** been done in this session (jsdom has no layout), so T344 stays open.
+- T344: docs/ux.md updated (§8 rule, §14 editor). The student did the quickstart.md manual check on 2026-11-21: at 1280 px and 1920 px no table or page scrolls sideways, names wrap with tooltips, action cells stay level; at 360 px the lists are cards and only the editor table scrolls in its frame; in DevTools touch emulation the small buttons are at least 44 px high. All pass.
 - Found in the student's review: row action cells had `flex` on the `<td>`, so with a 2-line name their bottom line sat higher than the row's. Fixed in `ui.ts` (the cell stays a table cell; cards below 768 px keep the flex row), with a regression test in FitTables.test.tsx.
 - T345: `npm run lint`, `npm run build`, `npm run test` (114 passed, twice) and `dotnet test` (368 passed) all pass.
 
@@ -138,14 +138,14 @@
 
 ## Phase 9: Polish (User Stories 4–6)
 
-- [ ] T355 docs/ux.md §14: the add buttons, the dialogs with search, and create-new. Manual check in the browser (dialogs at 1280 px and 360 px, keyboard).
+- [X] T355 docs/ux.md §14: the add buttons, the dialogs with search, and create-new. Manual check in the browser (dialogs at 1280 px and 360 px, keyboard).
 - [X] T356 Run the full check set (`npm run lint`, `npm run build`, `npm run test`, `dotnet test`). Fix any regression.
 
 **Status notes for User Stories 4–6 (2026-11-17)**:
 - T348: the replacement dialog now uses DialogFrame + SearchableList; all its tests pass unchanged.
 - T351: besides the request-level tests, two section tests were rewritten to check the section choice inside the dialog (the old checks would have passed trivially after the forms were removed).
 - T352: the form-state type in WorkForm was renamed `WorkFields` so it doesn't clash with the component name; the catalog pages' behaviour and tests are unchanged.
-- T355: docs/ux.md §14 updated. The manual browser check (dialogs at 1280 px and 360 px, keyboard) has **not** been done in this session, so T355 stays open.
+- T355: docs/ux.md §14 updated. The student did the browser check on 2026-11-21: the add and create-new dialogs at 1280 px and 360 px, keyboard only (focus, arrows, Tab trap, Escape). All pass.
 - T356: `npm run lint`, `npm run build`, `npm run test` (122 passed, twice) and `dotnet test` (368 passed) all pass.
 
 ## Dependencies
