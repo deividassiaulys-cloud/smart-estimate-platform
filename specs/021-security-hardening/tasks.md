@@ -51,13 +51,24 @@
 
 Tests only; no production code change expected. Any failing test is a real bug and gets its own fix in this PR.
 
-- [ ] T004 [P] [US3] [F2] Anonymous matrix: one theory over every protected route in docs/security-review.md section 4 (method + URL, plan R4). Test: `AnonymousAccessTests.EveryProtectedEndpoint_Returns401`.
-- [ ] T005 [P] [US3] [F2] Catalog sections, Viewer and other company. Tests: `CatalogSectionAuthorizationTests.Viewer_IsForbiddenFromEveryCatalogSectionEndpoint` (list, get, create, update, delete) and `CatalogSectionIsolationTests.AnotherCompanysSection_CannotBeUpdated`.
-- [ ] T006 [P] [US3] [F2] Estimate sections. Tests: `EstimateSectionAuthorizationTests.Viewer_CannotChangeOrRemoveASection` and `EstimateSectionIsolationTests.AnotherCompanysEstimate_SectionsAreNotFound` (POST to the foreign estimate, PATCH, DELETE).
-- [ ] T007 [US3] [F2] `GET /api/auth/me` without a token (after T004, same file). Test: covered by `AnonymousAccessTests.EveryProtectedEndpoint_Returns401` (route listed explicitly).
-- [ ] T008 [P] [US3] [F2] SQL-looking search input. Test: `MaterialSearchTests.Search_SqlLikeText_IsTreatedAsData` (`' OR 1=1 --` returns no rows and the other company's data stays hidden); the same for works and catalog sections.
-- [ ] T009 [P] [US3] [F3] Forged tokens. Test: `TokenValidationTests.ForgedToken_IsRejected` theory: wrong signing key, `alg=none`, expired (via the test clock), wrong issuer, wrong audience, changed `company_id` claim → 401.
-- [ ] T010 [P] [US3] [F3] Start-up key check. Test: `JwtOptionsStartupTests.ShortKey_StopsTheApp` (factory with a 31-character key throws `OptionsValidationException`).
+- [X] T004 [P] [US3] [F2] Anonymous matrix: one theory over every protected route in docs/security-review.md section 4 (method + URL, plan R4). Test: `AnonymousAccessTests.EveryProtectedEndpoint_Returns401`.
+- [X] T005 [P] [US3] [F2] Catalog sections, Viewer and other company. Tests: `CatalogSectionAuthorizationTests.Viewer_IsForbiddenFromEveryCatalogSectionEndpoint` (list, get, create, update, delete) and `CatalogSectionIsolationTests.AnotherCompanysSection_CannotBeUpdated`.
+- [X] T006 [P] [US3] [F2] Estimate sections. Tests: `EstimateSectionAuthorizationTests.Viewer_CannotChangeOrRemoveASection` and `EstimateSectionIsolationTests.AnotherCompanysEstimate_SectionsAreNotFound` (POST to the foreign estimate, PATCH, DELETE).
+- [X] T007 [US3] [F2] `GET /api/auth/me` without a token (after T004, same file). Test: covered by `AnonymousAccessTests.EveryProtectedEndpoint_Returns401` (route listed explicitly).
+- [X] T008 [P] [US3] [F2] SQL-looking search input. Test: `MaterialSearchTests.Search_SqlLikeText_IsTreatedAsData` (`' OR 1=1 --` returns no rows and the other company's data stays hidden); the same for works and catalog sections.
+- [X] T009 [P] [US3] [F3] Forged tokens. Test: `TokenValidationTests.ForgedToken_IsRejected` theory: wrong signing key, `alg=none`, expired (via the test clock), wrong issuer, wrong audience, changed `company_id` claim → 401.
+- [X] T010 [P] [US3] [F3] Start-up key check. Test: `JwtOptionsStartupTests.ShortKey_StopsTheApp` (factory with a 31-character key throws `OptionsValidationException`).
+
+**Status notes (2026-11-23)**:
+- Tests only; no production code changed. Every new test passed at once, so the matrix had untested cells but no access-control bug.
+- T004, T007: `AnonymousAccessTests.EveryProtectedEndpoint_Returns401` covers all 48 protected method + route pairs, including `GET /api/auth/me` and `POST /api/auth/logout`. An extra check, `AnonymousAccessTests.TheListHoldsEveryProtectedEndpointOfTheApi`, compares the list with the API's real endpoints (`EndpointDataSource`), so a new endpoint without a row fails the tests (plan R4).
+- T005: `CatalogSectionAuthorizationTests.Viewer_IsForbiddenFromEveryCatalogSectionEndpoint`, `CatalogSectionIsolationTests.AnotherCompanysSection_CannotBeUpdated`. New shared helpers `CatalogRequests.CatalogSectionRequest` and `CreateCatalogSectionAsync` in TestSupport.
+- T006: `EstimateSectionAuthorizationTests.Viewer_CannotChangeOrRemoveASection`, `EstimateSectionIsolationTests.AnotherCompanysEstimate_SectionsAreNotFound` (POST to the foreign estimate, PATCH, DELETE).
+- T008: `MaterialSearchTests.Search_SqlLikeText_IsTreatedAsData` is a theory over materials, works and catalog sections with three SQL-looking texts; a plain search is the control. The tests run on SQLite, not MySQL.
+- T009: `TokenValidationTests.ForgedToken_IsRejected` (six forgeries) plus the control `TokenValidationTests.CorrectlyBuiltToken_IsAccepted`. "Expired" uses an expiry 10 minutes in the past (beyond the 5-minute clock skew) instead of a test clock, because JwtBearer reads the system clock. "Changed company_id" edits a real token's payload and keeps its signature.
+- T010: `JwtOptionsStartupTests.ShortKey_StopsTheApp` (31 characters → `OptionsValidationException`) plus the boundary `JwtOptionsStartupTests.KeyOf32Characters_Starts`.
+- docs/security-review.md: no MISSING cell left in section 4 (SC-021-3); F2 and F3 FIXED.
+- Checks: `dotnet build` 0 warnings, `dotnet test` 437 passed (372 + 65), `npm run lint` clean, `npm run build` passes, `npm run test` 125 passed.
 
 ## Phase 4: PR `021-http-hardening` — User Story 4 (P2)
 
