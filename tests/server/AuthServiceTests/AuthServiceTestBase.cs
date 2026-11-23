@@ -42,18 +42,38 @@ public abstract class AuthServiceTestBase : IDisposable
     /// <summary>
     /// Runs an action against a fresh AuthService and DbContext, as one request would.
     /// <paramref name="companyId"/> is the logged-in user's company; null means nobody is logged in.
+    /// <paramref name="passwordHasher"/> replaces the real hasher, e.g. to count its calls.
     /// </summary>
-    protected async Task<T> WithServiceAsync<T>(Func<AuthService, Task<T>> action, int? companyId = null, int? userId = null)
+    protected async Task<T> WithServiceAsync<T>(
+        Func<AuthService, Task<T>> action, int? companyId = null, int? userId = null, IPasswordHasher<User>? passwordHasher = null)
     {
         var currentUser = new FixedCurrentUser(companyId, userId);
         await using var db = new AppDbContext(Options, currentUser);
         var service = new AuthService(
             db,
-            new PasswordHasher<User>(),
+            passwordHasher ?? new PasswordHasher<User>(),
             new TokenService(Microsoft.Extensions.Options.Options.Create(Jwt)),
             currentUser,
             Clock);
         return await action(service);
+    }
+
+    /// <summary>
+    /// The real password hasher, counting how often a password is verified.
+    /// </summary>
+    protected sealed class CountingPasswordHasher : IPasswordHasher<User>
+    {
+        private readonly PasswordHasher<User> _inner = new();
+
+        public int VerifyCalls { get; private set; }
+
+        public string HashPassword(User user, string password) => _inner.HashPassword(user, password);
+
+        public PasswordVerificationResult VerifyHashedPassword(User user, string hashedPassword, string providedPassword)
+        {
+            VerifyCalls++;
+            return _inner.VerifyHashedPassword(user, hashedPassword, providedPassword);
+        }
     }
 
     protected sealed class TestTimeProvider : TimeProvider

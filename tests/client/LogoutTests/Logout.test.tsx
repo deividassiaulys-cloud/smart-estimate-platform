@@ -39,6 +39,32 @@ test('logging out removes the token and shows Login', async () => {
   expect(getToken()).toBeNull()
 })
 
+test('logging out calls the API and removes the token', async () => {
+  saveToken('test-token')
+  renderAt('/dashboard')
+  await userEvent.click(await screen.findByRole('button', { name: 'Atsijungti' }))
+
+  expect(await screen.findByRole('heading', { name: 'Prisijungimas' })).toBeTruthy()
+  const fetchMock = vi.mocked(fetch)
+  const logoutCall = fetchMock.mock.calls.find(([path]) => path === '/api/auth/logout')
+  expect(logoutCall?.[1]?.method).toBe('POST')
+  // The token is still sent with the logout request, so the server knows whose session to end.
+  expect(new Headers(logoutCall?.[1]?.headers).get('Authorization')).toBe('Bearer test-token')
+  expect(getToken()).toBeNull()
+})
+
+test('logging out still removes the token when the server cannot be reached', async () => {
+  saveToken('test-token')
+  renderAt('/dashboard')
+  await screen.findByRole('heading', { name: 'Sveiki, Jonas!' })
+  vi.mocked(fetch).mockRejectedValue(new TypeError('Failed to fetch'))
+
+  await userEvent.click(screen.getByRole('button', { name: 'Atsijungti' }))
+
+  expect(await screen.findByRole('heading', { name: 'Prisijungimas' })).toBeTruthy()
+  expect(getToken()).toBeNull()
+})
+
 test('after logout a protected page redirects to Login', async () => {
   saveToken('test-token')
   renderAt('/dashboard')

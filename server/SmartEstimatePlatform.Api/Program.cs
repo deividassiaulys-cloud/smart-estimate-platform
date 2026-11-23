@@ -45,7 +45,7 @@ builder.Services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationSc
         {
             // The user is checked on every request, so a removed user's token stops working immediately,
             // the token's company must be the user's real company (it is the only source of the current company),
-            // and a password reset invalidates every token issued before it.
+            // and a password reset or a logout invalidates every token issued before it.
             OnTokenValidated = async context =>
             {
                 var authService = context.HttpContext.RequestServices.GetRequiredService<IAuthService>();
