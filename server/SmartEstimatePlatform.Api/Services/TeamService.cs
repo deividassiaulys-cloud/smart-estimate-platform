@@ -15,7 +15,8 @@ public class TeamService(
     AppDbContext db,
     IAuthService authService,
     IPasswordHasher<User> passwordHasher,
-    ICurrentUser currentUser) : ITeamService
+    ICurrentUser currentUser,
+    ILogger<TeamService> logger) : ITeamService
 {
     /// <inheritdoc />
     public async Task<List<TeamMemberResponse>> ListMembersAsync()
@@ -45,6 +46,7 @@ public class TeamService(
         var viewer = await FindViewerAsync(viewerId);
         db.Users.Remove(viewer);
         await db.SaveChangesAsync();
+        logger.LogInformation("Viewer removed: viewer {ViewerId} by user {UserId}", viewerId, currentUser.UserId);
     }
 
     /// <inheritdoc />
@@ -57,6 +59,7 @@ public class TeamService(
         viewer.InvalidateTokens();
         viewer.ResetLoginFailures();
         await db.SaveChangesAsync();
+        logger.LogInformation("Viewer password reset: viewer {ViewerId} by user {UserId}", viewerId, currentUser.UserId);
     }
 
     private async Task<User> FindViewerAsync(int viewerId) =>

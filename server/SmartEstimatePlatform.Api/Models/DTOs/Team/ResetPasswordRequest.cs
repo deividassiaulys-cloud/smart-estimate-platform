@@ -9,6 +9,7 @@ namespace SmartEstimatePlatform.Api.Models.DTOs.Team;
 public sealed record ResetPasswordRequest : IValidatableObject
 {
     [Required]
+    [StringLength(PasswordRules.MaxLength)]
     public string NewPassword { get; init; } = string.Empty;
 
     /// <summary>

@@ -7,7 +7,7 @@ using SmartEstimatePlatform.Api.Services.Mapping;
 namespace SmartEstimatePlatform.Api.Services;
 
 /// <inheritdoc cref="ICatalogSectionService" />
-public class CatalogSectionService(AppDbContext db) : ICatalogSectionService
+public class CatalogSectionService(AppDbContext db, ICurrentUser currentUser, ILogger<CatalogSectionService> logger) : ICatalogSectionService
 {
     /// <inheritdoc />
     public async Task<List<CatalogSectionResponse>> SearchAsync(string? search)
@@ -54,6 +54,7 @@ public class CatalogSectionService(AppDbContext db) : ICatalogSectionService
         var section = await FindAsync(id);
         db.CatalogSections.Remove(section);
         await db.SaveChangesAsync();
+        logger.LogInformation("Catalog section deleted: catalog section {CatalogSectionId} by user {UserId}", id, currentUser.UserId);
     }
 
     private IQueryable<CatalogSection> SectionsWithWorks() =>

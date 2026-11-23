@@ -7,7 +7,7 @@ using SmartEstimatePlatform.Api.Services.Mapping;
 namespace SmartEstimatePlatform.Api.Services;
 
 /// <inheritdoc cref="IWorkService" />
-public class WorkService(AppDbContext db) : IWorkService
+public class WorkService(AppDbContext db, ICurrentUser currentUser, ILogger<WorkService> logger) : IWorkService
 {
     /// <inheritdoc />
     public async Task<List<WorkResponse>> SearchAsync(string? search)
@@ -67,6 +67,7 @@ public class WorkService(AppDbContext db) : IWorkService
 
         db.Works.Remove(work);
         await db.SaveChangesAsync();
+        logger.LogInformation("Work deleted: work {WorkId} by user {UserId}", id, currentUser.UserId);
     }
 
     private IQueryable<Work> WorksWithComposition() =>

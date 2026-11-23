@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Http.Json;
 using SmartEstimatePlatform.Api.Models.DTOs.Materials;
 using SmartEstimatePlatform.Api.Tests.TestSupport;
@@ -77,6 +78,21 @@ public sealed class MaterialSearchTests : IDisposable
 
         Assert.Equal(["Cementas"], await NamesAsync(alpha, catalog, "Cem"));
         Assert.Empty(await NamesAsync(beta, catalog, "Cem"));
+    }
+
+    [Theory]
+    [InlineData("/api/materials")]
+    [InlineData("/api/works")]
+    [InlineData("/api/catalog-sections")]
+    public async Task Search_OverTheLimit_Returns400(string catalog)
+    {
+        // A search text is at most 200 characters (feature 021, F9).
+        var company = await _factory.RegisterCompanyAsync("Alpha UAB", "alpha@example.com");
+
+        var atLimit = await company.Client.GetAsync($"{catalog}?search={new string('a', 200)}");
+        var overLimit = await company.Client.GetAsync($"{catalog}?search={new string('a', 201)}");
+
+        Assert.Equal((HttpStatusCode.OK, HttpStatusCode.BadRequest), (atLimit.StatusCode, overLimit.StatusCode));
     }
 
     private static async Task<List<string>> NamesAsync(LoggedInCompany company, string catalog, string search)

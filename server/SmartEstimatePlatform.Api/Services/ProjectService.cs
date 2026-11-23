@@ -7,7 +7,7 @@ using SmartEstimatePlatform.Api.Services.Mapping;
 namespace SmartEstimatePlatform.Api.Services;
 
 /// <inheritdoc cref="IProjectService" />
-public class ProjectService(AppDbContext db) : IProjectService
+public class ProjectService(AppDbContext db, ICurrentUser currentUser, ILogger<ProjectService> logger) : IProjectService
 {
     /// <inheritdoc />
     public async Task<List<ProjectResponse>> ListAsync()
@@ -44,6 +44,7 @@ public class ProjectService(AppDbContext db) : IProjectService
         var project = await FindAsync(id);
         db.Projects.Remove(project);
         await db.SaveChangesAsync();
+        logger.LogInformation("Project deleted: project {ProjectId} by user {UserId}", id, currentUser.UserId);
     }
 
     private async Task<Project> FindAsync(int id) =>

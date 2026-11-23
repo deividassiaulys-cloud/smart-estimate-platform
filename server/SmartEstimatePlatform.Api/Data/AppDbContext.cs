@@ -42,12 +42,18 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Company>(company =>
+            company.Property(c => c.Name).HasMaxLength(PersonRules.CompanyNameMaxLength));
+
         modelBuilder.Entity<User>(user =>
         {
             // Accent-sensitive, case-insensitive collation so the unique index rejects
             // emails that differ only by letter case, including concurrent registrations.
+            user.Property(u => u.FirstName).HasMaxLength(PersonRules.NameMaxLength);
+            user.Property(u => u.LastName).HasMaxLength(PersonRules.NameMaxLength);
+
             user.Property(u => u.Email)
-                .HasMaxLength(256)
+                .HasMaxLength(PersonRules.EmailMaxLength)
                 .UseCollation("utf8mb4_0900_as_ci");
 
             user.HasIndex(u => u.Email).IsUnique();

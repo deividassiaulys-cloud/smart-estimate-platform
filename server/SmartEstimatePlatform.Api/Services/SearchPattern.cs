@@ -11,6 +11,11 @@ public static class SearchPattern
     public const string Escape = @"\";
 
     /// <summary>
+    /// Longest search text accepted (feature 021, F9); longer names do not exist.
+    /// </summary>
+    public const int MaxLength = 200;
+
+    /// <summary>
     /// A pattern matching names that contain <paramref name="search"/> (trimmed). The % and _ the user
     /// typed match literally.
     /// </summary>

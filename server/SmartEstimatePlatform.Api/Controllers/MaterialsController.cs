@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartEstimatePlatform.Api.Models.DTOs.Materials;
@@ -18,7 +19,7 @@ public class MaterialsController(IMaterialService materialService) : ApiControll
     /// Lists the company's materials sorted by name, optionally only those whose name contains <paramref name="search"/>.
     /// </summary>
     [HttpGet]
-    public Task<List<MaterialResponse>> List([FromQuery] string? search) =>
+    public Task<List<MaterialResponse>> List([FromQuery, StringLength(SearchPattern.MaxLength)] string? search) =>
         materialService.SearchAsync(search);
 
     /// <summary>

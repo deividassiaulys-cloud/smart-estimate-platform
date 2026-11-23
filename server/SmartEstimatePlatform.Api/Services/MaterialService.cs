@@ -10,7 +10,7 @@ namespace SmartEstimatePlatform.Api.Services;
 /// Manages the current company's material catalog. The company scoping from feature 011 means another
 /// company's materials are never visible here and are reported as not found.
 /// </summary>
-public class MaterialService(AppDbContext db) : IMaterialService
+public class MaterialService(AppDbContext db, ICurrentUser currentUser, ILogger<MaterialService> logger) : IMaterialService
 {
     /// <inheritdoc />
     public async Task<List<MaterialResponse>> SearchAsync(string? search)
@@ -68,6 +68,7 @@ public class MaterialService(AppDbContext db) : IMaterialService
 
         db.Materials.Remove(material);
         await db.SaveChangesAsync();
+        logger.LogInformation("Material deleted: material {MaterialId} by user {UserId}", id, currentUser.UserId);
     }
 
     private async Task<Material> FindAsync(int id) =>

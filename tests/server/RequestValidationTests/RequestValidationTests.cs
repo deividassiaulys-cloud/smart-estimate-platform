@@ -83,6 +83,65 @@ public sealed class RequestValidationTests
     public void MaterialRequest_EmptyName_IsRejected(string name) =>
         Assert.False(IsValid(new MaterialRequest { Name = name, Unit = "kg", Price = 1 }));
 
+    [Theory]
+    [InlineData(256, true)]
+    [InlineData(257, false)]
+    public void RegisterRequest_EmailOver256Characters_IsRejected(int length, bool valid)
+    {
+        // An email is at most 256 characters, the column's size, so a longer one is a 400, not a database error (F9).
+        var email = new string('a', length - "@example.com".Length) + "@example.com";
+
+        Assert.Equal(valid, IsValid(ValidRegisterRequest() with { Email = email }));
+        Assert.Equal(valid, IsValid(ValidViewerRequest() with { Email = email }));
+        Assert.Equal(valid, IsValid(new LoginRequest { Email = email, Password = "Secret123" }));
+    }
+
+    [Theory]
+    [InlineData("FirstName", 100)]
+    [InlineData("LastName", 100)]
+    [InlineData("CompanyName", 200)]
+    [InlineData("Password", 128)]
+    public void RegisterRequest_NamesOverTheLimit_AreRejected(string field, int limit)
+    {
+        RegisterRequest With(int length)
+        {
+            var value = new string('a', length - 3) + "1A!";
+            return field switch
+            {
+                "FirstName" => ValidRegisterRequest() with { FirstName = value },
+                "LastName" => ValidRegisterRequest() with { LastName = value },
+                "CompanyName" => ValidRegisterRequest() with { CompanyName = value },
+                _ => ValidRegisterRequest() with { Password = value }
+            };
+        }
+
+        Assert.True(IsValid(With(limit)));
+        Assert.False(IsValid(With(limit + 1)));
+    }
+
+    [Theory]
+    [InlineData(128, true)]
+    [InlineData(129, false)]
+    public void PasswordFields_HaveAtMost128Characters(int length, bool valid)
+    {
+        var password = new string('a', length - 3) + "1A!";
+
+        Assert.Equal(valid, IsValid(ValidViewerRequest() with { Password = password }));
+        Assert.Equal(valid, IsValid(new ResetPasswordRequest { NewPassword = password }));
+        Assert.Equal(valid, IsValid(new LoginRequest { Email = "jonas@example.com", Password = password }));
+    }
+
+    [Theory]
+    [InlineData(100, true)]
+    [InlineData(101, false)]
+    public void CreateViewerRequest_NamesHaveAtMost100Characters(int length, bool valid)
+    {
+        var name = new string('a', length);
+
+        Assert.Equal(valid, IsValid(ValidViewerRequest() with { FirstName = name }));
+        Assert.Equal(valid, IsValid(ValidViewerRequest() with { LastName = name }));
+    }
+
     private static bool IsValid(object request) =>
         Validator.TryValidateObject(request, new ValidationContext(request), [], validateAllProperties: true);
 }

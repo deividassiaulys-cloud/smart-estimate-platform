@@ -7,7 +7,7 @@ using SmartEstimatePlatform.Api.Services.Mapping;
 namespace SmartEstimatePlatform.Api.Services;
 
 /// <inheritdoc cref="IEstimateService" />
-public class EstimateService(AppDbContext db) : IEstimateService
+public class EstimateService(AppDbContext db, ICurrentUser currentUser, ILogger<EstimateService> logger) : IEstimateService
 {
     /// <inheritdoc />
     public async Task<List<EstimateSummaryResponse>> ListForProjectAsync(int projectId)
@@ -212,8 +212,12 @@ public class EstimateService(AppDbContext db) : IEstimateService
     }
 
     /// <inheritdoc />
-    public Task<EstimateResponse> ConfirmAsync(int id) =>
-        ChangeStatusAsync(id, EstimateStatus.Draft, e => e.Confirm(), "The estimate is already confirmed.");
+    public async Task<EstimateResponse> ConfirmAsync(int id)
+    {
+        var confirmed = await ChangeStatusAsync(id, EstimateStatus.Draft, e => e.Confirm(), "The estimate is already confirmed.");
+        logger.LogInformation("Estimate confirmed: estimate {EstimateId} by user {UserId}", id, currentUser.UserId);
+        return confirmed;
+    }
 
     /// <inheritdoc />
     public Task<EstimateResponse> ReturnToDraftAsync(int id) =>
