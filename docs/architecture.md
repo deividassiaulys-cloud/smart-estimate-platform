@@ -59,3 +59,18 @@
 ├── AGENTS.md
 └── README.md
 ```
+
+## 4. Deployment Security Settings
+
+Set outside the repository, as environment variables, in every environment other than Development (feature 021):
+
+| Setting | Value | Why |
+|---|---|---|
+| `AllowedHosts` | The API's host names, separated by `;` (e.g. `estimates.example.lt`) | Only these hosts are served. The app refuses to start outside Development while it is missing or `*` (F7). `appsettings.json` keeps `*` for local runs; the tests list their own hosts. |
+| `RateLimiting__Auth__PermitLimit`, `RateLimiting__Auth__WindowSeconds` | Optional; default 10 requests per 60 seconds | Login and registration together are limited per client address; above the limit the API answers 429 with `Retry-After` (F4). |
+| `Jwt__Key`, `ConnectionStrings__DefaultConnection` | Secrets | See docs/security-review.md section 7. |
+
+- **Reverse proxy**: the rate limit uses the client's IP address. Behind a reverse proxy or load balancer every request would come from the proxy's address, so one attacker could block logins for everyone. Before deploying behind a proxy, configure ASP.NET Core forwarded headers (`X-Forwarded-For`) with the proxy as the only trusted source.
+- **Security headers**: every API response carries `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: no-referrer` and `Content-Security-Policy: default-src 'none'; frame-ancestors 'none'` (the API serves only JSON and files, never pages).
+- **Hosted client CSP**: the web server that serves the built React client (`client/dist`) must send its own policy, at least `default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'`, plus `X-Content-Type-Options: nosniff` and `Referrer-Policy: no-referrer`. The client uses no inline scripts, no `eval` and no external origins, so it needs nothing more; the API must be reached on the same origin (as the Vite proxy does today), otherwise `connect-src` and a CORS policy must name it. This policy is the main protection of the token kept in `localStorage` (docs/security-review.md, Accepted limitations).
+
