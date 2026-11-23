@@ -1,5 +1,6 @@
 import { useCallback, useId, useRef, useState } from 'react'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { logoutOnServer } from '../api/auth'
 import { isManager, logout } from '../utils/auth'
 import { ui } from '../utils/ui'
 import MobileMenu, { type NavItem } from './MobileMenu'
@@ -37,10 +38,18 @@ export default function NavBar({ companyName }: { companyName?: string }) {
     menuButtonRef.current?.focus()
   }, [])
 
-  function handleLogout() {
+  // The server ends the session first, while the token is still stored; the user is logged out on this device
+  // even when the server cannot be reached.
+  async function handleLogout() {
     setOpenedOn(null)
-    logout()
-    navigate('/login', { replace: true })
+    try {
+      await logoutOnServer()
+    } catch {
+      // Nothing to show: the token is discarded below either way.
+    } finally {
+      logout()
+      navigate('/login', { replace: true })
+    }
   }
 
   return (

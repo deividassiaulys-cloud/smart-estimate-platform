@@ -61,6 +61,24 @@ public sealed class LoginAsyncTests : AuthServiceTestBase
     }
 
     [Fact]
+    public async Task LoginAsync_UnknownEmail_HashesLikeAKnownEmail()
+    {
+        // An unknown email must cost one password verification, like a wrong password, so the response time
+        // does not tell an attacker which emails have accounts (feature 021, F5).
+        var unknownEmail = new CountingPasswordHasher();
+        var wrongPassword = new CountingPasswordHasher();
+
+        await Assert.ThrowsAsync<InvalidCredentialsException>(() => WithServiceAsync(
+            service => service.LoginAsync(new LoginRequest { Email = "nobody@example.com", Password = Password }),
+            passwordHasher: unknownEmail));
+        await Assert.ThrowsAsync<InvalidCredentialsException>(() => WithServiceAsync(
+            service => service.LoginAsync(new LoginRequest { Email = Email, Password = "Wrong1234" }),
+            passwordHasher: wrongPassword));
+
+        Assert.Equal((1, 1), (unknownEmail.VerifyCalls, wrongPassword.VerifyCalls));
+    }
+
+    [Fact]
     public async Task LoginAsync_FiveFailuresWithin10Minutes_LocksAccount()
     {
         await FailAsync(times: 4, gap: TimeSpan.FromMinutes(2));

@@ -17,6 +17,11 @@ export function login(request: LoginRequest): Promise<LoginResponse> {
   return apiFetch('/api/auth/login', { method: 'POST', body: JSON.stringify(request) })
 }
 
+/** Ends the session on the server: every token issued to the user so far stops working. */
+export function logoutOnServer(): Promise<void> {
+  return apiFetch('/api/auth/logout', { method: 'POST' })
+}
+
 /** Returns the logged-in user's name, company and role. */
 export function getCurrentUser(): Promise<CurrentUser> {
   return apiFetch('/api/auth/me')

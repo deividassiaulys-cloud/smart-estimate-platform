@@ -72,7 +72,7 @@ public class User : ICompanyScoped
     public DateTime? LockoutEnd { get; private set; }
 
     /// <summary>
-    /// Increases when the password is reset; tokens carrying an older version are rejected.
+    /// Increases when the password is reset or the user logs out; tokens carrying an older version are rejected.
     /// </summary>
     public int TokenVersion { get; private set; }
 

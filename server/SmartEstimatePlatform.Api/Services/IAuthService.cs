@@ -29,7 +29,8 @@ public interface IAuthService
     /// Logs a user in and issues their JWT. A successful login clears any failed-attempt streak.
     /// </summary>
     /// <exception cref="InvalidCredentialsException">
-    /// The email is unknown or the password is wrong; the same error is used for both.
+    /// The email is unknown or the password is wrong; the same error is used for both, and both verify one password hash,
+    /// so they also take the same time.
     /// A wrong password counts towards the lockout.
     /// </exception>
     /// <exception cref="AccountLockedException">
@@ -44,8 +45,14 @@ public interface IAuthService
     Task<CurrentUserResponse> GetCurrentUserAsync();
 
     /// <summary>
+    /// Logs the current user out on the server: every token issued to them so far stops working, on every device.
+    /// </summary>
+    /// <exception cref="UnauthorizedAccessException">The logged-in user no longer exists in the current company.</exception>
+    Task LogoutAsync();
+
+    /// <summary>
     /// Whether a token is still valid for its user: the user still exists, still belongs to the token's
-    /// company, and their password has not been reset since the token was issued.
+    /// company, and they have not reset their password or logged out since the token was issued.
     /// </summary>
     Task<bool> IsTokenUserValidAsync(int userId, int companyId, int tokenVersion);
 }

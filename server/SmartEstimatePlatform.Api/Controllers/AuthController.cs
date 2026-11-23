@@ -29,4 +29,15 @@ public class AuthController(IAuthService authService) : ApiControllerBase
     [HttpGet("me")]
     public Task<CurrentUserResponse> Me() =>
         authService.GetCurrentUserAsync();
+
+    /// <summary>
+    /// Logs the user out: every token issued to them so far stops working.
+    /// </summary>
+    [Authorize]
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        await authService.LogoutAsync();
+        return NoContent();
+    }
 }

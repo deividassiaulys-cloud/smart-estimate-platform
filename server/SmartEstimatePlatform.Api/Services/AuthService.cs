@@ -32,6 +32,14 @@ public class AuthService(
     /// </summary>
     public static readonly TimeSpan LockoutDuration = TimeSpan.FromMinutes(15);
 
+    // A hash of a random password, made once, that an unknown email is checked against, so a login with an unknown
+    // email costs one password verification like a known one and its response time does not reveal the account
+    // (feature 021, F5). No password ever matches it.
+    private static readonly User UnknownEmailUser = new(string.Empty, string.Empty, string.Empty, UserRole.Viewer, companyId: 0);
+
+    private static readonly Lazy<string> UnknownEmailHash = new(() =>
+        new PasswordHasher<User>().HashPassword(UnknownEmailUser, Guid.NewGuid().ToString()));
+
     /// <inheritdoc />
     public async Task<AuthResponse> RegisterAsync(RegisterRequest request)
     {
@@ -62,6 +70,7 @@ public class AuthService(
             .SingleOrDefaultAsync(u => u.Email == request.Email);
         if (user is null)
         {
+            passwordHasher.VerifyHashedPassword(UnknownEmailUser, UnknownEmailHash.Value, request.Password);
             throw new InvalidCredentialsException();
         }
 
@@ -101,6 +110,15 @@ public class AuthService(
                        .SingleOrDefaultAsync(u => u.Id == currentUser.UserId)
                    ?? throw new UnauthorizedAccessException("The logged-in user no longer exists.");
         return user.ToCurrentUserResponse();
+    }
+
+    /// <inheritdoc />
+    public async Task LogoutAsync()
+    {
+        var user = await db.Users.SingleOrDefaultAsync(u => u.Id == currentUser.UserId)
+                   ?? throw new UnauthorizedAccessException("The logged-in user no longer exists.");
+        user.InvalidateTokens();
+        await db.SaveChangesAsync();
     }
 
     /// <inheritdoc />
