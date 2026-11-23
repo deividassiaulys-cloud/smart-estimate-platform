@@ -3,7 +3,7 @@
 Project: Smart Estimate Platform
 Scope: ASP.NET Core API (`server/SmartEstimatePlatform.Api`, .NET 10), React/Vite client (`client/`), MySQL.
 Method: asset identification, threat modelling, code review against the OWASP Top 10 and OWASP ASVS, automated tests for negative cases.
-Reviewed: 2026-11-23, against `main` at `a06120d` (after PR #26). Every statement below was checked against the code; file and test names are the evidence.
+Reviewed: originally written on 2026-11-23 against `main` at `a06120d` (after PR #26); every statement was checked against the code, and file and test names are the evidence. The findings were then fixed by PRs #27–#31 (feature 021, section 13), and this document was updated with each of them: statuses, tests and the current behaviour.
 
 Status legend: **OK** = control exists and is tested; **PARTIAL** = control exists, test or detail missing; **GAP** = missing, fix planned; **FIXED** = was a finding, now fixed and tested.
 
@@ -25,7 +25,7 @@ Test names are written as `Class.Method`. Server tests are in `tests/server`, cl
 | Company isolation (tenant boundary) | One company must never read or change another company's data. |
 | Personal data (first name, last name, email) | Privacy obligations (GDPR) and phishing risk if leaked. |
 | Exported Excel files (`GET /api/estimates/{id}/export`) | Contain full estimates and could carry formula injection into the user's spreadsheet. |
-| Source repository | A leaked secret or a malicious change compromises the whole system. There is no CI configuration in the repository (see F10). |
+| Source repository | A leaked secret or a malicious change compromises the whole system. Since PR #27, CI (`.github/workflows/ci.yml`) builds, tests and audits every pull request and every push to `main` (F10, FIXED). |
 
 ## 2. Threat model
 
@@ -43,7 +43,7 @@ Test names are written as `Class.Method`. Server tests are in `tests/server`, cl
 | T10 | Search/list | SQL injection through search text | Authenticated user | Data disclosure | EF Core LINQ only; search uses `EF.Functions.Like` with a parameter built by `SearchPattern.Contains`, which escapes `%`, `_` and `\`; no raw SQL anywhere | Code search (section 6); `MaterialSearchTests.Search_PercentSign_MatchesLiterally` |
 | T11 | Excel export | Cell starting with `=`, `+`, `-`, `@` executes as a formula | Authenticated Manager | Code execution in the victim's Excel | Every text cell goes through `EstimateExportService.Text`, which stores it as text with a quote prefix; amounts are number cells without formulas | `EstimateExportTests.FormulaLikeNames_AreExportedAsTextNotFormulas`, `EstimateExportTests.Export_WritesNumberCellsWithFormatsAndNoFormulas` |
 | T12 | Secrets in Git | Password, JWT key or connection string committed | Anyone with repo access | Full compromise | Connection string and `Jwt:Key` come from user secrets (`UserSecretsId` in the csproj) or environment variables; `appsettings.Development.json`, `.env*` and `server/.mcp.json` are ignored | History search (section 7): no real secret found |
-| T13 | Dependencies | Known vulnerable or unused package | Supply chain | Remote exploitation | Manual audit (section 10); no automated audit | `dotnet list package --vulnerable`, `npm audit` (F10, F11, F12) |
+| T13 | Dependencies | Known vulnerable or unused package | Supply chain | Remote exploitation | CI audit on every PR and on `main` since PR #27 (`.github/workflows/ci.yml`: vulnerable NuGet packages, `npm audit --omit=dev`), plus the manual checks in section 10 | `dotnet list package --vulnerable`, `npm audit` (F10, F11, F12 fixed) |
 | T14 | Browser | XSS steals the token from `localStorage` | Attacker controlling injected script | Account takeover | React escaping; no `dangerouslySetInnerHTML`, `eval` or `innerHTML` in `client/src`. Since feature 021 the API sends `Content-Security-Policy: default-src 'none'; frame-ancestors 'none'`; the policy the hosted client must send is in docs/architecture.md section 4 | Code search (section 6); `SecurityHeadersTests.EveryResponse_HasTheSecurityHeaders` |
 | T15 | Browser | Foreign website calls the API | Malicious site | Request abuse | No CORS policy is registered, so browsers refuse cross-origin reads; the token is sent in the `Authorization` header, never automatically, so CSRF does not apply. The client reaches the API through the Vite proxy (same origin) | No test; correct by default as long as the deployed client is served from the same origin |
 | T16 | Error handling | Stack trace or database error shown to the user | Anyone | Information disclosure | `UseExceptionHandler` + `AddProblemDetails`; `DomainExceptionHandler` maps domain errors to fixed messages; other exceptions return a generic 500 `ProblemDetails` | `UnexpectedErrorTests.UnexpectedFailure_Returns500WithoutTechnicalDetails`, `ErrorResponseTests.*` |
@@ -143,8 +143,8 @@ Searches run on 2026-11-23 over the tracked files in `server/`, `tests/` and `cl
 
 | Secret | Local | CI | Deployment |
 |---|---|---|---|
-| `ConnectionStrings:DefaultConnection` | .NET user secrets (`UserSecretsId` in `SmartEstimatePlatform.Api.csproj`); the app refuses to start without it (`Program.cs`) | no CI exists; the tests replace it with in-memory SQLite (`ApiFactory`) | environment variable `ConnectionStrings__DefaultConnection` |
-| `Jwt:Key` | .NET user secrets; at least 32 characters, checked at start-up | no CI exists; the tests use the constant `ApiFactory.JwtKey` ("integration-test-signing-key-…"), which is not a real secret | environment variable `Jwt__Key` |
+| `ConnectionStrings:DefaultConnection` | .NET user secrets (`UserSecretsId` in `SmartEstimatePlatform.Api.csproj`); the app refuses to start without it (`Program.cs`) | not needed: CI (`.github/workflows/ci.yml`, since PR #27) runs the tests, which replace it with in-memory SQLite (`ApiFactory`) | environment variable `ConnectionStrings__DefaultConnection` |
+| `Jwt:Key` | .NET user secrets; at least 32 characters, checked at start-up | CI sets a dummy `Jwt__Key` in the workflow env (`.github/workflows/ci.yml`, since PR #27); the tests themselves use the constant `ApiFactory.JwtKey` ("integration-test-signing-key-…"). Neither is a real secret | environment variable `Jwt__Key` |
 
 Checks run on 2026-11-23:
 - Tracked config: `appsettings.json` holds only logging, `AllowedHosts` and the JWT issuer, audience and lifetime; no key or connection string. `appsettings.Development.json` exists locally but is ignored (`.gitignore` line 22) and has never been committed. `Properties/launchSettings.json` holds only URLs and `ASPNETCORE_ENVIRONMENT`.
@@ -215,7 +215,7 @@ Results:
 | react, react-dom, react-router-dom | frontend runtime | yes | keep |
 | vite, @vitejs/plugin-react, typescript, tailwindcss, @tailwindcss/vite, vitest, jsdom, @testing-library/react, @testing-library/user-event, eslint, @eslint/js, typescript-eslint, eslint-plugin-react-hooks, eslint-plugin-react-refresh, globals, @types/react, @types/react-dom, @types/node | build, lint, tests | yes (imports, `eslint.config.js`, `vite.config.ts`, `tsconfig.node.json` types) | keep; eslint and typescript-eslint updated by T018 (F11, FIXED) |
 
-There is no CI, so none of these audits runs automatically (F10).
+Since PR #27 these audits run automatically: CI (`.github/workflows/ci.yml`) runs on every pull request and every push to `main`. It builds and tests the server and the client, fails on any vulnerable NuGet package (`dotnet list package --vulnerable --include-transitive`) and runs `npm audit --omit=dev --audit-level=moderate`. The full `npm audit` (dev tools included) and the `--outdated` checks are still run by hand (F10, FIXED).
 
 ## 11. OWASP Top 10 and ASVS review
 
@@ -223,7 +223,7 @@ There is no CI, so none of these audits runs automatically (F10).
 |---|---|---|---|---|---|
 | A01 Broken Access Control (ASVS V4) | Horizontal and vertical privilege escalation; cross-company access | All controllers, `AppDbContext` | Class-level role attributes; global company query filters incl. child entities; `CompanyId` forced on new records; 404 for foreign resources; F1 (EF 10622) fixed | — (F2 fixed: every matrix cell tested) | `*AuthorizationTests`, `*IsolationTests`, `CompanyScopingTests`, `AnonymousAccessTests.*` |
 | A02 Security Misconfiguration (V14) | Missing headers, open host filter, verbose errors | `Program.cs`, `appsettings.json` | Secrets outside the repo; HSTS outside Development; HTTPS redirection; no CORS (same origin); generic 500 | — (F7 fixed: security headers, CSP on the API, host list required outside Development) | `HstsTests.*`, `UnexpectedErrorTests.*`, `SecurityHeadersTests.EveryResponse_HasTheSecurityHeaders`, `HostFilteringTests.*` |
-| A03 Software Supply Chain Failures (V15) | Vulnerable or unneeded packages | NuGet, npm | `package-lock.json`; pinned NuGet versions; no runtime vulnerabilities today | No CI and no automated audit (F10); F11 and F12 fixed (0 npm advisories; unneeded Identity package removed) | Section 10 commands |
+| A03 Software Supply Chain Failures (V15) | Vulnerable or unneeded packages | NuGet, npm | `package-lock.json`; pinned NuGet versions; no runtime vulnerabilities today | Dev-tool advisories and outdated packages are checked by hand only (CI audits runtime npm packages and all NuGet packages); F10, F11 and F12 fixed: CI since PR #27, 0 npm advisories, unneeded Identity package removed | Section 10 commands |
 | A04 Cryptographic Failures (V11) | Weak hashing, weak JWT key, secrets in repo | Auth, configuration | `PasswordHasher` (PBKDF2); HMAC-SHA256 tokens; key ≥ 32 characters checked at start-up; no secrets in history | — (F3 fixed) | Section 7 history search; `TokenValidationTests.*`, `JwtOptionsStartupTests.*` |
 | A05 Injection (V5) | SQL, formula (Excel) and XSS injection | Data access, search, export, React | EF Core parameters; escaped LIKE patterns; export cells written as text; React escaping; no raw HTML sinks | — (SQL-looking input tested since feature 021) | Section 6 searches; `MaterialSearchTests.Search_PercentSign_MatchesLiterally`; `MaterialSearchTests.Search_SqlLikeText_IsTreatedAsData`; `EstimateExportTests.FormulaLikeNames_AreExportedAsTextNotFormulas` |
 | A06 Insecure Design (V1) | Business rule bypass (edit confirmed estimate, delete used material/work) | Services | Draft-only guard (409); FK `Restrict` + 409; rules in services | — | `EstimateDraftGuardTests`, `EstimateLineEditingTests.ConfirmedEstimate_RefusesTheChange`, `MaterialDeleteInUseTests.*`, `CatalogSectionEndpointsTests.WorkUsedInASection_CannotBeDeletedUntilTheSectionIsGone` |
@@ -264,44 +264,14 @@ Not findings (checked and OK): raw SQL and string-built queries (none), XSS sink
 - No paging on list endpoints; every text field has a length limit (F9), and paging waits until a list grows large.
 - In Development, the developer exception page shows stack traces on the developer's machine.
 
-## 13. Proposal: `specs/021-security-hardening/tasks.md`
+## 13. Implementation
 
-Not created yet; this is the proposed content. Each PR is small and independent, and each task names the security test that proves it. Every PR runs `dotnet test` and `npm run test` before it is opened.
+The findings were fixed by feature 021 (`specs/021-security-hardening`) in five pull requests, CI first, each with the security tests named in section 12:
 
-### PR 1 — `021-auth-hardening`: company boundary and authentication state (F5, F6)
-
-Tenant isolation itself has no open finding (F1 fixed); this PR keeps it guarded and fixes the login and logout weaknesses.
-
-- [X] T001 [F5] `AuthService.LoginAsync`: for an unknown email, verify the password against a fixed dummy hash so both paths take the same time. This fixes only the timing difference; the 423 difference stays an accepted limitation. Test: `LoginAsyncTests.LoginAsync_UnknownEmail_HashesLikeAKnownEmail` (the fake hasher records one verify call for each).
-- [X] T002 [F5] Keep per-account lockout; document the account-existence and lock-out risk as an accepted limitation; rate limiting (T011) reduces abuse.
-- [X] T003 [F6] Add `POST /api/auth/logout` (`[Authorize]`): `AuthService.LogoutAsync` calls `User.InvalidateTokens()`; the client calls it before removing the token. Test: `LogoutEndpointTests.TokenUsedAfterLogout_IsRejected` (server) and `Logout.test.tsx` "logging out calls the API and removes the token" (client).
-
-### PR 2 — `021-authz-tests`: complete the authorization matrix (F2, F3)
-
-Tests only; no production code change expected. Any failing test is a real bug and gets its own fix in this PR.
-
-- [X] T004 [F2] Anonymous matrix: one theory over every protected route in section 4 (method + URL). Test: `AnonymousAccessTests.EveryProtectedEndpoint_Returns401`.
-- [X] T005 [F2] Catalog sections, Viewer and other company. Tests: `CatalogSectionAuthorizationTests.Viewer_IsForbiddenFromEveryCatalogSectionEndpoint` (list, get, create, update, delete) and `CatalogSectionIsolationTests.AnotherCompanysSection_CannotBeUpdated`.
-- [X] T006 [F2] Estimate sections. Tests: `EstimateSectionAuthorizationTests.Viewer_CannotChangeOrRemoveASection` and `EstimateSectionIsolationTests.AnotherCompanysEstimate_SectionsAreNotFound` (POST to the foreign estimate, PATCH, DELETE).
-- [X] T007 [F2] `GET /api/auth/me` without a token. Test: covered by `AnonymousAccessTests.EveryProtectedEndpoint_Returns401` (route listed explicitly).
-- [X] T008 [F2] SQL-looking search input. Test: `MaterialSearchTests.Search_SqlLikeText_IsTreatedAsData` (`' OR 1=1 --` returns no rows and the other company's data stays hidden); same for works and catalog sections.
-- [X] T009 [F3] Forged tokens. Test: `TokenValidationTests.ForgedToken_IsRejected` theory: wrong signing key, `alg=none`, expired (via the test clock), wrong issuer, wrong audience, changed `company_id` claim → 401.
-- [X] T010 [F3] Start-up key check. Test: `JwtOptionsStartupTests.ShortKey_StopsTheApp` (factory with a 31-character key throws `OptionsValidationException`).
-
-### PR 3 — `021-http-hardening`: rate limiting, headers, hosts (F4, F7)
-
-- [X] T011 [F4] Add the built-in rate limiter (`AddRateLimiter`/`UseRateLimiter`, no new package) with a fixed-window policy per client IP on `login` and `register` (default 10 requests per 60 seconds, configurable), returning 429 with `ProblemDetails`. Test: `RateLimitTests.Login_OverTheLimit_Returns429` and `RateLimitTests.Register_OverTheLimit_Returns429`; existing auth tests keep passing (limits configurable for the test factory).
-- [X] T012 [F7] Add a small middleware in `Program.cs` that sets `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: no-referrer` and `Content-Security-Policy: default-src 'none'; frame-ancestors 'none'` on API responses; document the CSP for the hosted client in `docs/architecture.md`. Test: `SecurityHeadersTests.EveryResponse_HasTheSecurityHeaders` (a 200, a 401 and a 404 response).
-- [X] T013 [F7] Outside Development, take `AllowedHosts` from the environment variable and refuse to start while it is `*`; `appsettings.json` keeps `*` for local runs, tests and CI. Test: `HostFilteringTests.UnknownHost_IsRejectedOutsideDevelopment` and `HostFilteringTests.WildcardHosts_StopTheAppOutsideDevelopment`.
-
-### PR 4 — `021-error-logging`: security logging and input limits (F8, F9)
-
-- [X] T014 [F8] Log security events with `ILogger` in the services, without passwords or tokens: failed login (user id or email hash), lockout (user id), Viewer removal, password reset, estimate confirm, deletes (user id + entity id). Test: `SecurityLoggingTests.FailedLogin_IsLoggedWithoutThePassword` and `SecurityLoggingTests.RemoveViewer_IsLogged` (a test logger provider captures the entries).
-- [X] T015 [F8] Log 403 and cross-company 404 responses as warnings with user id and route, no body: authorization-failure logging through an `IAuthorizationMiddlewareResultHandler` and a log call in `DomainExceptionHandler` for `NotFoundException`. Test: `SecurityLoggingTests.ViewerCallingAManagerEndpoint_IsLogged` and `SecurityLoggingTests.AnotherCompanysId_IsLoggedAsNotFound`.
-- [X] T016 [F9] Add shared length rules (e.g. a `PersonRules` with names 100, email 256, password 128, company name 200, search 200) on `RegisterRequest`, `CreateViewerRequest`, `LoginRequest`, `ResetPasswordRequest` and the search parameters; migration for the `FirstName`, `LastName` and `Company.Name` columns. Test: `RequestValidationTests.RegisterRequest_EmailOver256Characters_IsRejected`, `RequestValidationTests.RegisterRequest_NamesOverTheLimit_AreRejected`, `MaterialSearchTests.Search_OverTheLimit_Returns400`. Paging stays out of scope until a list grows large (YAGNI); record that decision in the spec.
-
-### PR 5 — `021-ci-and-dependencies`: CI and packages (F10, F11, F12)
-
-- [X] T017 [F10] The developer adds `.github/workflows/ci.yml` by hand (the agent does not edit `.github/`; actions pinned to major version tags): `dotnet build`, `dotnet test`, `dotnet list package --vulnerable --include-transitive` (fail on any result), `npm ci`, `npm run lint`, `npm run build`, `npm run test`, `npm audit --omit=dev --audit-level=moderate`; dummy `Jwt__Key` from the workflow env. Test: the workflow run on the PR is green; a deliberate failing test on a throwaway branch makes it red.
-- [X] T018 [F11] `npm audit fix` (eslint 10.15.0, typescript-eslint 8.73.0). Test: `npm audit` reports 0 vulnerabilities; `npm run lint`, `npm run build`, `npm run test` pass.
-- [X] T019 [F12] Remove `Microsoft.AspNetCore.Identity.EntityFrameworkCore` if `PasswordHasher<User>` still resolves from the shared framework; otherwise keep it and note why in the plan. Test: `LoginAsyncTests.LoginAsync_ValidCredentials_ReturnsToken` and `RegisterAsyncTests.RegisterAsync_ValidData_CreatesCompanyAndManager` pass, plus a new `PasswordHashingTests.StoredHash_IsNotThePlainPassword`.
+| PR | Branch | Findings | What changed |
+|---|---|---|---|
+| #27 | `021-ci-and-dependencies` | F10, F11, F12 | CI workflow for every PR and `main` (written by the developer); `npm audit fix` in the lockfile; the unused Identity package removed. |
+| #28 | `021-auth-hardening` | F5, F6 | An unknown email is verified against a dummy hash, so login timing is the same (the 423 difference stays an accepted limitation); `POST /api/auth/logout` revokes every earlier token. |
+| #29 | `021-authz-tests` | F2, F3 | Tests only: every cell of the section 4 matrix, SQL-looking search text, forged tokens and the short-key start-up check; no access-control bug was found. |
+| #30 | `021-http-hardening` | F4, F7 | Rate limit on login and registration (429 with `Retry-After`), four security headers on every response, `AllowedHosts` required outside Development. |
+| #31 | `021-error-logging` | F8, F9 | Security events, 403 and 404 logged with ids only; length limits for names, email, company name, password and search, with migration `LimitPersonAndCompanyNames`. |
