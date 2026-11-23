@@ -44,7 +44,8 @@ function mockApi(exportResponse: () => Response) {
 }
 
 const xlsxFile = () =>
-  new Response(new Blob(['xlsx']), {
+  // A string body: Node 22's Response cannot read jsdom's Blob (it has no stream()), so the export would fail there.
+  new Response('xlsx', {
     headers: { 'Content-Disposition': "attachment; filename=\"Pradine samata.xlsx\"; filename*=UTF-8''Pradin%C4%97%20s%C4%85mata.xlsx" },
   })
 
