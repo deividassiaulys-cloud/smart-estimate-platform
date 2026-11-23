@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -9,8 +10,9 @@ namespace SmartEstimatePlatform.Api.Controllers;
 /// The one place where errors raised by the services become HTTP error responses, so controllers need no
 /// error handling (Constitution X.2, X.8). Other exceptions are left to the default handling.
 /// The responses are built by MVC's problem details factory, exactly as controllers build them.
+/// A 404 is logged as a warning with the user id and route, because another company's ID also gives 404 (feature 021, F8).
 /// </summary>
-public class DomainExceptionHandler(ProblemDetailsFactory problemDetailsFactory) : IExceptionHandler
+public class DomainExceptionHandler(ProblemDetailsFactory problemDetailsFactory, ILogger<DomainExceptionHandler> logger) : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
@@ -33,6 +35,8 @@ public class DomainExceptionHandler(ProblemDetailsFactory problemDetailsFactory)
         switch (exception)
         {
             case NotFoundException:
+                logger.LogWarning("Not found: user {UserId} {Method} {Path}",
+                    httpContext.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value, httpContext.Request.Method, httpContext.Request.Path.Value);
                 return Problem(StatusCodes.Status404NotFound, exception.Message, title: "Not found");
             case WeakPasswordException:
                 return Problem(StatusCodes.Status400BadRequest, exception.Message);

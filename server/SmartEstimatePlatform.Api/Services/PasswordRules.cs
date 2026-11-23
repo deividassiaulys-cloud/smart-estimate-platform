@@ -11,6 +11,11 @@ public static class PasswordRules
     /// </summary>
     public const int MinLength = 8;
 
+    /// <summary>
+    /// Longest password accepted (feature 021, F9), so a request cannot make the server hash megabytes.
+    /// </summary>
+    public const int MaxLength = 128;
+
     private const string SameAsEmailMessage = "Password must not be the same as the email.";
 
     /// <summary>

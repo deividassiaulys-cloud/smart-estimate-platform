@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartEstimatePlatform.Api.Models.DTOs.Works;
@@ -18,7 +19,7 @@ public class WorksController(IWorkService workService) : ApiControllerBase
     /// Lists the company's works sorted by name, optionally only those whose name contains <paramref name="search"/>.
     /// </summary>
     [HttpGet]
-    public Task<List<WorkResponse>> List([FromQuery] string? search) =>
+    public Task<List<WorkResponse>> List([FromQuery, StringLength(SearchPattern.MaxLength)] string? search) =>
         workService.SearchAsync(search);
 
     /// <summary>

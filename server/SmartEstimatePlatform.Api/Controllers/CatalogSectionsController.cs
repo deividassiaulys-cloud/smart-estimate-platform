@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartEstimatePlatform.Api.Models.DTOs.CatalogSections;
@@ -18,7 +19,7 @@ public class CatalogSectionsController(ICatalogSectionService catalogSectionServ
     /// Lists the company's sections sorted by name, optionally only those whose name contains <paramref name="search"/>.
     /// </summary>
     [HttpGet]
-    public Task<List<CatalogSectionResponse>> List([FromQuery] string? search) =>
+    public Task<List<CatalogSectionResponse>> List([FromQuery, StringLength(SearchPattern.MaxLength)] string? search) =>
         catalogSectionService.SearchAsync(search);
 
     /// <summary>

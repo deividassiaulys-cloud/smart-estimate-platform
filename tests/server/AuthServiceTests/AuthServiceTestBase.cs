@@ -54,7 +54,8 @@ public abstract class AuthServiceTestBase : IDisposable
             passwordHasher ?? new PasswordHasher<User>(),
             new TokenService(Microsoft.Extensions.Options.Options.Create(Jwt)),
             currentUser,
-            Clock);
+            Clock,
+            Microsoft.Extensions.Logging.Abstractions.NullLogger<AuthService>.Instance);
         return await action(service);
     }
 

@@ -12,12 +12,15 @@ public sealed record RegisterRequest : IValidatableObject
     /// Name of the company to create. Not required to be unique across companies.
     /// </summary>
     [Required]
+    [StringLength(PersonRules.CompanyNameMaxLength)]
     public string CompanyName { get; init; } = string.Empty;
 
     [Required]
+    [StringLength(PersonRules.NameMaxLength)]
     public string FirstName { get; init; } = string.Empty;
 
     [Required]
+    [StringLength(PersonRules.NameMaxLength)]
     public string LastName { get; init; } = string.Empty;
 
     /// <summary>
@@ -25,12 +28,14 @@ public sealed record RegisterRequest : IValidatableObject
     /// </summary>
     [Required]
     [EmailAddress]
+    [StringLength(PersonRules.EmailMaxLength)]
     public string Email { get; init; } = string.Empty;
 
     /// <summary>
     /// Plain-text password. Only its hash is stored; weak passwords are rejected.
     /// </summary>
     [Required]
+    [StringLength(PasswordRules.MaxLength)]
     public string Password { get; init; } = string.Empty;
 
     /// <summary>

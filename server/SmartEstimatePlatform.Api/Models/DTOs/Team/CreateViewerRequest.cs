@@ -9,9 +9,11 @@ namespace SmartEstimatePlatform.Api.Models.DTOs.Team;
 public sealed record CreateViewerRequest : IValidatableObject
 {
     [Required]
+    [StringLength(PersonRules.NameMaxLength)]
     public string FirstName { get; init; } = string.Empty;
 
     [Required]
+    [StringLength(PersonRules.NameMaxLength)]
     public string LastName { get; init; } = string.Empty;
 
     /// <summary>
@@ -19,12 +21,14 @@ public sealed record CreateViewerRequest : IValidatableObject
     /// </summary>
     [Required]
     [EmailAddress]
+    [StringLength(PersonRules.EmailMaxLength)]
     public string Email { get; init; } = string.Empty;
 
     /// <summary>
     /// Password chosen by the Manager and passed on to the Viewer in person. Only its hash is stored.
     /// </summary>
     [Required]
+    [StringLength(PasswordRules.MaxLength)]
     public string Password { get; init; } = string.Empty;
 
     /// <summary>

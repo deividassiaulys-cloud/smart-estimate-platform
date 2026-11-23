@@ -15,7 +15,8 @@ public class AuthService(
     IPasswordHasher<User> passwordHasher,
     ITokenService tokenService,
     ICurrentUser currentUser,
-    TimeProvider timeProvider) : IAuthService
+    TimeProvider timeProvider,
+    ILogger<AuthService> logger) : IAuthService
 {
     /// <summary>
     /// Failed attempts within <see cref="FailedLoginWindow"/> that lock the account.
@@ -71,12 +72,14 @@ public class AuthService(
         if (user is null)
         {
             passwordHasher.VerifyHashedPassword(UnknownEmailUser, UnknownEmailHash.Value, request.Password);
+            logger.LogWarning("Failed login for an unknown email {EmailHash}", EmailHash.Of(request.Email));
             throw new InvalidCredentialsException();
         }
 
         var now = timeProvider.GetUtcNow().UtcDateTime;
         if (user.LockoutEnd > now)
         {
+            logger.LogWarning("Login refused for locked user {UserId}", user.Id);
             throw new AccountLockedException(MinutesUntil(user.LockoutEnd.Value, now));
         }
 
@@ -88,8 +91,11 @@ public class AuthService(
 
             if (user.LockoutEnd > now)
             {
+                logger.LogWarning("Account locked: user {UserId} until {LockoutEnd:O}", user.Id, user.LockoutEnd);
                 throw new AccountLockedException(MinutesUntil(user.LockoutEnd.Value, now));
             }
+
+            logger.LogWarning("Failed login for user {UserId}", user.Id);
             throw new InvalidCredentialsException();
         }
 
