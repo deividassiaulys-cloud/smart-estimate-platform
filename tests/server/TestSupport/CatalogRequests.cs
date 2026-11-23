@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using SmartEstimatePlatform.Api.Models.DTOs.CatalogSections;
 using SmartEstimatePlatform.Api.Models.DTOs.Materials;
 using SmartEstimatePlatform.Api.Models.DTOs.Works;
 
@@ -61,4 +62,24 @@ public static class CatalogRequests
     public static async Task<List<WorkResponse>> ListWorksAsync(this LoggedInCompany company, string? search = null) =>
         (await company.Client.GetFromJsonAsync<List<WorkResponse>>(
             search is null ? "/api/works" : $"/api/works?search={Uri.EscapeDataString(search)}"))!;
+
+    /// <summary>
+    /// A valid catalog section request (m²) with the given lines (work ID, coefficient).
+    /// </summary>
+    public static CatalogSectionRequest CatalogSectionRequest(string name, params (int WorkId, decimal Coefficient)[] lines) => new()
+    {
+        Name = name,
+        Unit = "m²",
+        Lines = lines.Select(l => new CatalogSectionLineRequest { WorkId = l.WorkId, Coefficient = l.Coefficient }).ToList()
+    };
+
+    /// <summary>
+    /// Creates a catalog section and returns it; fails the test if the API rejects it.
+    /// </summary>
+    public static async Task<CatalogSectionResponse> CreateCatalogSectionAsync(this LoggedInCompany company, CatalogSectionRequest request)
+    {
+        var response = await company.Client.PostAsJsonAsync("/api/catalog-sections", request);
+        response.EnsureSuccessStatusCode();
+        return (await response.Content.ReadFromJsonAsync<CatalogSectionResponse>())!;
+    }
 }

@@ -55,6 +55,38 @@ public sealed class MaterialSearchTests : IDisposable
         Assert.Empty(await SearchAsync(company, "%"));
     }
 
+    [Theory]
+    [InlineData("/api/materials")]
+    [InlineData("/api/works")]
+    [InlineData("/api/catalog-sections")]
+    public async Task Search_SqlLikeText_IsTreatedAsData(string catalog)
+    {
+        // Each catalog holds one record named "Cementas" in Alpha; Beta has none. SQL in the search text must be
+        // matched as plain text, so it finds nothing and never reveals Alpha's record (feature 021, F2).
+        var alpha = await _factory.RegisterCompanyAsync("Alpha UAB", "alpha@example.com");
+        var material = await alpha.CreateMaterialAsync("Cementas");
+        var work = await alpha.CreateWorkAsync(CatalogRequests.WorkRequest("Cementas", "m²", (material.Id, 1m, 0m)));
+        await alpha.CreateCatalogSectionAsync(CatalogRequests.CatalogSectionRequest("Cementas", (work.Id, 1m)));
+        var beta = await _factory.RegisterCompanyAsync("Beta UAB", "beta@example.com");
+
+        foreach (var search in new[] { "' OR 1=1 --", "%' OR '1'='1", "Cementas'; DROP TABLE Materials; --" })
+        {
+            Assert.Empty(await NamesAsync(alpha, catalog, search));
+            Assert.Empty(await NamesAsync(beta, catalog, search));
+        }
+
+        Assert.Equal(["Cementas"], await NamesAsync(alpha, catalog, "Cem"));
+        Assert.Empty(await NamesAsync(beta, catalog, "Cem"));
+    }
+
+    private static async Task<List<string>> NamesAsync(LoggedInCompany company, string catalog, string search)
+    {
+        var items = await company.Client.GetFromJsonAsync<List<NamedItem>>($"{catalog}?search={Uri.EscapeDataString(search)}");
+        return items!.Select(i => i.Name).ToList();
+    }
+
+    private sealed record NamedItem(string Name);
+
     private async Task<LoggedInCompany> SeedAsync()
     {
         var company = await _factory.RegisterCompanyAsync("Alpha UAB", "alpha@example.com");
