@@ -28,6 +28,10 @@ public sealed class ApiFactory : WebApplicationFactory<Program>
         builder.UseEnvironment("Testing");
         builder.UseSetting("ConnectionStrings:DefaultConnection", "Server=unused-in-tests");
         builder.UseSetting("Jwt:Key", JwtKey);
+        // The hosts the tests call (HstsTests uses smart-estimate.test); "*" stops the app outside Development.
+        builder.UseSetting("AllowedHosts", "localhost;smart-estimate.test");
+        // Many tests log in or register from the same in-process client, so the login rate limit is raised.
+        builder.UseSetting("RateLimiting:Auth:PermitLimit", "100000");
 
         builder.ConfigureServices(services =>
         {

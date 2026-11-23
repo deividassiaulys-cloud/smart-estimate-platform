@@ -11,6 +11,14 @@ using SmartEstimatePlatform.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Outside development the API must name the hosts it answers for (feature 021, F7): the environment variable
+// AllowedHosts, e.g. "estimates.example.lt". "*" is only for local runs.
+if (!builder.Environment.IsDevelopment() && builder.Configuration["AllowedHosts"] is null or "" or "*")
+{
+    throw new InvalidOperationException(
+        "AllowedHosts must list the API's host names outside Development (set the AllowedHosts environment variable).");
+}
+
 // Add services to the container.
 
 // The connection string is supplied outside the repository (user secrets or environment variables).
@@ -64,10 +72,27 @@ builder.Services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationSc
     });
 
 builder.Services.AddControllers();
+builder.Services.AddAuthRateLimiting(builder.Configuration);
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<DomainExceptionHandler>();
 
 var app = builder.Build();
+
+// Security headers on every response, also errors (feature 021, F7). Added when the response starts, so the
+// exception handler, which clears the headers of a failed response, cannot remove them.
+app.Use(async (context, next) =>
+{
+    context.Response.OnStarting(() =>
+    {
+        var headers = context.Response.Headers;
+        headers.XContentTypeOptions = "nosniff";
+        headers.XFrameOptions = "DENY";
+        headers["Referrer-Policy"] = "no-referrer";
+        headers.ContentSecurityPolicy = "default-src 'none'; frame-ancestors 'none'";
+        return Task.CompletedTask;
+    });
+    await next();
+});
 
 app.UseExceptionHandler();
 
@@ -78,6 +103,8 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseRateLimiter();
 
 app.UseAuthentication();
 app.UseAuthorization();
