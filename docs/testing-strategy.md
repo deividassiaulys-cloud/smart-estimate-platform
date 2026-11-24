@@ -155,14 +155,17 @@ Some properties cannot be checked by the automated tests. They are done by hand 
 
 ## 5. CI and quality gates
 
-`.github/workflows/ci.yml` (since PR #27) runs on **every pull request** and on **every push to `main`**, with `permissions: contents: read` and a dummy `Jwt__Key`. Both jobs run on `ubuntu-latest`:
+`.github/workflows/ci.yml` (since PR #27; triggers and step order as of PR #35) runs on **every pull request that targets `main`** and on **every push to `main`**, with `permissions: contents: read` and a dummy `Jwt__Key`. Both jobs run on `ubuntu-latest`, and every step is named:
 
 | Job | Steps |
 |---|---|
-| `backend` | `actions/setup-dotnet@v5` (10.0.x); `dotnet build` (Release); `dotnet test` (Release, `--no-build`); `dotnet list package --vulnerable --include-transitive`, which fails the job if any package is reported |
-| `frontend` (in `client/`) | `actions/setup-node@v6` (Node 22, npm cache); `npm ci`; `npm run lint`; `npm run build` (TypeScript check + Vite build); `npm run test`; `npm audit --omit=dev --audit-level=moderate` |
+| `backend` | `actions/setup-dotnet@v5` (10.0.x); Restore (`dotnet restore`); Build (`dotnet build`, Release, `--no-restore`); Test (`dotnet test`, Release, `--no-build`); Vulnerable packages: `dotnet list package --vulnerable --include-transitive`, which fails the job if any package is reported |
+| `frontend` (in `client/`) | `actions/setup-node@v6` (Node 22, npm cache); Install dependencies (`npm ci`); Lint (`npm run lint`); Test (`npm run test`); Build (`npm run build`: TypeScript check + Vite build); Audit runtime dependencies (`npm audit --omit=dev --audit-level=moderate`) |
+
+**Release packaging.** `.github/workflows/release.yml` (since PR #35) starts through `workflow_run` when CI completes on `main`, and runs only if CI succeeded. It checks out the exact commit CI tested (`head_sha`), runs `dotnet publish` of the API (Release) and `npm run build` of the client, and uploads the **api** and **client** artifacts. Packaging therefore never runs on a commit whose tests failed. Its first run, after PR #35, succeeded with both artifacts (api ≈ 5.7 MB, client ≈ 108 KB). It builds packages only; it does not deploy.
 
 **Quality gates:**
+- **Packages only from green builds.** The release workflow's `if` requires a successful CI run, so the artifacts always come from tested code.
 - **Green CI before merging.** Both jobs (`backend`, `frontend`) must be green before a pull request is merged. Branch protection is not available on the free private GitHub plan, so this is a working rule backed by the constitution: "A pull request MUST NOT be merged with failing automated tests" (Article III). It is followed for every PR since #27.
 - **No warnings.** `dotnet build` must report 0 warnings; this is checked locally and noted in each feature's `tasks.md`.
 - **Order of checks before proposing a commit (AGENTS.md):** `dotnet build`, `dotnet test`, `npm run lint`, `npm run build`, `npm run test`.
