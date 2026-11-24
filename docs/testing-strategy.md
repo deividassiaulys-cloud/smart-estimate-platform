@@ -166,7 +166,7 @@ Some properties cannot be checked by the automated tests. They are done by hand 
 
 **Quality gates:**
 - **Packages only from green builds.** The release workflow's `if` requires a successful CI run, so the artifacts always come from tested code.
-- **Green CI before merging.** Both jobs (`backend`, `frontend`) must be green before a pull request is merged. Branch protection is not available on the free private GitHub plan, so this is a working rule backed by the constitution: "A pull request MUST NOT be merged with failing automated tests" (Article III). It is followed for every PR since #27.
+- **Green CI before merging.** Both jobs (`backend`, `frontend`) must be green before a pull request is merged. The repository is public, and the GitHub ruleset `main-protection` (target `main`, active, no bypass actors) enforces this: it requires a pull request, requires the status checks `backend` and `frontend` to pass, blocks force pushes and blocks deleting `main` (checked through the GitHub API on 2026-11-24). The underlying rule is the constitution's: "A pull request MUST NOT be merged with failing automated tests" (Article III); the ruleset makes GitHub enforce it.
 - **No warnings.** `dotnet build` must report 0 warnings; this is checked locally and noted in each feature's `tasks.md`.
 - **Order of checks before proposing a commit (AGENTS.md):** `dotnet build`, `dotnet test`, `npm run lint`, `npm run build`, `npm run test`.
 - **Node versions differ.** CI uses Node 22. A frontend test once passed on a newer local Node and failed in CI (PR #27, `ExportEstimate.test.tsx`), so a CI failure on a test that passes locally should first be tried under Node 22.

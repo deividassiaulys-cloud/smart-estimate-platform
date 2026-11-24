@@ -37,8 +37,9 @@ Requirements and design phase.
 ## Continuous Integration
 GitHub Actions runs `.github/workflows/ci.yml` on every pull request that
 targets `main` and on every push to `main`. It has two jobs, and a pull
-request is merged only when both are green (a working rule: branch protection
-is not available on the free private plan).
+request can be merged only when both are green: the GitHub ruleset
+`main-protection` on `main` requires a pull request and the status checks
+`backend` and `frontend`, and blocks force pushes and deleting `main`.
 
 - **backend**: `dotnet restore`, then `dotnet build` and `dotnet test`
   (Release), then `dotnet list package --vulnerable --include-transitive`,
