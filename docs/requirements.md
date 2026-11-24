@@ -45,7 +45,7 @@ add works to an estimate, change quantities, set overhead, profit, and VAT perce
 confirm an estimate or return it to Draft status;
 export estimates to Excel.
 Data: all of their own company’s data.
-Cannot: see or change other companies’ data. The last Manager of a company cannot be removed or demoted.
+Cannot: see or change other companies’ data. A company has exactly one Manager, who cannot be removed or demoted.
 
 Viewer
 
@@ -139,7 +139,7 @@ FR-004	The system MUST allow a Manager to create a Viewer account (name, surname
 FR-005	The system MUST allow a Manager to set a new password for a Viewer.	Should have
 FR-006	The system MUST show and return to a user only their own company’s data.	Must have
 FR-007	The system MUST reject any action not permitted by the user’s role.	Must have
-FR-008	The system MUST allow a Manager to create, edit, and delete materials (name, unit of measurement, price).	Must have
+FR-008	The system MUST allow a Manager to create, edit, and delete materials (name, unit of measurement, price). A material used in a work composition cannot be deleted (BR-018).	Must have
 FR-009	The system MUST allow a Manager to create, edit, and delete works (name, unit of measurement, labour rate €/h, labour norm h/unit) and to link materials to a work with a consumption norm per work unit and a waste/loss percentage.	Must have
 FR-010	The system MUST allow a Manager to search materials and works by part of the name, case-insensitively.	Must have
 FR-011	The system MUST allow a Manager to create, edit, and delete projects.	Must have
@@ -179,21 +179,21 @@ NFR-007	In the exported Excel file, text cells beginning with the characters =, 
 NFR-008	The system MUST have an appropriate layout from 360px to 1920px screen widths, without horizontal page scrolling for normal content.	Must have
 NFR-009	An estimate page (up to 200 lines) MUST load within 3 seconds, and totals MUST be recalculated within 1 second of a change.	Must have
 NFR-010	Error and warning messages MUST be in Lithuanian, state what failed, and MUST NOT show technical details.	Must have
-NFR-011	Irreversible actions (deletion) MUST require explicit user confirmation. Confirming an estimate (FR-019) MUST also require confirmation, since it restricts further editing.	Must have
+NFR-011	Irreversible actions MUST require explicit user confirmation: deleting a material, a work, a project, an estimate work line or a Viewer. Confirming an estimate (FR-019) MUST also require confirmation, since it restricts further editing.	Must have
 NFR-012	The interface MUST be in Lithuanian, amounts shown in euros (€), and numbers and dates formatted per Lithuanian conventions.	Must have
 NFR-013	The system MUST work in the two latest versions of Chrome, Edge, Firefox, and Safari.	Should have
 NFR-014	The system MUST collect only necessary personal data (name, surname, email).	Should have
 
 9. Main Business Rules
-BR-001. A user belongs to one company. Registration creates a company and its sole Manager.
+BR-001. A user belongs to one company. Registration creates a company and its Manager. A company has exactly one Manager, who cannot be removed or demoted.
 BR-002. Email is unique; addresses are compared case-insensitively.
-BR-003. Only a Manager creates and removes Viewer accounts. A Manager cannot be removed.
+BR-003. Only a Manager creates and removes Viewer accounts. A company has exactly one Manager, who cannot be removed or demoted.
 BR-004. Only a Manager can create, modify, delete, and export data.
 BR-005. A Viewer never receives quantities, norms, prices, percentages, totals, or estimate status, either on screen or in exports.
 BR-006. A material or work is identified within a company by its name and unit of measurement, and cannot be duplicated.
-BR-007. Price and norm cannot be negative; waste and estimate percentages must be between 0 and 100; estimate quantity must be greater than 0.
-BR-008. Units of measurement come from a fixed system list (pcs, m, m², m³, kg, t, l, h, set).
-BR-009. A work may have zero or more materials; the same material may be used in multiple works.
+BR-007. Price and norm cannot be negative; the waste, overhead, profit, and VAT percentages must be between 0 and 100 inclusive; estimate quantity must be greater than 0.
+BR-008. Units of measurement come from a fixed system list (vnt., m, m², m³, kg, t, l, val., kompl.).
+BR-009. A work may have zero or more materials. The same material may be used in several works and may repeat on several lines inside one work.
 BR-010. An estimate line stores a copy of its price and norms. Catalog changes or deletions do not affect estimates.
 BR-011. A project belongs to one company, an estimate to one project. Deleting a project deletes its estimates. An estimate may have sections; deleting a section deletes its work lines. Deletion is irreversible.
 BR-012. A new estimate is always created with “Draft” status.
@@ -209,6 +209,7 @@ overhead = direct costs × p₁ %;
 profit = (direct costs + overhead) × p₂ %;
 VAT = (direct costs + overhead + profit) × p₃ %.
 BR-017. Only monetary amounts are rounded, to 2 decimal places (0.005 → 0.01). The final total is the sum of the already-rounded parts. Unit prices (material price, labour rate) have up to 4 decimal places, norms up to 6 and quantities up to 3; a value with more decimal places is rejected, not rounded, and none of them is rounded in calculations. Quantities are shown to 3 decimal places, norms to up to 6, unit prices to up to 4. A work quantity computed from a section (section quantity × coefficient) is rounded to 3 decimal places, half away from zero, when it is created or recalculated; a result of 0 is refused.
+BR-018. A material used in a work composition cannot be deleted: the system refuses the deletion (409) and lists the works that use it. A material used only in existing estimates can be deleted, because estimates hold copies of their data (BR-010).
 
 10. Main Data Entities
 Company: a construction company or contractor (name).
@@ -240,7 +241,7 @@ Constraints
 
 The backend MUST be ASP.NET Core (.NET). A REST API serving data to the React interface.
 The frontend MUST be React. The user interface communicates with the backend only via an API (JSON), separate from server-side rendering.
-Authentication between React and ASP.NET Core MUST occur via tokens (e.g. JWT), not server-side session cookies, since the interface is a separate application (SPA).
+Authentication between React and ASP.NET Core MUST occur via tokens, not server-side session cookies, since the interface is a separate application (SPA). JWT Bearer was chosen for authentication in this project.
 The system must work in a browser, without a separate installation on the user’s device.
 The interface and all messages shown to the user must be in Lithuanian.
 Monetary calculations must use a decimal type (C# decimal), not floating-point numbers (NFR-006), both in backend logic and in database column types.
@@ -286,10 +287,9 @@ Requirements and design phase.
 
 ## Technologies
 - **Backend:** ASP.NET Core Web API (.NET)
-- **ORM / Data Access:** Entity Framework Core (Microting.EntityFrameworkCore.MySql provider)
-- **Database:** MySQL (managed via MySQL Workbench)
+- **ORM / Data Access:** Entity Framework Core
 - **Frontend:** React (Vite, TypeScript)
-- **Authentication:** ASP.NET Core Identity (password hashing) + JWT
+- **Authentication:** ASP.NET Core Identity (password hashing) + JWT Bearer
 
 ## Documentation
 - docs/requirements.md – full project requirements specification
