@@ -273,7 +273,7 @@
 **Independent Test**: spec US4.
 **Who does what**: the agent writes the smoke test in `tests/smoke/`. The developer sets up the server and the GitHub Environment and writes `.github/workflows/deploy.yml` by hand.
 
-- [ ] T372 [US4] `tests/smoke/smoke-test.sh` (plan R9): inputs `BASE_URL`, `EXPECTED_VERSION` (optional) and `SMOKE_CA_CERT` (optional); the 8 steps of spec US4 scenario 3; `ok <n> <name>` / `FAIL <n> <name>: …`; random passwords; `.invalid` emails; no token or password printed. **Agent.** Check against the local stack:
+- [X] T372 [US4] `tests/smoke/smoke-test.sh` (plan R9): inputs `BASE_URL`, `EXPECTED_VERSION` (optional) and `SMOKE_CA_CERT` (optional); the 8 steps of spec US4 scenario 3; `ok <n> <name>` / `FAIL <n> <name>: …`; random passwords; `.invalid` emails; no token or password printed. **Agent.** Check against the local stack:
   - all 8 steps print `ok` and the script exits 0;
   - `EXPECTED_VERSION=wrong` gives `FAIL 1` and exit 1;
   - with the `api` container stopped, it fails at step 1;
@@ -324,7 +324,31 @@
   - the workflow logs show `***` wherever a secret is used.
 - [ ] T378 [US4] Rollback drill. **Developer**, on the server: run `IMAGE_TAG=<previous sha> ./deploy.sh`, then `IMAGE_TAG=<current sha> ./deploy.sh`, at a moment with no schema change between the two. Check: after each run, `/health` reports the expected SHA, and the smoke test, run from the developer's computer with `EXPECTED_VERSION` set, passes. The steps go into docs/deployment.md (T379).
 
-**Status notes**: (filled in during implementation)
+**Status notes (2026-11-24)**:
+- **T372**: `tests/smoke/smoke-test.sh` (Bash, `set -euo pipefail`, executable; needs `curl`, `jq` and `openssl` and checks they are present).
+  - Inputs: `BASE_URL`, optional `EXPECTED_VERSION`, optional `SMOKE_CA_CERT` (for a local run only; there is no `-k`).
+  - It runs the 8 steps of spec US4 scenario 3 and prints `ok <n> <name>` or `FAIL <n> <name>: …`, stopping at the first failure with exit 1. Each step:
+    1. `/health` is 200, `Healthy`, and reports the expected version;
+    2. `/health/ready` is `Healthy`;
+    3. `/` contains `id="root"`;
+    4. company A registers (201) and logs in (200);
+    5. A creates the material `Smoke material <run id>` (`m²`, 12.3456), which gives 201;
+    6. `GET /api/materials/{id}` with A's token returns the same name, unit and price;
+    7. company B gets 404 for it;
+    8. `GET /api/materials` without a token gives 401.
+  - The run id is the UTC time plus 6 random hex characters. Emails are `smoke-<run id>-{a,b}@smoke.invalid`, and passwords come from `openssl rand -hex 16`.
+  - A token is written only to a mode-600 header file in a private temporary directory, which curl reads with `--header @file`, so the token never appears on a command line or in the output. The directory is removed on exit.
+  - **Fixed during the check**: the first local run failed at step 3, because the React root element has a `class` attribute (`<div id="root" class="…">`); the check now looks for `id="root"` only.
+  - Checks against the local stack (`deploy.sh` with `IMAGE_TAG=smokelocal`, throwaway values from the shell, no `.env`):
+    - all 8 steps print `ok` and exit 0, both with macOS bash 3.2.57 and in `ubuntu:24.04` (bash 5.2.21, apt `curl`, `jq` and `openssl`, as on `ubuntu-latest`);
+    - `EXPECTED_VERSION=wrong` gives `FAIL 1 health: expected version wrong, got smokelocal` and exit 1;
+    - with the `api` container stopped, it gives `FAIL 1 health: expected HTTP 200, got 502` and exit 1;
+    - against an unreachable address, it gives `FAIL 1 … got 000 (curl: (7) Failed to connect …)` and exit 1;
+    - the output of a passing run contains no `eyJ`, no `Bearer` and no 32-character hex string;
+    - `shellcheck` 0.11.0 is clean.
+  - Stack removed with `down -v`.
+- **T373, T374**: developer (server, GitHub Environment `production`, `.github/workflows/deploy.yml`; the `deploy/` exception does not cover `.github/`).
+- **T375–T378**: after T373 and T374.
 
 ## Phase 5: PR `022-docs-release` — User Story 5 (P2)
 
