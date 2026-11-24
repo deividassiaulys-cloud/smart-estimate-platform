@@ -6,7 +6,8 @@
 
 **Who does what** (spec Q9, Constitution Article VIII):
 - **Agent**: only `server/`, `client/`, `tests/`, `docs/` and `specs/`. README.md is the one exception, and only with approval (plan Complexity Tracking).
-- **Developer, by hand**: every file under `.github/` and `deploy/`, the server, the GitHub settings, the tag and the release. For these tasks the agent lists what the file must contain; it does not create or edit the file.
+- **Developer, by hand**: every file under `.github/`, the server, the GitHub settings, the tag and the release. For these tasks the agent lists what the file must contain; it does not create or edit the file.
+- **`deploy/` exception (approved 2026-11-24, plan Complexity Tracking)**: the agent writes `deploy/docker-compose.yml`, `deploy/Caddyfile`, `deploy/env.example` and `deploy/deploy.sh` (T364, T365, T369, T370), and the developer reviews each as a diff before commit. Where these tasks say "Developer, by hand", read "Agent (deploy/ exception)".
 - **`.env` files** (Article VIII): the developer creates every `.env` by hand, the local `deploy/.env` as well as the server's `~/smart-estimate/.env`. The agent never creates, edits, reads or prints one. When the agent runs a local check, it only runs `docker compose` commands that use the existing file. Any value it needs comes from `docker compose config --services` or from the developer, never from `cat .env`.
 
 **Rule for every task**:
@@ -56,15 +57,15 @@
 
 **Goal**: the API and web images and the Compose stack run locally exactly as they will on the server (FR-022-5 to FR-022-7).
 **Independent Test**: spec US2.
-**Who does what**: the agent writes the Dockerfiles in `server/` and `client/`. The developer writes `deploy/docker-compose.yml`, `deploy/Caddyfile`, `deploy/.env.example` and the CI job by hand.
+**Who does what**: the agent writes the Dockerfiles in `server/` and `client/`. The developer writes `deploy/docker-compose.yml`, `deploy/Caddyfile`, `deploy/env.example` and the CI job by hand.
 
-- [ ] T362 [P] [US2] `server/Dockerfile` (stages `build` and `final`; the `bundle` stage follows in T368) and `server/.dockerignore` (plan R4): `aspnet:10.0` final image, `USER $APP_UID`, port 8080, `ARG`/`ENV APP_VERSION`. **Agent.** Check:
+- [X] T362 [P] [US2] `server/Dockerfile` (stages `build` and `final`; the `bundle` stage follows in T368) and `server/.dockerignore` (plan R4): `aspnet:10.0` final image, `USER $APP_UID`, port 8080, `ARG`/`ENV APP_VERSION`. **Agent.** Check:
   - `docker build --build-arg APP_VERSION=local -t smart-estimate-api:local server/` succeeds;
   - `docker run --rm --entrypoint id smart-estimate-api:local -u` is not `0`;
   - `docker run --rm --entrypoint ls smart-estimate-api:local -R /app` shows no `*.cs`, no `appsettings.Development.json` and no test assembly;
   - `docker history --no-trunc` shows no secret.
-- [ ] T363 [P] [US2] `client/Dockerfile` (`node:22-alpine` build, then `caddy` with `dist` in `/srv`) and `client/.dockerignore` (plan R4). **Agent.** Check: `docker build -t smart-estimate-web:local client/` succeeds, and `docker run --rm --entrypoint ls smart-estimate-web:local /srv /srv/assets` lists `index.html` and hashed assets.
-- [ ] T364 [US2] `deploy/docker-compose.yml` and `deploy/.env.example` (plan R5). **Developer, by hand.** The Compose file must have:
+- [X] T363 [P] [US2] `client/Dockerfile` (`node:22-alpine` build, then `caddy` with `dist` in `/srv`) and `client/.dockerignore` (plan R4). **Agent.** Check: `docker build -t smart-estimate-web:local client/` succeeds, and `docker run --rm --entrypoint ls smart-estimate-web:local /srv /srv/assets` lists `index.html` and hashed assets.
+- [X] T364 [US2] `deploy/docker-compose.yml` and `deploy/env.example` (plan R5). **Developer, by hand.** The Compose file must have:
   - the services `mysql` (`mysql:8.4`, volume `mysql-data`, `mysqladmin ping` health check), `api` and `caddy`, with `migrate` following in T369;
   - the `internal` network with subnet `172.30.0.0/24`;
   - the `api` environment from plan R5 (`ASPNETCORE_ENVIRONMENT=Production`, `AllowedHosts=${SITE_ADDRESS}`, `ReverseProxy__TrustedNetwork=172.30.0.0/24`, connection string, `Jwt__Key`);
@@ -74,11 +75,11 @@
   - `restart: unless-stopped`;
   - images `ghcr.io/<owner>/smart-estimate-{api,web}:${IMAGE_TAG}`.
 
-  `.env.example`: every variable of plan R8 with placeholder values (`change-me`) and the `openssl rand -hex 32` hint. Check:
-  - `docker compose -f deploy/docker-compose.yml --env-file deploy/.env.example config` passes;
+  `env.example`: every variable of plan R8 with placeholder values (`change-me`) and the `openssl rand -hex 32` hint. Check:
+  - `docker compose -f deploy/docker-compose.yml --env-file deploy/env.example config` passes;
   - `git check-ignore deploy/.env` confirms the real file is ignored;
-  - `.env.example` contains no real value (reviewed in the PR diff).
-- [ ] T365 [US2] `deploy/Caddyfile` (plan R5). **Developer, by hand.** It must have:
+  - `env.example` contains no real value (reviewed in the PR diff).
+- [X] T365 [US2] `deploy/Caddyfile` (plan R5). **Developer, by hand.** It must have:
   - `{$SITE_ADDRESS}`;
   - `/api/*` and `/health*` sent to `api:8080`, with no header changes there;
   - client fallback to `index.html`;
@@ -87,7 +88,7 @@
   - `encode zstd gzip`.
 
   Check: `docker run --rm -e SITE_ADDRESS=localhost -v "$PWD/deploy/Caddyfile:/etc/caddy/Caddyfile:ro" smart-estimate-web:local caddy validate --config /etc/caddy/Caddyfile` passes.
-- [ ] T366 [US2] Local stack check. **Developer**: first creates the local `deploy/.env` by hand from `deploy/.env.example` (`SITE_ADDRESS=localhost`, local-only values from `openssl rand -hex 32`). The agent does not create, edit or read this file (Article VIII). The developer runs the checks; the agent may then run the same `docker compose` and `curl` commands against the running stack and record the results. Images are tagged `IMAGE_TAG=local` from T362/T363. Check:
+- [X] T366 [US2] Local stack check. **Developer**: first creates the local `deploy/.env` by hand from `deploy/env.example` (`SITE_ADDRESS=localhost`, local-only values from `openssl rand -hex 32`). The agent does not create, edit or read this file (Article VIII). The developer runs the checks; the agent may then run the same `docker compose` and `curl` commands against the running stack and record the results. Images are tagged `IMAGE_TAG=local` from T362/T363. Check:
   - `docker compose up -d` starts `mysql`, `api` and `caddy`.
   - With `--cacert` set to Caddy's local root certificate (`/data/caddy/pki/authorities/local/root.crt`, copied out of the container):
     - `https://localhost/` returns `index.html` with the client CSP and `Cache-Control: no-cache`;
@@ -102,7 +103,67 @@
   - on a throwaway branch, a deliberately broken `server/Dockerfile` turns `docker` red;
   - the ruleset lists `docker` (GitHub API, as checked for feature 021).
 
-**Status notes**: (filled in during implementation)
+**Status notes (2026-11-24)**:
+- **T362**: `server/Dockerfile` has two stages, `build` (`sdk:10.0`; restore the API project first, then `dotnet publish -c Release --no-restore /p:UseAppHost=false`) and `final` (`aspnet:10.0`).
+  - The final image sets `ARG`/`ENV APP_VERSION` (default `dev`), `ASPNETCORE_HTTP_PORTS=8080` and `USER $APP_UID`, with the entry point `dotnet SmartEstimatePlatform.Api.dll`.
+  - The `bundle` stage follows in T368.
+  - `server/.dockerignore` excludes `bin/`, `obj/`, `.env*`, `appsettings.Development.json`, `appsettings.*.local.json`, `*.user`, IDE folders, `.mcp.json` and `.DS_Store`.
+  - Checks on Docker 29.7.2 (arm64):
+    - `docker build --build-arg APP_VERSION=local -t smart-estimate-api:local server/` succeeds (394 MB);
+    - `id -u` is `1654` (user `app`), not 0;
+    - `/app` has no `*.cs`, `*.csproj`, `appsettings.Development.json`, test assembly or `.env`, and its `appsettings.json` is the tracked one, with no key or connection string;
+    - `dotnet --list-sdks` lists nothing, so there is no SDK;
+    - `docker history --no-trunc` contains no key, password, secret or connection string;
+    - the image environment has only `APP_UID`, `ASPNETCORE_HTTP_PORTS`, `DOTNET_*`/`ASPNET_VERSION` (runtime 10.0.15) and `APP_VERSION=local`.
+  - Run on its own in Production with dummy settings and no database: `/health` gave 200 `{"status":"Healthy","version":"local"}` with `X-Correlation-ID` and the API CSP, `/health/ready` gave 503 and `/api/auth/me` gave 401.
+  - **Observation**: at start-up the container logs two Data Protection warnings: keys are stored in `/home/app/.aspnet/DataProtection-Keys`, which is not persisted, and no XML encryptor is configured. The API does not use Data Protection, because it has no cookies or antiforgery and uses JWT Bearer tokens, so a lost key ring has no effect. The warnings are expected; docs/deployment.md (T379) will say so. No code change, because this is not in the spec.
+- **T363**: `client/Dockerfile` has two stages, `build` (`node:22-alpine`, the CI Node version; `npm ci`, then `npm run build`) and `final` (`caddy:2.11-alpine`, with `dist` copied to `/srv`).
+  - `caddy:2.11-alpine` is the newest Caddy minor on Docker Hub on 2026-11-24 (updated 2026-11-13; no 2.12). It is pinned to the minor version, so patch releases still arrive (plan: Primary Dependencies, A1 of the analysis).
+  - `client/.dockerignore` excludes `node_modules/`, `dist/`, `.vite/`, `*.local`, `.env*`, logs and IDE folders.
+  - Check: `docker build -t smart-estimate-web:local client/` succeeds (88 MB), and `/srv` holds `index.html`, `favicon.svg`, `icons.svg` and `assets/` with the hashed `index-*.js` and `index-*.css`.
+- **T364** (agent, `deploy/` exception approved 2026-11-24): `deploy/docker-compose.yml`.
+  - Services `mysql`, `api` and `caddy`; `migrate` follows in T369.
+  - `mysql` (`mysql:8.4`): volume `mysql-data`, and a health check `mysqladmin ping --host=127.0.0.1`, which goes over TCP and so passes only once the first-start initialisation is over. No password appears on the command line.
+  - The API environment is one YAML anchor (`x-api-environment`), so T369's `migrate` can reuse it exactly. `api` waits for a healthy `mysql`.
+  - Only `caddy` publishes ports (80, 443, 443/udp), with volumes `caddy-data` and `caddy-config` and the Caddyfile mounted read-only.
+  - `internal` network with subnet `172.30.0.0/24`, the same value as `ReverseProxy__TrustedNetwork`.
+  - Every service has `json-file` logs (10 MB × 3) and `restart: unless-stopped`.
+  - Images `ghcr.io/deividassiaulys-cloud/smart-estimate-{api,web}:${IMAGE_TAG}`.
+  - Every variable uses `${…:?message}`, so a missing value stops Compose with a clear message.
+  - **Change from the task text**: the example file is `deploy/env.example`, not `deploy/.env.example`, because the root `.gitignore` pattern `.env.*` would ignore it. Editing the root `.gitignore` is outside the approved exception. All references in spec, plan and tasks were renamed.
+  - Checks:
+    - `IMAGE_TAG=check docker compose -f deploy/docker-compose.yml --env-file deploy/env.example config --quiet` passes;
+    - `git check-ignore -v deploy/.env` gives `.gitignore:20:.env`, so the real file is ignored;
+    - `deploy/env.example` is not ignored and holds only `change-me` placeholders.
+- **T365** (agent, same exception): `deploy/Caddyfile`.
+  - Site `{$SITE_ADDRESS}` with `encode zstd gzip` and a JSON access log on stdout.
+  - `handle /api/*` and `handle /health*` go to `reverse_proxy api:8080` with no headers, so the API keeps its own CSP.
+  - The client `handle` serves `root /srv` with `try_files {path} /index.html` and `file_server`, and sends: the CSP of docs/architecture.md section 4, `nosniff`, `no-referrer`, `X-Frame-Options: DENY` and HSTS, with the `Server` header removed.
+  - `Cache-Control`: `public, max-age=31536000, immutable` for `/assets/*`, `no-cache` for everything else (index.html and client routes).
+  - A commented-out `acme_ca` line points to Let's Encrypt's staging CA.
+  - Checks: `caddy validate` gives "Valid configuration", and `caddy fmt` makes no changes.
+  - The client was checked first for inline styles or scripts, which the CSP would block: none. Only the unused template file `src/assets/vite.svg` has a `<style>`.
+- **T366** (local stack, agent-run). No `.env` file was created (Article VIII).
+  - Throwaway local values came from the shell environment, under a separate Compose project `sep-localcheck`, using the images from T362/T363 re-tagged as `ghcr.io/deividassiaulys-cloud/smart-estimate-{api,web}:local`.
+  - `mysql` reported healthy, then `api` and `caddy` started. Requests used `--cacert` with Caddy's local root certificate:
+    - `https://localhost/`: HTTP/2 200 `index.html` with the client CSP, `Cache-Control: no-cache`, HSTS, `nosniff`, `DENY` and `no-referrer`;
+    - `/projects/5`: `index.html`;
+    - the hashed JS asset: `immutable` and `Content-Encoding: gzip`;
+    - `/api/auth/me`: 401 with the API CSP (`default-src 'none'`) and `X-Correlation-ID`;
+    - `/health`: `{"status":"Healthy","version":"local"}`;
+    - `/health/ready`: 200;
+    - `http://localhost/`: 308 to `https://localhost/`;
+    - another host name: TLS refused (no certificate).
+  - Ports: only Caddy publishes 80 and 443; `api` (8080) and `mysql` (3306) are internal only. The `mysqld *:3306` on the Mac is the developer's own MySQL, not a container.
+  - Logs:
+    - `docker compose logs api` shows 6 lines, all JSON;
+    - Caddy's access log shows `Authorization: ["REDACTED"]` for a request sent with a test token, which does not appear in any log, and records the API's `X-Correlation-Id`;
+    - no throwaway password or key appears in any container log.
+  - The API sent no HSTS for `localhost`, because ASP.NET Core never sends HSTS to localhost (as `HstsTests` notes); Caddy's HSTS covers the client.
+  - Stopped with `docker compose -p sep-localcheck down -v`, which removed the volumes.
+  - Not checked here: data surviving `down`/`up` needs a schema, so it moves to T369 (analysis finding G1).
+- **T367**: waiting for the developer (`.github/workflows/ci.yml` and the ruleset; the `deploy/` exception does not cover `.github/`).
+- **Observation for T386/T380** (not part of this feature's tasks): the client's page title is still the Vite template's `client` (`client/index.html`). NFR-012 asks for a Lithuanian interface, so this should be noted in the requirements verification.
 
 ## Phase 3: PR `022-db-migrations` — User Story 3 (P1)
 
@@ -202,7 +263,7 @@
   - on the server, `docker compose logs api --since 10m` shows the smoke test's requests as JSON lines with `TraceId`, without tokens or passwords (`grep -c eyJ` is `0`).
 - [ ] T377 [US4] Secret check (SC-022-5):
   - `git ls-files | grep -E '(^|/)\.env$'` is empty;
-  - `.env.example` holds only placeholders;
+  - `env.example` holds only placeholders;
   - the history scan of docs/security-review.md section 7 is repeated and finds nothing new;
   - in production, `docker run --rm --entrypoint env ghcr.io/<owner>/smart-estimate-api:<sha>` shows no secret, because secrets come only from the running container's environment;
   - the workflow logs show `***` wherever a secret is used.

@@ -162,14 +162,14 @@ Decisions R1–R9 follow the feature input (spec Clarifications Q1–Q9). P1–P
 | II.1 / III business logic | No business rule changes; health check and middleware are infrastructure in `Program.cs` and `Data/` | Pass |
 | II.6 simplicity | One server, Compose, Caddy's automatic HTTPS, no orchestrator, no automatic rollback, no blue-green | Pass |
 | III dependencies | No application package added; build tool and images justified above | Pass |
-| III secrets | Only in the GitHub Environment and the server's `.env`; `deploy/.env.example` holds placeholders; SC-022-5 | Pass |
+| III secrets | Only in the GitHub Environment and the server's `.env`; `deploy/env.example` holds placeholders; SC-022-5 | Pass |
 | III no merge with failing tests | Deployment only after a green CI on `main`; ruleset `main-protection` unchanged | Pass |
 | III no features beyond spec | No paging, monitoring service, second server or product backup feature | Pass |
 | IV security | Risks above documented before implementation | Pass |
 | V proposals | P1–P6 were proposals; the student accepted all six on 2026-11-24 (spec Clarifications table) | Pass |
 | VI | Spec/plan/tasks committed separately; README.md gets a Deployment section (T381) | Pass with exception (Complexity Tracking) |
 | VII.2 | No clarification marker; Q1–Q9 answered, P1–P6 explicit proposals | Pass |
-| VIII paths | `.github/` and `deploy/` are written by the developer by hand; the agent writes in `server/`, `client/`, `tests/`, `docs/` and `specs/` only. README.md is outside them (Complexity Tracking) | Pass with exception |
+| VIII paths | `.github/` is written by the developer by hand. The agent writes in `server/`, `client/`, `tests/`, `docs/` and `specs/`, plus two approved exceptions: README.md (pending approval) and the `deploy/` files (approved 2026-11-24). Both are recorded in Complexity Tracking | Pass with exceptions |
 | VIII migrations | No new migration; the bundle only applies the existing ones | Pass |
 | X.2 / X.3 | No controller logic; `DatabaseHealthCheck` is infrastructure, not an application service, so it needs no `IXxxService` | Pass |
 | X.9 | `CheckHealthAsync` receives the framework's cancellation token by its interface signature; no new `CancellationToken` in services or controllers | Pass |
@@ -197,7 +197,7 @@ tests/
 deploy/                                          # developer, by hand (Article VIII)
 ├── docker-compose.yml                           # T364, T369
 ├── Caddyfile                                    # T365
-├── .env.example                                 # T364: names and placeholders only
+├── env.example                                 # T364: names and placeholders only
 └── deploy.sh                                    # T370
 .github/workflows/
 ├── ci.yml                                       # T367 (developer): image build job
@@ -224,4 +224,6 @@ README.md                                        # T381 (exception)
 |---|---|---|
 | README.md (repository root) edited by the agent, outside the folders allowed by Article VIII (T381) | Article VI requires README.md to be updated when setup or run instructions change. This feature adds the deployment and makes the "Project Status" line ("Requirements and design phase") wrong | Needs the student's approval for this feature (Article VII.3), as given for feature 021. If it is refused, the developer writes the section by hand from the text the agent proposes in T381 |
 
-The files under `deploy/` and `.github/` are not exceptions: the developer writes them by hand (spec Q9).
+| `deploy/docker-compose.yml`, `deploy/Caddyfile`, `deploy/env.example`, `deploy/deploy.sh` written by the agent, outside the folders allowed by Article VIII (T364, T365, T369, T370) | The deployment files must match the API's settings exactly: the trusted network, `AllowedHosts`, health paths, headers and the bundle's environment. The agent wrote and tested that side, and the student asked the agent to write them (2026-11-24) | The student approved this exception on 2026-11-24 (Article VII.3), replacing the original split of spec Q9. The original split, with the developer writing every `deploy/` file by hand from plan R5/R6, was the alternative. The exception does not cover `.github/`, any real `.env` file, the server or the GitHub settings, which stay with the developer. Every file is reviewed as a diff before commit (Article VIII) |
+
+The files under `.github/` are not an exception: the developer writes them by hand (spec Q9).

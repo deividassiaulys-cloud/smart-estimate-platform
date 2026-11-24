@@ -1,0 +1,14 @@
+# Keeps build output, local settings, secrets and IDE files out of the API image's build context (feature 022, T362).
+**/bin/
+**/obj/
+**/.env
+**/.env.*
+**/appsettings.Development.json
+**/appsettings.*.local.json
+**/*.user
+**/.idea/
+**/.vs/
+**/.vscode/
+**/.DS_Store
+.mcp.json
+.gitkeep

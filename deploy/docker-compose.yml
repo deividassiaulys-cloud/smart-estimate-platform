@@ -1,0 +1,89 @@
+# Smart Estimate Platform: the production stack on one server (feature 022, T364).
+# Run from this directory, with a .env file next to this one (copied from env.example; never committed):
+#   IMAGE_TAG=<commit sha> docker compose up -d
+# Only Caddy publishes ports (80, 443). MySQL and the API are reachable only inside the "internal" network.
+
+name: smart-estimate
+
+x-logging: &logging
+  # Small rotating log files, so container logs cannot fill the server's disk (30 MB per container).
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+x-api-environment: &api-environment
+  ASPNETCORE_ENVIRONMENT: Production
+  # The same public address as Caddy's site address (spec Q2).
+  AllowedHosts: ${SITE_ADDRESS:?SITE_ADDRESS must be set in .env}
+  # Must match the subnet of the "internal" network below: only Caddy's forwarded headers are trusted.
+  ReverseProxy__TrustedNetwork: 172.30.0.0/24
+  ConnectionStrings__DefaultConnection: Server=mysql;Port=3306;Database=${MYSQL_DATABASE:?MYSQL_DATABASE must be set in .env};User=${MYSQL_USER:?MYSQL_USER must be set in .env};Password=${MYSQL_PASSWORD:?MYSQL_PASSWORD must be set in .env}
+  Jwt__Key: ${JWT_KEY:?JWT_KEY must be set in .env}
+
+services:
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:?MYSQL_DATABASE must be set in .env}
+      # The application's user; the image grants it all privileges on MYSQL_DATABASE only, not root.
+      MYSQL_USER: ${MYSQL_USER:?MYSQL_USER must be set in .env}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?MYSQL_PASSWORD must be set in .env}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?MYSQL_ROOT_PASSWORD must be set in .env}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      # Over TCP, so it fails while the image's first-start initialisation still runs without networking.
+      # "ping" succeeds for a running server without credentials, so no password is put on the command line.
+      test: ["CMD", "mysqladmin", "ping", "--host=127.0.0.1", "--silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    networks:
+      - internal
+    logging: *logging
+
+  api:
+    image: ghcr.io/deividassiaulys-cloud/smart-estimate-api:${IMAGE_TAG:?IMAGE_TAG must be set (the commit SHA to deploy)}
+    restart: unless-stopped
+    environment: *api-environment
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - internal
+    logging: *logging
+
+  caddy:
+    image: ghcr.io/deividassiaulys-cloud/smart-estimate-web:${IMAGE_TAG:?IMAGE_TAG must be set (the commit SHA to deploy)}
+    restart: unless-stopped
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:?SITE_ADDRESS must be set in .env}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      # Certificates and Caddy's state; keeping them avoids asking Let's Encrypt again after a restart.
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - api
+    networks:
+      - internal
+    logging: *logging
+
+networks:
+  internal:
+    ipam:
+      config:
+        # Fixed, so the API can trust exactly this network (ReverseProxy__TrustedNetwork above).
+        - subnet: 172.30.0.0/24
+
+volumes:
+  mysql-data:
+  caddy-data:
+  caddy-config:
