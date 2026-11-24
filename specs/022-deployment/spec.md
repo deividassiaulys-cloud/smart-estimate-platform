@@ -132,7 +132,7 @@ As the student and the instructor, I want a deployment guide, a requirements ver
 - **FR-022-8**: The API image contains an EF Core migrations bundle. Each deployment takes a database dump, runs the bundle, and starts the new API only if the bundle exits with 0. Otherwise it stops with a non-zero exit code.
 - **FR-022-9**: After a successful CI run on `main`, a deploy workflow builds and pushes both images, tagged with the commit SHA, to GitHub Container Registry. It deploys them over SSH with the GitHub Environment `production`, one deployment at a time.
 - **FR-022-10**: A smoke test script checks the deployed site as listed in US4 scenario 3, fails on the first failed check and prints no secret.
-- **FR-022-11**: Secrets exist only in the GitHub Environment `production` (SSH access) and in the server's `.env` (database passwords, `Jwt__Key`). Neither is ever committed. `deploy/.env.example` lists the variable names with placeholder values.
+- **FR-022-11**: Secrets exist only in the GitHub Environment `production` (SSH access) and in the server's `.env` (database passwords, `Jwt__Key`). Neither is ever committed. `deploy/env.example` lists the variable names with placeholder values.
 - **FR-022-12**: docs/deployment.md, docs/requirements-verification.md, release notes for v1.0.0, tag `v1.0.0`, and the documentation updates listed in US5 scenario 4.
 
 ### Key Entities
@@ -175,6 +175,9 @@ Decisions given in the feature input:
 - Q7: What is logged? → A: Structured console logs with a correlation id and no secrets.
 - Q8: How is it deployed? → A: An automated deploy job after a green CI on `main` (SSH), followed by the smoke test script of US4.
 - Q9: Who writes which files? → A: The developer creates everything under `.github/` and `deploy/` by hand (Constitution Article VIII). The agent writes only in `server/`, `client/`, `tests/`, `docs/` and `specs/`.
+  - **Amended 2026-11-24, during PR `022-docker`**: the student approved an exception for `deploy/` (Article VII.3; plan.md Complexity Tracking). The agent writes `deploy/docker-compose.yml`, `deploy/Caddyfile`, `deploy/env.example` and `deploy/deploy.sh`.
+  - The student reviews each one as a diff before it is committed.
+  - Everything under `.github/`, every real `.env` file, the server, the GitHub settings and the tag stay with the developer.
 
 Proposed by the agent and decided by the student on 2026-11-24 (Constitution V; details and rejected alternatives in plan.md "Agent proposals"). Phase 2 of tasks.md must not start while any row is Pending. Each decision is recorded here with its date. A rejected proposal is replaced by the student's choice, and spec, plan and tasks are updated before Phase 2.
 
