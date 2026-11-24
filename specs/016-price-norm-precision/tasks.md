@@ -129,12 +129,17 @@
 
 ## Phase 6: Polish
 
-- [ ] T283 docs/ux.md: where the catalog forms and the editor describe price and norm inputs, say "iki 4 skaitmenų po kablelio" for prices and "iki 6" for norms. Check the materials, works and estimate editor pages at 360 px with 0,0616 € and 0,000884: no horizontal page scroll (NFR-008).
+- [X] T283 docs/ux.md: where the catalog forms and the editor describe price and norm inputs, say "iki 4 skaitmenų po kablelio" for prices and "iki 6" for norms. Check the materials, works and estimate editor pages at 360 px with 0,0616 € and 0,000884: no horizontal page scroll (NFR-008).
 - [X] T284 Run the full check set (`dotnet build`, `dotnet test`, `npm run lint`, `npm run build`, `npm run test`) and the quickstart.md steps that don't need the real database. Fix any regression.
 
 **Status notes (2026-11-17)**:
 - T282: the migration was reviewed (research R2). The real-MySQL before/after comparison (quickstart.md step 2) has **not** been run yet; the student must run it before merging.
 - T283: the docs/ux.md limits are updated. The 360 px browser check has **not** been done in this session, so T283 stays open.
+- T283 (2026-11-24): docs/ux.md §5 now says "iki 4 skaitmenų po kablelio" for every price input (a new Material Form table with Price, the work's labour rate, and the editor's line labour rate and material price) and "iki 6" for the norm inputs (labour norm, consumption norm). The 360 px check was done by reading the pages' classes, not in a browser:
+  - Materials and works lists: below 768 px every row is a card (`ui.listTable`, `max-md:block`; cells `whitespace-normal`), and `formatPrice`/`formatNorm` give "0,0616 €" and "0,000884"; the name cell's `min-w-[10rem]` fits the 328 px content width. No page scroll.
+  - Work form: the material lines are cards below 768 px too, and the norm input is `w-24` inside a `min-w-0` fieldset. No page scroll.
+  - Estimate editor: the table is inside `ui.tableWrapper` (`overflow-x-auto`), so its nowrap cells ("Darbas: 0,000884 val. ×", `w-24` inputs) widen only the table, which scrolls inside its frame, as spec 020 Q1 allows. The percentages (`flex-wrap`, `w-32`) and totals (`max-w-sm`) fit 360 px.
+  - Doubts: (1) this is a reading of the CSS, not a rendered check; a browser check at 360 px is still worth doing once. (2) In the `w-24` inputs (96 px, about 72 px for text) "0,000884" fits only just at the default font size; a longer value would scroll inside the input, not the page, but may look clipped.
 - T284: `dotnet build` (0 warnings), `dotnet test` (337 passed), `npm run lint`, `npm run build` and `npm run test` (87 passed) all pass. The manual quickstart steps 1–8 need the running app and were not run.
 
 ## Dependencies

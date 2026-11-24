@@ -108,14 +108,20 @@ Field	Required	Input restrictions	Validation message (on error)
 Email	Yes	Valid email format	"Please enter a valid email address."
 Password	Yes	Not blank	"Please enter your password."
 
+Material Form (create / edit)
+Field	Required	Input restrictions	Validation message (on error)
+Name	Yes	1–200 characters	"Material name is required."
+Unit	Yes	One of the fixed unit list	"Please select a unit."
+Price (€)	Yes	Number ≥ 0, iki 4 skaitmenų po kablelio (up to 4 decimal places, e.g. 0,0616 €)	"Price must be 0 or more, with at most 4 decimals."
+
 Work Form (create / edit)
 Field	Required	Input restrictions	Validation message (on error)
 Name	Yes	1–200 characters	"Work name is required."
 Unit	Yes	One of the fixed unit list	"Please select a unit."
-Labour rate (€/h)	Yes	Number ≥ 0, up to 4 decimals	"Labour rate cannot be negative."
-Labour norm (h/unit)	Yes	Number ≥ 0, up to 6 decimals	"Labour norm cannot be negative."
+Labour rate (€/h)	Yes	Number ≥ 0, iki 4 skaitmenų po kablelio (up to 4 decimal places, e.g. 0,0616 €/h)	"Labour rate cannot be negative."
+Labour norm (h/unit)	Yes	Number ≥ 0, iki 6 skaitmenų po kablelio (up to 6 decimal places, e.g. 0,000884)	"Labour norm cannot be negative."
 Material composition line — Material	No (0+ lines allowed)	Must exist in company's material base	"Please select a material."
-Material composition line — Consumption norm	Yes, if a line exists	Number > 0, up to 6 decimals	"Consumption norm cannot be negative."
+Material composition line — Consumption norm	Yes, if a line exists	Number > 0, iki 6 skaitmenų po kablelio (up to 6 decimal places)	"Consumption norm cannot be negative."
 Material composition line — Waste %	Yes, if a line exists	Number between 0 and 100	"Waste % must be between 0 and 100."
 
 Project Form (create / edit)
@@ -126,8 +132,8 @@ Description	No	Max 2000 characters	—
 Estimate Line — Quantity Edit (inline, within Estimate Editor)
 Field	Required	Input restrictions	Validation message (on error)
 Quantity (per work line)	Yes	Number > 0, up to 3 decimals	"Quantity must be greater than 0."
-Labour rate (per work line)	Yes	Number ≥ 0, up to 4 decimals	"Price must be 0 or more, with at most 4 decimals."
-Price (per material line)	Yes	Number ≥ 0, up to 4 decimals	"Price must be 0 or more, with at most 4 decimals."
+Labour rate (per work line)	Yes	Number ≥ 0, iki 4 skaitmenų po kablelio (up to 4 decimal places)	"Price must be 0 or more, with at most 4 decimals."
+Price (per material line)	Yes	Number ≥ 0, iki 4 skaitmenų po kablelio (up to 4 decimal places)	"Price must be 0 or more, with at most 4 decimals."
 Replace material (per material line)	No	A catalog material with the same unit	"Choose a catalog material with the same unit."
 Overhead %	Yes	Number between 0 and 100	"Overhead % must be between 0 and 100."
 Profit %	Yes	Number between 0 and 100	"Profit % must be between 0 and 100."
