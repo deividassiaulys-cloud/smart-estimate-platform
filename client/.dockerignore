@@ -1,0 +1,12 @@
+# Keeps installed packages, earlier builds, local settings, secrets and IDE files out of the web image's build context
+# (feature 022, T363). The image runs its own npm ci and npm run build.
+node_modules/
+dist/
+.vite/
+*.local
+.env
+.env.*
+npm-debug.log*
+.idea/
+.vscode/
+.DS_Store
