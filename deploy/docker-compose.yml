@@ -1,4 +1,4 @@
-# Smart Estimate Platform: the production stack on one server (feature 022, T364).
+# Smart Estimate Platform: the production stack on one server (feature 022, T364, T369).
 # Run from this directory, with a .env file next to this one (copied from env.example; never committed):
 #   IMAGE_TAG=<commit sha> docker compose up -d
 # Only Caddy publishes ports (80, 443). MySQL and the API are reachable only inside the "internal" network.
@@ -31,6 +31,9 @@ services:
       MYSQL_USER: ${MYSQL_USER:?MYSQL_USER must be set in .env}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:?MYSQL_PASSWORD must be set in .env}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?MYSQL_ROOT_PASSWORD must be set in .env}
+      # Root may log in only inside the MySQL container (restores, maintenance), not from other containers.
+      # Applied when the volume is first created.
+      MYSQL_ROOT_HOST: localhost
     volumes:
       - mysql-data:/var/lib/mysql
     healthcheck:
@@ -48,6 +51,23 @@ services:
   api:
     image: ghcr.io/deividassiaulys-cloud/smart-estimate-api:${IMAGE_TAG:?IMAGE_TAG must be set (the commit SHA to deploy)}
     restart: unless-stopped
+    environment: *api-environment
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - internal
+    logging: *logging
+
+  # One-off: applies pending migrations with the bundle in the API image, then exits (feature 022, T369).
+  # Not started by "up"; deploy.sh runs it before the new API starts:
+  #   docker compose --profile migrate run --rm migrate
+  # It needs exactly the API's environment: building the DbContext runs Program.cs's start-up checks.
+  migrate:
+    image: ghcr.io/deividassiaulys-cloud/smart-estimate-api:${IMAGE_TAG:?IMAGE_TAG must be set (the commit SHA to deploy)}
+    profiles:
+      - migrate
+    entrypoint: ["/app/efbundle"]
     environment: *api-environment
     depends_on:
       mysql:
