@@ -171,19 +171,19 @@
 **Independent Test**: spec US3.
 **Who does what**: the agent adds the bundle stage to `server/Dockerfile`. The developer writes the `migrate` service and `deploy/deploy.sh` by hand.
 
-- [ ] T368 [US3] `bundle` stage in `server/Dockerfile`: `dotnet tool install dotnet-ef --version 10.0.12`, `dotnet ef migrations bundle -c Release -o /out/efbundle`, copied into the final image as `/app/efbundle` (plan R4, R6). **Agent.** Check, against a throwaway `mysql:8.4` container on a Docker network, with the same environment as `api`:
+- [X] T368 [US3] `bundle` stage in `server/Dockerfile`: `dotnet tool install dotnet-ef --version 10.0.12`, `dotnet ef migrations bundle -c Release -o /out/efbundle`, copied into the final image as `/app/efbundle` (plan R4, R6). **Agent.** Check, against a throwaway `mysql:8.4` container on a Docker network, with the same environment as `api`:
   - the first run of `efbundle --connection …` exits 0;
   - `SELECT COUNT(*) FROM __EFMigrationsHistory` equals the number of `*.Designer.cs` files in `server/SmartEstimatePlatform.Api/Migrations`;
   - a second run prints that no migrations were applied and exits 0;
   - without `AllowedHosts`, the bundle fails. This confirms that it needs the API's environment (plan R6).
-- [ ] T369 [US3] `migrate` service in `deploy/docker-compose.yml`: the API image, `command: ["./efbundle"]`, `profiles: [migrate]`, `depends_on: mysql (service_healthy)`, and exactly the `api` environment (a YAML anchor or `env_file`, so the two cannot drift). **Developer, by hand.** Check, on the local stack from T366:
+- [X] T369 [US3] `migrate` service in `deploy/docker-compose.yml`: the API image, `command: ["./efbundle"]`, `profiles: [migrate]`, `depends_on: mysql (service_healthy)`, and exactly the `api` environment (a YAML anchor or `env_file`, so the two cannot drift). **Developer, by hand.** Check, on the local stack from T366:
   - `docker compose --profile migrate run --rm migrate` exits 0, after which registering through `https://localhost/api/auth/register` gives 201;
   - **data persists** (spec US2 scenario 4): after `docker compose down` (without `-v`) and `docker compose up -d`, logging in with the account just registered gives 200, and `docker volume ls` still lists `mysql-data`;
   - **application user, not root** (spec US3 scenario 5):
     - `docker compose config` shows that neither the `migrate` nor the `api` environment contains `MYSQL_ROOT_PASSWORD`;
     - their connection strings use `User=${MYSQL_USER}`, not `root`;
     - in MySQL, `SELECT user, host FROM mysql.user` lists the application user, and `SHOW GRANTS FOR '<MYSQL_USER>'@'%'` grants privileges only on `${MYSQL_DATABASE}.*`.
-- [ ] T370 [US3] `deploy/deploy.sh` (plan R6). **Developer, by hand.** It runs:
+- [X] T370 [US3] `deploy/deploy.sh` (plan R6). **Developer, by hand.** It runs:
   1. `set -euo pipefail`;
   2. `docker compose pull`, skipped with `PULL=0` for local runs;
   3. `mysqldump` (application user, `--single-transaction`) gzipped to `/var/backups/smart-estimate/<UTC>-<tag>.sql.gz`, keeping the last 7 (locally, a `BACKUP_DIR` override);
@@ -197,7 +197,7 @@
   - the dump exists, and `gunzip -c` shows `CREATE TABLE` for every table;
   - `.deployed-tag` is `local`;
   - restore drill: loading the dump into a scratch database gives the same row counts per table as the source.
-- [ ] T371 [US3] Migration failure drill (SC-022-4). Locally:
+- [X] T371 [US3] Migration failure drill (SC-022-4). Locally:
   1. Build the API image from the commit before `LimitPersonAndCompanyNames` as `IMAGE_TAG=old` and deploy it on an empty volume.
   2. Insert a user whose `FirstName` has 101 characters.
   3. Build the current commit as `IMAGE_TAG=new` and run `PULL=0 IMAGE_TAG=new ./deploy.sh`.
@@ -210,7 +210,62 @@
 
   Record the commands and output in the status notes. No migration file is created.
 
-**Status notes**: (filled in during implementation)
+**Status notes (2026-11-24)**:
+- **T368**: new `bundle` stage in `server/Dockerfile`, built `FROM build`.
+  - It installs `dotnet tool install --global dotnet-ef --version 10.0.12`, then runs `dotnet ef migrations bundle --configuration Release --output /out/efbundle`. The final image gets `/app/efbundle` (44 MB, executable; image 452 MB).
+  - **Deviation found while building**: the bundle build creates the `AppDbContext` once, and `Program.cs` requires a connection string. The step therefore runs with `ASPNETCORE_ENVIRONMENT=Development` and the placeholder `ConnectionStrings__DefaultConnection="Server=build-placeholder;Database=none"`. The placeholder is not a secret, nothing connects, and the variable exists only in that `RUN` step: `docker history` of the final image does not contain it. The first build failed with "Connection string 'DefaultConnection' is not configured".
+  - `efbundle --help` reports "Entity Framework Core Migrations Bundle 10.0.12".
+  - Check against a throwaway `mysql:8.4` on its own Docker network, with the API's environment:
+    - the first run applied all 10 migrations and exited 0;
+    - `__EFMigrationsHistory` has 10 rows, matching the 10 `*.Designer.cs` files, with 12 tables plus the history;
+    - the second run gave "No migrations were applied. The database is already up to date." and exited 0;
+    - without `AllowedHosts` it exited 1 ("AllowedHosts must list …", then "Unable to create a 'DbContext'"), which confirms plan R6: the bundle needs exactly the API's environment.
+- **T369** (agent, `deploy/` exception): `migrate` service in `deploy/docker-compose.yml`.
+  - It uses the API image, `profiles: [migrate]`, `entrypoint: ["/app/efbundle"]`, `environment: *api-environment` (the same YAML anchor as `api`, so the two cannot drift) and a dependency on a healthy `mysql`.
+  - **Deviation**: `entrypoint` instead of the planned `command: ["./efbundle"]`, because the image's `ENTRYPOINT` is `dotnet SmartEstimatePlatform.Api.dll`, so a `command` would only be passed to it as arguments. Extra arguments still reach the bundle, for example a target migration (used in T371).
+  - Plain `docker compose config --services` lists `mysql api caddy`; with `--profile migrate` it also lists `migrate`.
+  - **Added**: `MYSQL_ROOT_HOST: localhost`. The image otherwise creates `root@%`, so any container on the network could try root. On a fresh volume only `root@localhost` exists; checked in T371.
+  - Checks, on the local stack (Compose project `sep-localcheck`, throwaway values from the shell, no `.env` file):
+    - after `deploy.sh`, registering through `https://localhost/api/auth/register` gave 201;
+    - **persistence** (G1): after `docker compose down` without `-v`, the three volumes remained; after `up -d --wait`, logging in with the same account gave 200;
+    - **application user** (G2): in `docker compose config`, neither `api` nor `migrate` has `MYSQL_ROOT_PASSWORD`, and both connection strings use `User=smart_estimate` and not `root`;
+    - `SHOW GRANTS FOR 'smart_estimate'@'%'` shows `USAGE ON *.*` and `ALL PRIVILEGES ON smart_estimate.*` only.
+- **T370** (agent, `deploy/` exception): `deploy/deploy.sh` (`set -euo pipefail`, executable).
+  - Steps:
+    1. optional pull (`PULL=0` skips it);
+    2. `up -d --wait mysql`;
+    3. `mysqldump --single-transaction --no-tablespaces` as the application user, with the password read inside the container from its own environment and not put on the host command line. The dump is written to `.partial`, then renamed and set to mode 600. Only the newest `KEEP_BACKUPS` (default 7) are kept;
+    4. `docker compose --profile migrate run --rm migrate`; on failure it prints "Migration failed; API not restarted; backup: …", "The previous version (…) keeps running." and exits 1;
+    5. `up -d api caddy`;
+    6. a wait of up to 60 s for `/health/ready` = `Healthy` and `/health` reporting `IMAGE_TAG`;
+    7. writing the tag to `DEPLOYED_TAG_FILE` (default `.deployed-tag`) and printing the previous one.
+  - **Deviation**: the readiness wait asks the API from inside the network, through the Caddy container (`wget --header "Host: $SITE_ADDRESS" http://api:8080/health…`), not through `https://$SITE_ADDRESS`. It then does not depend on DNS or the certificate, and the public address is what the smoke test checks (T372).
+  - **Added**: the `DEPLOYED_TAG_FILE` option, so a local run does not leave `.deployed-tag` in the repository.
+  - `shellcheck` 0.11.0 (run from the `koalaman/shellcheck:stable` image) is clean, with one documented `SC2012` disable for `ls -t` on the script's own file names.
+  - Checks:
+    - the first run on an empty volume applied 10 migrations, exited 0 and wrote the tag file (`local`);
+    - the second run gave "No migrations were applied", exit 0, and a dump with 13 `CREATE TABLE` statements and the registered user;
+    - **restore drill**: the dump was loaded as root into a scratch database `restore_check`. Companies 1, Users 1, migrations 10 and tables 13 match the source, and the scratch database was dropped afterwards;
+    - **retention** (G3): with 2 existing dumps and `KEEP_BACKUPS=2`, the next run removed the oldest and left 2.
+- **T371** (migration failure drill, SC-022-4).
+  - **Deviation from the task text** (equivalent, simpler): instead of building an image from the commit before `LimitPersonAndCompanyNames`, which has no `/health`, the drill used the current image built twice, as `:old` (`APP_VERSION=old`) and `:new`. On a fresh volume the bundle was given a target, `migrate 20261117083815_AddSections`, so 9 of 10 migrations were applied.
+  - Steps:
+    1. start `api`/`caddy` as `:old` and register a user (201);
+    2. `UPDATE Users SET FirstName=REPEAT('x',101)`;
+    3. run `IMAGE_TAG=new ./deploy.sh`.
+  - Result:
+    - the backup was taken, then `LimitPersonAndCompanyNames` failed with "Data too long for column 'FirstName' at row 1";
+    - the script printed the backup path and "The previous version (old) keeps running." and exited **1**;
+    - `docker compose ps` still showed `api …:old` and `caddy …:old`, `/health` still reported `"version":"old"`, and the tag file still said `old`.
+  - **Confirmed edge case** (spec Edge Cases, MySQL DDL is not transactional): after the failure `Users.LastName` was already `varchar(100)`, while `FirstName` was still `longtext` and the history still had 9 rows. The migration had been half applied, which is why the dump comes first.
+  - After `UPDATE Users SET FirstName='Ona'`, the same command applied the migration and exited 0. Afterwards:
+    - 10 history rows;
+    - `Users.FirstName`/`LastName` are `varchar(100)` and `Companies.Name` is `varchar(200)`;
+    - `api`/`caddy` run `:new`, `/health` reports `new` and login gives 200;
+    - no throwaway password or key appears in the drill output.
+  - On a fresh volume, `mysql.user` has root only at `localhost` (T369 addition).
+  - No migration file was created. The stack was removed with `down -v`, along with the `:old`/`:new` images.
+- **Checks**: no application code changed in this PR (`server/Dockerfile` and `deploy/` only), so the test counts are unchanged (478 backend, 125 frontend); CI runs them on the PR.
 
 ## Phase 4: PR `022-deploy-pipeline` — User Story 4 (P1)
 
