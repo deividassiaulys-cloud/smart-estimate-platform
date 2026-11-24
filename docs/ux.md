@@ -80,24 +80,19 @@ Build an Estimate (Add Work, Auto-generate Materials, Recalculate)
 
 
  4.	Low-Fidelity Wireframes
+The wireframes are image files in docs/wireframes:
+Wireframe	Screen (section 1)
+docs/wireframes/wf07_materials_list.png	5 Materials List
+docs/wireframes/wf08_material_form.png	6 Material Form
+docs/wireframes/wf09_works_list.png	7 Works List
+docs/wireframes/wf10_projects_list.png	11 Projects List
+docs/wireframes/wf11_project_form.png	12 Project Form
+docs/wireframes/wf12_project_detail.png	13 Project Detail
+docs/wireframes/wf13_team_list.png	9 Team / Viewers List
+docs/wireframes/wf14_viewer_form.png	10 Viewer Account Form
+docs/wireframes/wf15_dialogs.png	Confirmation dialogs (section 6), incl. 16 Export Confirmation
 
- 
-
-
- 
-
-
- 
-
-
- 
-
-
- 
-
-
- 
-
+Note: the wireframe labels are in English for this documentation only. The application interface itself is in Lithuanian (NFR-012), e.g. "Delete" is "Ištrinti" and "Cancel" is "Atšaukti".
 
  5.	Form Behaviour
 Register Form
@@ -113,14 +108,20 @@ Field	Required	Input restrictions	Validation message (on error)
 Email	Yes	Valid email format	"Please enter a valid email address."
 Password	Yes	Not blank	"Please enter your password."
 
+Material Form (create / edit)
+Field	Required	Input restrictions	Validation message (on error)
+Name	Yes	1–200 characters	"Material name is required."
+Unit	Yes	One of the fixed unit list	"Please select a unit."
+Price (€)	Yes	Number ≥ 0, iki 4 skaitmenų po kablelio (up to 4 decimal places, e.g. 0,0616 €)	"Price must be 0 or more, with at most 4 decimals."
+
 Work Form (create / edit)
 Field	Required	Input restrictions	Validation message (on error)
 Name	Yes	1–200 characters	"Work name is required."
 Unit	Yes	One of the fixed unit list	"Please select a unit."
-Labour rate (€/h)	Yes	Number ≥ 0, up to 4 decimals	"Labour rate cannot be negative."
-Labour norm (h/unit)	Yes	Number ≥ 0, up to 6 decimals	"Labour norm cannot be negative."
+Labour rate (€/h)	Yes	Number ≥ 0, iki 4 skaitmenų po kablelio (up to 4 decimal places, e.g. 0,0616 €/h)	"Labour rate cannot be negative."
+Labour norm (h/unit)	Yes	Number ≥ 0, iki 6 skaitmenų po kablelio (up to 6 decimal places, e.g. 0,000884)	"Labour norm cannot be negative."
 Material composition line — Material	No (0+ lines allowed)	Must exist in company's material base	"Please select a material."
-Material composition line — Consumption norm	Yes, if a line exists	Number > 0, up to 6 decimals	"Consumption norm cannot be negative."
+Material composition line — Consumption norm	Yes, if a line exists	Number > 0, iki 6 skaitmenų po kablelio (up to 6 decimal places)	"Consumption norm cannot be negative."
 Material composition line — Waste %	Yes, if a line exists	Number between 0 and 100	"Waste % must be between 0 and 100."
 
 Project Form (create / edit)
@@ -131,8 +132,8 @@ Description	No	Max 2000 characters	—
 Estimate Line — Quantity Edit (inline, within Estimate Editor)
 Field	Required	Input restrictions	Validation message (on error)
 Quantity (per work line)	Yes	Number > 0, up to 3 decimals	"Quantity must be greater than 0."
-Labour rate (per work line)	Yes	Number ≥ 0, up to 4 decimals	"Price must be 0 or more, with at most 4 decimals."
-Price (per material line)	Yes	Number ≥ 0, up to 4 decimals	"Price must be 0 or more, with at most 4 decimals."
+Labour rate (per work line)	Yes	Number ≥ 0, iki 4 skaitmenų po kablelio (up to 4 decimal places)	"Price must be 0 or more, with at most 4 decimals."
+Price (per material line)	Yes	Number ≥ 0, iki 4 skaitmenų po kablelio (up to 4 decimal places)	"Price must be 0 or more, with at most 4 decimals."
 Replace material (per material line)	No	A catalog material with the same unit	"Choose a catalog material with the same unit."
 Overhead %	Yes	Number between 0 and 100	"Overhead % must be between 0 and 100."
 Profit %	Yes	Number between 0 and 100	"Profit % must be between 0 and 100."
@@ -157,6 +158,8 @@ Temporary password	Yes	Min. 8 characters	"Password must be at least 8 characters
 •	403 Unauthorized: shown when a role doesn't permit the screen or action.
 •	404 Not Found: shown when an ID doesn't exist or belongs to another company — 404 is used deliberately instead of 403, so a user cannot infer that the record exists elsewhere.
 •	Session expired: redirect to Login with the message "Your session has expired."
+•	Confirmation before destructive actions (NFR-011): every destructive action opens the shared confirmation dialog (wireframe wf15) before anything is sent: deleting a material, a work, a project, an estimate work line or a Viewer, and confirming an estimate. The dialog names the item and explains the consequence (e.g. “Delete 'Boards 45x45'? This action cannot be undone.”). Focus starts on "Cancel", so pressing Enter never confirms by accident; Escape or "Cancel" closes it and nothing changes.
+•	Blocked material deletion (BR-018): when a material is used in a work composition, the server refuses the deletion (409) and the list shows the message "Medžiagos negalima ištrinti, nes ji naudojama darbuose: <work names>." ("The material cannot be deleted because it is used in works: …"); the material stays in the list. A material used only in estimates can be deleted, because estimates keep their own copies (BR-010).
 
  7.	Navigation
 Nav item	Manager	Viewer
