@@ -21,6 +21,11 @@ public sealed class ApiFactory : WebApplicationFactory<Program>
 {
     public const string JwtKey = "integration-test-signing-key-0123456789";
 
+    /// <summary>
+    /// The proxy network the API trusts in the tests (outside Development the setting is required, feature 022).
+    /// </summary>
+    public const string TrustedNetwork = "10.99.0.0/24";
+
     private readonly SqliteConnection _connection = SqliteTestDatabase.OpenConnection();
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -30,6 +35,7 @@ public sealed class ApiFactory : WebApplicationFactory<Program>
         builder.UseSetting("Jwt:Key", JwtKey);
         // The hosts the tests call (HstsTests uses smart-estimate.test); "*" stops the app outside Development.
         builder.UseSetting("AllowedHosts", "localhost;smart-estimate.test");
+        builder.UseSetting("ReverseProxy:TrustedNetwork", TrustedNetwork);
         // Many tests log in or register from the same in-process client, so the login rate limit is raised.
         builder.UseSetting("RateLimiting:Auth:PermitLimit", "100000");
 

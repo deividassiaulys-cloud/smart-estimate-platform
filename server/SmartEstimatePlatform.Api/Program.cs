@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -20,7 +21,22 @@ if (!builder.Environment.IsDevelopment() && builder.Configuration["AllowedHosts"
         "AllowedHosts must list the API's host names outside Development (set the AllowedHosts environment variable).");
 }
 
+// Outside development the console log is JSON, one entry per line, with the request's scopes (TraceId = the
+// correlation id, RequestPath) on every entry, so the server's logs can be searched by request (feature 022).
+if (!builder.Environment.IsDevelopment())
+{
+    builder.Logging.AddJsonConsole(options =>
+    {
+        options.IncludeScopes = true;
+        options.UseUtcTimestamp = true;
+        options.TimestampFormat = "yyyy-MM-ddTHH:mm:ss.fffZ";
+    });
+}
+
 // Add services to the container.
+
+// Forwarded headers only from the reverse proxy's network (feature 022); required outside Development.
+var behindReverseProxy = builder.Services.AddReverseProxyTrust(builder.Configuration, builder.Environment);
 
 // The connection string is supplied outside the repository (user secrets or environment variables).
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
@@ -74,11 +90,18 @@ builder.Services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationSc
 
 builder.Services.AddControllers();
 builder.Services.AddAuthRateLimiting(builder.Configuration);
+builder.Services.AddHealthEndpoints();
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<DomainExceptionHandler>();
 builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, LoggingAuthorizationResultHandler>();
 
 var app = builder.Build();
+
+// First, so HSTS, HTTPS redirection, the rate limiter and logging all see the real client address and scheme.
+if (behindReverseProxy)
+{
+    app.UseForwardedHeaders();
+}
 
 // Security headers on every response, also errors (feature 021, F7). Added when the response starts, so the
 // exception handler, which clears the headers of a failed response, cannot remove them.
@@ -91,6 +114,19 @@ app.Use(async (context, next) =>
         headers.XFrameOptions = "DENY";
         headers["Referrer-Policy"] = "no-referrer";
         headers.ContentSecurityPolicy = "default-src 'none'; frame-ancestors 'none'";
+        return Task.CompletedTask;
+    });
+    await next();
+});
+
+// The correlation id (feature 022): the request's trace id, which every log entry of the request carries in its
+// TraceId scope and the ProblemDetails traceId contains. Added when the response starts, like the headers above.
+app.Use(async (context, next) =>
+{
+    var correlationId = Activity.Current?.TraceId.ToHexString() ?? context.TraceIdentifier;
+    context.Response.OnStarting(() =>
+    {
+        context.Response.Headers["X-Correlation-ID"] = correlationId;
         return Task.CompletedTask;
     });
     await next();
@@ -112,6 +148,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHealthEndpoints();
 
 app.Run();
 
