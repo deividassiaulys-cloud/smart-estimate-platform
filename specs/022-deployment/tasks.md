@@ -370,7 +370,7 @@
   - troubleshooting: certificate, 502, 503 from `/health/ready`, failed migration.
 
   Check: every command in the guide was run in T366–T378 (cross-checked against the status notes), and the guide holds no real host, IP or secret.
-- [ ] T380 [P] [US5] docs/requirements-verification.md. **Agent.** One table row for each of the 66 IDs (FR-001–FR-034, NFR-001–NFR-014, BR-001–BR-018), with status (Met / Partially met / Deferred), evidence (test class and method names, a manual check with its date and task, a production smoke step) and, if not Met, the reason. FR-025, FR-028 and FR-029 are Deferred, as in specs/deferred-features.md. Check:
+- [X] T380 [P] [US5] docs/requirements-verification.md. **Agent.** One table row for each of the 66 IDs (FR-001–FR-034, NFR-001–NFR-014, BR-001–BR-018), with status (Met / Partially met / Deferred), evidence (test class and method names, a manual check with its date and task, a production smoke step) and, if not Met, the reason. FR-025, FR-028 and FR-029 are Deferred, as in specs/deferred-features.md. Check:
   - `grep -oE '^\| (FR|NFR|BR)-[0-9]{3}' docs/requirements-verification.md | sort -u | wc -l` is 66;
   - the same list equals the IDs in docs/requirements.md (`diff`);
   - every test name cited exists (`grep` in `tests/`) (SC-022-6).
@@ -411,7 +411,20 @@
 
   Check: `git rev-parse 'v1.0.0^{commit}'` equals the `version` from `https://$SITE_ADDRESS/health`, and the Release page shows the notes.
 
-**Status notes**: (filled in during implementation)
+**Status notes (2026-11-25)**:
+- **T380**: `docs/requirements-verification.md` was written from `main` at `6fda463` (PR #43). It has one row for each of the 66 IDs, with status, evidence (spec path, merged PR, test names, manual checks with their task and date) and, for rows that are not Met, the reason.
+  - Counts: 57 Met, 5 Partially met, 3 Deferred (FR-025, FR-028, FR-029, as in specs/deferred-features.md), 1 Pending first deployment (NFR-001).
+  - Checks, all passed:
+    - `grep -oE '^\| (FR|NFR|BR)-[0-9]{3}' docs/requirements-verification.md | sort -u | wc -l` is 66;
+    - that list equals the IDs in docs/requirements.md (`diff` is empty);
+    - every cited test exists in `tests/`: each backend `Class.Method` and each frontend test title were found with `grep` (SC-022-6).
+  - The 5 Partially met rows are listed with their reasons, both in the file's summary and in their own rows:
+    - NFR-009: no load or recalculation time has been measured;
+    - NFR-011: no test covers the confirmation before a material is deleted;
+    - NFR-012: `client/index.html` still has `<title>client</title>` and `lang="en"`;
+    - NFR-013: only Chrome checks are recorded;
+    - NFR-014: no test asserts which personal fields are stored.
+  - **To update in T386**: the NFR-001 row (Pending first deployment (T375/T386)) and the production-only items in the summary. Those items are health on the server, the production smoke test, and T376–T378. The production checks for NFR-008, NFR-009 and NFR-013 also go in their rows then. T380 is final only after T386 (see Dependencies).
 
 ## Phase 6: Polish (after each PR)
 
